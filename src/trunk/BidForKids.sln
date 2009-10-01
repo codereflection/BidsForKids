@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BidForKids", "BidForKids\BidForKids.csproj", "{46F2C317-EDD6-4238-95D4-E0BD658B10D2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BidForKids.Tests", "BidForKids.Tests\BidForKids.Tests.csproj", "{5F471AEA-DEDC-41B0-82C2-9EB36E39F18E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		AutomatedDebug|Any CPU = AutomatedDebug|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{46F2C317-EDD6-4238-95D4-E0BD658B10D2}.AutomatedDebug|Any CPU.ActiveCfg = AutomatedDebug|Any CPU
+		{46F2C317-EDD6-4238-95D4-E0BD658B10D2}.AutomatedDebug|Any CPU.Build.0 = AutomatedDebug|Any CPU
+		{46F2C317-EDD6-4238-95D4-E0BD658B10D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46F2C317-EDD6-4238-95D4-E0BD658B10D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46F2C317-EDD6-4238-95D4-E0BD658B10D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46F2C317-EDD6-4238-95D4-E0BD658B10D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F471AEA-DEDC-41B0-82C2-9EB36E39F18E}.AutomatedDebug|Any CPU.ActiveCfg = AutomatedDebug|Any CPU
+		{5F471AEA-DEDC-41B0-82C2-9EB36E39F18E}.AutomatedDebug|Any CPU.Build.0 = AutomatedDebug|Any CPU
+		{5F471AEA-DEDC-41B0-82C2-9EB36E39F18E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F471AEA-DEDC-41B0-82C2-9EB36E39F18E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F471AEA-DEDC-41B0-82C2-9EB36E39F18E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F471AEA-DEDC-41B0-82C2-9EB36E39F18E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

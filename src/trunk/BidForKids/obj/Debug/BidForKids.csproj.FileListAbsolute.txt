@@ -1,0 +1,28 @@
+C:\Users\Jeff\Documents\Visual Studio 2008\Projects\BidForKids\BidForKids\bin\BidForKids.dll
+C:\Users\Jeff\Documents\Visual Studio 2008\Projects\BidForKids\BidForKids\bin\BidForKids.pdb
+C:\Users\Jeff\Documents\Visual Studio 2008\Projects\BidForKids\BidForKids\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Jeff\Documents\Visual Studio 2008\Projects\BidForKids\BidForKids\obj\Debug\BidForKids.dll
+C:\Users\Jeff\Documents\Visual Studio 2008\Projects\BidForKids\BidForKids\obj\Debug\BidForKids.pdb
+C:\Users\Jeff\Documents\Visual Studio 2008\Projects\BidForKids\BidForKids\bin\MvcContrib.dll
+C:\Users\Jeff\Documents\Visual Studio 2008\Projects\BidForKids\BidForKids\bin\MvcContrib.FluentHtml.dll
+C:\Users\Jeff\Documents\Visual Studio 2008\Projects\BidForKids\BidForKids\bin\MvcContrib.TestHelper.dll
+C:\Users\Jeff\Documents\Visual Studio 2008\Projects\BidForKids\BidForKids\bin\Rhino.Mocks.dll
+C:\Users\Jeff\Documents\Visual Studio 2008\Projects\BidForKids\BidForKids\bin\MvcContrib.xml
+C:\Users\Jeff\Documents\Visual Studio 2008\Projects\BidForKids\BidForKids\bin\MvcContrib.TestHelper.xml
+C:\Users\Jeff\Documents\Visual Studio 2008\Projects\BidForKids\BidForKids\bin\MvcContrib.FluentHtml.xml
+C:\Users\Jeff\Documents\Visual Studio 2008\Projects\BidForKids\BidForKids\bin\StructureMap.dll
+C:\Users\Jeff\Documents\Visual Studio 2008\Projects\BidForKids\BidForKids\bin\Newtonsoft.Json.dll
+C:\Users\Jeff\Documents\Visual Studio 2008\Projects\BidForKids\BidForKids\bin\Newtonsoft.Json.pdb
+C:\Users\Jeff\Documents\Visual Studio 2008\Projects\BidForKids\BidForKids\bin\Newtonsoft.Json.xml
+C:\Users\Jeff\Documents\TreeSurgeon\BidForKids\src\trunk\BidForKids\bin\BidForKids.dll
+C:\Users\Jeff\Documents\TreeSurgeon\BidForKids\src\trunk\BidForKids\bin\BidForKids.pdb
+C:\Users\Jeff\Documents\TreeSurgeon\BidForKids\src\trunk\BidForKids\bin\Newtonsoft.Json.dll
+C:\Users\Jeff\Documents\TreeSurgeon\BidForKids\src\trunk\BidForKids\bin\StructureMap.dll
+C:\Users\Jeff\Documents\TreeSurgeon\BidForKids\src\trunk\BidForKids\bin\MvcContrib.xml
+C:\Users\Jeff\Documents\TreeSurgeon\BidForKids\src\trunk\BidForKids\bin\MvcContrib.TestHelper.xml
+C:\Users\Jeff\Documents\TreeSurgeon\BidForKids\src\trunk\BidForKids\bin\MvcContrib.FluentHtml.xml
+C:\Users\Jeff\Documents\TreeSurgeon\BidForKids\src\trunk\BidForKids\bin\Newtonsoft.Json.pdb
+C:\Users\Jeff\Documents\TreeSurgeon\BidForKids\src\trunk\BidForKids\bin\Newtonsoft.Json.xml
+C:\Users\Jeff\Documents\TreeSurgeon\BidForKids\src\trunk\BidForKids\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Jeff\Documents\TreeSurgeon\BidForKids\src\trunk\BidForKids\obj\Debug\BidForKids.dll
+C:\Users\Jeff\Documents\TreeSurgeon\BidForKids\src\trunk\BidForKids\obj\Debug\BidForKids.pdb

@@ -1,0 +1,12 @@
+C:\Users\Jeff\Documents\TreeSurgeon\BidForKids\src\trunk\BidForKids.Tests\bin\AutomatedDebug\BidForKids.Tests.dll
+C:\Users\Jeff\Documents\TreeSurgeon\BidForKids\src\trunk\BidForKids.Tests\bin\AutomatedDebug\BidForKids.Tests.pdb
+C:\Users\Jeff\Documents\TreeSurgeon\BidForKids\src\trunk\BidForKids.Tests\bin\AutomatedDebug\BidForKids.dll
+C:\Users\Jeff\Documents\TreeSurgeon\BidForKids\src\trunk\BidForKids.Tests\bin\AutomatedDebug\Rhino.Mocks.dll
+C:\Users\Jeff\Documents\TreeSurgeon\BidForKids\src\trunk\BidForKids.Tests\bin\AutomatedDebug\xunit.dll
+C:\Users\Jeff\Documents\TreeSurgeon\BidForKids\src\trunk\BidForKids.Tests\bin\AutomatedDebug\StructureMap.dll
+C:\Users\Jeff\Documents\TreeSurgeon\BidForKids\src\trunk\BidForKids.Tests\bin\AutomatedDebug\BidForKids.pdb
+C:\Users\Jeff\Documents\TreeSurgeon\BidForKids\src\trunk\BidForKids.Tests\obj\AutomatedDebug\ResolveAssemblyReference.cache
+C:\Users\Jeff\Documents\TreeSurgeon\BidForKids\src\trunk\BidForKids.Tests\obj\AutomatedDebug\BidForKids.Tests.dll
+C:\Users\Jeff\Documents\TreeSurgeon\BidForKids\src\trunk\BidForKids.Tests\obj\AutomatedDebug\BidForKids.Tests.pdb
+C:\Users\Jeff\Documents\TreeSurgeon\BidForKids\build\Debug\BidForKids.Tests\BidForKids.Tests.dll
+C:\Users\Jeff\Documents\TreeSurgeon\BidForKids\build\Debug\BidForKids.Tests\BidForKids.Tests.pdb
