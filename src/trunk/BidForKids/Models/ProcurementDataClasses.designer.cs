@@ -48,6 +48,9 @@ namespace BidForKids.Models
     partial void InsertContact(Contact instance);
     partial void UpdateContact(Contact instance);
     partial void DeleteContact(Contact instance);
+    partial void InsertProcurer(Procurer instance);
+    partial void UpdateProcurer(Procurer instance);
+    partial void DeleteProcurer(Procurer instance);
     #endregion
 		
 		public ProcurementDataClassesDataContext() : 
@@ -125,6 +128,14 @@ namespace BidForKids.Models
 			get
 			{
 				return this.GetTable<Contact>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Procurer> Procurers
+		{
+			get
+			{
+				return this.GetTable<Procurer>();
 			}
 		}
 	}
@@ -281,11 +292,15 @@ namespace BidForKids.Models
 		
 		private int _Auction_ID;
 		
+		private System.Nullable<int> _Procurer_ID;
+		
 		private EntityRef<Auction> _Auction;
 		
 		private EntityRef<Procurement> _Procurement;
 		
 		private EntityRef<Contact> _Contact;
+		
+		private EntityRef<Procurer> _Procurer;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -299,6 +314,8 @@ namespace BidForKids.Models
     partial void OnProcurement_IDChanged();
     partial void OnAuction_IDChanging(int value);
     partial void OnAuction_IDChanged();
+    partial void OnProcurer_IDChanging(System.Nullable<int> value);
+    partial void OnProcurer_IDChanged();
     #endregion
 		
 		public ContactProcurement()
@@ -306,6 +323,7 @@ namespace BidForKids.Models
 			this._Auction = default(EntityRef<Auction>);
 			this._Procurement = default(EntityRef<Procurement>);
 			this._Contact = default(EntityRef<Contact>);
+			this._Procurer = default(EntityRef<Procurer>);
 			OnCreated();
 		}
 		
@@ -397,6 +415,30 @@ namespace BidForKids.Models
 					this._Auction_ID = value;
 					this.SendPropertyChanged("Auction_ID");
 					this.OnAuction_IDChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_Procurer_ID", DbType="Int")]
+		public System.Nullable<int> Procurer_ID
+		{
+			get
+			{
+				return this._Procurer_ID;
+			}
+			set
+			{
+				if ((this._Procurer_ID != value))
+				{
+					if (this._Procurer.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnProcurer_IDChanging(value);
+					this.SendPropertyChanging();
+					this._Procurer_ID = value;
+					this.SendPropertyChanged("Procurer_ID");
+					this.OnProcurer_IDChanged();
 				}
 			}
 		}
@@ -499,6 +541,40 @@ namespace BidForKids.Models
 						this._Contact_ID = default(int);
 					}
 					this.SendPropertyChanged("Contact");
+				}
+			}
+		}
+		
+		[Association(Name="Procurer_ContactProcurement", Storage="_Procurer", ThisKey="Procurer_ID", OtherKey="Procurer_ID", IsForeignKey=true)]
+		public Procurer Procurer
+		{
+			get
+			{
+				return this._Procurer.Entity;
+			}
+			set
+			{
+				Procurer previousValue = this._Procurer.Entity;
+				if (((previousValue != value) 
+							|| (this._Procurer.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Procurer.Entity = null;
+						previousValue.ContactProcurements.Remove(this);
+					}
+					this._Procurer.Entity = value;
+					if ((value != null))
+					{
+						value.ContactProcurements.Add(this);
+						this._Procurer_ID = value.Procurer_ID;
+					}
+					else
+					{
+						this._Procurer_ID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("Procurer");
 				}
 			}
 		}
@@ -1711,6 +1787,192 @@ namespace BidForKids.Models
 		{
 			this.SendPropertyChanging();
 			entity.Contact = null;
+		}
+	}
+	
+	[Table(Name="dbo.Procurer")]
+	public partial class Procurer : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Procurer_ID;
+		
+		private string _FirstName;
+		
+		private string _LastName;
+		
+		private string _Phone;
+		
+		private string _Email;
+		
+		private EntitySet<ContactProcurement> _ContactProcurements;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnProcurer_IDChanging(int value);
+    partial void OnProcurer_IDChanged();
+    partial void OnFirstNameChanging(string value);
+    partial void OnFirstNameChanged();
+    partial void OnLastNameChanging(string value);
+    partial void OnLastNameChanged();
+    partial void OnPhoneChanging(string value);
+    partial void OnPhoneChanged();
+    partial void OnEmailChanging(string value);
+    partial void OnEmailChanged();
+    #endregion
+		
+		public Procurer()
+		{
+			this._ContactProcurements = new EntitySet<ContactProcurement>(new Action<ContactProcurement>(this.attach_ContactProcurements), new Action<ContactProcurement>(this.detach_ContactProcurements));
+			OnCreated();
+		}
+		
+		[Column(Storage="_Procurer_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Procurer_ID
+		{
+			get
+			{
+				return this._Procurer_ID;
+			}
+			set
+			{
+				if ((this._Procurer_ID != value))
+				{
+					this.OnProcurer_IDChanging(value);
+					this.SendPropertyChanging();
+					this._Procurer_ID = value;
+					this.SendPropertyChanged("Procurer_ID");
+					this.OnProcurer_IDChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_FirstName", DbType="VarChar(255)")]
+		public string FirstName
+		{
+			get
+			{
+				return this._FirstName;
+			}
+			set
+			{
+				if ((this._FirstName != value))
+				{
+					this.OnFirstNameChanging(value);
+					this.SendPropertyChanging();
+					this._FirstName = value;
+					this.SendPropertyChanged("FirstName");
+					this.OnFirstNameChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_LastName", DbType="VarChar(255)")]
+		public string LastName
+		{
+			get
+			{
+				return this._LastName;
+			}
+			set
+			{
+				if ((this._LastName != value))
+				{
+					this.OnLastNameChanging(value);
+					this.SendPropertyChanging();
+					this._LastName = value;
+					this.SendPropertyChanged("LastName");
+					this.OnLastNameChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_Phone", DbType="VarChar(20)")]
+		public string Phone
+		{
+			get
+			{
+				return this._Phone;
+			}
+			set
+			{
+				if ((this._Phone != value))
+				{
+					this.OnPhoneChanging(value);
+					this.SendPropertyChanging();
+					this._Phone = value;
+					this.SendPropertyChanged("Phone");
+					this.OnPhoneChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_Email", DbType="VarChar(255)")]
+		public string Email
+		{
+			get
+			{
+				return this._Email;
+			}
+			set
+			{
+				if ((this._Email != value))
+				{
+					this.OnEmailChanging(value);
+					this.SendPropertyChanging();
+					this._Email = value;
+					this.SendPropertyChanged("Email");
+					this.OnEmailChanged();
+				}
+			}
+		}
+		
+		[Association(Name="Procurer_ContactProcurement", Storage="_ContactProcurements", ThisKey="Procurer_ID", OtherKey="Procurer_ID")]
+		public EntitySet<ContactProcurement> ContactProcurements
+		{
+			get
+			{
+				return this._ContactProcurements;
+			}
+			set
+			{
+				this._ContactProcurements.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_ContactProcurements(ContactProcurement entity)
+		{
+			this.SendPropertyChanging();
+			entity.Procurer = this;
+		}
+		
+		private void detach_ContactProcurements(ContactProcurement entity)
+		{
+			this.SendPropertyChanging();
+			entity.Procurer = null;
 		}
 	}
 }

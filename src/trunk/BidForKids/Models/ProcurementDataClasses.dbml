@@ -15,9 +15,11 @@
       <Column Name="Contact_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Procurement_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Auction_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Procurer_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="Auction_ContactProcurement" Member="Auction" ThisKey="Auction_ID" OtherKey="Auction_ID" Type="Auction" IsForeignKey="true" />
       <Association Name="Procurement_ContactProcurement" Member="Procurement" ThisKey="Procurement_ID" OtherKey="Procurement_ID" Type="Procurement" IsForeignKey="true" />
       <Association Name="Contact_ContactProcurement" Member="Contact" ThisKey="Contact_ID" OtherKey="Contact_ID" Type="Contact" IsForeignKey="true" />
+      <Association Name="Procurer_ContactProcurement" Member="Procurer" ThisKey="Procurer_ID" OtherKey="Procurer_ID" Type="Procurer" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Procurement" Member="Procurements">
@@ -75,6 +77,16 @@
       <Column Name="Website" Type="System.String" DbType="VarChar(1024)" CanBeNull="true" />
       <Column Name="Email" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
       <Association Name="Contact_ContactProcurement" Member="ContactProcurements" ThisKey="Contact_ID" OtherKey="Contact_ID" Type="ContactProcurement" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Procurer" Member="Procurers">
+    <Type Name="Procurer">
+      <Column Name="Procurer_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="FirstName" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="LastName" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="Phone" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Association Name="Procurer_ContactProcurement" Member="ContactProcurements" ThisKey="Procurer_ID" OtherKey="Procurer_ID" Type="ContactProcurement" />
     </Type>
   </Table>
 </Database>

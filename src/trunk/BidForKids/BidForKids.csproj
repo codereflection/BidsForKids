@@ -98,6 +98,7 @@
     <Compile Include="Controllers\GeoLocationController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProcurementController.cs" />
+    <Compile Include="Controllers\ProcurerController.cs" />
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -180,6 +181,10 @@
     <Content Include="Views\Procurement\GridIndex.aspx" />
     <Content Include="Views\Procurement\Index.aspx" />
     <Content Include="Views\Procurement\ProcurementTemplate.ascx" />
+    <Content Include="Views\Procurer\Create.aspx" />
+    <Content Include="Views\Procurer\Details.aspx" />
+    <Content Include="Views\Procurer\Edit.aspx" />
+    <Content Include="Views\Procurer\Index.aspx" />
     <Content Include="Views\Shared\Admin.Master" />
   </ItemGroup>
   <ItemGroup>

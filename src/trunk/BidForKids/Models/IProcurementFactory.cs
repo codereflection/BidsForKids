@@ -31,8 +31,11 @@ namespace BidForKids.Models
         List<Category> GetCategories();
         Category GetCategory(int id);
 
-
-
+        List<Procurer> GetProcurers();
+        Procurer GetProcurer(int id);
+        Procurer GetNewProcurer();
+        int AddProcurer(Procurer procurer);
+        bool SaveProcurer(Procurer procurer);
     }
 
 }

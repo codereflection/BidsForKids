@@ -233,6 +233,25 @@ namespace BidForKids.Models
         }
 
 
+        public bool SaveProcurer(Procurer procurer)
+        {
+            if (procurer == null)
+            {
+                throw new ArgumentNullException("procurer");
+            }
+
+            bool lResult = false;
+            Procurer lOld = GetProcurer(procurer.Procurer_ID);
+
+            lOld = procurer;
+
+            dc.SubmitChanges();
+
+            lResult = true;
+            return lResult;
+        }
+
+
         /// <summary>
         /// Returns a new empty Procurement object
         /// </summary>
@@ -258,6 +277,12 @@ namespace BidForKids.Models
         public GeoLocation GetNewGeoLocation()
         {
             return new GeoLocation();
+        }
+
+
+        public Procurer GetNewProcurer()
+        {
+            return new Procurer();
         }
 
 
@@ -320,6 +345,23 @@ namespace BidForKids.Models
             return geoLocation.GeoLocation_ID;
         }
 
+
+        public int AddProcurer(Procurer procurer)
+        {
+            if (procurer == null)
+            {
+                throw new ArgumentNullException("procurer");
+            }
+
+            dc.Procurers.InsertOnSubmit(procurer);
+
+            dc.SubmitChanges();
+
+            return procurer.Procurer_ID;
+        }
+
+
+
         /// <summary>
         /// Returns an List collection of Auction objects
         /// </summary>
@@ -363,6 +405,14 @@ namespace BidForKids.Models
         public List<Category> GetCategories()
         {
             List<Category> lResult = dc.Categories.ToList();
+
+            return lResult;
+        }
+
+
+        public List<Procurer> GetProcurers()
+        {
+            List<Procurer> lResult = dc.Procurers.ToList();
 
             return lResult;
         }
@@ -437,6 +487,19 @@ namespace BidForKids.Models
             }
 
             return lCategory.First();
+        }
+
+
+        public Procurer GetProcurer(int id)
+        {
+            var lProcurer = from P in dc.Procurers where P.Procurer_ID == id select P;
+
+            if (lProcurer == null || lProcurer.Count() == 0)
+            {
+                throw new ApplicationException("Unable to locate Procurer by ID " + id.ToString());
+            }
+
+            return lProcurer.First();
         }
 
         #region IDisposable Members
