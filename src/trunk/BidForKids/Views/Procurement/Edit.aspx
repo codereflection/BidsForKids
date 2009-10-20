@@ -45,10 +45,28 @@
             <%= Html.Encode(Model.Procurement_ID) %>
         </p>
         <p>
-            <label for="Code">
-                Code:</label>
-            <%= Html.TextBox("Code", Model.Code) %>
-            <%= Html.ValidationMessage("Code", "*") %>
+            <label for="Category_ID">
+                Category
+            </label>
+            <%= Html.DropDownList("Category_ID", "")%>
+        </p>
+        <p>
+            <label for="CatalogNumber">
+                Catalog #:</label>
+            <%= Html.TextBox("CatalogNumber", Model.CatalogNumber)%>
+            <%= Html.ValidationMessage("CatalogNumber", "*")%>
+        </p>
+        <p>
+            <label for="AuctionNumber">
+                Auction #:</label>
+            <%= Html.TextBox("AuctionNumber", Model.AuctionNumber)%>
+            <%= Html.ValidationMessage("AuctionNumber", "*")%>
+        </p>
+        <p>
+            <label for="ItemNumber">
+                Item #:</label>
+            <%= Html.TextBox("ItemNumber", Model.ItemNumber)%>
+            <%= Html.ValidationMessage("ItemNumber", "*")%>
         </p>
         <p>
             <label for="Description">
@@ -63,21 +81,39 @@
             <%= Html.ValidationMessage("Quantity", "*") %>
         </p>
         <p>
-            <label for="PerItemValue">
+            <label for="EstimatedValue">
+                Estimated Value:</label>
+            <%= Html.TextBox("EstimatedValue", String.Format("{0:F}", Model.EstimatedValue))%>
+            <%= Html.ValidationMessage("EstimatedValue", "*")%>
+        </p>
+        <p>
+            <label for="Per Item Value">
                 PerItemValue:</label>
             <%= Html.TextBox("PerItemValue", String.Format("{0:F}", Model.PerItemValue)) %>
             <%= Html.ValidationMessage("PerItemValue", "*") %>
         </p>
         <p>
-            <label for="Auctions">
-                Year</label>
-            <%= Html.DropDownList("Auctions","")%>
+            <label for="SoldFor">
+                Sold For:</label>
+            <%= Html.TextBox("SoldFor", String.Format("{0:F}", Model.SoldFor))%>
+            <%= Html.ValidationMessage("SoldFor", "*")%>
         </p>
         <p>
-            <label for="Contacts">
+            <label for="Auction_ID">
+                Year</label>
+            <%= Html.DropDownList("Auction_ID","")%>
+        </p>
+        <p>
+            <label for="Contact_ID">
                 Business/Person
             </label>
-            <%= Html.DropDownList("Contacts", "")%>
+            <%= Html.DropDownList("Contact_ID", "")%>
+        </p>
+        <p>
+            <label for="GeoLocation_ID">
+                Geographic Location
+            </label>
+            <%= Html.DropDownList("GeoLocation_ID", "")%>
         </p>
         <p>
             <label for="Notes">

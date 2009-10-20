@@ -43,12 +43,15 @@
         Index</h2>
     <div id="mysearch">
     </div>
+    <p>
+        <%= Html.ActionLink("Create New", "Create") %>
+    </p>
     <table id="ProcurementList">
         <tr>
             <th>
             </th>
             <th>
-                Code
+                Catalog #
             </th>
             <th>
                 Description
@@ -57,13 +60,10 @@
                 Quantity
             </th>
             <th>
-                Per Item Value
+                Estimated Value
             </th>
             <th>
                 Notes
-            </th>
-            <th>
-                Database ID
             </th>
             <th>
                 Auction Year

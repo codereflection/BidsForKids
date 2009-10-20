@@ -26,5 +26,15 @@ namespace BidForKids.Controllers
             ViewData["Message"] = "Procurement List";
             return View();
         }
+
+        public ActionResult GeoLocation()
+        {
+            return View();
+        }
+
+        public ActionResult Reports()
+        {
+            return View();
+        }
     }
 }

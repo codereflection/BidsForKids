@@ -37,6 +37,14 @@ namespace BidForKids.Controllers
             return View(factory.GetProcurements());
         }
 
+        
+        [AcceptVerbs(HttpVerbs.Get)]
+        public ActionResult GetProcurement(int? id)
+        {
+            SerializableProcurement lProcurement = factory.ConvertProcurementToSerializableProcurement(factory.GetProcurement((int)id));
+
+            return Json(lProcurement);
+        }
 
         //public ActionResult GetProcurements(string _search, string nd, int page, int rows, string sidx, string sord)
         public ActionResult GetProcurements()
@@ -133,23 +141,31 @@ namespace BidForKids.Controllers
 
         private void SetupCreateViewData()
         {
-            ViewData["Auctions"] = GetAuctionSelectList(null);
-            ViewData["Contacts"] = GetContactsSelectList(null);
+            ViewData["Auction_ID"] = GetAuctionSelectList(null);
+            ViewData["Contact_ID"] = GetContactsSelectList(null);
+            ViewData["GeoLocation_ID"] = GetGeoLocationsSelectList(null);
+            ViewData["Category_ID"] = GetCategoriesSelectList(null);
         }
 
         private void SetupEditViewData(ContactProcurement contactProcurement)
         {
             int? lAuctionId = null;
             int? lContactId = null;
+            int? lGeoLocationId = null;
+            int? lCategoryId = null;
 
             if (contactProcurement != null)
             {
                 lAuctionId = contactProcurement.Auction_ID;
                 lContactId = contactProcurement.Contact_ID;
+                lGeoLocationId = contactProcurement.Procurement.GeoLocation_ID;
+                lCategoryId = contactProcurement.Procurement.Category_ID;
             }
 
-            ViewData["Auctions"] = GetAuctionSelectList(lAuctionId);
-            ViewData["Contacts"] = GetContactsSelectList(lContactId);
+            ViewData["Auction_ID"] = GetAuctionSelectList(lAuctionId);
+            ViewData["Contact_ID"] = GetContactsSelectList(lContactId);
+            ViewData["GeoLocation_ID"] = GetGeoLocationsSelectList(lGeoLocationId);
+            ViewData["Category_ID"] = GetCategoriesSelectList(lCategoryId);
         }
 
         private SelectList GetAuctionSelectList(int? selectedValue)
@@ -163,6 +179,18 @@ namespace BidForKids.Controllers
             return new SelectList(lContacts, "Contact_ID", "BusinessName", selectedValue);
         }
 
+        private SelectList GetGeoLocationsSelectList(int? selectedValue)
+        {
+            IEnumerable<GeoLocation> lGeoLocations = factory.GetGeoLocations();
+            return new SelectList(lGeoLocations, "GeoLocation_ID", "GeoLocationName", selectedValue);
+        }
+
+        private SelectList GetCategoriesSelectList(int? selectedValue)
+        {
+            IEnumerable<Category> lCategories = factory.GetCategories();
+            return new SelectList(lCategories, "Category_ID", "CategoryName", selectedValue);
+        }
+
         //
         // POST: /Procurement/Create
 
@@ -174,10 +202,29 @@ namespace BidForKids.Controllers
             try
             {
                 Procurement lNewProcurement = factory.GetNewProcurement();
-                Auction lAuction = factory.GetAuction(int.Parse(collection["Auctions"]));
-                Contact lContact = factory.GetContact(int.Parse(collection["Contacts"]));
+                ContactProcurement lNewContactProcurement = new ContactProcurement();
+                lNewProcurement.ContactProcurement = lNewContactProcurement;
 
-                SetProcurementValues(collection, lNewProcurement, lAuction, lContact);
+                UpdateModel<Procurement>(lNewProcurement,
+                    new[] {
+                        "CatalogNumber",
+                        "AuctionNumber",
+                        "ItemNumber",
+                        "Description",
+                        "Quantity",
+                        "PerItemValue",
+                        "Notes",
+                        "EstimatedValue",
+                        "SoldFor",
+                        "Category_ID",
+                        "GeoLocation_ID"
+                    });
+
+                UpdateModel<ContactProcurement>(lNewProcurement.ContactProcurement,
+                    new[] {
+                        "Contact_ID",
+                        "Auction_ID"
+                    });
 
                 int lNewProcurementID = factory.AddProcurement(lNewProcurement);
 
@@ -202,7 +249,7 @@ namespace BidForKids.Controllers
 
             Procurement lProcurement = factory.GetProcurement((int)id);
 
-            SetupEditViewData(lProcurement.ContactProcurements);
+            SetupEditViewData(lProcurement.ContactProcurement);
 
             return View(lProcurement);
         }
@@ -223,12 +270,28 @@ namespace BidForKids.Controllers
             {
                 Procurement lProcurement = factory.GetProcurement((int)id);
 
-                SetupEditViewData(lProcurement.ContactProcurements);
+                SetupEditViewData(lProcurement.ContactProcurement);
 
-                Auction lAuction = factory.GetAuction(int.Parse(collection["Auctions"]));
-                Contact lContact = factory.GetContact(int.Parse(collection["Contacts"]));
+                UpdateModel<Procurement>(lProcurement,
+                    new[] {
+                        "CatalogNumber",
+                        "AuctionNumber",
+                        "ItemNumber",
+                        "Description",
+                        "Quantity",
+                        "PerItemValue",
+                        "Notes",
+                        "EstimatedValue",
+                        "SoldFor",
+                        "Category_ID",
+                        "GeoLocation_ID"
+                    });
 
-                SetProcurementValues(collection, lProcurement, lAuction, lContact);
+                UpdateModel<ContactProcurement>(lProcurement.ContactProcurement,
+                    new[] {
+                        "Contact_ID",
+                        "Auction_ID"
+                    });
 
                 if (factory.SaveProcurement(lProcurement) == false)
                 {
@@ -241,29 +304,9 @@ namespace BidForKids.Controllers
             {
                 Procurement lProcurement = factory.GetProcurement((int)id);
 
-                SetupEditViewData(lProcurement.ContactProcurements);
+                SetupEditViewData(lProcurement.ContactProcurement);
 
                 return View(lProcurement);
-            }
-        }
-
-        private static void SetProcurementValues(FormCollection collection, Procurement procurement, Auction auction, Contact contact)
-        {
-            procurement.Code = collection["Code"];
-            procurement.Description = collection["Description"];
-            procurement.Notes = collection["Notes"];
-            procurement.PerItemValue = decimal.Parse(collection["PerItemValue"].ToString());
-            procurement.Quantity = double.Parse(collection["Quantity"].ToString());
-            if (procurement.ContactProcurements == null)
-            {
-                procurement.ContactProcurements = new ContactProcurement() { Auction = auction, Contact = contact };
-            }
-            else
-            {
-                if (auction != null)
-                    procurement.ContactProcurements.Auction = auction;
-                if (contact != null)
-                    procurement.ContactProcurements.Contact = contact;
             }
         }
     }

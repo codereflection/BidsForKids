@@ -1,6 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Database Name="BidForKids" Class="ProcurementDataClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="WebSettings" ConnectionString="Data Source=localhost;Initial Catalog=BidForKids;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="BidForKidsConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Auction" Member="Auctions">
+    <Type Name="Auction">
+      <Column Name="Auction_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Year" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Association Name="Auction_ContactProcurement" Member="ContactProcurements" ThisKey="Auction_ID" OtherKey="Auction_ID" Type="ContactProcurement" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ContactProcurement" Member="ContactProcurements">
+    <Type Name="ContactProcurement">
+      <Column Name="ContactProcurement_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Contact_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Procurement_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Auction_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Auction_ContactProcurement" Member="Auction" ThisKey="Auction_ID" OtherKey="Auction_ID" Type="Auction" IsForeignKey="true" />
+      <Association Name="Procurement_ContactProcurement" Member="Procurement" ThisKey="Procurement_ID" OtherKey="Procurement_ID" Type="Procurement" IsForeignKey="true" />
+      <Association Name="Contact_ContactProcurement" Member="Contact" ThisKey="Contact_ID" OtherKey="Contact_ID" Type="Contact" IsForeignKey="true" />
+    </Type>
+  </Table>
   <Table Name="dbo.Procurement" Member="Procurements">
     <Type Name="Procurement">
       <Column Name="Procurement_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -8,16 +27,32 @@
       <Column Name="Quantity" Type="System.Double" DbType="Float" CanBeNull="true" />
       <Column Name="PerItemValue" Type="System.Decimal" DbType="Money" CanBeNull="true" />
       <Column Name="Notes" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
-      <Column Name="Code" Type="System.String" DbType="VarChar(12)" CanBeNull="true" />
-      <Association Name="Procurement_ContactProcurement" Member="ContactProcurements" ThisKey="Procurement_ID" OtherKey="Procurement_ID" Type="ContactProcurement" Cardinality="One" />
+      <Column Name="CatalogNumber" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="AuctionNumber" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="ItemNumber" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="EstimatedValue" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="SoldFor" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="GeoLocation_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Category_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Procurement_ContactProcurement" Member="ContactProcurement" Storage="_ContactProcurements" ThisKey="Procurement_ID" OtherKey="Procurement_ID" Type="ContactProcurement" Cardinality="One" />
+      <Association Name="Category_Procurement" Member="Category" ThisKey="Category_ID" OtherKey="Category_ID" Type="Category" IsForeignKey="true" />
+      <Association Name="GeoLocation_Procurement" Member="GeoLocation" ThisKey="GeoLocation_ID" OtherKey="GeoLocation_ID" Type="GeoLocation" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.Auction" Member="Auctions">
-    <Type Name="Auction">
-      <Column Name="Auction_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Year" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Name" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
-      <Association Name="Auction_ContactProcurement" Member="ContactProcurements" ThisKey="Auction_ID" OtherKey="Auction_ID" Type="ContactProcurement" />
+  <Table Name="dbo.Category" Member="Categories">
+    <Type Name="Category">
+      <Column Name="Category_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CategoryName" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Association Name="Category_Procurement" Member="Procurements" ThisKey="Category_ID" OtherKey="Category_ID" Type="Procurement" />
+    </Type>
+  </Table>
+  <Table Name="dbo.GeoLocation" Member="GeoLocations">
+    <Type Name="GeoLocation">
+      <Column Name="GeoLocation_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="GeoLocationName" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Association Name="GeoLocation_Procurement" Member="Procurements" ThisKey="GeoLocation_ID" OtherKey="GeoLocation_ID" Type="Procurement" />
     </Type>
   </Table>
   <Table Name="dbo.Contact" Member="Contacts">
@@ -37,18 +72,9 @@
       <Column Name="Phone3" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
       <Column Name="Phone3Desc" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
       <Column Name="Notes" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="Website" Type="System.String" DbType="VarChar(1024)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
       <Association Name="Contact_ContactProcurement" Member="ContactProcurements" ThisKey="Contact_ID" OtherKey="Contact_ID" Type="ContactProcurement" />
-    </Type>
-  </Table>
-  <Table Name="dbo.ContactProcurement" Member="ContactProcurements">
-    <Type Name="ContactProcurement">
-      <Column Name="ContactProcurement_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Contact_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Procurement_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Auction_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="Auction_ContactProcurement" Member="Auction" ThisKey="Auction_ID" OtherKey="Auction_ID" Type="Auction" IsForeignKey="true" />
-      <Association Name="Contact_ContactProcurement" Member="Contact" ThisKey="Contact_ID" OtherKey="Contact_ID" Type="Contact" IsForeignKey="true" />
-      <Association Name="Procurement_ContactProcurement" Member="Procurement" ThisKey="Procurement_ID" OtherKey="Procurement_ID" Type="Procurement" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

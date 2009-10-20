@@ -11,8 +11,30 @@
     <fieldset>
         <legend>Fields</legend>
         <p>
-            Code:
-            <%= Html.Encode(Model.Code) %>
+            Category:
+            <%= Html.Encode(Model.Category.CategoryName) %>
+        </p>
+        <p>
+            Year:
+            <%= Html.Encode(Model.ContactProcurement.Auction.Year) %>
+        </p>
+        <p>
+            Business / Person:
+            <%= Html.Encode(Model.ContactProcurement.Contact.BusinessName) %>
+            <br />
+            <%= Html.Encode(Model.ContactProcurement.Contact.FirstName + " " + Model.ContactProcurement.Contact.LastName)%>
+        </p>
+        <p>
+            Catalog #:
+            <%= Html.Encode(Model.CatalogNumber) %>
+        </p>
+        <p>
+            Auction #:
+            <%= Html.Encode(Model.AuctionNumber) %>
+        </p>
+        <p>
+            Item #:
+            <%= Html.Encode(Model.ItemNumber) %>
         </p>
         <p>
             Description:
@@ -23,8 +45,16 @@
             <%= Html.Encode(String.Format("{0:F}", Model.Quantity)) %>
         </p>
         <p>
+            Estimated Value:
+            <%= Html.Encode(String.Format("{0:F}", Model.EstimatedValue)) %>
+        </p>
+        <p>
             Per Item Value:
             <%= Html.Encode(String.Format("{0:F}", Model.PerItemValue)) %>
+        </p>
+        <p>
+            Sold For:
+            <%= Html.Encode(String.Format("{0:F}", Model.SoldFor)) %>
         </p>
         <p>
             Notes:

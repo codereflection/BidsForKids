@@ -36,6 +36,34 @@ namespace BidForKids.Tests.Controllers
                 Assert.Equal("Welcome to the Gatewood Elementary 'Bid For Kids' Auction Procurement Database!", viewResult.ViewData["Message"]);
                 Assert.Null(viewResult.ViewData.Model);
             }
+
+            [Fact]
+            public void ReturnsProcurementViewResultWithDefaultViewName()
+            {
+                // Arrange
+                var controller = new HomeController();
+                
+                // Assert
+                var result = controller.Procurement();
+
+                // Act
+                var viewResult = Assert.IsType<ViewResult>(result);
+                Assert.Empty(viewResult.ViewName);
+            }
+
+            [Fact]
+            public void ReturnsReportsViewResultwithDefaultViewName()
+            {
+                // Arrange
+                var controller = new HomeController();
+
+                // Act
+                var result = controller.Reports();
+
+                // Assert
+                var viewResult = Assert.IsType<ViewResult>(result);
+                Assert.Empty(viewResult.ViewName);
+            }
         }
 
         public class About

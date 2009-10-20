@@ -95,6 +95,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\ContactController.cs" />
+    <Compile Include="Controllers\GeoLocationController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProcurementController.cs" />
     <Compile Include="Default.aspx.cs">
@@ -168,6 +169,11 @@
     <Content Include="Views\Contact\Details.aspx" />
     <Content Include="Views\Contact\Edit.aspx" />
     <Content Include="Views\Contact\Index.aspx" />
+    <Content Include="Views\GeoLocation\Create.aspx" />
+    <Content Include="Views\GeoLocation\Details.aspx" />
+    <Content Include="Views\GeoLocation\Edit.aspx" />
+    <Content Include="Views\GeoLocation\Index.aspx" />
+    <Content Include="Views\Home\Reports.aspx" />
     <Content Include="Views\Procurement\Create.aspx" />
     <Content Include="Views\Procurement\Details.aspx" />
     <Content Include="Views\Procurement\Edit.aspx" />

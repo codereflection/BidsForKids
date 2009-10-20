@@ -31,7 +31,7 @@ namespace BidForKids.Models
         public List<SerializableProcurement> GetSerializableProcurements(string sortIndex, string sortOrder, bool search, Dictionary<string, string> searchParams)
         {
             if (string.IsNullOrEmpty(sortIndex))
-                sortIndex = "Code";
+                sortIndex = "Description";
 
             if (string.IsNullOrEmpty(sortOrder))
                 sortOrder = "asc";
@@ -55,21 +55,41 @@ namespace BidForKids.Models
 
             foreach (var lProcurement in lProcurements)
             {
-                lResult.Add(new SerializableProcurement()
-                {
-                    Code = lProcurement.Code,
-                    Description = lProcurement.Description,
-                    Procurement_ID = lProcurement.Procurement_ID,
-                    Year = lProcurement.ContactProcurements.Auction.Year
-                });
+                lResult.Add(ConvertProcurementToSerializableProcurement(lProcurement));
             }
 
             return lResult;
         }
 
+        public SerializableProcurement ConvertProcurementToSerializableProcurement(Procurement procurement)
+        {
+            return new SerializableProcurement()
+            {
+                CatalogNumber = procurement.CatalogNumber,
+                Description = procurement.Description,
+                Procurement_ID = procurement.Procurement_ID,
+                Year = procurement.ContactProcurement.Auction.Year,
+                AuctionNumber = procurement.AuctionNumber,
+                ItemNumber = procurement.ItemNumber,
+                Quantity = procurement.Quantity,
+                EstimatedValue = procurement.EstimatedValue,
+                SoldFor = procurement.SoldFor,
+                Category_ID = procurement.Category_ID,
+                CategoryName = procurement.Category == null ? "" : procurement.Category.CategoryName,
+                GeoLocation_ID = procurement.GeoLocation_ID,
+                GeoLocationName = procurement.GeoLocation == null ? "" : procurement.GeoLocation.GeoLocationName,
+                PerItemValue = procurement.PerItemValue,
+                BusinessName = procurement.ContactProcurement.Contact.BusinessName,
+                PersonName = procurement.ContactProcurement.Contact.FirstName + " " + procurement.ContactProcurement.Contact.LastName
+            };
+        }
+
         private static string BuildSerializableSqlStatement(string sortIndex, string sortOrder, Dictionary<string, string> searchParams)
         {
-            string lSql = "select * from Procurement join ContactProcurement CP on Procurement.Procurement_ID = CP.Procurement_ID JOIN Auction ON CP.Auction_ID = Auction.Auction_ID where ";
+            string lSql = "select Procurement.*, Auction.*, GeoLocation.GeoLocationName, Category.CategoryName from Procurement join ContactProcurement CP on Procurement.Procurement_ID = CP.Procurement_ID JOIN Auction ON CP.Auction_ID = Auction.Auction_ID "
+                + " LEFT JOIN GeoLocation ON Procurement.GeoLocation_ID = GeoLocation.GeoLocation_ID "
+                + " LEFT JOIN Category ON Procurement.Category_ID = Category.Category_ID "
+                + " where ";
             int lParamCount = 0;
             foreach (string item in searchParams.Keys.ToList())
             {
@@ -149,7 +169,7 @@ namespace BidForKids.Models
             if (lProcurementToDelete == null)
                 return lResult;
 
-            ContactProcurement lContactProcurement = lProcurementToDelete.ContactProcurements;
+            ContactProcurement lContactProcurement = lProcurementToDelete.ContactProcurement;
 
             if (lContactProcurement != null)
                 dc.ContactProcurements.DeleteOnSubmit(lContactProcurement);
@@ -173,7 +193,7 @@ namespace BidForKids.Models
         {
             if (contact == null)
             {
-                throw new ArgumentException("contact was null", "contact");
+                throw new ArgumentNullException("contact");
             }
 
             bool lResult = false;
@@ -190,13 +210,36 @@ namespace BidForKids.Models
 
 
         /// <summary>
+        /// Saves changesto the GeoLocation object passed
+        /// </summary>
+        /// <param name="geoLocation">GeoLocation object with changes to be saved</param>
+        /// <returns>True if save was successful, false if it was not.</returns>
+        public bool SaveGeoLocation(GeoLocation geoLocation)
+        {
+            if (geoLocation == null)
+            {
+                throw new ArgumentNullException("geoLocation");
+            }
+
+            bool lResult = false;
+            GeoLocation lOld = GetGeoLocation(geoLocation.GeoLocation_ID);
+
+            lOld = geoLocation;
+
+            dc.SubmitChanges();
+
+            lResult = true;
+            return lResult;
+        }
+
+
+        /// <summary>
         /// Returns a new empty Procurement object
         /// </summary>
         /// <returns></returns>
         public Procurement GetNewProcurement()
         {
-            Procurement lResult = new Procurement();
-            return lResult;
+            return new Procurement();
         }
 
         /// <summary>
@@ -205,8 +248,16 @@ namespace BidForKids.Models
         /// <returns></returns>
         public Contact GetNewContact()
         {
-            Contact lResult = new Contact();
-            return lResult;
+            return new Contact();
+        }
+
+        /// <summary>
+        /// Returns a new empty GeoLocation object
+        /// </summary>
+        /// <returns></returns>
+        public GeoLocation GetNewGeoLocation()
+        {
+            return new GeoLocation();
         }
 
 
@@ -234,12 +285,12 @@ namespace BidForKids.Models
         /// Adds a new Contact to the Contacts collection
         /// </summary>
         /// <param name="contact">Instance of Contact object to add to collection.</param>
-        /// <returns>Newly added Contact_ID</returns>
+        /// <returns>Contact_ID of the newly added Contact</returns>
         public int AddContact(Contact contact)
         {
             if (contact == null)
             {
-                throw new ArgumentException("contact was null", "contact");
+                throw new ArgumentNullException("contact");
             }
 
             dc.Contacts.InsertOnSubmit(contact);
@@ -251,9 +302,28 @@ namespace BidForKids.Models
 
 
         /// <summary>
+        /// Adds a new Geo Location to the GeoLocation collection
+        /// </summary>
+        /// <param name="geoLocation">Instnace of GeoLocation oject to add to collection</param>
+        /// <returns>GeoLocation_ID of the newly added GeoLocation</returns>
+        public int AddGeoLocation(GeoLocation geoLocation)
+        {
+            if (geoLocation == null)
+            {
+                throw new ArgumentNullException("geoLocation");
+            }
+
+            dc.GeoLocations.InsertOnSubmit(geoLocation);
+
+            dc.SubmitChanges();
+
+            return geoLocation.GeoLocation_ID;
+        }
+
+        /// <summary>
         /// Returns an List collection of Auction objects
         /// </summary>
-        /// <returns>Returns an List collection of Auction objects</returns>
+        /// <returns>A List collection of Auction objects</returns>
         public List<Auction> GetAuctions()
         {
             List<Auction> lResult = dc.Auctions.ToList();
@@ -263,9 +333,9 @@ namespace BidForKids.Models
 
 
         /// <summary>
-        /// Returns an List collection of Contact objects
+        /// Returns a List of Contact objects
         /// </summary>
-        /// <returns>Returns an List collection of Contact objects</returns>
+        /// <returns>A list of Contact objects</returns>
         public List<Contact> GetContacts()
         {
             List<Contact> lResult = dc.Contacts.ToList();
@@ -273,6 +343,29 @@ namespace BidForKids.Models
             return lResult;
         }
 
+
+        /// <summary>
+        /// Returns a List of GeoLocation objects
+        /// </summary>
+        /// <returns>A list of GeoLocation objects</returns>
+        public List<GeoLocation> GetGeoLocations()
+        {
+            List<GeoLocation> lResult = dc.GeoLocations.ToList();
+
+            return lResult;
+        }
+
+
+        /// <summary>
+        /// Returns a List of Category objects
+        /// </summary>
+        /// <returns>A list of Category objects</returns>
+        public List<Category> GetCategories()
+        {
+            List<Category> lResult = dc.Categories.ToList();
+
+            return lResult;
+        }
 
         /// <summary>
         /// Returns an Auction object by Auction_ID
@@ -309,6 +402,42 @@ namespace BidForKids.Models
             return lContact.First();
         }
 
+
+        
+        /// <summary>
+        /// Returns a GeoLocation object by GeoLocation_ID
+        /// </summary>
+        /// <param name="id">ID of the GeoLocation object to return</param>
+        /// <returns>An instance of a GeoLocation object</returns>
+        public GeoLocation GetGeoLocation(int id)
+        {
+            var lGeoLocation = from G in dc.GeoLocations where G.GeoLocation_ID == id select G;
+
+            if (lGeoLocation == null || lGeoLocation.Count() == 0)
+            {
+                throw new ApplicationException("Unable to locate GeoLocation by ID " + id.ToString());
+            }
+
+            return lGeoLocation.First();
+        }
+
+
+        /// <summary>
+        /// Returns a Category object by Category_ID
+        /// </summary>
+        /// <param name="id">ID of the Category object to return</param>
+        /// <returns>An instance of a Category object</returns>
+        public Category GetCategory(int id)
+        {
+            var lCategory = from C in dc.Categories where C.Category_ID == id select C;
+
+            if (lCategory == null || lCategory.Count() == 0)
+            {
+                throw new ApplicationException("Unable to locate Category by ID " + id.ToString());
+            }
+
+            return lCategory.First();
+        }
 
         #region IDisposable Members
 

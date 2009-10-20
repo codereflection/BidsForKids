@@ -8,7 +8,7 @@ using System;
 
 namespace BidForKids.Tests.Controllers
 {
-    public class ContactControllerFacts
+    public class GeoLocationControllerFacts
     {
         public class Index : BidForKidsController
         {
@@ -16,7 +16,7 @@ namespace BidForKids.Tests.Controllers
             public void ReturnsViewResultWithDefaultViewName()
             {
                 // Arrange
-                var controller = new ContactController(_ProcurementFactory);
+                var controller = new GeoLocationController(_ProcurementFactory);
 
                 // Act
                 var result = controller.Index();
@@ -27,18 +27,17 @@ namespace BidForKids.Tests.Controllers
             }
 
             [Fact]
-            public void SetsViewDataWithContactModel()
+            public void SetsViewDataWithGeoLocationModel()
             {
                 // Arrange
-                var controller = new ContactController(_ProcurementFactory);
+                var controller = new GeoLocationController(_ProcurementFactory);
 
                 // Act
                 var result = controller.Index();
 
                 // Assert
                 var viewResult = Assert.IsType<ViewResult>(result);
-                Assert.Empty(viewResult.ViewName);
-                Assert.IsType<List<Contact>>(viewResult.ViewData.Model);
+                Assert.IsType<List<GeoLocation>>(viewResult.ViewData.Model);
             }
         }
 
@@ -48,7 +47,7 @@ namespace BidForKids.Tests.Controllers
             public void ReturnsViewResultWithDefaultViewName()
             {
                 // Arrange
-                var controller = new ContactController(_ProcurementFactory);
+                var controller = new GeoLocationController(_ProcurementFactory);
 
                 // Act
                 var result = controller.Create();
@@ -65,7 +64,7 @@ namespace BidForKids.Tests.Controllers
             public void ReturnsViewResultWithDefaultViewName()
             {
                 // Arrange
-                var controller = new ContactController(_ProcurementFactory);
+                var controller = new GeoLocationController(_ProcurementFactory);
 
                 // Act
                 var result = controller.Edit(0);
@@ -76,17 +75,17 @@ namespace BidForKids.Tests.Controllers
             }
 
             [Fact]
-            public void SetsViewDataWithContactModel()
+            public void SetsViewDataWithGeoLocationModel()
             {
                 // Arrange
-                var controller = new ContactController(_ProcurementFactory);
+                var controller = new GeoLocationController(_ProcurementFactory);
 
                 // Act
                 var result = controller.Edit(0);
 
                 // Assert
                 var viewResult = Assert.IsType<ViewResult>(result);
-                Assert.IsType<Contact>(viewResult.ViewData.Model);
+                Assert.IsType<GeoLocation>(viewResult.ViewData.Model);
             }
         }
 
@@ -95,8 +94,8 @@ namespace BidForKids.Tests.Controllers
             [Fact]
             public void ReturnsViewResultWithDefaultViewName()
             {
-                // Arrange
-                var controller = new ContactController(_ProcurementFactory);
+                // Arrage
+                var controller = new GeoLocationController(_ProcurementFactory);
 
                 // Act
                 var result = controller.Details(0);
@@ -107,18 +106,17 @@ namespace BidForKids.Tests.Controllers
             }
 
             [Fact]
-            public void SetsViewDataWithContactModel()
+            public void SetsViewDataWithGeoLocationModel()
             {
                 // Arrange
-                var controller = new ContactController(_ProcurementFactory);
+                var controller = new GeoLocationController(_ProcurementFactory);
 
                 // Act
                 var result = controller.Details(0);
 
                 // Assert
                 var viewResult = Assert.IsType<ViewResult>(result);
-                Assert.Empty(viewResult.ViewName);
-                Assert.IsType<Contact>(viewResult.ViewData.Model);
+                Assert.IsType<GeoLocation>(viewResult.ViewData.Model);
             }
         }
     }

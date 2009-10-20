@@ -9,14 +9,13 @@ namespace BidForKids.Tests.Controllers
 {
     public class ProcurementControllerFacts
     {
-        public class Details
+        public class Details : BidForKidsController
         {
             [Fact]
             public void ReturnsViewResultWithDefaultViewName()
             {
                 // Arrange
-                IProcurementFactory lProcurementFactory = ProcurementFactoryHelper.GenerateMockProcurementFactory();
-                var controller = new ProcurementController(lProcurementFactory);
+                var controller = new ProcurementController(_ProcurementFactory);
 
                 // Act
                 int parameter = (int)1;
@@ -31,8 +30,7 @@ namespace BidForKids.Tests.Controllers
             public void SetsViewDataWithProcurementModel()
             {
                 // Arrange
-                IProcurementFactory lProcurementFactory = ProcurementFactoryHelper.GenerateMockProcurementFactory();
-                var controller = new ProcurementController(lProcurementFactory);
+                var controller = new ProcurementController(_ProcurementFactory);
 
                 // Act
                 int parameter = (int)1;
@@ -47,8 +45,7 @@ namespace BidForKids.Tests.Controllers
             public void RedirectsToHomeWhenNoIdIsPassed()
             {
                 // Arrange
-                IProcurementFactory lProcurementFactory = ProcurementFactoryHelper.GenerateMockProcurementFactory();
-                var controller = new ProcurementController(lProcurementFactory);
+                var controller = new ProcurementController(_ProcurementFactory);
 
                 // Act
                 int? parameter = null;
@@ -61,14 +58,13 @@ namespace BidForKids.Tests.Controllers
             }
         }
 
-        public class Create
+        public class Create : BidForKidsController
         {
             [Fact]
             public void ReturnsViewResultWithDefaultViewName()
             {
                 // Arrange
-                IProcurementFactory lProcurementFactory = ProcurementFactoryHelper.GenerateMockProcurementFactory();
-                var controller = new ProcurementController(lProcurementFactory);
+                var controller = new ProcurementController(_ProcurementFactory);
 
                 // Act
                 var result = controller.Create();
@@ -82,8 +78,7 @@ namespace BidForKids.Tests.Controllers
             public void SetsViewDataWithSelectLists()
             {
                 // Arrange
-                IProcurementFactory lProcurementFactory = ProcurementFactoryHelper.GenerateMockProcurementFactory();
-                var controller = new ProcurementController(lProcurementFactory);
+                var controller = new ProcurementController(_ProcurementFactory);
 
                 // Act
                 var result = controller.Create();
@@ -91,19 +86,20 @@ namespace BidForKids.Tests.Controllers
                 // Assert
                 var viewResult = Assert.IsType<ViewResult>(result);
                 Assert.Empty(viewResult.ViewName);
-                Assert.IsType<SelectList>(viewResult.ViewData["Auctions"]);
-                Assert.IsType<SelectList>(viewResult.ViewData["Contacts"]);
+                Assert.IsType<SelectList>(viewResult.ViewData["Auction_ID"]);
+                Assert.IsType<SelectList>(viewResult.ViewData["Contact_ID"]);
+                Assert.IsType<SelectList>(viewResult.ViewData["GeoLocation_ID"]);
+                Assert.IsType<SelectList>(viewResult.ViewData["Category_ID"]);
             }
         }
 
-        public class Edit
+        public class Edit : BidForKidsController
         {
             [Fact]
             public void ReturnsViewResultWithDefaultViewName()
             {
                 // Arrange
-                IProcurementFactory lProcurementFactory = ProcurementFactoryHelper.GenerateMockProcurementFactory();
-                var controller = new ProcurementController(lProcurementFactory);
+                var controller = new ProcurementController(_ProcurementFactory);
 
                 // Act
                 var result = controller.Edit((int?)0);
@@ -117,8 +113,7 @@ namespace BidForKids.Tests.Controllers
             public void SetsViewDataWithSelectLists()
             {
                 // Arrange
-                IProcurementFactory lProcurementFactory = ProcurementFactoryHelper.GenerateMockProcurementFactory();
-                var controller = new ProcurementController(lProcurementFactory);
+                var controller = new ProcurementController(_ProcurementFactory);
 
                 // Act
                 var result = controller.Edit((int?)0);
@@ -126,8 +121,25 @@ namespace BidForKids.Tests.Controllers
                 // Assert
                 var viewResult = Assert.IsType<ViewResult>(result);
                 Assert.Empty(viewResult.ViewName);
-                Assert.IsType<SelectList>(viewResult.ViewData["Auctions"]);
-                Assert.IsType<SelectList>(viewResult.ViewData["Contacts"]);
+                Assert.IsType<SelectList>(viewResult.ViewData["Auction_ID"]);
+                Assert.IsType<SelectList>(viewResult.ViewData["Contact_ID"]);
+                Assert.IsType<SelectList>(viewResult.ViewData["GeoLocation_ID"]);
+                Assert.IsType<SelectList>(viewResult.ViewData["Category_ID"]);
+            }
+
+            [Fact]
+            public void ReturnsIndexViewAfterSave()
+            {
+                // Arrange
+                var controller = new ProcurementController(_ProcurementFactory);
+                FormCollection collection = new FormCollection();
+
+                // Act
+                var result = controller.Edit(0, collection);
+
+                // Assert
+                var viewResult = Assert.IsType<ViewResult>(result);
+                Assert.Empty(viewResult.ViewName);
             }
         }
     }

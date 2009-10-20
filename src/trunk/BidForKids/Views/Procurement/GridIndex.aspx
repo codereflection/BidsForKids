@@ -15,6 +15,37 @@
     <script src="../../Scripts/jqGrid/jquery.jqGrid.min.js" type="text/javascript"></script>
 
     <script type="text/javascript">
+        function getProcurement(id) {
+            $.get("/Procurement/GetProcurement/" + id.toString(), {}, function(result) {
+                var lContext = $("#summary");
+                $("#CatalogNumber", lContext).html(result.CatalogNumber);
+                $("#AuctionNumber", lContext).html(result.AuctionNumber);
+                $("#ItemNumber", lContext).html(result.ItemNumber);
+                $("#Year", lContext).html(result.Year);
+                $("#EstimatedValue", lContext).html(result.EstimatedValue);
+                $("#SoldFor", lContext).html(result.SoldFor);
+                $("#Contact", lContext).html(result.BusinessName + ' : ' + result.PersonName);
+                $("#Category", lContext).html(result.Category);
+                $("#GeoLocation", lContext).html(result.GeoLocation);
+            }, "json");
+
+            //            var Params = "{}";
+            //            $.ajax({
+            //                data: Params,
+            //                datatype: "json",
+            //                url: "/Procurement/GetProcurement/" + id.toString(),
+            //                contentType: 'application/json; charset=utf-8',
+            //                success: function(msg) {
+            //                    //var lData = eval(msg);
+            //                    debugger;
+            //                    //var lProcurement = lData.d;
+            //                },
+            //                error: function(request, textStatus, errorThrown) {
+            //                    debugger;
+            //                }
+            //            });
+        }
+
         $(document).ready(function() {
             var procurementGrid = $("#procurementGrid").jqGrid({
                 datatype: 'json',
@@ -27,28 +58,39 @@
                     repeatitems: false,
                     id: "4"
                 },
-                colNames: ['Actions', 'Code', 'Description', 'Year', 'ID'],
+                //colNames: ['Actions', 'CatalogNumber', 'AuctionNumber', 'ItemNumber', 'Description', 'EstimatedValue', 'GeoLocation',  'Year', 'ID'],
                 colModel: [
-                    { name: 'act', index: 'act', width: 20, sortable: false, search: false },
-                    { name: 'Code', index: 'Code', width: 15 },
+                    { name: 'act', index: 'act', width: 20, sortable: false, search: false, label: ' ', align: 'center' },
+                    { name: 'CatalogNumber', index: 'CatalogNumber', width: 32, label: 'Catalog #' },
+                    { name: 'AuctionNumber', index: 'AuctionNumber', width: 32, label: 'Auction #' },
+                    { name: 'ItemNumber', index: 'ItemNumber', width: 32, label: 'Item #' },
                     { name: 'Description', index: 'Description' },
+                    { name: 'EstimatedValue', index: 'EstimatedValue', width: 40, formatter: 'currency', align: 'right', label: 'Estimated $' },
+                    { name: 'GeoLocationName', index: 'GeoLocationName', label: 'Geo Location' },
+                    { name: 'CategoryName', index: 'CategoryName', label: 'Category' },
                     { name: 'Year', index: 'Year', width: 15 },
-                    { name: 'Procurement_ID', index: 'Procurement_ID', width: 15 }
+                    { name: 'Procurement_ID', index: 'Procurement_ID', width: 15, hidden: true }
                 ],
                 pager: '#pager',
                 viewrecords: true,
                 rowNum: 20,
                 rowList: [2, 10, 20, 30],
-                width: 800,
+                width: 1300,
                 loadComplete: function() {
                     var ids = $("#procurementGrid").getDataIDs();
                     for (var i = 0; i < ids.length; i++) {
                         var cl = ids[i];
-                        var editLink = "<a href='Edit/" + cl + "'>Edit</a>&nbsp;|&nbsp;";
-                        var detailsLink = "<a href='Details/" + cl + "'>Details</a>";
+                        var editLink = "<a href='Edit/" + cl + "'>Edit</a>";
+                        var detailsLink = ""; //= "&nbsp;|&nbsp;<a href='Details/" + cl + "'>Details</a>";
                         jQuery("#procurementGrid").setRowData(ids[i], { act: editLink + detailsLink });
                     }
-                }
+                },
+                onSelectRow: function(rowid, status) {
+                    var lData = procurementGrid.getRowData(rowid);
+                    var lID = lData.Procurement_ID;
+                    getProcurement(lID);
+                },
+                multiselect: false
             });
             procurementGrid.filterToolbar();
             procurementGrid.navGrid("#pager", { edit: false, add: false, del: false, search: false });
@@ -66,4 +108,77 @@
     <p>
         <%= Html.ActionLink("Create New", "Create") %>
     </p>
+    <div id="summary">
+        <table style="width: 800px;">
+            <tr>
+                <td class="labelCell">
+                    Catelog #
+                </td>
+                <td class="dataCell">
+                    <div id="CatalogNumber">
+                    </div>
+                </td>
+                <td class="labelCell">
+                    Auction #
+                </td>
+                <td class="dataCell">
+                    <div id="AuctionNumber">
+                    </div>
+                </td>
+                <td class="labelCell">
+                    Item #
+                </td>
+                <td class="dataCell">
+                    <div id="ItemNumber">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="labelCell">
+                    Year
+                </td>
+                <td class="dataCell">
+                    <div id="Year">
+                    </div>
+                </td>
+                <td class="labelCell">
+                    Estimated Value
+                </td>
+                <td class="dataCell">
+                    <div id="EstimatedValue">
+                    </div>
+                </td>
+                <td class="labelCell">
+                    Sold For
+                </td>
+                <td class="dataCell">
+                    <div id="SoldFor">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="labelCell">
+                    Business / Person
+                </td>
+                <td class="dataCell">
+                    <div id="Contact">
+                    </div>
+                </td>
+                <td class="labelCell">
+                    Category
+                </td>
+                <td class="dataCell">
+                    <div id="Category">
+                    </div>
+                </td>
+                <td class="labelCell">
+                    Location
+                </td>
+                <td class="dataCell">
+                    <div id="GeoLocation">
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
 </asp:Content>

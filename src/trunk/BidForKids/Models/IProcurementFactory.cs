@@ -5,6 +5,7 @@ namespace BidForKids.Models
     public interface IProcurementFactory
     {
         List<Procurement> GetProcurements();
+        SerializableProcurement ConvertProcurementToSerializableProcurement(Procurement procurement);
         List<SerializableProcurement> GetSerializableProcurements(string sortIndex, string sortOrder, bool search, Dictionary<string, string> searchParams);
         Procurement GetProcurement(int id);
         Procurement GetNewProcurement();
@@ -20,5 +21,18 @@ namespace BidForKids.Models
         Contact GetNewContact();
         int AddContact(Contact contact);
         bool SaveContact(Contact contact);
+
+        List<GeoLocation> GetGeoLocations();
+        GeoLocation GetGeoLocation(int id);
+        GeoLocation GetNewGeoLocation();
+        int AddGeoLocation(GeoLocation geoLocation);
+        bool SaveGeoLocation(GeoLocation geoLocation);
+
+        List<Category> GetCategories();
+        Category GetCategory(int id);
+
+
+
     }
+
 }

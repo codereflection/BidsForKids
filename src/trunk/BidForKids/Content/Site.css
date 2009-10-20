@@ -189,6 +189,7 @@ fieldset
     margin: 1em 0;
     padding: 1em;
     border: 1px solid #CCC;
+    font: 90%/1 sans-serif;
 }
 
 fieldset p 
@@ -198,7 +199,12 @@ fieldset p
 
 fieldset label 
 {
-    display: block;
+    float: left;
+    width: 25%;
+    margin-right: 0.5em;
+    padding-top: 0.2em;
+    text-align: right;
+    font-weight: bold;
 }
 
 fieldset label.inline 
@@ -208,9 +214,11 @@ fieldset label.inline
 
 legend 
 {
-    font-size: 1.1em;
-    font-weight: 600;
-    padding: 2px 4px 8px 4px;
+	padding: 0.2em 0.5em;
+	border: 1px solid green;
+	color: Green;
+    font-size: 90%;
+    text-align: right;
 }
 
 input[type="text"] 
@@ -224,6 +232,13 @@ input[type="password"]
     width: 200px;
     border: 1px solid #CCC;
 }
+
+select
+{
+	width: 200px;
+	border: 1px solid #CCC;
+}
+
 
 /* TABLE
 ----------------------------------------------------------*/
@@ -314,4 +329,19 @@ div#title
 {
     font-weight: bold;
     color: #ff0000;
+}
+
+#summary table
+{
+	font-size: 1em;
+}
+
+#summary .labelCell
+{
+	width: 50px;
+}
+
+#summary .dataCell
+{
+	width: 215px;
 }
