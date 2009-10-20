@@ -12,6 +12,23 @@
     <fieldset>
         <legend>Fields</legend>
         <p>
+            <label for="Contact_ID">
+                Business/Person
+            </label>
+            <%= Html.DropDownList("Contact_ID") %>&nbsp;<%= Html.ActionLink("new", "Create", "Contact")%>
+        </p>
+        <p>
+            <label for="GeoLocation_ID">
+                Geographic Location
+            </label>
+            <%= Html.DropDownList("GeoLocation_ID", "")%>&nbsp;<%= Html.ActionLink("new", "Create", "GeoLocation")%>
+        </p>
+        <p>
+            <label for="Auction_ID">
+                Year</label>
+            <%= Html.DropDownList("Auction_ID")%>
+        </p>
+        <p>
             <label for="Catalog #">
                 Catalog #:</label>
             <%= Html.TextBox("CatalogNumber")%>
@@ -54,32 +71,10 @@
             <%= Html.ValidationMessage("EstimatedValue", "*")%>
         </p>
         <p>
-            <label for="PerItemValue">
-                Per Item Value:</label>
-            <%= Html.TextBox("PerItemValue") %>
-            <%= Html.ValidationMessage("PerItemValue", "*") %>
-        </p>
-        <p>
             <label for="SoldFor">
                 Sold For:</label>
             <%= Html.TextBox("SoldFor")%>
             <%= Html.ValidationMessage("SoldFor", "*")%>
-        </p>
-        <p>
-            <label for="Auction_ID">
-                Year</label>
-            <%= Html.DropDownList("Auction_ID")%>
-        </p>
-        <p>
-            <label for="Contact_ID">Business/Person
-            </label>
-            <%= Html.DropDownList("Contact_ID") %>
-        </p>
-        <p>
-            <label for="GeoLocation_ID">
-                Geographic Location
-            </label>
-            <%= Html.DropDownList("GeoLocation_ID", "")%>
         </p>
         <p>
             <label for="Notes">

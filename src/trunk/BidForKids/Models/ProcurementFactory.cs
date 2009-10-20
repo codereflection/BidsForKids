@@ -27,6 +27,12 @@ namespace BidForKids.Models
             return lProcurements;
         }
 
+        public List<Procurement> GetProcurements(int Year)
+        {
+            var lProcurements = dc.Procurements.Where(x => x.ContactProcurement.Auction.Year == Year).ToList();
+            return lProcurements;
+        }
+
 
         public List<SerializableProcurement> GetSerializableProcurements(string sortIndex, string sortOrder, bool search, Dictionary<string, string> searchParams)
         {
@@ -88,16 +94,33 @@ namespace BidForKids.Models
 
         private static string BuildSerializableSqlStatement(string sortIndex, string sortOrder, Dictionary<string, string> searchParams)
         {
-            string lSql = "select Procurement.*, Auction.*, GeoLocation.GeoLocationName, Category.CategoryName from Procurement join ContactProcurement CP on Procurement.Procurement_ID = CP.Procurement_ID JOIN Auction ON CP.Auction_ID = Auction.Auction_ID "
+            string lSql = "select Procurement.*, Auction.*, GeoLocation.GeoLocationName, Category.CategoryName from Procurement "
+                + " JOIN ContactProcurement CP on Procurement.Procurement_ID = CP.Procurement_ID "
+                + " JOIN Auction ON CP.Auction_ID = Auction.Auction_ID "
                 + " LEFT JOIN GeoLocation ON Procurement.GeoLocation_ID = GeoLocation.GeoLocation_ID "
                 + " LEFT JOIN Category ON Procurement.Category_ID = Category.Category_ID "
+                + " LEFT JOIN Procurer ON CP.Procurer_ID = Procurer.Procurer_ID "
                 + " where ";
             int lParamCount = 0;
             foreach (string item in searchParams.Keys.ToList())
             {
+                string lField = item;
                 if (lParamCount > 0)
                     lSql += " AND ";
-                lSql += item + " LIKE {" + lParamCount.ToString() + "} ";
+
+                // TODO: Fix the hack on the table name
+                if (lField.ToLower() == "description")
+                {
+                    lField = "Procurement.Description";
+                }
+
+                // TODO: Fix the hack on the table name
+                if (lField.ToLower() == "procurername")
+                {
+                    lField = "Procurer.FirstName + ' ' + Procurer.LastName";
+                }
+                
+                lSql += lField + " LIKE {" + lParamCount.ToString() + "} ";
                 lParamCount += 1;
             }
             lSql += " order by " + sortIndex + " " + sortOrder;

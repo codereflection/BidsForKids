@@ -5,6 +5,7 @@ namespace BidForKids.Models
     public interface IProcurementFactory
     {
         List<Procurement> GetProcurements();
+        List<Procurement> GetProcurements(int Year);
         SerializableProcurement ConvertProcurementToSerializableProcurement(Procurement procurement);
         List<SerializableProcurement> GetSerializableProcurements(string sortIndex, string sortOrder, bool search, Dictionary<string, string> searchParams);
         Procurement GetProcurement(int id);

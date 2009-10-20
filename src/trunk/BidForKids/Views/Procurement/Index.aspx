@@ -50,10 +50,10 @@
                     { name: 'ItemNumber', index: 'ItemNumber', width: 32, label: 'Item #' },
                     { name: 'Description', index: 'Description' },
                     { name: 'EstimatedValue', index: 'EstimatedValue', width: 40, formatter: 'currency', align: 'right', label: 'Estimated $' },
-                    { name: 'GeoLocationName', index: 'GeoLocationName', label: 'Geo Location' },
-                    { name: 'CategoryName', index: 'CategoryName', label: 'Category' },
-                    { name: 'ProcurerName', index: 'ProcurerName', label: 'Procurer' },
-                    { name: 'Year', index: 'Year', width: 15 },
+                    { name: 'GeoLocationName', index: 'GeoLocationName', label: 'Geo Location', sortable: false },
+                    { name: 'CategoryName', index: 'CategoryName', label: 'Category', sortable: false },
+                    { name: 'ProcurerName', index: 'ProcurerName', label: 'Procurer', sortable: false },
+                    { name: 'Year', index: 'Year', width: 15, sortable: false },
                     { name: 'Procurement_ID', index: 'Procurement_ID', width: 15, hidden: true, key: true }
                 ],
                 pager: '#pager',
@@ -65,7 +65,7 @@
                     var ids = $("#procurementGrid").getDataIDs();
                     for (var i = 0; i < ids.length; i++) {
                         var cl = ids[i];
-                        var editLink = "<a href='Edit/" + cl + "'>Edit</a>";
+                        var editLink = "<a href='Procurement/Edit/" + cl + "'>Edit</a>";
                         var detailsLink = ""; //= "&nbsp;|&nbsp;<a href='Details/" + cl + "'>Details</a>";
                         jQuery("#procurementGrid").setRowData(ids[i], { act: editLink + detailsLink });
                     }
@@ -96,77 +96,80 @@
     <p>
         <%= Html.ActionLink("Create New", "Create") %>
     </p>
-    <div id="summary">
-        <table style="width: 800px;">
-            <tr>
-                <td class="labelCell">
-                    Catalog #
-                </td>
-                <td class="dataCell">
-                    <div id="CatalogNumber">
-                    </div>
-                </td>
-                <td class="labelCell">
-                    Auction #
-                </td>
-                <td class="dataCell">
-                    <div id="AuctionNumber">
-                    </div>
-                </td>
-                <td class="labelCell">
-                    Item #
-                </td>
-                <td class="dataCell">
-                    <div id="ItemNumber">
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td class="labelCell">
-                    Year
-                </td>
-                <td class="dataCell">
-                    <div id="Year">
-                    </div>
-                </td>
-                <td class="labelCell">
-                    Estimated Value
-                </td>
-                <td class="dataCell">
-                    <div id="EstimatedValue">
-                    </div>
-                </td>
-                <td class="labelCell">
-                    Sold For
-                </td>
-                <td class="dataCell">
-                    <div id="SoldFor">
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td class="labelCell">
-                    Business / Person
-                </td>
-                <td class="dataCell">
-                    <div id="Contact">
-                    </div>
-                </td>
-                <td class="labelCell">
-                    Category
-                </td>
-                <td class="dataCell">
-                    <div id="Category">
-                    </div>
-                </td>
-                <td class="labelCell">
-                    Location
-                </td>
-                <td class="dataCell">
-                    <div id="GeoLocation">
-                    </div>
-                </td>
-            </tr>
-        </table>
+    <h3>Selected item details:</h2>
+    <div id="summaryContainer">
+        <div id="summary">
+            <table>
+                <tr>
+                    <td class="labelCell">
+                        Catalog #
+                    </td>
+                    <td class="dataCell">
+                        <div id="CatalogNumber">
+                        </div>
+                    </td>
+                    <td class="labelCell">
+                        Auction #
+                    </td>
+                    <td class="dataCell">
+                        <div id="AuctionNumber">
+                        </div>
+                    </td>
+                    <td class="labelCell">
+                        Item #
+                    </td>
+                    <td class="dataCell">
+                        <div id="ItemNumber">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="labelCell">
+                        Year
+                    </td>
+                    <td class="dataCell">
+                        <div id="Year">
+                        </div>
+                    </td>
+                    <td class="labelCell">
+                        Estimated Value
+                    </td>
+                    <td class="dataCell">
+                        <div id="EstimatedValue">
+                        </div>
+                    </td>
+                    <td class="labelCell">
+                        Sold For
+                    </td>
+                    <td class="dataCell">
+                        <div id="SoldFor">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="labelCell">
+                        Business / Person
+                    </td>
+                    <td class="dataCell">
+                        <div id="Contact">
+                        </div>
+                    </td>
+                    <td class="labelCell">
+                        Category
+                    </td>
+                    <td class="dataCell">
+                        <div id="Category">
+                        </div>
+                    </td>
+                    <td class="labelCell">
+                        Location
+                    </td>
+                    <td class="dataCell">
+                        <div id="GeoLocation">
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
 </asp:Content>

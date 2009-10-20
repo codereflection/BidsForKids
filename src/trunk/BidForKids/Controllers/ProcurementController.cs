@@ -20,6 +20,12 @@ namespace BidForKids.Controllers
             this.factory = factory;
         }
 
+        public ActionResult ProcurementList(int Year)
+        {
+            ViewData["Year"] = Year.ToString();
+            return View(factory.GetProcurements(Year));
+        }
+
         //
         // GET: /Procurement/GridIndex
 
@@ -173,19 +179,19 @@ namespace BidForKids.Controllers
 
         private SelectList GetAuctionSelectList(int? selectedValue)
         {
-            return new SelectList(factory.GetAuctions(), "Auction_ID", "Year", selectedValue);
+            return new SelectList(factory.GetAuctions().OrderByDescending(x => x.Year), "Auction_ID", "Year", selectedValue);
         }
 
         private SelectList GetContactsSelectList(int? selectedValue)
         {
             IEnumerable<Contact> lContacts = factory.GetContacts();
-            return new SelectList(lContacts, "Contact_ID", "BusinessName", selectedValue);
+            return new SelectList(lContacts.OrderBy(x => x.BusinessName), "Contact_ID", "BusinessName", selectedValue);
         }
 
         private SelectList GetGeoLocationsSelectList(int? selectedValue)
         {
             IEnumerable<GeoLocation> lGeoLocations = factory.GetGeoLocations();
-            return new SelectList(lGeoLocations, "GeoLocation_ID", "GeoLocationName", selectedValue);
+            return new SelectList(lGeoLocations.OrderBy(x => x.GeoLocationName), "GeoLocation_ID", "GeoLocationName", selectedValue);
         }
 
         private SelectList GetCategoriesSelectList(int? selectedValue)
