@@ -116,6 +116,12 @@
             <%= Html.DropDownList("GeoLocation_ID", "")%>
         </p>
         <p>
+            <label for="Procurer_ID">
+                Procurer
+            </label>
+            <%= Html.DropDownList("Procurer_ID", "")%>
+        </p>
+        <p>
             <label for="Notes">
                 Notes:</label>
             <%= Html.TextArea("Notes") %>

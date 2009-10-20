@@ -80,7 +80,9 @@ namespace BidForKids.Models
                 GeoLocationName = procurement.GeoLocation == null ? "" : procurement.GeoLocation.GeoLocationName,
                 PerItemValue = procurement.PerItemValue,
                 BusinessName = procurement.ContactProcurement.Contact.BusinessName,
-                PersonName = procurement.ContactProcurement.Contact.FirstName + " " + procurement.ContactProcurement.Contact.LastName
+                PersonName = procurement.ContactProcurement.Contact.FirstName + " " + procurement.ContactProcurement.Contact.LastName,
+                Procurer_ID = procurement.Procurement_ID,
+                ProcurerName = procurement.ContactProcurement.Procurer == null ? "" : procurement.ContactProcurement.Procurer.FirstName + " " + procurement.ContactProcurement.Procurer.LastName
             };
         }
 

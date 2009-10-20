@@ -153,6 +153,7 @@ namespace BidForKids.Controllers
             int? lContactId = null;
             int? lGeoLocationId = null;
             int? lCategoryId = null;
+            int? lProcurerID = null;
 
             if (contactProcurement != null)
             {
@@ -160,12 +161,14 @@ namespace BidForKids.Controllers
                 lContactId = contactProcurement.Contact_ID;
                 lGeoLocationId = contactProcurement.Procurement.GeoLocation_ID;
                 lCategoryId = contactProcurement.Procurement.Category_ID;
+                lProcurerID = contactProcurement.Procurer_ID;
             }
 
             ViewData["Auction_ID"] = GetAuctionSelectList(lAuctionId);
             ViewData["Contact_ID"] = GetContactsSelectList(lContactId);
             ViewData["GeoLocation_ID"] = GetGeoLocationsSelectList(lGeoLocationId);
             ViewData["Category_ID"] = GetCategoriesSelectList(lCategoryId);
+            ViewData["Procurer_ID"] = GetProcurerSelectList(lProcurerID);
         }
 
         private SelectList GetAuctionSelectList(int? selectedValue)
@@ -189,6 +192,22 @@ namespace BidForKids.Controllers
         {
             IEnumerable<Category> lCategories = factory.GetCategories();
             return new SelectList(lCategories, "Category_ID", "CategoryName", selectedValue);
+        }
+
+        private SelectList GetProcurerSelectList(int? selectedValue)
+        {
+            IEnumerable<Procurer> lProcurers = factory.GetProcurers();
+
+            var lProcurerList = from P in lProcurers
+                                select new
+                                {
+                                    Procurer_ID = P.Procurer_ID,
+                                    FirstName = P.FirstName,
+                                    LastName = P.LastName,
+                                    FullName = P.FirstName + " " + P.LastName
+                                };
+
+            return new SelectList(lProcurerList.OrderBy(x => x.LastName), "Procurer_ID", "FullName", selectedValue);
         }
 
         //
@@ -223,7 +242,8 @@ namespace BidForKids.Controllers
                 UpdateModel<ContactProcurement>(lNewProcurement.ContactProcurement,
                     new[] {
                         "Contact_ID",
-                        "Auction_ID"
+                        "Auction_ID",
+                        "Procurer_ID"
                     });
 
                 int lNewProcurementID = factory.AddProcurement(lNewProcurement);
@@ -290,7 +310,8 @@ namespace BidForKids.Controllers
                 UpdateModel<ContactProcurement>(lProcurement.ContactProcurement,
                     new[] {
                         "Contact_ID",
-                        "Auction_ID"
+                        "Auction_ID",
+                        "Procurer_ID"
                     });
 
                 if (factory.SaveProcurement(lProcurement) == false)

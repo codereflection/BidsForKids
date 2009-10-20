@@ -19,5 +19,7 @@ namespace BidForKids.Models
         public double? Quantity { get; set; }
         public string BusinessName { get; set; }
         public string PersonName { get; set; }
+        public string ProcurerName { get; set; }
+        public int Procurer_ID { get; set; }
     }
 }

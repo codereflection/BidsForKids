@@ -178,8 +178,8 @@
     <Content Include="Views\Procurement\Create.aspx" />
     <Content Include="Views\Procurement\Details.aspx" />
     <Content Include="Views\Procurement\Edit.aspx" />
-    <Content Include="Views\Procurement\GridIndex.aspx" />
     <Content Include="Views\Procurement\Index.aspx" />
+    <Content Include="Views\Procurement\IndexOld.aspx" />
     <Content Include="Views\Procurement\ProcurementTemplate.ascx" />
     <Content Include="Views\Procurer\Create.aspx" />
     <Content Include="Views\Procurer\Details.aspx" />

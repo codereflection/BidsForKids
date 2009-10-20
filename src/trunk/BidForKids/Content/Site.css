@@ -338,10 +338,12 @@ div#title
 
 #summary .labelCell
 {
+	color: Gray;
 	width: 50px;
 }
 
 #summary .dataCell
 {
+	color: Black;
 	width: 215px;
 }
