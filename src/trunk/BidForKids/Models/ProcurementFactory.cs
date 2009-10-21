@@ -100,6 +100,7 @@ namespace BidForKids.Models
                 + " LEFT JOIN GeoLocation ON Procurement.GeoLocation_ID = GeoLocation.GeoLocation_ID "
                 + " LEFT JOIN Category ON Procurement.Category_ID = Category.Category_ID "
                 + " LEFT JOIN Procurer ON CP.Procurer_ID = Procurer.Procurer_ID "
+                + " LEFT JOIN Contact ON CP.Contact_ID = Contact.Contact_ID "
                 + " where ";
             int lParamCount = 0;
             foreach (string item in searchParams.Keys.ToList())
@@ -119,7 +120,14 @@ namespace BidForKids.Models
                 {
                     lField = "Procurer.FirstName + ' ' + Procurer.LastName";
                 }
-                
+
+                // TODO: Fix the hack on the table name
+                if (lField.ToLower() == "businessname")
+                {
+                    lField = "Contact.BusinessName";
+                }
+
+
                 lSql += lField + " LIKE {" + lParamCount.ToString() + "} ";
                 lParamCount += 1;
             }

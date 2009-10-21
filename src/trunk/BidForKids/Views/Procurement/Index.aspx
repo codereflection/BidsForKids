@@ -6,17 +6,17 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
-    <script src="../../Scripts/jquery-1.3.2.js" type="text/javascript"></script>
+    <script src="Scripts/jquery-1.3.2.js" type="text/javascript"></script>
 
-    <script src="../../Scripts/jquery-ui-1.7.2.custom.min.js" type="text/javascript"></script>
+    <script src="Scripts/jquery-ui-1.7.2.custom.min.js" type="text/javascript"></script>
 
-    <script src="../../Scripts/jqGrid/grid.locale-en.js" type="text/javascript"></script>
+    <script src="Scripts/jqGrid/grid.locale-en.js" type="text/javascript"></script>
 
-    <script src="../../Scripts/jqGrid/jquery.jqGrid.min.js" type="text/javascript"></script>
+    <script src="Scripts/jqGrid/jquery.jqGrid.min.js" type="text/javascript"></script>
 
     <script type="text/javascript">
         function getProcurement(id) {
-            $.get("/Procurement/GetProcurement/" + id.toString(), {}, function(result) {
+            $.get("Procurement/GetProcurement/" + id.toString(), {}, function(result) {
                 var lContext = $("#summary");
                 $("#CatalogNumber", lContext).html(result.CatalogNumber);
                 $("#AuctionNumber", lContext).html(result.AuctionNumber);
@@ -33,7 +33,7 @@
         $(document).ready(function() {
             var procurementGrid = $("#procurementGrid").jqGrid({
                 datatype: 'json',
-                url: '/Procurement/GetProcurements',
+                url: 'Procurement/GetProcurements',
                 jsonReader: {
                     root: "rows",
                     page: "page",
@@ -49,18 +49,20 @@
                     { name: 'AuctionNumber', index: 'AuctionNumber', width: 32, label: 'Auction #' },
                     { name: 'ItemNumber', index: 'ItemNumber', width: 32, label: 'Item #' },
                     { name: 'Description', index: 'Description' },
+                    { name: 'BusinessName', index: 'BusinessName' },
                     { name: 'EstimatedValue', index: 'EstimatedValue', width: 40, formatter: 'currency', align: 'right', label: 'Estimated $' },
-                    { name: 'GeoLocationName', index: 'GeoLocationName', label: 'Geo Location', sortable: false },
-                    { name: 'CategoryName', index: 'CategoryName', label: 'Category', sortable: false },
-                    { name: 'ProcurerName', index: 'ProcurerName', label: 'Procurer', sortable: false },
-                    { name: 'Year', index: 'Year', width: 15, sortable: false },
-                    { name: 'Procurement_ID', index: 'Procurement_ID', width: 15, hidden: true, key: true }
+                    { name: 'GeoLocationName', index: 'GeoLocationName', width: 100, label: 'Geo Location', sortable: false },
+                    { name: 'CategoryName', index: 'CategoryName', label: 'Category', width: 100, sortable: false },
+                    { name: 'ProcurerName', index: 'ProcurerName', label: 'Procurer', width: 100, sortable: false },
+                    { name: 'Year', index: 'Year', width: 30, sortable: false },
+                    { name: 'Procurement_ID', index: 'Procurement_ID', width: 30, hidden: true, key: true }
                 ],
                 pager: '#pager',
                 viewrecords: true,
                 rowNum: 20,
                 rowList: [2, 10, 20, 30],
-                width: 1300,
+                width: 1500,
+                height: 'auto',
                 loadComplete: function() {
                     var ids = $("#procurementGrid").getDataIDs();
                     for (var i = 0; i < ids.length; i++) {
