@@ -197,7 +197,7 @@ namespace BidForKids.Controllers
         private SelectList GetCategoriesSelectList(int? selectedValue)
         {
             IEnumerable<Category> lCategories = factory.GetCategories();
-            return new SelectList(lCategories, "Category_ID", "CategoryName", selectedValue);
+            return new SelectList(lCategories.OrderBy(x => x.CategoryName), "Category_ID", "CategoryName", selectedValue);
         }
 
         private SelectList GetProcurerSelectList(int? selectedValue)
