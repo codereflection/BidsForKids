@@ -94,7 +94,7 @@
     <Compile Include="Configuration\StructureMapControllerFactory.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
-    <Compile Include="Controllers\ContactController.cs" />
+    <Compile Include="Controllers\DonorController.cs" />
     <Compile Include="Controllers\GeoLocationController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProcurementController.cs" />

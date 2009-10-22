@@ -18,12 +18,6 @@
             <%= Html.DropDownList("Donor_ID") %>&nbsp;<%= Html.ActionLink("new", "Create", "Donor")%>
         </p>
         <p>
-            <label for="GeoLocation_ID">
-                Geographic Location
-            </label>
-            <%= Html.DropDownList("GeoLocation_ID", "")%>&nbsp;<%= Html.ActionLink("new", "Create", "GeoLocation")%>
-        </p>
-        <p>
             <label for="Auction_ID">
                 Year</label>
             <%= Html.DropDownList("Auction_ID")%>
@@ -79,7 +73,7 @@
         <p>
             <label for="Notes">
                 Notes:</label>
-            <%= Html.TextArea("Notes") %>
+            <%= Html.TextArea("Notes", "", 3, 50, null) %>
             <%= Html.ValidationMessage("Notes", "*") %>
         </p>
         <p>

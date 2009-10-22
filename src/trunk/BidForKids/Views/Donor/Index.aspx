@@ -1,18 +1,21 @@
-<%@ Page Title="Businesses and Donors" Language="C#" MasterPageFile="~/Views/Shared/Admin.Master" Inherits="System.Web.Mvc.ViewPage<IEnumerable<BidForKids.Models.Donor>>" %>
+<%@ Page Title="Businesses and Donors" Language="C#" MasterPageFile="~/Views/Shared/Admin.Master"
+    Inherits="System.Web.Mvc.ViewPage<IEnumerable<BidForKids.Models.Donor>>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
-	Donors
+    Donors
 </asp:Content>
-
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-
-    <h2>Donors</h2>
-
+    <h2>
+        Donors</h2>
+    <p>
+        <%= Html.ActionLink("Create New", "Create") %>
+    </p>
     <table>
         <tr>
-            <th></th>
             <th>
-                Donor_ID
+            </th>
+            <th>
+                ID
             </th>
             <th>
                 Business Name
@@ -48,21 +51,15 @@
                 Phone 2 Desc
             </th>
             <th>
-                Phone 3
-            </th>
-            <th>
-                Phone 3 Desc
-            </th>
-            <th>
-                Notes
+                Location
             </th>
         </tr>
-
-    <% foreach (var item in Model) { %>
-    
+        <% foreach (var item in Model)
+           { %>
         <tr>
             <td>
-                <%= Html.ActionLink("Edit", "Edit", new { id=item.Donor_ID }) %> |
+                <%= Html.ActionLink("Edit", "Edit", new { id=item.Donor_ID }) %>
+                |
                 <%= Html.ActionLink("Details", "Details", new { id=item.Donor_ID })%>
             </td>
             <td>
@@ -102,23 +99,22 @@
                 <%= Html.Encode(item.Phone2Desc) %>
             </td>
             <td>
-                <%= Html.Encode(item.Phone3) %>
+                <%= item.GeoLocation == null ? "" : Html.Encode(item.GeoLocation.GeoLocationName) %>
+            </td>
+        </tr>
+        <tr>
+            <td>
             </td>
             <td>
-                <%= Html.Encode(item.Phone3Desc) %>
+                Notes:
             </td>
-            <td>
+            <td colspan="12">
                 <%= Html.Encode(item.Notes) %>
             </td>
         </tr>
-    
-    <% } %>
-
+        <% } %>
     </table>
-
     <p>
         <%= Html.ActionLink("Create New", "Create") %>
     </p>
-
 </asp:Content>
-

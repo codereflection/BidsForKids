@@ -110,12 +110,6 @@
             <%= Html.DropDownList("Donor_ID", "")%>
         </p>
         <p>
-            <label for="GeoLocation_ID">
-                Geographic Location
-            </label>
-            <%= Html.DropDownList("GeoLocation_ID", "")%>
-        </p>
-        <p>
             <label for="Procurer_ID">
                 Procurer
             </label>
@@ -124,7 +118,7 @@
         <p>
             <label for="Notes">
                 Notes:</label>
-            <%= Html.TextArea("Notes") %>
+            <%= Html.TextArea("Notes", Model.Notes, 3, 50, null) %>
             <%= Html.ValidationMessage("Notes", "*") %>
         </p>
         <p>

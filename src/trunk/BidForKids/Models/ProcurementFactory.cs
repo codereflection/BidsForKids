@@ -97,10 +97,10 @@ namespace BidForKids.Models
             string lSql = "select Procurement.*, Auction.*, GeoLocation.GeoLocationName, Category.CategoryName from Procurement "
                 + " JOIN ContactProcurement CP on Procurement.Procurement_ID = CP.Procurement_ID "
                 + " JOIN Auction ON CP.Auction_ID = Auction.Auction_ID "
-                + " LEFT JOIN GeoLocation ON Procurement.GeoLocation_ID = GeoLocation.GeoLocation_ID "
+                + " LEFT JOIN Donor ON CP.Donor_ID = Donor.Donor_ID "
+                + " LEFT JOIN GeoLocation ON Donor.GeoLocation_ID = GeoLocation.GeoLocation_ID "
                 + " LEFT JOIN Category ON Procurement.Category_ID = Category.Category_ID "
                 + " LEFT JOIN Procurer ON CP.Procurer_ID = Procurer.Procurer_ID "
-                + " LEFT JOIN Donor ON CP.Donor_ID = Donor.Donor_ID "
                 + " where ";
             int lParamCount = 0;
             foreach (string item in searchParams.Keys.ToList())
