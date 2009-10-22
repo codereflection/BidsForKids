@@ -88,7 +88,8 @@ namespace BidForKids.Models
                 BusinessName = procurement.ContactProcurement.Donor.BusinessName,
                 PersonName = procurement.ContactProcurement.Donor == null ? "" : procurement.ContactProcurement.Donor.FirstName + " " + procurement.ContactProcurement.Donor.LastName,
                 Procurer_ID = procurement.Procurement_ID,
-                ProcurerName = procurement.ContactProcurement.Procurer == null ? "" : procurement.ContactProcurement.Procurer.FirstName + " " + procurement.ContactProcurement.Procurer.LastName
+                ProcurerName = procurement.ContactProcurement.Procurer == null ? "" : procurement.ContactProcurement.Procurer.FirstName + " " + procurement.ContactProcurement.Procurer.LastName,
+                Notes = procurement.Notes
             };
         }
 

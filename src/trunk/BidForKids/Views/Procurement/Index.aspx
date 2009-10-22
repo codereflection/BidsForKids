@@ -26,7 +26,8 @@
                 $("#SoldFor", lContext).html(result.SoldFor);
                 $("#Donor", lContext).html(result.BusinessName + ' : ' + result.PersonName);
                 $("#Category", lContext).html(result.Category);
-                $("#GeoLocation", lContext).html(result.GeoLocation);
+                $("#GeoLocation", lContext).html(result.GeoLocationName);
+                $("#Notes", lContext).html(result.Notes);
             }, "json");
         }
 
@@ -98,80 +99,90 @@
     <p>
         <%= Html.ActionLink("Create New", "Create") %>
     </p>
-    <h3>Selected item details:</h2>
-    <div id="summaryContainer">
-        <div id="summary">
-            <table>
-                <tr>
-                    <td class="labelCell">
-                        Catalog #
-                    </td>
-                    <td class="dataCell">
-                        <div id="CatalogNumber">
-                        </div>
-                    </td>
-                    <td class="labelCell">
-                        Auction #
-                    </td>
-                    <td class="dataCell">
-                        <div id="AuctionNumber">
-                        </div>
-                    </td>
-                    <td class="labelCell">
-                        Item #
-                    </td>
-                    <td class="dataCell">
-                        <div id="ItemNumber">
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="labelCell">
-                        Year
-                    </td>
-                    <td class="dataCell">
-                        <div id="Year">
-                        </div>
-                    </td>
-                    <td class="labelCell">
-                        Estimated Value
-                    </td>
-                    <td class="dataCell">
-                        <div id="EstimatedValue">
-                        </div>
-                    </td>
-                    <td class="labelCell">
-                        Sold For
-                    </td>
-                    <td class="dataCell">
-                        <div id="SoldFor">
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="labelCell">
-                        Donor
-                    </td>
-                    <td class="dataCell">
-                        <div id="Donor">
-                        </div>
-                    </td>
-                    <td class="labelCell">
-                        Category
-                    </td>
-                    <td class="dataCell">
-                        <div id="Category">
-                        </div>
-                    </td>
-                    <td class="labelCell">
-                        Location
-                    </td>
-                    <td class="dataCell">
-                        <div id="GeoLocation">
-                        </div>
-                    </td>
-                </tr>
-            </table>
+    <h3>
+        Selected item details:</h2>
+        <div id="summaryContainer">
+            <div id="summary">
+                <table>
+                    <tr>
+                        <td class="labelCell">
+                            Catalog #
+                        </td>
+                        <td class="dataCell">
+                            <div id="CatalogNumber">
+                            </div>
+                        </td>
+                        <td class="labelCell">
+                            Auction #
+                        </td>
+                        <td class="dataCell">
+                            <div id="AuctionNumber">
+                            </div>
+                        </td>
+                        <td class="labelCell">
+                            Item #
+                        </td>
+                        <td class="dataCell">
+                            <div id="ItemNumber">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="labelCell">
+                            Year
+                        </td>
+                        <td class="dataCell">
+                            <div id="Year">
+                            </div>
+                        </td>
+                        <td class="labelCell">
+                            Estimated Value
+                        </td>
+                        <td class="dataCell">
+                            <div id="EstimatedValue">
+                            </div>
+                        </td>
+                        <td class="labelCell">
+                            Sold For
+                        </td>
+                        <td class="dataCell">
+                            <div id="SoldFor">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="labelCell">
+                            Donor
+                        </td>
+                        <td class="dataCell">
+                            <div id="Donor">
+                            </div>
+                        </td>
+                        <td class="labelCell">
+                            Category
+                        </td>
+                        <td class="dataCell">
+                            <div id="Category">
+                            </div>
+                        </td>
+                        <td class="labelCell">
+                            Location
+                        </td>
+                        <td class="dataCell">
+                            <div id="GeoLocation">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="labelCell">
+                            Notes
+                        </td>
+                        <td class="dataCell" colspan="4">
+                            <div id="Notes">
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </div>
-    </div>
 </asp:Content>

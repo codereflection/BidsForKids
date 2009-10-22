@@ -239,7 +239,8 @@ namespace BidForKids.Controllers
                     new[] {
                         "Donor_ID",
                         "Auction_ID",
-                        "Procurer_ID"
+                        "Procurer_ID",
+                        "GeoLocation_ID"
                     });
 
                 int lNewProcurementID = factory.AddProcurement(lNewProcurement);
@@ -306,7 +307,8 @@ namespace BidForKids.Controllers
                     new[] {
                         "Donor_ID",
                         "Auction_ID",
-                        "Procurer_ID"
+                        "Procurer_ID",
+                        "GeoLocation_ID"
                     });
 
                 if (factory.SaveProcurement(lProcurement) == false)

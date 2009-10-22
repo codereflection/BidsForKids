@@ -21,5 +21,6 @@ namespace BidForKids.Models
         public string PersonName { get; set; }
         public string ProcurerName { get; set; }
         public int Procurer_ID { get; set; }
+        public string Notes { get; set; }
     }
 }
