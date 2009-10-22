@@ -16,7 +16,7 @@
             <label for="GeoLocation_ID">
                 Geographic Location
             </label>
-            <%= Html.DropDownList("GeoLocation_ID", "")%>&nbsp;<%= Html.ActionLink("new", "Create", "GeoLocation")%>
+            <%= Html.DropDownList("GeoLocation_ID", "")%>&nbsp;<%= Html.ActionLink("new", "Create", "GeoLocation", new { ReturnTo = Server.UrlEncode("Donor/Create") }, null)%>
         </p>
         <p>
             <label for="BusinessName">

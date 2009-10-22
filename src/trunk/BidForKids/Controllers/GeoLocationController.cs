@@ -51,11 +51,29 @@ namespace BidForKids.Controllers
             {
                 GeoLocation lNewGeoLocation = factory.GetNewGeoLocation();
 
-                SetGeoLocationValues(collection, lNewGeoLocation);
+                UpdateModel<GeoLocation>(lNewGeoLocation,
+                    new[] {
+                        "GeoLocationName",
+                        "Description"
+                    });
 
                 int lNewGeoLocationID = factory.AddGeoLocation(lNewGeoLocation);
 
-                return RedirectToAction("Index");
+                // return if ReturnTo parameter present
+
+                if (string.IsNullOrEmpty(Request.QueryString["ReturnTo"]) == false)
+                {
+                    string lServerUrlDecode = Server.UrlDecode(Request.QueryString["ReturnTo"]);
+                    if (lServerUrlDecode.IndexOf("http:") == -1 && lServerUrlDecode.IndexOf("/") != 0)
+                    {
+                        lServerUrlDecode = "/" + lServerUrlDecode;
+                    }
+                    return Redirect(lServerUrlDecode);
+                }
+                else
+                {
+                    return RedirectToAction("Index");
+                }
             }
             catch
             {
@@ -81,12 +99,11 @@ namespace BidForKids.Controllers
             {
                 GeoLocation lGeoLocation = factory.GetGeoLocation(id);
 
-                UpdateModel(lGeoLocation, 
+                UpdateModel<GeoLocation>(lGeoLocation, 
                     new[] {
                         "GeoLocationName",
                         "Description"
                     });
-                //SetGeoLocationValues(collection, lGeoLocation);
 
                 if (factory.SaveGeoLocation(lGeoLocation) == false)
                 {
@@ -99,12 +116,6 @@ namespace BidForKids.Controllers
             {
                 return View();
             }
-        }
-
-        private static void SetGeoLocationValues(FormCollection collection, GeoLocation geoLocation)
-        {
-            geoLocation.GeoLocationName = collection["GeoLocationName"];
-            geoLocation.Description = collection["Description"];
         }
     }
 }
