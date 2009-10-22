@@ -59,7 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\BidForKidsControllerAbstract.cs" />
-    <Compile Include="Controllers\ContactControllerFacts.cs" />
+    <Compile Include="Controllers\DonorControllerFacts.cs" />
     <Compile Include="Controllers\GeoLocationControllerFacts.cs" />
     <Compile Include="Controllers\HomeControllerFacts.cs" />
     <Compile Include="Controllers\ProcurementControllerFacts.cs" />

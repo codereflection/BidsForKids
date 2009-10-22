@@ -8,7 +8,7 @@ using System;
 
 namespace BidForKids.Tests.Controllers
 {
-    public class DonorControllerFacts
+    internal class DonorControllerFacts
     {
         public class Index : BidForKidsController
         {
@@ -121,6 +121,22 @@ namespace BidForKids.Tests.Controllers
                 var viewResult = Assert.IsType<ViewResult>(result);
                 Assert.Empty(viewResult.ViewName);
                 Assert.IsType<Donor>(viewResult.ViewData.Model);
+            }
+        }
+
+        public class GetDonors : BidForKidsController
+        {
+            [Fact]
+            public void ReturnsJsonResult()
+            {
+                // Arrange
+                var controller = new DonorController(_ProcurementFactory);
+
+                // Act
+                var result = controller.GetDonors();
+
+                // Assert
+                var viewResult = Assert.IsType<JsonResult>(result);
             }
         }
     }

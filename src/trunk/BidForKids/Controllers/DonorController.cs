@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using BidForKids.Models;
+using BidForKids.Models.SerializableObjects;
 
 namespace BidForKids.Controllers
 {
@@ -18,12 +19,48 @@ namespace BidForKids.Controllers
         }
 
         //
+        // GET: /GetDonors/
+
+        public ActionResult GetDonors()
+        {
+            jqGridLoadOptions loadOptions = jqGridLoadOptions.GetLoadOptions(Request.QueryString);
+
+            JsonResult lResult = new JsonResult();
+
+            List<SerializableDonor> lRows = factory.GetSerializableDonors(loadOptions);
+
+            if (lRows == null)
+            {
+                throw new ApplicationException("Unable to load Donors list");
+            }
+
+            int lTotalRows = lRows.Count;
+
+            lRows = lRows.Skip((loadOptions.page - 1) * loadOptions.rows).Take(loadOptions.rows).ToList();
+
+            int lTotalPages = (int)Math.Ceiling((decimal)lTotalRows / (decimal)loadOptions.rows);
+
+            lResult.Data = new { total = lTotalPages, page = loadOptions.page, records = lTotalRows.ToString(), rows = lRows };
+
+            return lResult;
+        }
+
+        //
         // GET: /Donor/
 
         public ActionResult Index()
         {
             return View(factory.GetDonors());
         }
+
+        //
+        // GET: /Donor/GridIndex
+
+        public ActionResult GridIndex()
+        {
+            return View();
+        }
+
 
         //
         // GET: /Donor/Details/5

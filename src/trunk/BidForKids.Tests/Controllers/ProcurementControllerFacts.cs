@@ -87,8 +87,7 @@ namespace BidForKids.Tests.Controllers
                 var viewResult = Assert.IsType<ViewResult>(result);
                 Assert.Empty(viewResult.ViewName);
                 Assert.IsType<SelectList>(viewResult.ViewData["Auction_ID"]);
-                Assert.IsType<SelectList>(viewResult.ViewData["Contact_ID"]);
-                Assert.IsType<SelectList>(viewResult.ViewData["GeoLocation_ID"]);
+                Assert.IsType<SelectList>(viewResult.ViewData["Donor_ID"]);
                 Assert.IsType<SelectList>(viewResult.ViewData["Category_ID"]);
             }
         }
@@ -122,8 +121,7 @@ namespace BidForKids.Tests.Controllers
                 var viewResult = Assert.IsType<ViewResult>(result);
                 Assert.Empty(viewResult.ViewName);
                 Assert.IsType<SelectList>(viewResult.ViewData["Auction_ID"]);
-                Assert.IsType<SelectList>(viewResult.ViewData["Contact_ID"]);
-                Assert.IsType<SelectList>(viewResult.ViewData["GeoLocation_ID"]);
+                Assert.IsType<SelectList>(viewResult.ViewData["Donor_ID"]);
                 Assert.IsType<SelectList>(viewResult.ViewData["Category_ID"]);
             }
 
@@ -135,7 +133,7 @@ namespace BidForKids.Tests.Controllers
                 FormCollection collection = new FormCollection();
 
                 // Act
-                var result = controller.Edit(0, collection);
+                var result = controller.Edit(1, collection);
 
                 // Assert
                 var viewResult = Assert.IsType<ViewResult>(result);

@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic;
-using System.Web;
-using System.Data.Linq;
+using BidForKids.Models.SerializableObjects;
 
 namespace BidForKids.Models
 {
@@ -34,66 +33,105 @@ namespace BidForKids.Models
         }
 
 
-        public List<SerializableProcurement> GetSerializableProcurements(string sortIndex, string sortOrder, bool search, Dictionary<string, string> searchParams)
+        public List<SerializableProcurement> GetSerializableProcurements(jqGridLoadOptions loadOptions)
         {
-            if (string.IsNullOrEmpty(sortIndex))
-                sortIndex = "Description";
+            if (loadOptions == null)
+                throw new ArgumentNullException("loadOptions", "loadOptions is null.");
+            
+            if (string.IsNullOrEmpty(loadOptions.sortIndex))
+                loadOptions.sortIndex = "Description";
 
-            if (string.IsNullOrEmpty(sortOrder))
-                sortOrder = "asc";
+            if (string.IsNullOrEmpty(loadOptions.sortOrder))
+                loadOptions.sortOrder = "asc";
 
             IEnumerable<Procurement> lProcurements;
 
-            if (search == false)
+            if (loadOptions.search == false)
             {
-                lProcurements = dc.Procurements.OrderBy(sortIndex + " " + sortOrder);
+                lProcurements = dc.Procurements.OrderBy(loadOptions.sortIndex + " " + loadOptions.sortOrder);
             }
             else
             {
-                AddLikePercentsToValues(searchParams);
+                AddLikePercentsToValues(loadOptions.searchParams);
 
-                string lSql = BuildSerializableSqlStatement(sortIndex, sortOrder, searchParams);
+                string lSql = BuildSerializableProcurementSqlStatement(loadOptions.sortIndex, loadOptions.sortOrder, loadOptions.searchParams);
 
-                lProcurements = dc.ExecuteQuery<Procurement>(lSql, searchParams.Values.ToArray<string>());
+                lProcurements = dc.ExecuteQuery<Procurement>(lSql, loadOptions.searchParams.Values.ToArray<string>());
             }
 
             List<SerializableProcurement> lResult = new List<SerializableProcurement>();
 
             foreach (var lProcurement in lProcurements)
             {
-                lResult.Add(ConvertProcurementToSerializableProcurement(lProcurement));
+                lResult.Add(SerializableProcurement.ConvertProcurementToSerializableProcurement(lProcurement));
             }
 
             return lResult;
         }
 
-        public SerializableProcurement ConvertProcurementToSerializableProcurement(Procurement procurement)
+        public List<SerializableDonor> GetSerializableDonors(jqGridLoadOptions loadOptions)
         {
-            return new SerializableProcurement()
+            if (loadOptions == null)
+                throw new ArgumentNullException("loadOptions", "loadOptions is null.");
+
+            if (string.IsNullOrEmpty(loadOptions.sortIndex))
+                loadOptions.sortIndex = "BusinessName";
+
+            if (string.IsNullOrEmpty(loadOptions.sortOrder))
+                loadOptions.sortOrder = "asc";
+
+            IEnumerable<Donor> lDonors;
+
+            if (loadOptions.search == false)
             {
-                CatalogNumber = procurement.CatalogNumber,
-                Description = procurement.Description,
-                Procurement_ID = procurement.Procurement_ID,
-                Year = procurement.ContactProcurement.Auction.Year,
-                AuctionNumber = procurement.AuctionNumber,
-                ItemNumber = procurement.ItemNumber,
-                Quantity = procurement.Quantity,
-                EstimatedValue = procurement.EstimatedValue,
-                SoldFor = procurement.SoldFor,
-                Category_ID = procurement.Category_ID,
-                CategoryName = procurement.Category == null ? "" : procurement.Category.CategoryName,
-                GeoLocation_ID = procurement.ContactProcurement.Donor == null ? null : procurement.ContactProcurement.Donor.GeoLocation_ID,
-                GeoLocationName = (procurement.ContactProcurement.Donor == null || procurement.ContactProcurement.Donor.GeoLocation == null) ? "" : procurement.ContactProcurement.Donor.GeoLocation.GeoLocationName,
-                PerItemValue = procurement.PerItemValue,
-                BusinessName = procurement.ContactProcurement.Donor.BusinessName,
-                PersonName = procurement.ContactProcurement.Donor == null ? "" : procurement.ContactProcurement.Donor.FirstName + " " + procurement.ContactProcurement.Donor.LastName,
-                Procurer_ID = procurement.Procurement_ID,
-                ProcurerName = procurement.ContactProcurement.Procurer == null ? "" : procurement.ContactProcurement.Procurer.FirstName + " " + procurement.ContactProcurement.Procurer.LastName,
-                Notes = procurement.Notes
-            };
+                lDonors = dc.Donors.OrderBy(loadOptions.sortIndex + " " + loadOptions.sortOrder);
+            }
+            else
+            {
+                AddLikePercentsToValues(loadOptions.searchParams);
+
+                string lSql = BuildSerializableDonorSqlStatement(loadOptions.sortIndex, loadOptions.sortOrder, loadOptions.searchParams);
+                
+                lDonors = dc.ExecuteQuery<Donor>(lSql, loadOptions.searchParams.Values.ToArray<string>());
+            }
+
+            List<SerializableDonor> lResult = new List<SerializableDonor>();
+
+            foreach (var lDonor in lDonors)
+            {
+                lResult.Add(SerializableDonor.ConvertDonorToSerializableProcurement(lDonor));
+            }
+            return lResult;
         }
 
-        private static string BuildSerializableSqlStatement(string sortIndex, string sortOrder, Dictionary<string, string> searchParams)
+        private static string BuildSerializableDonorSqlStatement(string sortIndex, string sortOrder, Dictionary<string, string> searchParams)
+        {
+            string lSql = "select Donor.*, GeoLocation.GeoLocationName "
+                + " FROM Donor "
+                + " LEFT JOIN GeoLocation ON Donor.GeoLocation_ID = GeoLocation.GeoLocation_ID "
+                + " where ";
+
+            int lParamCount = 0;
+            foreach (string item in searchParams.Keys.ToList())
+            {
+                string lField = item;
+                if (lParamCount > 0)
+                    lSql += " AND ";
+
+                // TODO: Fix the hack on the table name
+                if (lField.ToLower() == "description")
+                {
+                    lField = "Donor.Description";
+                }
+
+                lSql += lField + " LIKE {" + lParamCount.ToString() + "} ";
+                lParamCount += 1;
+            }
+            lSql += " order by " + sortIndex + " " + sortOrder;
+            return lSql;
+        }
+
+        private static string BuildSerializableProcurementSqlStatement(string sortIndex, string sortOrder, Dictionary<string, string> searchParams)
         {
             string lSql = "select Procurement.*, Auction.*, GeoLocation.GeoLocationName, Category.CategoryName from Procurement "
                 + " JOIN ContactProcurement CP on Procurement.Procurement_ID = CP.Procurement_ID "

@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using BidForKids.Models.SerializableObjects;
+
 namespace BidForKids.Models
 {
     public interface IProcurementFactory
     {
         List<Procurement> GetProcurements();
         List<Procurement> GetProcurements(int Year);
-        SerializableProcurement ConvertProcurementToSerializableProcurement(Procurement procurement);
-        List<SerializableProcurement> GetSerializableProcurements(string sortIndex, string sortOrder, bool search, Dictionary<string, string> searchParams);
+        List<SerializableProcurement> GetSerializableProcurements(jqGridLoadOptions loadOptions);
         Procurement GetProcurement(int id);
         Procurement GetNewProcurement();
         int AddProcurement(Procurement procurement);
@@ -18,6 +19,7 @@ namespace BidForKids.Models
         Auction GetAuction(int id);
 
         List<Donor> GetDonors();
+        List<SerializableDonor> GetSerializableDonors(jqGridLoadOptions loadOptions);
         Donor GetDonor(int id);
         Donor GetNewDonor();
         int AddDonor(Donor Donor);

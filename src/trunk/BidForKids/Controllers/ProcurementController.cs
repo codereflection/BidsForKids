@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using BidForKids.Models;
+using BidForKids.Models.SerializableObjects;
 
 namespace BidForKids.Controllers
 {
@@ -25,12 +26,6 @@ namespace BidForKids.Controllers
         //
         // GET: /Procurement/GridIndex
 
-        public ActionResult GridIndex()
-        {
-            return View(factory.GetProcurements());
-        }
-
-
         //
         // GET: /Procurement/
 
@@ -39,11 +34,11 @@ namespace BidForKids.Controllers
             return View(factory.GetProcurements());
         }
 
-        
+
         [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult GetProcurement(int? id)
         {
-            SerializableProcurement lProcurement = factory.ConvertProcurementToSerializableProcurement(factory.GetProcurement((int)id));
+            SerializableProcurement lProcurement = SerializableProcurement.ConvertProcurementToSerializableProcurement(factory.GetProcurement((int)id));
 
             return Json(lProcurement);
         }
@@ -51,44 +46,21 @@ namespace BidForKids.Controllers
         //public ActionResult GetProcurements(string _search, string nd, int page, int rows, string sidx, string sord)
         public ActionResult GetProcurements()
         {
-            Dictionary<string, string> lSearchParams = new Dictionary<string, string>();
+            jqGridLoadOptions loadOptions = jqGridLoadOptions.GetLoadOptions(Request.QueryString);
 
-            System.Collections.Specialized.NameValueCollection lParams = Request.QueryString;
-
-            bool _search = bool.Parse(lParams["_search"]);
-            string nd = lParams["nd"];
-            int page = int.Parse(lParams["page"]);
-            int rows = int.Parse(lParams["rows"]);
-            string sidx = lParams["sidx"];
-            string sord = lParams["sord"];
-
-            Dictionary<string, string> searchParams = new Dictionary<string, string>();
-
-            if (_search == true)
-            {
-                foreach (var param in lParams.AllKeys)
-                {
-                    if (param != "_search" && param != "nd" && param != "page" && param != "rows" && param != "sidx" && param != "sord")
-                    {
-                        searchParams.Add(param, lParams[param]);
-                    }
-                }
-            }
-
-
-
+            
             JsonResult lResult = new JsonResult();
 
 
-            List<SerializableProcurement> lRows = factory.GetSerializableProcurements(sidx, sord, _search, searchParams);
+            List<SerializableProcurement> lRows = factory.GetSerializableProcurements(loadOptions);
 
             int lTotalRows = lRows.Count;
 
-            lRows = lRows.Skip((page - 1) * rows).Take(rows).ToList();
+            lRows = lRows.Skip((loadOptions.page - 1) * loadOptions.rows).Take(loadOptions.rows).ToList();
 
-            int lTotalPages = (int)Math.Ceiling((decimal)lTotalRows / (decimal)rows);
+            int lTotalPages = (int)Math.Ceiling((decimal)lTotalRows / (decimal)loadOptions.rows);
 
-            lResult.Data = new { total = lTotalPages, page = page, records = lTotalRows.ToString(), rows = lRows };
+            lResult.Data = new { total = lTotalPages, page = loadOptions.page, records = lTotalRows.ToString(), rows = lRows };
 
             return lResult;
         }
@@ -144,7 +116,7 @@ namespace BidForKids.Controllers
         private void SetupCreateViewData()
         {
             ViewData["Auction_ID"] = GetAuctionSelectList(null);
-            
+
             if (string.IsNullOrEmpty(Request.QueryString["Donor_ID"]) == false)
                 ViewData["Donor_ID"] = GetContactsSelectList(int.Parse(Request.QueryString["Donor_ID"].ToString()));
             else
