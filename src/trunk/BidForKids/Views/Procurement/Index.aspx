@@ -25,7 +25,7 @@
                 $("#EstimatedValue", lContext).html(result.EstimatedValue);
                 $("#SoldFor", lContext).html(result.SoldFor);
                 $("#Donor", lContext).html(result.BusinessName + ' : ' + result.PersonName);
-                $("#Category", lContext).html(result.Category);
+                $("#Category", lContext).html(result.CategoryName);
                 $("#GeoLocation", lContext).html(result.GeoLocationName);
                 $("#Notes", lContext).html(result.Notes);
             }, "json");

@@ -45,12 +45,41 @@ namespace BidForKids.Controllers
 
         private void SetupCreateViewData()
         {
-            ViewData["GeoLocation_ID"] = GetGeoLocationsSelectList(null);
+            if (string.IsNullOrEmpty(Request.QueryString["GeoLocation_ID"]) == false)
+                ViewData["GeoLocation_ID"] = GetGeoLocationsSelectList(int.Parse(Request.QueryString["GeoLocation_ID"].ToString()));
+            else
+                ViewData["GeoLocation_ID"] = GetGeoLocationsSelectList(null);
+
         }
 
         private void SetupEditViewData(Donor donor)
         {
             ViewData["GeoLocation_ID"] = GetGeoLocationsSelectList(donor.GeoLocation_ID);
+        }
+
+        /// <summary>
+        /// Redirects to ReturnTo query string value, passing Donor_ID=[NewDonorID], else redirects to Donor index
+        /// </summary>
+        /// <param name="NewDonorID">New Donor_ID to pass back to ReturnTo url</param>
+        /// <returns></returns>
+        private ActionResult ReturnToOrRedirectToIndex(int NewDonorID)
+        {
+            if (string.IsNullOrEmpty(Request.QueryString["ReturnTo"]) == false)
+            {
+                string lServerUrlDecode = Server.UrlDecode(Request.QueryString["ReturnTo"]);
+                if (lServerUrlDecode.IndexOf("http:") == -1 && lServerUrlDecode.IndexOf("/") != 0)
+                {
+                    lServerUrlDecode = "/" + lServerUrlDecode;
+                }
+
+                lServerUrlDecode += lServerUrlDecode.IndexOf("?") == -1 ? "?Donor_ID=" + NewDonorID.ToString() : "&Donor_ID=" + NewDonorID.ToString();
+
+                return Redirect(lServerUrlDecode);
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
         }
 
         //
@@ -85,7 +114,7 @@ namespace BidForKids.Controllers
 
                 int lNewDonorID = factory.AddDonor(lNewDonor);
 
-                return RedirectToAction("Index");
+                return ReturnToOrRedirectToIndex(lNewDonorID);
             }
             catch
             {

@@ -1,9 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Mvc.Ajax;
 using BidForKids.Models;
 
 namespace BidForKids.Controllers
@@ -39,7 +35,32 @@ namespace BidForKids.Controllers
         public ActionResult Create()
         {
             return View();
-        } 
+        }
+
+        /// <summary>
+        /// Redirects to ReturnTo query string value, passing GeoLocation_ID=[NewGeoLocationID], else redirects to GeoLocation index
+        /// </summary>
+        /// <param name="NewGeoLocationID">New Donor_ID to pass back to ReturnTo url</param>
+        /// <returns></returns>
+        private ActionResult ReturnToOrRedirectToIndex(int NewGeoLocationID)
+        {
+            if (string.IsNullOrEmpty(Request.QueryString["ReturnTo"]) == false)
+            {
+                string lServerUrlDecode = Server.UrlDecode(Request.QueryString["ReturnTo"]);
+                if (lServerUrlDecode.IndexOf("http:") == -1 && lServerUrlDecode.IndexOf("/") != 0)
+                {
+                    lServerUrlDecode = "/" + lServerUrlDecode;
+                }
+
+                lServerUrlDecode += lServerUrlDecode.IndexOf("?") == -1 ? "?GeoLocation_ID=" + NewGeoLocationID.ToString() : "&GeoLocation_ID=" + NewGeoLocationID.ToString();
+
+                return Redirect(lServerUrlDecode);
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+        }
 
         //
         // POST: /GeoLocation/Create
@@ -61,19 +82,7 @@ namespace BidForKids.Controllers
 
                 // return if ReturnTo parameter present
 
-                if (string.IsNullOrEmpty(Request.QueryString["ReturnTo"]) == false)
-                {
-                    string lServerUrlDecode = Server.UrlDecode(Request.QueryString["ReturnTo"]);
-                    if (lServerUrlDecode.IndexOf("http:") == -1 && lServerUrlDecode.IndexOf("/") != 0)
-                    {
-                        lServerUrlDecode = "/" + lServerUrlDecode;
-                    }
-                    return Redirect(lServerUrlDecode);
-                }
-                else
-                {
-                    return RedirectToAction("Index");
-                }
+                return ReturnToOrRedirectToIndex(lNewGeoLocationID);
             }
             catch
             {

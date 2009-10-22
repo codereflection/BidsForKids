@@ -1,12 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Mvc.Ajax;
-using Newtonsoft.Json;
 using BidForKids.Models;
-using System.Collections;
 
 namespace BidForKids.Controllers
 {
@@ -148,7 +144,12 @@ namespace BidForKids.Controllers
         private void SetupCreateViewData()
         {
             ViewData["Auction_ID"] = GetAuctionSelectList(null);
-            ViewData["Donor_ID"] = GetContactsSelectList(null);
+            
+            if (string.IsNullOrEmpty(Request.QueryString["Donor_ID"]) == false)
+                ViewData["Donor_ID"] = GetContactsSelectList(int.Parse(Request.QueryString["Donor_ID"].ToString()));
+            else
+                ViewData["Donor_ID"] = GetContactsSelectList(null);
+
             ViewData["Category_ID"] = GetCategoriesSelectList(null);
         }
 

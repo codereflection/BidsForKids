@@ -13,9 +13,9 @@
         <legend>Fields</legend>
         <p>
             <label for="Donor_ID">
-                Business/Person
+                Donor
             </label>
-            <%= Html.DropDownList("Donor_ID") %>&nbsp;<%= Html.ActionLink("new", "Create", "Donor")%>
+            <%= Html.DropDownList("Donor_ID") %>&nbsp;<%= Html.ActionLink("new", "Create", "Donor", new { ReturnTo = Server.UrlEncode("Procurement/Create") }, null)%>
         </p>
         <p>
             <label for="Auction_ID">
