@@ -5,7 +5,7 @@
 </asp:Content>
 <asp:Content ID="adminContent" ContentPlaceHolderID="MainContent" runat="server">        
     <p>
-    <%= Html.ActionLink("Businesses & Parents", "Index", "Contact")%>
+    <%= Html.ActionLink("Donors", "Index", "Donor")%>
     <br />
     <%= Html.ActionLink("Procurers", "Index", "Procurer")%>
     </p>

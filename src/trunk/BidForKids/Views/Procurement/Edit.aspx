@@ -104,10 +104,10 @@
             <%= Html.DropDownList("Auction_ID","")%>
         </p>
         <p>
-            <label for="Contact_ID">
+            <label for="Donor_ID">
                 Business/Person
             </label>
-            <%= Html.DropDownList("Contact_ID", "")%>
+            <%= Html.DropDownList("Donor_ID", "")%>
         </p>
         <p>
             <label for="GeoLocation_ID">

@@ -148,7 +148,7 @@ namespace BidForKids.Controllers
         private void SetupCreateViewData()
         {
             ViewData["Auction_ID"] = GetAuctionSelectList(null);
-            ViewData["Contact_ID"] = GetContactsSelectList(null);
+            ViewData["Donor_ID"] = GetContactsSelectList(null);
             ViewData["GeoLocation_ID"] = GetGeoLocationsSelectList(null);
             ViewData["Category_ID"] = GetCategoriesSelectList(null);
         }
@@ -164,14 +164,14 @@ namespace BidForKids.Controllers
             if (contactProcurement != null)
             {
                 lAuctionId = contactProcurement.Auction_ID;
-                lContactId = contactProcurement.Contact_ID;
-                lGeoLocationId = contactProcurement.Procurement.GeoLocation_ID;
+                lContactId = contactProcurement.Donor_ID;
+                lGeoLocationId = contactProcurement.Donor == null ? null : contactProcurement.Donor.GeoLocation_ID;
                 lCategoryId = contactProcurement.Procurement.Category_ID;
                 lProcurerID = contactProcurement.Procurer_ID;
             }
 
             ViewData["Auction_ID"] = GetAuctionSelectList(lAuctionId);
-            ViewData["Contact_ID"] = GetContactsSelectList(lContactId);
+            ViewData["Donor_ID"] = GetContactsSelectList(lContactId);
             ViewData["GeoLocation_ID"] = GetGeoLocationsSelectList(lGeoLocationId);
             ViewData["Category_ID"] = GetCategoriesSelectList(lCategoryId);
             ViewData["Procurer_ID"] = GetProcurerSelectList(lProcurerID);
@@ -184,8 +184,8 @@ namespace BidForKids.Controllers
 
         private SelectList GetContactsSelectList(int? selectedValue)
         {
-            IEnumerable<Contact> lContacts = factory.GetContacts();
-            return new SelectList(lContacts.OrderBy(x => x.BusinessName), "Contact_ID", "BusinessName", selectedValue);
+            IEnumerable<Donor> lContacts = factory.GetDonors();
+            return new SelectList(lContacts.OrderBy(x => x.BusinessName), "Donor_ID", "BusinessName", selectedValue);
         }
 
         private SelectList GetGeoLocationsSelectList(int? selectedValue)
@@ -247,7 +247,7 @@ namespace BidForKids.Controllers
 
                 UpdateModel<ContactProcurement>(lNewProcurement.ContactProcurement,
                     new[] {
-                        "Contact_ID",
+                        "Donor_ID",
                         "Auction_ID",
                         "Procurer_ID"
                     });
@@ -315,7 +315,7 @@ namespace BidForKids.Controllers
 
                 UpdateModel<ContactProcurement>(lProcurement.ContactProcurement,
                     new[] {
-                        "Contact_ID",
+                        "Donor_ID",
                         "Auction_ID",
                         "Procurer_ID"
                     });

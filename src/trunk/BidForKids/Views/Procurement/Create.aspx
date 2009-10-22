@@ -12,10 +12,10 @@
     <fieldset>
         <legend>Fields</legend>
         <p>
-            <label for="Contact_ID">
+            <label for="Donor_ID">
                 Business/Person
             </label>
-            <%= Html.DropDownList("Contact_ID") %>&nbsp;<%= Html.ActionLink("new", "Create", "Contact")%>
+            <%= Html.DropDownList("Donor_ID") %>&nbsp;<%= Html.ActionLink("new", "Create", "Donor")%>
         </p>
         <p>
             <label for="GeoLocation_ID">

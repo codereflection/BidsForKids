@@ -17,8 +17,8 @@ namespace BidForKids.Tests.Controllers
             
             lProcurementFactory.Stub(x => x.GetAuctions()).Return(new List<Auction>());
 
-            lProcurementFactory.Stub(x => x.GetContacts()).Return(new List<Contact>());
-            lProcurementFactory.Stub(x => x.GetContact(0)).IgnoreArguments().Return(new Contact());
+            lProcurementFactory.Stub(x => x.GetDonors()).Return(new List<Donor>());
+            lProcurementFactory.Stub(x => x.GetDonor(0)).IgnoreArguments().Return(new Donor());
 
             lProcurementFactory.Stub(x => x.GetGeoLocations()).Return(new List<GeoLocation>());
             lProcurementFactory.Stub(x => x.GetGeoLocation(0)).IgnoreArguments().Return(new GeoLocation());

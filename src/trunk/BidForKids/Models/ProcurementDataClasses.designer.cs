@@ -45,9 +45,9 @@ namespace BidForKids.Models
     partial void InsertGeoLocation(GeoLocation instance);
     partial void UpdateGeoLocation(GeoLocation instance);
     partial void DeleteGeoLocation(GeoLocation instance);
-    partial void InsertContact(Contact instance);
-    partial void UpdateContact(Contact instance);
-    partial void DeleteContact(Contact instance);
+    partial void InsertDonor(Donor instance);
+    partial void UpdateDonor(Donor instance);
+    partial void DeleteDonor(Donor instance);
     partial void InsertProcurer(Procurer instance);
     partial void UpdateProcurer(Procurer instance);
     partial void DeleteProcurer(Procurer instance);
@@ -123,11 +123,11 @@ namespace BidForKids.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<Contact> Contacts
+		public System.Data.Linq.Table<Donor> Donors
 		{
 			get
 			{
-				return this.GetTable<Contact>();
+				return this.GetTable<Donor>();
 			}
 		}
 		
@@ -298,7 +298,7 @@ namespace BidForKids.Models
 		
 		private EntityRef<Procurement> _Procurement;
 		
-		private EntityRef<Contact> _Contact;
+		private EntityRef<Donor> _Contact;
 		
 		private EntityRef<Procurer> _Procurer;
 		
@@ -308,8 +308,8 @@ namespace BidForKids.Models
     partial void OnCreated();
     partial void OnContactProcurement_IDChanging(int value);
     partial void OnContactProcurement_IDChanged();
-    partial void OnContact_IDChanging(int value);
-    partial void OnContact_IDChanged();
+    partial void OnDonor_IDChanging(int value);
+    partial void OnDonor_IDChanged();
     partial void OnProcurement_IDChanging(int value);
     partial void OnProcurement_IDChanged();
     partial void OnAuction_IDChanging(int value);
@@ -322,7 +322,7 @@ namespace BidForKids.Models
 		{
 			this._Auction = default(EntityRef<Auction>);
 			this._Procurement = default(EntityRef<Procurement>);
-			this._Contact = default(EntityRef<Contact>);
+			this._Contact = default(EntityRef<Donor>);
 			this._Procurer = default(EntityRef<Procurer>);
 			OnCreated();
 		}
@@ -348,7 +348,7 @@ namespace BidForKids.Models
 		}
 		
 		[Column(Storage="_Contact_ID", DbType="Int NOT NULL")]
-		public int Contact_ID
+		public int Donor_ID
 		{
 			get
 			{
@@ -362,11 +362,11 @@ namespace BidForKids.Models
 					{
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 					}
-					this.OnContact_IDChanging(value);
+					this.OnDonor_IDChanging(value);
 					this.SendPropertyChanging();
 					this._Contact_ID = value;
-					this.SendPropertyChanged("Contact_ID");
-					this.OnContact_IDChanged();
+					this.SendPropertyChanged("Donor_ID");
+					this.OnDonor_IDChanged();
 				}
 			}
 		}
@@ -511,8 +511,8 @@ namespace BidForKids.Models
 			}
 		}
 		
-		[Association(Name="Contact_ContactProcurement", Storage="_Contact", ThisKey="Contact_ID", OtherKey="Contact_ID", IsForeignKey=true)]
-		public Contact Contact
+		[Association(Name="Donor_ContactProcurement", Storage="_Contact", ThisKey="Donor_ID", OtherKey="Donor_ID", IsForeignKey=true)]
+		public Donor Donor
 		{
 			get
 			{
@@ -520,7 +520,7 @@ namespace BidForKids.Models
 			}
 			set
 			{
-				Contact previousValue = this._Contact.Entity;
+				Donor previousValue = this._Contact.Entity;
 				if (((previousValue != value) 
 							|| (this._Contact.HasLoadedOrAssignedValue == false)))
 				{
@@ -534,13 +534,13 @@ namespace BidForKids.Models
 					if ((value != null))
 					{
 						value.ContactProcurements.Add(this);
-						this._Contact_ID = value.Contact_ID;
+						this._Contact_ID = value.Donor_ID;
 					}
 					else
 					{
 						this._Contact_ID = default(int);
 					}
-					this.SendPropertyChanged("Contact");
+					this.SendPropertyChanged("Donor");
 				}
 			}
 		}
@@ -626,15 +626,11 @@ namespace BidForKids.Models
 		
 		private System.Nullable<decimal> _SoldFor;
 		
-		private System.Nullable<int> _GeoLocation_ID;
-		
 		private System.Nullable<int> _Category_ID;
 		
 		private EntityRef<ContactProcurement> _ContactProcurements;
 		
 		private EntityRef<Category> _Category;
-		
-		private EntityRef<GeoLocation> _GeoLocation;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -660,8 +656,6 @@ namespace BidForKids.Models
     partial void OnEstimatedValueChanged();
     partial void OnSoldForChanging(System.Nullable<decimal> value);
     partial void OnSoldForChanged();
-    partial void OnGeoLocation_IDChanging(System.Nullable<int> value);
-    partial void OnGeoLocation_IDChanged();
     partial void OnCategory_IDChanging(System.Nullable<int> value);
     partial void OnCategory_IDChanged();
     #endregion
@@ -670,7 +664,6 @@ namespace BidForKids.Models
 		{
 			this._ContactProcurements = default(EntityRef<ContactProcurement>);
 			this._Category = default(EntityRef<Category>);
-			this._GeoLocation = default(EntityRef<GeoLocation>);
 			OnCreated();
 		}
 		
@@ -874,30 +867,6 @@ namespace BidForKids.Models
 			}
 		}
 		
-		[Column(Storage="_GeoLocation_ID", DbType="Int")]
-		public System.Nullable<int> GeoLocation_ID
-		{
-			get
-			{
-				return this._GeoLocation_ID;
-			}
-			set
-			{
-				if ((this._GeoLocation_ID != value))
-				{
-					if (this._GeoLocation.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnGeoLocation_IDChanging(value);
-					this.SendPropertyChanging();
-					this._GeoLocation_ID = value;
-					this.SendPropertyChanged("GeoLocation_ID");
-					this.OnGeoLocation_IDChanged();
-				}
-			}
-		}
-		
 		[Column(Storage="_Category_ID", DbType="Int")]
 		public System.Nullable<int> Category_ID
 		{
@@ -981,40 +950,6 @@ namespace BidForKids.Models
 						this._Category_ID = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("Category");
-				}
-			}
-		}
-		
-		[Association(Name="GeoLocation_Procurement", Storage="_GeoLocation", ThisKey="GeoLocation_ID", OtherKey="GeoLocation_ID", IsForeignKey=true)]
-		public GeoLocation GeoLocation
-		{
-			get
-			{
-				return this._GeoLocation.Entity;
-			}
-			set
-			{
-				GeoLocation previousValue = this._GeoLocation.Entity;
-				if (((previousValue != value) 
-							|| (this._GeoLocation.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._GeoLocation.Entity = null;
-						previousValue.Procurements.Remove(this);
-					}
-					this._GeoLocation.Entity = value;
-					if ((value != null))
-					{
-						value.Procurements.Add(this);
-						this._GeoLocation_ID = value.GeoLocation_ID;
-					}
-					else
-					{
-						this._GeoLocation_ID = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("GeoLocation");
 				}
 			}
 		}
@@ -1190,7 +1125,7 @@ namespace BidForKids.Models
 		
 		private string _Description;
 		
-		private EntitySet<Procurement> _Procurements;
+		private EntitySet<Donor> _Contacts;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -1206,7 +1141,7 @@ namespace BidForKids.Models
 		
 		public GeoLocation()
 		{
-			this._Procurements = new EntitySet<Procurement>(new Action<Procurement>(this.attach_Procurements), new Action<Procurement>(this.detach_Procurements));
+			this._Contacts = new EntitySet<Donor>(new Action<Donor>(this.attach_Contacts), new Action<Donor>(this.detach_Contacts));
 			OnCreated();
 		}
 		
@@ -1270,16 +1205,16 @@ namespace BidForKids.Models
 			}
 		}
 		
-		[Association(Name="GeoLocation_Procurement", Storage="_Procurements", ThisKey="GeoLocation_ID", OtherKey="GeoLocation_ID")]
-		public EntitySet<Procurement> Procurements
+		[Association(Name="GeoLocation_Donor", Storage="_Contacts", ThisKey="GeoLocation_ID", OtherKey="GeoLocation_ID")]
+		public EntitySet<Donor> Donors
 		{
 			get
 			{
-				return this._Procurements;
+				return this._Contacts;
 			}
 			set
 			{
-				this._Procurements.Assign(value);
+				this._Contacts.Assign(value);
 			}
 		}
 		
@@ -1303,21 +1238,21 @@ namespace BidForKids.Models
 			}
 		}
 		
-		private void attach_Procurements(Procurement entity)
+		private void attach_Contacts(Donor entity)
 		{
 			this.SendPropertyChanging();
 			entity.GeoLocation = this;
 		}
 		
-		private void detach_Procurements(Procurement entity)
+		private void detach_Contacts(Donor entity)
 		{
 			this.SendPropertyChanging();
 			entity.GeoLocation = null;
 		}
 	}
 	
-	[Table(Name="dbo.Contact")]
-	public partial class Contact : INotifyPropertyChanging, INotifyPropertyChanged
+	[Table(Name="dbo.Donor")]
+	public partial class Donor : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -1356,14 +1291,18 @@ namespace BidForKids.Models
 		
 		private string _Email;
 		
+		private System.Nullable<int> _GeoLocation_ID;
+		
 		private EntitySet<ContactProcurement> _ContactProcurements;
+		
+		private EntityRef<GeoLocation> _GeoLocation;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OnContact_IDChanging(int value);
-    partial void OnContact_IDChanged();
+    partial void OnDonor_IDChanging(int value);
+    partial void OnDonor_IDChanged();
     partial void OnBusinessNameChanging(string value);
     partial void OnBusinessNameChanged();
     partial void OnFirstNameChanging(string value);
@@ -1396,16 +1335,19 @@ namespace BidForKids.Models
     partial void OnWebsiteChanged();
     partial void OnEmailChanging(string value);
     partial void OnEmailChanged();
+    partial void OnGeoLocation_IDChanging(System.Nullable<int> value);
+    partial void OnGeoLocation_IDChanged();
     #endregion
 		
-		public Contact()
+		public Donor()
 		{
 			this._ContactProcurements = new EntitySet<ContactProcurement>(new Action<ContactProcurement>(this.attach_ContactProcurements), new Action<ContactProcurement>(this.detach_ContactProcurements));
+			this._GeoLocation = default(EntityRef<GeoLocation>);
 			OnCreated();
 		}
 		
 		[Column(Storage="_Contact_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Contact_ID
+		public int Donor_ID
 		{
 			get
 			{
@@ -1415,11 +1357,11 @@ namespace BidForKids.Models
 			{
 				if ((this._Contact_ID != value))
 				{
-					this.OnContact_IDChanging(value);
+					this.OnDonor_IDChanging(value);
 					this.SendPropertyChanging();
 					this._Contact_ID = value;
-					this.SendPropertyChanged("Contact_ID");
-					this.OnContact_IDChanged();
+					this.SendPropertyChanged("Donor_ID");
+					this.OnDonor_IDChanged();
 				}
 			}
 		}
@@ -1744,7 +1686,31 @@ namespace BidForKids.Models
 			}
 		}
 		
-		[Association(Name="Contact_ContactProcurement", Storage="_ContactProcurements", ThisKey="Contact_ID", OtherKey="Contact_ID")]
+		[Column(Storage="_GeoLocation_ID", DbType="Int")]
+		public System.Nullable<int> GeoLocation_ID
+		{
+			get
+			{
+				return this._GeoLocation_ID;
+			}
+			set
+			{
+				if ((this._GeoLocation_ID != value))
+				{
+					if (this._GeoLocation.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnGeoLocation_IDChanging(value);
+					this.SendPropertyChanging();
+					this._GeoLocation_ID = value;
+					this.SendPropertyChanged("GeoLocation_ID");
+					this.OnGeoLocation_IDChanged();
+				}
+			}
+		}
+		
+		[Association(Name="Donor_ContactProcurement", Storage="_ContactProcurements", ThisKey="Donor_ID", OtherKey="Donor_ID")]
 		public EntitySet<ContactProcurement> ContactProcurements
 		{
 			get
@@ -1754,6 +1720,40 @@ namespace BidForKids.Models
 			set
 			{
 				this._ContactProcurements.Assign(value);
+			}
+		}
+		
+		[Association(Name="GeoLocation_Donor", Storage="_GeoLocation", ThisKey="GeoLocation_ID", OtherKey="GeoLocation_ID", IsForeignKey=true)]
+		public GeoLocation GeoLocation
+		{
+			get
+			{
+				return this._GeoLocation.Entity;
+			}
+			set
+			{
+				GeoLocation previousValue = this._GeoLocation.Entity;
+				if (((previousValue != value) 
+							|| (this._GeoLocation.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._GeoLocation.Entity = null;
+						previousValue.Donors.Remove(this);
+					}
+					this._GeoLocation.Entity = value;
+					if ((value != null))
+					{
+						value.Donors.Add(this);
+						this._GeoLocation_ID = value.GeoLocation_ID;
+					}
+					else
+					{
+						this._GeoLocation_ID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("GeoLocation");
+				}
 			}
 		}
 		
@@ -1780,13 +1780,13 @@ namespace BidForKids.Models
 		private void attach_ContactProcurements(ContactProcurement entity)
 		{
 			this.SendPropertyChanging();
-			entity.Contact = this;
+			entity.Donor = this;
 		}
 		
 		private void detach_ContactProcurements(ContactProcurement entity)
 		{
 			this.SendPropertyChanging();
-			entity.Contact = null;
+			entity.Donor = null;
 		}
 	}
 	

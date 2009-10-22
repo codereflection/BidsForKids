@@ -24,7 +24,7 @@
                 $("#Year", lContext).html(result.Year);
                 $("#EstimatedValue", lContext).html(result.EstimatedValue);
                 $("#SoldFor", lContext).html(result.SoldFor);
-                $("#Contact", lContext).html(result.BusinessName + ' : ' + result.PersonName);
+                $("#Donor", lContext).html(result.BusinessName + ' : ' + result.PersonName);
                 $("#Category", lContext).html(result.Category);
                 $("#GeoLocation", lContext).html(result.GeoLocation);
             }, "json");
@@ -49,7 +49,7 @@
                     { name: 'AuctionNumber', index: 'AuctionNumber', width: 32, label: 'Auction #' },
                     { name: 'ItemNumber', index: 'ItemNumber', width: 32, label: 'Item #' },
                     { name: 'Description', index: 'Description' },
-                    { name: 'BusinessName', index: 'BusinessName' },
+                    { name: 'BusinessName', index: 'BusinessName', label: 'Donor' },
                     { name: 'EstimatedValue', index: 'EstimatedValue', width: 40, formatter: 'currency', align: 'right', label: 'Estimated $' },
                     { name: 'GeoLocationName', index: 'GeoLocationName', width: 100, label: 'Geo Location', sortable: false },
                     { name: 'CategoryName', index: 'CategoryName', label: 'Category', width: 100, sortable: false },
@@ -150,10 +150,10 @@
                 </tr>
                 <tr>
                     <td class="labelCell">
-                        Business / Person
+                        Donor
                     </td>
                     <td class="dataCell">
-                        <div id="Contact">
+                        <div id="Donor">
                         </div>
                     </td>
                     <td class="labelCell">

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 9.25" name="ProcurementDataClasses">
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11.375, 9.25" name="ProcurementDataClasses">
   <DataContextMoniker Name="/ProcurementDataClassesDataContext" />
   <nestedChildShapes>
     <classShape Id="2bd46d01-55ac-4a3d-81e5-f3ca6025612e" absoluteBounds="0.5, 4.875, 2, 1.3862939453125">
@@ -21,13 +21,13 @@
         <classShapeMoniker Id="8c5d4790-19c1-45b8-8bb4-05a250b2ab6e" />
       </nodes>
     </associationConnector>
-    <classShape Id="957d31e8-cf76-4cf2-93bf-7360d612595a" absoluteBounds="3.375, 1, 2, 3.1170068359374996">
+    <classShape Id="957d31e8-cf76-4cf2-93bf-7360d612595a" absoluteBounds="3.375, 1, 2, 2.9247054036458331">
       <DataClassMoniker Name="/ProcurementDataClassesDataContext/Procurement" />
       <nestedChildShapes>
-        <elementListCompartment Id="422256b3-2aee-4525-8ebb-74a1007b3399" absoluteBounds="3.39, 1.46, 1.9700000000000002, 2.5570068359375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="422256b3-2aee-4525-8ebb-74a1007b3399" absoluteBounds="3.39, 1.46, 1.9700000000000002, 2.364705403645833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(4.375 : 4.1170068359375); (4.375 : 4.875)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(4.375 : 3.92470540364583); (4.375 : 4.875)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/ProcurementDataClassesDataContext/Procurement/Procurement_ContactProcurement" />
       <nodes>
         <classShapeMoniker Id="957d31e8-cf76-4cf2-93bf-7360d612595a" />
@@ -47,27 +47,20 @@
         <classShapeMoniker Id="957d31e8-cf76-4cf2-93bf-7360d612595a" />
       </nodes>
     </associationConnector>
-    <classShape Id="7c4bc27f-06b1-40c3-b447-cda051ae2b27" absoluteBounds="0.625, 0.5, 2, 1.3862939453125">
+    <classShape Id="7c4bc27f-06b1-40c3-b447-cda051ae2b27" absoluteBounds="9.125, 2.5, 2, 1.3862939453125">
       <DataClassMoniker Name="/ProcurementDataClassesDataContext/GeoLocation" />
       <nestedChildShapes>
-        <elementListCompartment Id="ad9294f7-9503-4988-8bdd-38fd8fbc949c" absoluteBounds="0.64000000000000012, 0.96, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="ad9294f7-9503-4988-8bdd-38fd8fbc949c" absoluteBounds="9.14, 2.96, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(2.625 : 1.44314697265625); (3.375 : 1.44314697265625)]" fixedFrom="Algorithm" fixedTo="Algorithm">
-      <AssociationMoniker Name="/ProcurementDataClassesDataContext/GeoLocation/GeoLocation_Procurement" />
-      <nodes>
-        <classShapeMoniker Id="7c4bc27f-06b1-40c3-b447-cda051ae2b27" />
-        <classShapeMoniker Id="957d31e8-cf76-4cf2-93bf-7360d612595a" />
-      </nodes>
-    </associationConnector>
-    <classShape Id="aa754a3b-0a83-4b61-8047-f81b0dcd2fa8" absoluteBounds="6.75, 2.5, 2, 4.0785139973958326">
-      <DataClassMoniker Name="/ProcurementDataClassesDataContext/Contact" />
+    <classShape Id="aa754a3b-0a83-4b61-8047-f81b0dcd2fa8" absoluteBounds="6.75, 2.5, 2, 4.2708154296875">
+      <DataClassMoniker Name="/ProcurementDataClassesDataContext/Donor" />
       <nestedChildShapes>
-        <elementListCompartment Id="6e3e0b7d-ba51-42c1-8c67-45c664e71ee9" absoluteBounds="6.765, 2.96, 1.9700000000000002, 3.518513997395833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="6e3e0b7d-ba51-42c1-8c67-45c664e71ee9" absoluteBounds="6.765, 2.96, 1.9700000000000002, 3.7108154296875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(6.75 : 5.72675699869792); (5.375 : 5.72675699869792)]" fixedFrom="NotFixed" fixedTo="NotFixed">
-      <AssociationMoniker Name="/ProcurementDataClassesDataContext/Contact/Contact_ContactProcurement" />
+    <associationConnector edgePoints="[(6.75 : 5.76044840494792); (5.375 : 5.76044840494792)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/ProcurementDataClassesDataContext/Donor/Contact_ContactProcurement" />
       <nodes>
         <classShapeMoniker Id="aa754a3b-0a83-4b61-8047-f81b0dcd2fa8" />
         <classShapeMoniker Id="8c5d4790-19c1-45b8-8bb4-05a250b2ab6e" />
@@ -79,11 +72,18 @@
         <elementListCompartment Id="50215997-c00d-42c2-b6a5-85e1aa11aeb1" absoluteBounds="3.39, 7.71, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(4.375 : 7.25); (4.375 : 6.64589680989583)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(4.375 : 7.25); (4.375 : 6.64589680989583)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/ProcurementDataClassesDataContext/Procurer/Procurer_ContactProcurement" />
       <nodes>
         <classShapeMoniker Id="9788b1be-e826-4f14-a2e8-a6fd99c6044d" />
         <classShapeMoniker Id="8c5d4790-19c1-45b8-8bb4-05a250b2ab6e" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(9.125 : 3.19314697265625); (8.75 : 3.19314697265625)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/ProcurementDataClassesDataContext/GeoLocation/GeoLocation_Contact" />
+      <nodes>
+        <classShapeMoniker Id="7c4bc27f-06b1-40c3-b447-cda051ae2b27" />
+        <classShapeMoniker Id="aa754a3b-0a83-4b61-8047-f81b0dcd2fa8" />
       </nodes>
     </associationConnector>
   </nestedChildShapes>

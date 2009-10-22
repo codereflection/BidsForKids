@@ -17,11 +17,11 @@ namespace BidForKids.Models
         List<Auction> GetAuctions();
         Auction GetAuction(int id);
 
-        List<Contact> GetContacts();
-        Contact GetContact(int id);
-        Contact GetNewContact();
-        int AddContact(Contact contact);
-        bool SaveContact(Contact contact);
+        List<Donor> GetDonors();
+        Donor GetDonor(int id);
+        Donor GetNewDonor();
+        int AddDonor(Donor Donor);
+        bool SaveDonor(Donor Donor);
 
         List<GeoLocation> GetGeoLocations();
         GeoLocation GetGeoLocation(int id);

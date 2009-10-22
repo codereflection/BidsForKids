@@ -166,10 +166,10 @@
     <Content Include="Scripts\jquery-ui-1.7.2.custom.min-vsdoc.js" />
     <Content Include="Scripts\jquery-ui-1.7.2.custom.min.js" />
     <Content Include="Views\Admin\Menu.aspx" />
-    <Content Include="Views\Contact\Create.aspx" />
-    <Content Include="Views\Contact\Details.aspx" />
-    <Content Include="Views\Contact\Edit.aspx" />
-    <Content Include="Views\Contact\Index.aspx" />
+    <Content Include="Views\Donor\Create.aspx" />
+    <Content Include="Views\Donor\Details.aspx" />
+    <Content Include="Views\Donor\Edit.aspx" />
+    <Content Include="Views\Donor\Index.aspx" />
     <Content Include="Views\GeoLocation\Create.aspx" />
     <Content Include="Views\GeoLocation\Details.aspx" />
     <Content Include="Views\GeoLocation\Edit.aspx" />

@@ -12,13 +12,13 @@
   <Table Name="dbo.ContactProcurement" Member="ContactProcurements">
     <Type Name="ContactProcurement">
       <Column Name="ContactProcurement_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Contact_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Donor_ID" Member="Donor_ID" Storage="_Contact_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Procurement_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Auction_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Procurer_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="Auction_ContactProcurement" Member="Auction" ThisKey="Auction_ID" OtherKey="Auction_ID" Type="Auction" IsForeignKey="true" />
       <Association Name="Procurement_ContactProcurement" Member="Procurement" ThisKey="Procurement_ID" OtherKey="Procurement_ID" Type="Procurement" IsForeignKey="true" />
-      <Association Name="Contact_ContactProcurement" Member="Contact" ThisKey="Contact_ID" OtherKey="Contact_ID" Type="Contact" IsForeignKey="true" />
+      <Association Name="Contact_ContactProcurement" Member="Donor" Storage="_Contact" ThisKey="Donor_ID" OtherKey="Donor_ID" Type="Donor" IsForeignKey="true" />
       <Association Name="Procurer_ContactProcurement" Member="Procurer" ThisKey="Procurer_ID" OtherKey="Procurer_ID" Type="Procurer" IsForeignKey="true" />
     </Type>
   </Table>
@@ -34,11 +34,9 @@
       <Column Name="ItemNumber" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
       <Column Name="EstimatedValue" Type="System.Decimal" DbType="Money" CanBeNull="true" />
       <Column Name="SoldFor" Type="System.Decimal" DbType="Money" CanBeNull="true" />
-      <Column Name="GeoLocation_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="Category_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="Procurement_ContactProcurement" Member="ContactProcurement" Storage="_ContactProcurements" ThisKey="Procurement_ID" OtherKey="Procurement_ID" Type="ContactProcurement" Cardinality="One" />
       <Association Name="Category_Procurement" Member="Category" ThisKey="Category_ID" OtherKey="Category_ID" Type="Category" IsForeignKey="true" />
-      <Association Name="GeoLocation_Procurement" Member="GeoLocation" ThisKey="GeoLocation_ID" OtherKey="GeoLocation_ID" Type="GeoLocation" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Category" Member="Categories">
@@ -54,12 +52,12 @@
       <Column Name="GeoLocation_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="GeoLocationName" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="Description" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
-      <Association Name="GeoLocation_Procurement" Member="Procurements" ThisKey="GeoLocation_ID" OtherKey="GeoLocation_ID" Type="Procurement" />
+      <Association Name="GeoLocation_Contact" Member="Donors" Storage="_Contacts" ThisKey="GeoLocation_ID" OtherKey="GeoLocation_ID" Type="Donor" />
     </Type>
   </Table>
-  <Table Name="dbo.Contact" Member="Contacts">
-    <Type Name="Contact">
-      <Column Name="Contact_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+  <Table Name="dbo.Donor" Member="Donors">
+    <Type Name="Donor">
+      <Column Name="Donor_ID" Member="Donor_ID" Storage="_Contact_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="BusinessName" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
       <Column Name="FirstName" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
       <Column Name="LastName" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
@@ -76,7 +74,9 @@
       <Column Name="Notes" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
       <Column Name="Website" Type="System.String" DbType="VarChar(1024)" CanBeNull="true" />
       <Column Name="Email" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
-      <Association Name="Contact_ContactProcurement" Member="ContactProcurements" ThisKey="Contact_ID" OtherKey="Contact_ID" Type="ContactProcurement" />
+      <Column Name="GeoLocation_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Contact_ContactProcurement" Member="ContactProcurements" ThisKey="Donor_ID" OtherKey="Donor_ID" Type="ContactProcurement" />
+      <Association Name="GeoLocation_Contact" Member="GeoLocation" ThisKey="GeoLocation_ID" OtherKey="GeoLocation_ID" Type="GeoLocation" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Procurer" Member="Procurers">

@@ -82,11 +82,11 @@ namespace BidForKids.Models
                 SoldFor = procurement.SoldFor,
                 Category_ID = procurement.Category_ID,
                 CategoryName = procurement.Category == null ? "" : procurement.Category.CategoryName,
-                GeoLocation_ID = procurement.GeoLocation_ID,
-                GeoLocationName = procurement.GeoLocation == null ? "" : procurement.GeoLocation.GeoLocationName,
+                GeoLocation_ID = procurement.ContactProcurement.Donor == null ? null : procurement.ContactProcurement.Donor.GeoLocation_ID,
+                GeoLocationName = (procurement.ContactProcurement.Donor == null || procurement.ContactProcurement.Donor.GeoLocation == null) ? "" : procurement.ContactProcurement.Donor.GeoLocation.GeoLocationName,
                 PerItemValue = procurement.PerItemValue,
-                BusinessName = procurement.ContactProcurement.Contact.BusinessName,
-                PersonName = procurement.ContactProcurement.Contact.FirstName + " " + procurement.ContactProcurement.Contact.LastName,
+                BusinessName = procurement.ContactProcurement.Donor.BusinessName,
+                PersonName = procurement.ContactProcurement.Donor == null ? "" : procurement.ContactProcurement.Donor.FirstName + " " + procurement.ContactProcurement.Donor.LastName,
                 Procurer_ID = procurement.Procurement_ID,
                 ProcurerName = procurement.ContactProcurement.Procurer == null ? "" : procurement.ContactProcurement.Procurer.FirstName + " " + procurement.ContactProcurement.Procurer.LastName
             };
@@ -100,7 +100,7 @@ namespace BidForKids.Models
                 + " LEFT JOIN GeoLocation ON Procurement.GeoLocation_ID = GeoLocation.GeoLocation_ID "
                 + " LEFT JOIN Category ON Procurement.Category_ID = Category.Category_ID "
                 + " LEFT JOIN Procurer ON CP.Procurer_ID = Procurer.Procurer_ID "
-                + " LEFT JOIN Contact ON CP.Contact_ID = Contact.Contact_ID "
+                + " LEFT JOIN Donor ON CP.Donor_ID = Donor.Donor_ID "
                 + " where ";
             int lParamCount = 0;
             foreach (string item in searchParams.Keys.ToList())
@@ -124,7 +124,7 @@ namespace BidForKids.Models
                 // TODO: Fix the hack on the table name
                 if (lField.ToLower() == "businessname")
                 {
-                    lField = "Contact.BusinessName";
+                    lField = "Donor.BusinessName";
                 }
 
 
@@ -218,21 +218,21 @@ namespace BidForKids.Models
 
 
         /// <summary>
-        /// Saves changes to the Contact object passed
+        /// Saves changes to the Donor object passed
         /// </summary>
-        /// <param name="procurement">Contact object with changes to be saved</param>
+        /// <param name="procurement">Donor object with changes to be saved</param>
         /// <returns>True if save was successful, false if it was not.</returns>
-        public bool SaveContact(Contact contact)
+        public bool SaveDonor(Donor Donor)
         {
-            if (contact == null)
+            if (Donor == null)
             {
-                throw new ArgumentNullException("contact");
+                throw new ArgumentNullException("Donor");
             }
 
             bool lResult = false;
-            Contact lOld = GetContact(contact.Contact_ID);
+            Donor lOld = GetDonor(Donor.Donor_ID);
 
-            lOld = contact;
+            lOld = Donor;
 
             dc.SubmitChanges();
 
@@ -295,12 +295,12 @@ namespace BidForKids.Models
         }
 
         /// <summary>
-        /// Returns a new empty Contact object
+        /// Returns a new empty Donor object
         /// </summary>
         /// <returns></returns>
-        public Contact GetNewContact()
+        public Donor GetNewDonor()
         {
-            return new Contact();
+            return new Donor();
         }
 
         /// <summary>
@@ -340,22 +340,22 @@ namespace BidForKids.Models
 
 
         /// <summary>
-        /// Adds a new Contact to the Contacts collection
+        /// Adds a new Donor to the Donors collection
         /// </summary>
-        /// <param name="contact">Instance of Contact object to add to collection.</param>
-        /// <returns>Contact_ID of the newly added Contact</returns>
-        public int AddContact(Contact contact)
+        /// <param name="Donor">Instance of Donor object to add to collection.</param>
+        /// <returns>Donor_ID of the newly added Donor</returns>
+        public int AddDonor(Donor Donor)
         {
-            if (contact == null)
+            if (Donor == null)
             {
-                throw new ArgumentNullException("contact");
+                throw new ArgumentNullException("Donor");
             }
 
-            dc.Contacts.InsertOnSubmit(contact);
+            dc.Donors.InsertOnSubmit(Donor);
 
             dc.SubmitChanges();
 
-            return contact.Contact_ID;
+            return Donor.Donor_ID;
         }
 
 
@@ -408,12 +408,12 @@ namespace BidForKids.Models
 
 
         /// <summary>
-        /// Returns a List of Contact objects
+        /// Returns a List of Donor objects
         /// </summary>
-        /// <returns>A list of Contact objects</returns>
-        public List<Contact> GetContacts()
+        /// <returns>A list of Donor objects</returns>
+        public List<Donor> GetDonors()
         {
-            List<Contact> lResult = dc.Contacts.ToList();
+            List<Donor> lResult = dc.Donors.ToList();
 
             return lResult;
         }
@@ -469,17 +469,17 @@ namespace BidForKids.Models
 
 
         /// <summary>
-        /// Returns a Contact object by Contact_ID
+        /// Returns a Donor object by Donor_ID
         /// </summary>
-        /// <param name="id">ID of the Contact object to return</param>
-        /// <returns>An instance of a Contact object</returns>
-        public Contact GetContact(int id)
+        /// <param name="id">ID of the Donor object to return</param>
+        /// <returns>An instance of a Donor object</returns>
+        public Donor GetDonor(int id)
         {
-            var lContact = from C in dc.Contacts where C.Contact_ID == id select C;
+            var lContact = from C in dc.Donors where C.Donor_ID == id select C;
 
             if (lContact == null || lContact.Count() == 0)
             {
-                throw new ApplicationException("Unable to locate contact by ID " + id.ToString());
+                throw new ApplicationException("Unable to locate Donor by ID " + id.ToString());
             }
 
             return lContact.First();

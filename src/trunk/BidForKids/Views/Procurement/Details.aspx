@@ -20,9 +20,9 @@
         </p>
         <p>
             Business / Person:
-            <%= Html.Encode(Model.ContactProcurement.Contact.BusinessName) %>
+            <%= Html.Encode(Model.ContactProcurement.Donor.BusinessName) %>
             <br />
-            <%= Html.Encode(Model.ContactProcurement.Contact.FirstName + " " + Model.ContactProcurement.Contact.LastName)%>
+            <%= Html.Encode(Model.ContactProcurement.Donor.FirstName + " " + Model.ContactProcurement.Donor.LastName)%>
         </p>
         <p>
             Catalog #:

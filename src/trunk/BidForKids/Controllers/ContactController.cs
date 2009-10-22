@@ -8,69 +8,69 @@ using BidForKids.Models;
 
 namespace BidForKids.Controllers
 {
-    public class ContactController : Controller
+    public class DonorController : Controller
     {
         private IProcurementFactory factory;
 
-        public ContactController(IProcurementFactory factory)
+        public DonorController(IProcurementFactory factory)
         {
             this.factory = factory;
         }
 
         //
-        // GET: /Contact/
+        // GET: /Donor/
 
         public ActionResult Index()
         {
-            return View(factory.GetContacts());
+            return View(factory.GetDonors());
         }
 
         //
-        // GET: /Contact/Details/5
+        // GET: /Donor/Details/5
 
         public ActionResult Details(int id)
         {
-            return View(factory.GetContact(id));
+            return View(factory.GetDonor(id));
         }
 
         //
-        // GET: /Contact/Create
+        // GET: /Donor/Create
 
         public ActionResult Create()
         {
             return View();
         }
 
-        private void SetContactValues(FormCollection collection, Contact contact)
+        private void SetContactValues(FormCollection collection, Donor Donor)
         {
-            contact.Address = collection["Address"];
-            contact.BusinessName = collection["BusinessName"];
-            contact.City = collection["City"];
-            contact.FirstName = collection["FirstName"];
-            contact.LastName = collection["LastName"];
-            contact.Notes = collection["Notes"];
-            contact.Phone1 = collection["Phone1"];
-            contact.Phone1Desc = collection["Phone1Desc"];
-            contact.Phone2 = collection["Phone2"];
-            contact.Phone2Desc = collection["Phone2Desc"];
-            contact.Phone3 = collection["Phone3"];
-            contact.Phone3Desc = collection["Phone3Desc"];
-            contact.State = collection["State"];
-            contact.ZipCode = collection["ZipCode"];
+            Donor.Address = collection["Address"];
+            Donor.BusinessName = collection["BusinessName"];
+            Donor.City = collection["City"];
+            Donor.FirstName = collection["FirstName"];
+            Donor.LastName = collection["LastName"];
+            Donor.Notes = collection["Notes"];
+            Donor.Phone1 = collection["Phone1"];
+            Donor.Phone1Desc = collection["Phone1Desc"];
+            Donor.Phone2 = collection["Phone2"];
+            Donor.Phone2Desc = collection["Phone2Desc"];
+            Donor.Phone3 = collection["Phone3"];
+            Donor.Phone3Desc = collection["Phone3Desc"];
+            Donor.State = collection["State"];
+            Donor.ZipCode = collection["ZipCode"];
         }
         //
-        // POST: /Contact/Create
+        // POST: /Donor/Create
 
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Create(FormCollection collection)
         {
             try
             {
-                Contact lNewContact = factory.GetNewContact();
+                Donor lNewContact = factory.GetNewDonor();
 
                 SetContactValues(collection, lNewContact);
 
-                int lNewContactID = factory.AddContact(lNewContact);
+                int lNewContactID = factory.AddDonor(lNewContact);
 
                 return RedirectToAction("Index");
             }
@@ -81,35 +81,35 @@ namespace BidForKids.Controllers
         }
 
         //
-        // GET: /Contact/Edit/5
+        // GET: /Donor/Edit/5
 
         public ActionResult Edit(int id)
         {
-            return View(factory.GetContact(id));
+            return View(factory.GetDonor(id));
         }
 
         //
-        // POST: /Contact/Edit/5
+        // POST: /Donor/Edit/5
 
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Edit(int id, FormCollection collection)
         {
             try
             {
-                Contact lContact = factory.GetContact(id);
+                Donor lContact = factory.GetDonor(id);
 
                 SetContactValues(collection, lContact);
 
-                if (factory.SaveContact(lContact) == false)
+                if (factory.SaveDonor(lContact) == false)
                 {
-                    throw new ApplicationException("Unable to save contact");
+                    throw new ApplicationException("Unable to save Donor");
                 }
 
                 return RedirectToAction("Index");
             }
             catch
             {
-                return View(factory.GetContact(id));
+                return View(factory.GetDonor(id));
             }
         }
     }

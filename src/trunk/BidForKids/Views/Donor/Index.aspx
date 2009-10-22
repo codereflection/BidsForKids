@@ -1,18 +1,18 @@
-<%@ Page Title="Businesses and Contacts" Language="C#" MasterPageFile="~/Views/Shared/Admin.Master" Inherits="System.Web.Mvc.ViewPage<IEnumerable<BidForKids.Models.Contact>>" %>
+<%@ Page Title="Businesses and Donors" Language="C#" MasterPageFile="~/Views/Shared/Admin.Master" Inherits="System.Web.Mvc.ViewPage<IEnumerable<BidForKids.Models.Donor>>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
-	Businesses and Contacts
+	Donors
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
-    <h2>Businesses and Contacts</h2>
+    <h2>Donors</h2>
 
     <table>
         <tr>
             <th></th>
             <th>
-                Contact_ID
+                Donor_ID
             </th>
             <th>
                 Business Name
@@ -62,11 +62,11 @@
     
         <tr>
             <td>
-                <%= Html.ActionLink("Edit", "Edit", new { id=item.Contact_ID }) %> |
-                <%= Html.ActionLink("Details", "Details", new { id=item.Contact_ID })%>
+                <%= Html.ActionLink("Edit", "Edit", new { id=item.Donor_ID }) %> |
+                <%= Html.ActionLink("Details", "Details", new { id=item.Donor_ID })%>
             </td>
             <td>
-                <%= Html.Encode(item.Contact_ID) %>
+                <%= Html.Encode(item.Donor_ID) %>
             </td>
             <td>
                 <%= Html.Encode(item.BusinessName) %>

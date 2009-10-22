@@ -1,18 +1,18 @@
-<%@ Page Title="Business or Contact Details" Language="C#" MasterPageFile="~/Views/Shared/Admin.Master" Inherits="System.Web.Mvc.ViewPage<BidForKids.Models.Contact>" %>
+<%@ Page Title="Business or Donor Details" Language="C#" MasterPageFile="~/Views/Shared/Admin.Master" Inherits="System.Web.Mvc.ViewPage<BidForKids.Models.Donor>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
-	Business or Contact Details
+	Donor Details
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
-    <h2>Business or Contact Details</h2>
+    <h2>Donor Details</h2>
 
     <fieldset>
         <legend>Fields</legend>
         <p>
-            Contact_ID:
-            <%= Html.Encode(Model.Contact_ID) %>
+            Donor_ID:
+            <%= Html.Encode(Model.Donor_ID) %>
         </p>
         <p>
             Business Name:
@@ -73,7 +73,7 @@
     </fieldset>
     <p>
 
-        <%=Html.ActionLink("Edit", "Edit", new { id=Model.Contact_ID }) %> |
+        <%=Html.ActionLink("Edit", "Edit", new { id=Model.Donor_ID }) %> |
         <%=Html.ActionLink("Back to List", "Index") %>
     </p>
 

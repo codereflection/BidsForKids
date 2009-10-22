@@ -16,7 +16,7 @@ namespace BidForKids.Tests.Controllers
             public void ReturnsViewResultWithDefaultViewName()
             {
                 // Arrange
-                var controller = new ContactController(_ProcurementFactory);
+                var controller = new DonorController(_ProcurementFactory);
 
                 // Act
                 var result = controller.Index();
@@ -30,7 +30,7 @@ namespace BidForKids.Tests.Controllers
             public void SetsViewDataWithContactModel()
             {
                 // Arrange
-                var controller = new ContactController(_ProcurementFactory);
+                var controller = new DonorController(_ProcurementFactory);
 
                 // Act
                 var result = controller.Index();
@@ -38,7 +38,7 @@ namespace BidForKids.Tests.Controllers
                 // Assert
                 var viewResult = Assert.IsType<ViewResult>(result);
                 Assert.Empty(viewResult.ViewName);
-                Assert.IsType<List<Contact>>(viewResult.ViewData.Model);
+                Assert.IsType<List<Donor>>(viewResult.ViewData.Model);
             }
         }
 
@@ -48,7 +48,7 @@ namespace BidForKids.Tests.Controllers
             public void ReturnsViewResultWithDefaultViewName()
             {
                 // Arrange
-                var controller = new ContactController(_ProcurementFactory);
+                var controller = new DonorController(_ProcurementFactory);
 
                 // Act
                 var result = controller.Create();
@@ -65,7 +65,7 @@ namespace BidForKids.Tests.Controllers
             public void ReturnsViewResultWithDefaultViewName()
             {
                 // Arrange
-                var controller = new ContactController(_ProcurementFactory);
+                var controller = new DonorController(_ProcurementFactory);
 
                 // Act
                 var result = controller.Edit(0);
@@ -79,14 +79,14 @@ namespace BidForKids.Tests.Controllers
             public void SetsViewDataWithContactModel()
             {
                 // Arrange
-                var controller = new ContactController(_ProcurementFactory);
+                var controller = new DonorController(_ProcurementFactory);
 
                 // Act
                 var result = controller.Edit(0);
 
                 // Assert
                 var viewResult = Assert.IsType<ViewResult>(result);
-                Assert.IsType<Contact>(viewResult.ViewData.Model);
+                Assert.IsType<Donor>(viewResult.ViewData.Model);
             }
         }
 
@@ -96,7 +96,7 @@ namespace BidForKids.Tests.Controllers
             public void ReturnsViewResultWithDefaultViewName()
             {
                 // Arrange
-                var controller = new ContactController(_ProcurementFactory);
+                var controller = new DonorController(_ProcurementFactory);
 
                 // Act
                 var result = controller.Details(0);
@@ -110,7 +110,7 @@ namespace BidForKids.Tests.Controllers
             public void SetsViewDataWithContactModel()
             {
                 // Arrange
-                var controller = new ContactController(_ProcurementFactory);
+                var controller = new DonorController(_ProcurementFactory);
 
                 // Act
                 var result = controller.Details(0);
@@ -118,7 +118,7 @@ namespace BidForKids.Tests.Controllers
                 // Assert
                 var viewResult = Assert.IsType<ViewResult>(result);
                 Assert.Empty(viewResult.ViewName);
-                Assert.IsType<Contact>(viewResult.ViewData.Model);
+                Assert.IsType<Donor>(viewResult.ViewData.Model);
             }
         }
     }
