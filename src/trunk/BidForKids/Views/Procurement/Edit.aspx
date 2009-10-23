@@ -40,6 +40,9 @@
     <fieldset>
         <legend>Fields</legend>
         <p>
+            <input type="submit" value="Save" />
+        </p>
+        <p>
             <label for="Procurement_ID">
                 Procurement_ID:</label>
             <%= Html.Encode(Model.Procurement_ID) %>

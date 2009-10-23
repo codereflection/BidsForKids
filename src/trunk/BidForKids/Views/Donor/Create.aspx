@@ -19,6 +19,12 @@
             <%= Html.DropDownList("GeoLocation_ID", "")%>&nbsp;<%= Html.ActionLink("new", "Create", "GeoLocation", new { ReturnTo = Server.UrlEncode("Donor/Create") }, null)%>
         </p>
         <p>
+            <label for="Donates">
+                Donates:</label>
+            <%= Html.CheckBox("Donates") %>
+            <%= Html.ValidationMessage("Donates", "") %>
+        </p>
+        <p>
             <label for="BusinessName">
                 Business Name:</label>
             <%= Html.TextBox("BusinessName") %>
@@ -95,6 +101,18 @@
                 Phone 3 Desc:</label>
             <%= Html.TextBox("Phone3Desc") %>
             <%= Html.ValidationMessage("Phone3Desc", "*") %>
+        </p>
+        <p>
+            <label for="Email">
+                Email:</label>
+            <%= Html.TextBox("Email") %>
+            <%= Html.ValidationMessage("Email", "*") %>
+        </p>
+        <p>
+            <label for="Website">
+                Website:</label>
+            <%= Html.TextBox("Website")%>
+            <%= Html.ValidationMessage("Website", "*")%>
         </p>
         <p>
             <label for="Notes">

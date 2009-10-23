@@ -7,8 +7,17 @@
     <h2>
         Reports</h2>
     <ul>
-        <li><%= Html.ActionLink("2008 Procurement List", "ProcurementList", "Procurement", new { Year = "2008" }, null)%></li>
-        <li><%= Html.ActionLink("2009 Procurement List", "ProcurementList", "Procurement", new { Year = "2009" }, null)%></li>
-        <li><%= Html.ActionLink("2010 Procurement List", "ProcurementList", "Procurement", new { Year = "2010" }, null)%></li>
+        <li>
+            <%= Html.ActionLink("2008 Procurement List", "ProcurementList", "Procurement", new { Year = "2008" }, null)%></li>
+        <li>
+            <%= Html.ActionLink("2009 Procurement List", "ProcurementList", "Procurement", new { Year = "2009" }, null)%></li>
+        <li>
+            <%= Html.ActionLink("2010 Procurement List", "ProcurementList", "Procurement", new { Year = "2010" }, null)%></li>
+    </ul>
+    <h2>
+        Donor Reports</h2>
+    <ul>
+        <li>
+            <%= Html.ActionLink("By geo Location","GeoLocationReports", "Home") %></li>
     </ul>
 </asp:Content>

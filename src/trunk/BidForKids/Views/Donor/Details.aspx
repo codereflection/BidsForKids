@@ -15,6 +15,10 @@
             <%= Html.Encode(Model.Donor_ID) %>
         </p>
         <p>
+            Donates:
+            <%= Html.Encode(Model.Donates) %>
+        </p>    
+        <p>
             Business Name:
             <%= Html.Encode(Model.BusinessName) %>
         </p>
@@ -65,6 +69,14 @@
         <p>
             Phone 3 Desc:
             <%= Html.Encode(Model.Phone3Desc) %>
+        </p>
+        <p>
+            Email:
+            <%= Html.Encode(Model.Email) %>
+        </p>
+        <p>
+            Website:
+            <%= Html.Encode(Model.Website) %>
         </p>
         <p>
             Notes:

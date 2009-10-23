@@ -1293,6 +1293,8 @@ namespace BidForKids.Models
 		
 		private System.Nullable<int> _GeoLocation_ID;
 		
+		private System.Nullable<bool> _Donates;
+		
 		private EntitySet<ContactProcurement> _ContactProcurements;
 		
 		private EntityRef<GeoLocation> _GeoLocation;
@@ -1337,6 +1339,8 @@ namespace BidForKids.Models
     partial void OnEmailChanged();
     partial void OnGeoLocation_IDChanging(System.Nullable<int> value);
     partial void OnGeoLocation_IDChanged();
+    partial void OnDonatesChanging(System.Nullable<bool> value);
+    partial void OnDonatesChanged();
     #endregion
 		
 		public Donor()
@@ -1706,6 +1710,26 @@ namespace BidForKids.Models
 					this._GeoLocation_ID = value;
 					this.SendPropertyChanged("GeoLocation_ID");
 					this.OnGeoLocation_IDChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_Donates", DbType="bit")]
+		public System.Nullable<bool> Donates
+		{
+			get
+			{
+				return this._Donates;
+			}
+			set
+			{
+				if ((this._Donates != value))
+				{
+					this.OnDonatesChanging(value);
+					this.SendPropertyChanging();
+					this._Donates = value;
+					this.SendPropertyChanged("Donates");
+					this.OnDonatesChanged();
 				}
 			}
 		}

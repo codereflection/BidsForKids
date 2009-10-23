@@ -50,6 +50,18 @@ namespace BidForKids.Controllers
 
         public ActionResult Index()
         {
+            var lGeoLocations = factory.GetGeoLocations();
+
+            var lGeoLocationString = "{";
+
+            foreach (var lGeoLocation in lGeoLocations)
+            {
+                lGeoLocationString += String.Format("{0}:'{1}',", lGeoLocation.GeoLocation_ID, lGeoLocation.GeoLocationName);
+            }
+            lGeoLocationString = lGeoLocationString.TrimEnd(new[] { ',' });
+            lGeoLocationString += "}";
+
+            ViewData["GeoLocationJsonString"] = lGeoLocationString;
             return View(factory.GetDonors());
         }
 
@@ -61,6 +73,30 @@ namespace BidForKids.Controllers
             return View();
         }
 
+        //
+        // GET: /Donor/GridIndex
+
+        public ActionResult GeoList(int? id)
+        {
+            if (id.HasValue == true  && id > 0)
+            {
+                var lDonors = factory.GetDonors().Where(x => x.GeoLocation_ID == id).OrderBy(x => x.BusinessName);
+
+                return View(lDonors);
+            }
+            else if (id.HasValue == true && id == 0)
+            {
+                var lDonors = factory.GetDonors().Where(x => x.GeoLocation_ID == null).OrderBy(x => x.BusinessName);
+
+                return View(lDonors);
+            }
+            else
+            {
+                var lDonors = factory.GetDonors().OrderBy(x => x.BusinessName);
+
+                return View(lDonors);
+            }
+        }
 
         //
         // GET: /Donor/Details/5
@@ -146,7 +182,10 @@ namespace BidForKids.Controllers
                     "Phone3Desc",
                     "State",
                     "ZipCode",
-                    "GeoLocation_ID"
+                    "GeoLocation_ID",
+                    "Donates",
+                    "Email",
+                    "Website"
                 });
 
                 int lNewDonorID = factory.AddDonor(lNewDonor);
@@ -177,6 +216,49 @@ namespace BidForKids.Controllers
             return View(factory.GetDonor(id));
         }
 
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult AjaxEdit(int id, FormCollection collection)
+        {
+            try
+            {
+                Donor lDonor = factory.GetDonor(id);
+
+                SetupEditViewData(lDonor);
+
+                UpdateModel<Donor>(lDonor, new[] {
+                    "Address",
+                    "BusinessName",
+                    "City",
+                    "FirstName",
+                    "LastName",
+                    "Notes",
+                    "Phone1",
+                    "Phone1Desc",
+                    "Phone2",
+                    "Phone2Desc",
+                    "Phone3",
+                    "Phone3Desc",
+                    "State",
+                    "ZipCode",
+                    "GeoLocation_ID",
+                    "Donates",
+                    "Email",
+                    "Website"
+                });
+
+                if (factory.SaveDonor(lDonor) == false)
+                {
+                    throw new ApplicationException("Unable to save Donor");
+                }
+
+                return Content("");
+            }
+            catch
+            {
+                return Content("");
+            }
+        }
+
         //
         // POST: /Donor/Edit/5
 
@@ -204,7 +286,10 @@ namespace BidForKids.Controllers
                     "Phone3Desc",
                     "State",
                     "ZipCode",
-                    "GeoLocation_ID"
+                    "GeoLocation_ID",
+                    "Donates",
+                    "Email",
+                    "Website"
                 });
 
                 if (factory.SaveDonor(lDonor) == false)

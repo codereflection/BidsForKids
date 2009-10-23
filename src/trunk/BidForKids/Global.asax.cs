@@ -22,9 +22,15 @@ namespace BidForKids
 
             routes.MapRoute(
                 "Default",                                              // Route name
-                "{controller}/{action}/{id}",                           // URL with parameters
+                "{controller}.aspx/{action}/{id}",                           // URL with parameters
                 new { controller = "Home", action = "Index", id = "" }  // Parameter defaults
             );
+
+            //routes.MapRoute(
+            //    "Default",
+            //    "{controller}.aspx/{action}/{id}",
+            //    new { controller = "Home", action = "Index", id = "" }
+            //    );
 
         }
 

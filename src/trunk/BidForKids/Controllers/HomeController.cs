@@ -3,17 +3,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using BidForKids.Models;
 
 namespace BidForKids.Controllers
 {
     [HandleError]
     public class HomeController : Controller
     {
+        private IProcurementFactory factory;
+
+        public HomeController(IProcurementFactory factory)
+        {
+            this.factory = factory;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the HomeController class.
+        /// </summary>
+        public HomeController()
+        {
+            
+        }
+
         public ActionResult Index()
         {
             ViewData["Message"] = "Welcome to the Gatewood Elementary 'Bid For Kids' Auction Procurement Database!";
 
-            return View();
+            return View(factory.GetGeoLocations());
         }
 
         public ActionResult About()
@@ -35,6 +51,16 @@ namespace BidForKids.Controllers
         public ActionResult Reports()
         {
             return View();
+        }
+
+        public ActionResult GeoLocationDonorList()
+        {
+            return PartialView(factory.GetGeoLocations());
+        }
+
+        public ActionResult GeoLocationReports()
+        {
+            return View(factory.GetGeoLocations());
         }
     }
 }

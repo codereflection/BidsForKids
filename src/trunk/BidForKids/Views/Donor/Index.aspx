@@ -1,119 +1,88 @@
-<%@ Page Title="Businesses and Donors" Language="C#" MasterPageFile="~/Views/Shared/Admin.Master"
+<%@ Page Title="Donors" Language="C#" MasterPageFile="~/Views/Shared/Site.Master"
     Inherits="System.Web.Mvc.ViewPage<IEnumerable<BidForKids.Models.Donor>>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
     Donors
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+    <script src="<%= Url.Content("~/Scripts/jquery-1.3.2.js") %>" type="text/javascript"></script>
+
+    <script src="<%= Url.Content("~/Scripts/jquery-ui-1.7.2.custom.min.js") %>" type="text/javascript"></script>
+
+    <script src="<%= Url.Content("~/Scripts/jqGrid/grid.locale-en.js") %>" type="text/javascript"></script>
+
+    <script src="<%= Url.Content("~/Scripts/jqGrid/jquery.jqGrid.min.js") %>" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        var lastsel;
+        $(document).ready(function() {
+            var donorGrid = $("#donorGrid").jqGrid({
+                datatype: 'json',
+                url: 'Donor.aspx/GetDonors/',
+                jsonReader: {
+                    root: "rows",
+                    page: "page",
+                    total: "total",
+                    records: "records",
+                    repeatitems: false,
+                    id: "4"
+                },
+                colModel: [
+                    { name: 'act', index: 'act', width: 20, sortable: false, search: false, label: ' ', align: 'center' },
+                    { name: 'BusinessName', index: 'BusinessName', label: 'Business Name' },
+                    { name: 'FirstName', index: 'FirstName', label: 'First Name', editable: true },
+                    { name: 'LastName', index: 'LastName', label: 'Last Name', editable: true },
+                    { name: 'Address', index: 'Address', label: 'Address', editable: true },
+                    { name: 'City', index: 'City', label: 'City', editable: true },
+                    { name: 'State', index: 'State', label: 'State', editable: true },
+                    { name: 'ZipCode', index: 'ZipCode', label: 'Zip', editable: true },
+                    { name: 'Email', index: 'Email', label: 'Email', editable: true },
+                    { name: 'Phone1', index: 'Phone1', label: 'Phone 1', editable: true },
+                    { name: 'Phone1Desc', index: 'Phone1Desc', label: 'Phone 1 Desc', editable: true },
+                    { name: 'GeoLocationName', index: 'GeoLocationName', label: 'GeoLocationName', hidden: true },
+                    { name: 'GeoLocation_ID', index: 'GeoLocation_ID', label: 'Geo Location', editable: true, edittype: 'select', editoptions: { value: <%= ViewData["GeoLocationJsonString"] %> }, formatter: 'select' },
+                    { name: 'Donates', index: 'Donates', label: 'Donates', formatter: 'checkbox', editable: true, edittype: 'checkbox', editoptions: { value:"true:false" } },
+                    { name: 'Donor_ID', index: 'Donor_ID', width: 30, hidden: true, key: true }
+                ],
+                pager: '#pager',
+                viewrecords: true,
+                rowNum: 20,
+                rowList: [2, 10, 20, 30, 40, 50, 60, 70, 100],
+                width: 1170,
+                height: 'auto',
+                loadComplete: function() {
+                var ids = $("#donorGrid").getDataIDs();
+                    for (var i = 0; i < ids.length; i++) {
+                        var cl = ids[i];
+                        var editLink = "<a href='Donor.aspx/Edit/" + cl + "'>Edit</a>";
+                        var detailsLink = ""; //= "&nbsp;|&nbsp;<a href='Details/" + cl + "'>Details</a>";
+                        jQuery("#donorGrid").setRowData(ids[i], { act: editLink + detailsLink });
+                    }
+                },
+                multiselect: false,
+                onSelectRow: function(rowid, status) {
+                var lData = donorGrid.getRowData(rowid);
+                    if (rowid && rowid !== lastsel) {
+                        jQuery('#donorGrid').restoreRow(lastsel);
+                        jQuery('#donorGrid').editRow(rowid, true);
+                        lastsel = rowid;
+                    }
+                },
+                editurl: 'Donor.aspx/AjaxEdit'
+            });
+            donorGrid.filterToolbar();
+            donorGrid.navGrid("#pager", { edit: false, add: false, del: false, search: false });
+        });
+    </script>
+
     <h2>
         Donors</h2>
-    <p>
-        <%= Html.ActionLink("Create New", "Create") %>
-    </p>
-    <table>
-        <tr>
-            <th>
-            </th>
-            <th>
-                ID
-            </th>
-            <th>
-                Business Name
-            </th>
-            <th>
-                First Name
-            </th>
-            <th>
-                Last Name
-            </th>
-            <th>
-                Address
-            </th>
-            <th>
-                City
-            </th>
-            <th>
-                State
-            </th>
-            <th>
-                Zip Code
-            </th>
-            <th>
-                Phone 1
-            </th>
-            <th>
-                Phone 1 Desc
-            </th>
-            <th>
-                Phone 2
-            </th>
-            <th>
-                Phone 2 Desc
-            </th>
-            <th>
-                Location
-            </th>
-        </tr>
-        <% foreach (var item in Model)
-           { %>
-        <tr>
-            <td>
-                <%= Html.ActionLink("Edit", "Edit", new { id=item.Donor_ID }) %>
-                |
-                <%= Html.ActionLink("Details", "Details", new { id=item.Donor_ID })%>
-            </td>
-            <td>
-                <%= Html.Encode(item.Donor_ID) %>
-            </td>
-            <td>
-                <%= Html.Encode(item.BusinessName) %>
-            </td>
-            <td>
-                <%= Html.Encode(item.FirstName) %>
-            </td>
-            <td>
-                <%= Html.Encode(item.LastName) %>
-            </td>
-            <td>
-                <%= Html.Encode(item.Address) %>
-            </td>
-            <td>
-                <%= Html.Encode(item.City) %>
-            </td>
-            <td>
-                <%= Html.Encode(item.State) %>
-            </td>
-            <td>
-                <%= Html.Encode(item.ZipCode) %>
-            </td>
-            <td>
-                <%= Html.Encode(item.Phone1) %>
-            </td>
-            <td>
-                <%= Html.Encode(item.Phone1Desc) %>
-            </td>
-            <td>
-                <%= Html.Encode(item.Phone2) %>
-            </td>
-            <td>
-                <%= Html.Encode(item.Phone2Desc) %>
-            </td>
-            <td>
-                <%= item.GeoLocation == null ? "" : Html.Encode(item.GeoLocation.GeoLocationName) %>
-            </td>
-        </tr>
-        <tr>
-            <td>
-            </td>
-            <td>
-                Notes:
-            </td>
-            <td colspan="12">
-                <%= Html.Encode(item.Notes) %>
-            </td>
-        </tr>
-        <% } %>
+    <table id="donorGrid">
     </table>
+    <div id="pager">
+    </div>
+    <div id="filter" style="margin-left: 30%; display: none">
+        Search Donors</div>
     <p>
         <%= Html.ActionLink("Create New", "Create") %>
     </p>

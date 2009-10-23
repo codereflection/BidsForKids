@@ -16,7 +16,7 @@
 
     <script type="text/javascript">
         function getProcurement(id) {
-            $.get("/Procurement/GetProcurement/" + id.toString(), {}, function(result) {
+            $.get("Procurement.aspx/GetProcurement/" + id.toString(), {}, function(result) {
                 var lContext = $("#summary");
                 $("#CatalogNumber", lContext).html(result.CatalogNumber);
                 $("#AuctionNumber", lContext).html(result.AuctionNumber);
@@ -30,11 +30,13 @@
                 $("#Notes", lContext).html(result.Notes);
             }, "json");
         }
+        var lastsel;
 
+ 
         $(document).ready(function() {
             var procurementGrid = $("#procurementGrid").jqGrid({
                 datatype: 'json',
-                url: '/Procurement/GetProcurements/',
+                url: 'Procurement.aspx/GetProcurements/',
                 jsonReader: {
                     root: "rows",
                     page: "page",
@@ -50,25 +52,27 @@
                     { name: 'AuctionNumber', index: 'AuctionNumber', width: 32, label: 'Auction #' },
                     { name: 'ItemNumber', index: 'ItemNumber', width: 32, label: 'Item #' },
                     { name: 'Description', index: 'Description' },
-                    { name: 'BusinessName', index: 'BusinessName', label: 'Donor' },
                     { name: 'EstimatedValue', index: 'EstimatedValue', width: 40, formatter: 'currency', align: 'right', label: 'Estimated $' },
+                    { name: 'BusinessName', index: 'BusinessName', label: 'Donor' },
                     { name: 'GeoLocationName', index: 'GeoLocationName', width: 100, label: 'Geo Location', sortable: false },
-                    { name: 'CategoryName', index: 'CategoryName', label: 'Category', width: 100, sortable: false },
+                    { name: 'CategoryName', index: 'CategoryName', label: 'Category', hidden: true, sortable: false, editable: false },
+                    { name: 'Category_ID', index: 'Category_ID', label: 'Category', width: 100, sortable: false, editable: true, edittype: 'select', editoptions: { value: <%= ViewData["CategoryJsonString"] %> }, formatter: 'select' },
                     { name: 'ProcurerName', index: 'ProcurerName', label: 'Procurer', width: 100, sortable: false },
                     { name: 'Year', index: 'Year', width: 30, sortable: false },
                     { name: 'Procurement_ID', index: 'Procurement_ID', width: 30, hidden: true, key: true }
                 ],
                 pager: '#pager',
                 viewrecords: true,
+                editurl: 'Procurement.aspx/AjaxEdit',
                 rowNum: 20,
-                rowList: [2, 10, 20, 30],
-                width: 1500,
+                rowList: [2, 10, 20, 30, 40, 50, 100, 200, 300],
+                width: 1170,
                 height: 'auto',
                 loadComplete: function() {
                     var ids = $("#procurementGrid").getDataIDs();
                     for (var i = 0; i < ids.length; i++) {
                         var cl = ids[i];
-                        var editLink = "<a href='Procurement/Edit/" + cl + "'>Edit</a>";
+                        var editLink = "<a href='Procurement.aspx/Edit/" + cl + "'>Edit</a>";
                         var detailsLink = ""; //= "&nbsp;|&nbsp;<a href='Details/" + cl + "'>Details</a>";
                         jQuery("#procurementGrid").setRowData(ids[i], { act: editLink + detailsLink });
                     }
@@ -77,6 +81,12 @@
                     var lData = procurementGrid.getRowData(rowid);
                     var lID = lData.Procurement_ID;
                     getProcurement(lID);
+
+                    if (rowid && rowid !== lastsel) {
+                        jQuery('#procurementGrid').restoreRow(lastsel);
+                        jQuery('#procurementGrid').editRow(rowid, true);
+                        lastsel = rowid;
+                    }
                 },
                 multiselect: false
             });
@@ -177,7 +187,7 @@
                         <td class="labelCell">
                             Notes
                         </td>
-                        <td class="dataCell" colspan="4">
+                        <td class="dataCell" colspan="5">
                             <div id="Notes">
                             </div>
                         </td>

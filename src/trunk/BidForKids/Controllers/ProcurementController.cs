@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Mvc;
 using BidForKids.Models;
 using BidForKids.Models.SerializableObjects;
+using System.Collections.Specialized;
 
 namespace BidForKids.Controllers
 {
@@ -31,6 +32,19 @@ namespace BidForKids.Controllers
 
         public ActionResult Index()
         {
+            var lCategories = factory.GetCategories();
+
+            var lCategoryString = "{";
+
+            foreach (var lCategory in lCategories)
+            {
+                lCategoryString += String.Format("{0}:'{1}',", lCategory.Category_ID, lCategory.CategoryName);
+            }
+            lCategoryString = lCategoryString.TrimEnd(new[] { ',' });
+            lCategoryString += "}";
+
+            ViewData["CategoryJsonString"] = lCategoryString;
+
             return View(factory.GetProcurements());
         }
 
@@ -48,7 +62,7 @@ namespace BidForKids.Controllers
         {
             jqGridLoadOptions loadOptions = jqGridLoadOptions.GetLoadOptions(Request.QueryString);
 
-            
+
             JsonResult lResult = new JsonResult();
 
 
@@ -226,6 +240,14 @@ namespace BidForKids.Controllers
             }
         }
 
+        //[AcceptVerbs(HttpVerbs.Post)]
+        //public Action Edit()
+        //{
+        //    NameValueCollection collection = Request.Form;
+
+        //    return null;
+        //}
+
         //
         // GET: /Procurement/Edit/5
 
@@ -242,6 +264,69 @@ namespace BidForKids.Controllers
             SetupEditViewData(lProcurement.ContactProcurement);
 
             return View(lProcurement);
+        }
+
+        public ActionResult CategorySelectList()
+        {
+
+            ViewData["Category_ID"] = GetCategoriesSelectList(null);
+
+            return PartialView();
+        }
+
+        public ActionResult AjaxEdit(int? id, FormCollection collection)
+        {
+            if (id.HasValue == false)
+            {
+                return this.JavaScript("alert('Error saving.');");
+                throw new ArgumentException("Invalid Procurement ID was passed.");
+            }
+
+            try
+            {
+                Procurement lProcurement = factory.GetProcurement((int)id);
+
+                SetupEditViewData(lProcurement.ContactProcurement);
+
+                UpdateModel<Procurement>(lProcurement,
+                    new[] {
+                        "CatalogNumber",
+                        "AuctionNumber",
+                        "ItemNumber",
+                        "Description",
+                        "Quantity",
+                        "PerItemValue",
+                        "Notes",
+                        "EstimatedValue",
+                        "SoldFor",
+                        "Category_ID"
+                    });
+
+                UpdateModel<ContactProcurement>(lProcurement.ContactProcurement,
+                    new[] {
+                        "Donor_ID",
+                        "Auction_ID",
+                        "Procurer_ID",
+                        "GeoLocation_ID"
+                    });
+
+                if (factory.SaveProcurement(lProcurement) == false)
+                {
+                    return this.JavaScript("alert('Error saving.');");
+                    throw new ApplicationException("Unable to save procurement");
+                }
+
+                return this.JavaScript("alert('Saved.');");
+            }
+            catch
+            {
+                Procurement lProcurement = factory.GetProcurement((int)id);
+
+                SetupEditViewData(lProcurement.ContactProcurement);
+
+                return this.JavaScript("alert('Error saving.');");
+                //return View(lProcurement);
+            }
         }
 
         //

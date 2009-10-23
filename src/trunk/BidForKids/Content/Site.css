@@ -84,7 +84,7 @@ first child of the left and right table columns */
 page width. Or, you can specify an exact pixel width. */
 .page
 {
-	width: 90%;
+	width: 98%;
 	margin-left: auto;
 	margin-right: auto;
 }
@@ -100,13 +100,13 @@ page width. Or, you can specify an exact pixel width. */
 #header h1
 {
 	font-weight: bold;
-	padding: 5px 0;
+	padding: 3px 0;
 	margin: 0;
 	color: #fff;
 	border: none;
 	line-height: 2em;
 	font-family: Arial, Helvetica, sans-serif;
-	font-size: 32px !important;
+	font-size: 20px !important;
 }
 
 #main
@@ -131,6 +131,7 @@ page width. Or, you can specify an exact pixel width. */
 ----------------------------------------------------------*/
 ul#menu
 {
+	width: 100%;
 	border-bottom: 1px #5C87B2 solid;
 	padding: 0 0 2px;
 	position: relative;
@@ -155,10 +156,10 @@ ul#menu li#greeting
 
 ul#menu li a
 {
-	padding: 10px 20px;
+	padding: 5px 5px;
 	font-weight: bold;
 	text-decoration: none;
-	line-height: 2.8em;
+	line-height: 1.8em;
 	background-color: #e8eef4;
 	color: #034af3;
 }
