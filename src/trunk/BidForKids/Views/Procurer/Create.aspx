@@ -35,6 +35,11 @@
                 <%= Html.ValidationMessage("Email", "*") %>
             </p>
             <p>
+                <label for="Description">Description:</label>
+                <%= Html.TextBox("Description")%>
+                <%= Html.ValidationMessage("Description", "*")%>
+            </p>
+            <p>
                 <input type="submit" value="Create" />
             </p>
         </fieldset>

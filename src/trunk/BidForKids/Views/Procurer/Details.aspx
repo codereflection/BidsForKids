@@ -30,6 +30,10 @@
             Email:
             <%= Html.Encode(Model.Email) %>
         </p>
+        <p>
+            Description:
+            <%= Html.Encode(Model.Description) %>
+        </p>
     </fieldset>
     <p>
 

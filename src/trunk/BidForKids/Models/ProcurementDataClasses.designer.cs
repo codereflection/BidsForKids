@@ -1830,6 +1830,8 @@ namespace BidForKids.Models
 		
 		private string _Email;
 		
+		private string _Description;
+		
 		private EntitySet<ContactProcurement> _ContactProcurements;
 		
     #region Extensibility Method Definitions
@@ -1846,6 +1848,8 @@ namespace BidForKids.Models
     partial void OnPhoneChanged();
     partial void OnEmailChanging(string value);
     partial void OnEmailChanged();
+    partial void OnDescriptionChanging(string value);
+    partial void OnDescriptionChanged();
     #endregion
 		
 		public Procurer()
@@ -1950,6 +1954,26 @@ namespace BidForKids.Models
 					this._Email = value;
 					this.SendPropertyChanged("Email");
 					this.OnEmailChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_Description", DbType="VarChar(255)")]
+		public string Description
+		{
+			get
+			{
+				return this._Description;
+			}
+			set
+			{
+				if ((this._Description != value))
+				{
+					this.OnDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._Description = value;
+					this.SendPropertyChanged("Description");
+					this.OnDescriptionChanged();
 				}
 			}
 		}

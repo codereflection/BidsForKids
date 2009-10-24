@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11.375, 9.25" name="ProcurementDataClasses">
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11.375, 9.5" name="ProcurementDataClasses">
   <DataContextMoniker Name="/ProcurementDataClassesDataContext" />
   <nestedChildShapes>
     <classShape Id="2bd46d01-55ac-4a3d-81e5-f3ca6025612e" absoluteBounds="0.5, 4.875, 2, 1.3862939453125">
@@ -59,13 +59,13 @@
         <elementListCompartment Id="6e3e0b7d-ba51-42c1-8c67-45c664e71ee9" absoluteBounds="6.765, 2.96, 1.9700000000000002, 3.9031168619791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="9788b1be-e826-4f14-a2e8-a6fd99c6044d" absoluteBounds="3.375, 7.25, 2, 1.7708968098958331">
+    <classShape Id="9788b1be-e826-4f14-a2e8-a6fd99c6044d" absoluteBounds="3.375, 7.25, 2, 1.9631982421875005">
       <DataClassMoniker Name="/ProcurementDataClassesDataContext/Procurer" />
       <nestedChildShapes>
-        <elementListCompartment Id="50215997-c00d-42c2-b6a5-85e1aa11aeb1" absoluteBounds="3.39, 7.71, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="50215997-c00d-42c2-b6a5-85e1aa11aeb1" absoluteBounds="3.39, 7.71, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(4.375 : 7.25); (4.375 : 6.64589680989583)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(4.375 : 7.25); (4.375 : 6.64589680989583)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/ProcurementDataClassesDataContext/Procurer/Procurer_ContactProcurement" />
       <nodes>
         <classShapeMoniker Id="9788b1be-e826-4f14-a2e8-a6fd99c6044d" />

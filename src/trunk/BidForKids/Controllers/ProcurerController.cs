@@ -1,9 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Mvc.Ajax;
 using BidForKids.Models;
 
 namespace BidForKids.Controllers
@@ -55,7 +51,8 @@ namespace BidForKids.Controllers
                         "FirstName",
                         "LastName",
                         "Phone",
-                        "Email"
+                        "Email",
+                        "Description"
                 });
 
                 factory.AddProcurer(lNewProcurer);
@@ -90,7 +87,8 @@ namespace BidForKids.Controllers
                         "FirstName",
                         "LastName",
                         "Phone",
-                        "Email"
+                        "Email",
+                        "Description"
                 });
 
                 factory.SaveProcurer(lProcurer);

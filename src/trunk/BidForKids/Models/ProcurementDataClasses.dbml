@@ -87,6 +87,7 @@
       <Column Name="LastName" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
       <Column Name="Phone" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
       <Column Name="Email" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
       <Association Name="Procurer_ContactProcurement" Member="ContactProcurements" ThisKey="Procurer_ID" OtherKey="Procurer_ID" Type="ContactProcurement" />
     </Type>
   </Table>

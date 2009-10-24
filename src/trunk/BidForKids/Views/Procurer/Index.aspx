@@ -26,6 +26,9 @@
             <th>
                 Email
             </th>
+            <th>
+                Description
+            </th>
         </tr>
 
     <% foreach (var item in Model) { %>
@@ -49,6 +52,9 @@
             </td>
             <td>
                 <%= Html.Encode(item.Email) %>
+            </td>
+            <td>
+                <%= Html.Encode(item.Description) %>
             </td>
         </tr>
     
