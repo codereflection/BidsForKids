@@ -5,6 +5,7 @@
     Donors
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+
     <script src="<%= Url.Content("~/Scripts/jquery-1.3.2.js") %>" type="text/javascript"></script>
 
     <script src="<%= Url.Content("~/Scripts/jquery-ui-1.7.2.custom.min.js") %>" type="text/javascript"></script>
@@ -77,6 +78,9 @@
 
     <h2>
         Donors</h2>
+    <p>
+        <%= Html.ActionLink("Create New", "Create") %>
+    </p>
     <table id="donorGrid">
     </table>
     <div id="pager">

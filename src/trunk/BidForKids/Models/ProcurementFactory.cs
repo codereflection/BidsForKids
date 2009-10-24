@@ -124,6 +124,12 @@ namespace BidForKids.Models
                     lField = "Donor.Description";
                 }
 
+                // TODO: Fix the hack on the table name
+                if (lField.ToLower() == "geolocation_id")
+                {
+                    lField = "GeoLocation.GeoLocationName";
+                }
+
                 lSql += lField + " LIKE {" + lParamCount.ToString() + "} ";
                 lParamCount += 1;
             }

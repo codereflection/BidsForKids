@@ -8,6 +8,10 @@
 
     <h2>Index</h2>
 
+    <p>
+        <%= Html.ActionLink("Create New", "Create") %>
+    </p>
+
     <table>
         <tr>
             <th></th>
