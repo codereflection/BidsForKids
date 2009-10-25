@@ -4,6 +4,18 @@
     Geographic List
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+
+    <script src="<%= Url.Content("~/Scripts/jquery-1.3.2.js") %>" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        function hideRow(rowId) {
+            if (rowId === null)
+                return;
+
+            $("#" + rowId).remove();
+        }
+    </script>
+
     <h2>
         Geographic List</h2>
     <table>
@@ -56,10 +68,14 @@
         <% int rowCount = 1; %>
         <% foreach (var item in Model)
            { %>
-        <tr>
+        <tr id="row_<%= rowCount.ToString() %>">
             <td>
                 <% 
                     Response.Write(rowCount.ToString());
+                %>
+                <br />
+                <a href="javascript:void(0);" onclick="hideRow('row_<%= rowCount.ToString() %>');">hide</a>
+                <% 
                     rowCount++;
                 %>
             </td>
