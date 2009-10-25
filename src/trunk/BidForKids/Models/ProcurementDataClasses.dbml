@@ -35,6 +35,8 @@
       <Column Name="EstimatedValue" Type="System.Decimal" DbType="Money" CanBeNull="true" />
       <Column Name="SoldFor" Type="System.Decimal" DbType="Money" CanBeNull="true" />
       <Column Name="Category_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="datetime" CanBeNull="true" />
+      <Column Name="ModifiedOn" Type="System.DateTime" DbType="datetime" CanBeNull="true" />
       <Association Name="Procurement_ContactProcurement" Member="ContactProcurement" Storage="_ContactProcurements" ThisKey="Procurement_ID" OtherKey="Procurement_ID" Type="ContactProcurement" Cardinality="One" />
       <Association Name="Category_Procurement" Member="Category" ThisKey="Category_ID" OtherKey="Category_ID" Type="Category" IsForeignKey="true" />
     </Type>
@@ -75,9 +77,12 @@
       <Column Name="Website" Type="System.String" DbType="VarChar(1024)" CanBeNull="true" />
       <Column Name="Email" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
       <Column Name="GeoLocation_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="Donates" Type="System.Boolean" DbType="bit" CanBeNull="true" />
+      <Column Name="Donates" Type="System.Int32" DbType="tinyint" CanBeNull="true" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="datetime" CanBeNull="true" />
+      <Column Name="ModifiedOn" Type="System.DateTime" DbType="datetime" CanBeNull="true" />
       <Association Name="Donor_ContactProcurement" Member="ContactProcurements" ThisKey="Donor_ID" OtherKey="Donor_ID" Type="ContactProcurement" />
       <Association Name="GeoLocation_Donor" Member="GeoLocation" ThisKey="GeoLocation_ID" OtherKey="GeoLocation_ID" Type="GeoLocation" IsForeignKey="true" />
+      <Association Name="DonatesReference_Donor" Member="DonatesReference" ThisKey="Donates" OtherKey="Donates_ID" Type="DonatesReference" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Procurer" Member="Procurers">
@@ -89,6 +94,13 @@
       <Column Name="Email" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
       <Column Name="Description" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
       <Association Name="Procurer_ContactProcurement" Member="ContactProcurements" ThisKey="Procurer_ID" OtherKey="Procurer_ID" Type="ContactProcurement" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Donates" Member="DonatesReferences">
+    <Type Name="DonatesReference">
+      <Column Name="Donates_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Association Name="DonatesReference_Donor" Member="Donors" ThisKey="Donates_ID" OtherKey="Donates" Type="Donor" />
     </Type>
   </Table>
 </Database>

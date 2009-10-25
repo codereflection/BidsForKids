@@ -71,7 +71,7 @@ namespace BidForKids.Models.SerializableObjects
         public string GeoLocationName { get; set; }
         public string Notes { get; set; }
         public string Website { get; set; }
-        public bool? Donates { get; set; }
+        public int? Donates { get; set; }
         public static SerializableDonor ConvertDonorToSerializableProcurement(Donor donor)
         {
             return new SerializableDonor()
@@ -95,7 +95,7 @@ namespace BidForKids.Models.SerializableObjects
                 Notes = donor.Notes,
                 GeoLocation_ID = donor.GeoLocation_ID,
                 GeoLocationName = (donor.GeoLocation == null) ? "" : donor.GeoLocation.GeoLocationName,
-                Donates = (donor.Donates == null) ? true : donor.Donates
+                Donates = donor.Donates ?? 2 // TODO: Remove hard coded unknown value of 2 for Donor.Donates when null
             };
         }
     }

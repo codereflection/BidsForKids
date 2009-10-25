@@ -138,6 +138,14 @@ namespace BidForKids.Models
 				return this.GetTable<Procurer>();
 			}
 		}
+		
+		public System.Data.Linq.Table<DonatesReference> DonatesReferences
+		{
+			get
+			{
+				return this.GetTable<DonatesReference>();
+			}
+		}
 	}
 	
 	[Table(Name="dbo.Auction")]
@@ -628,6 +636,10 @@ namespace BidForKids.Models
 		
 		private System.Nullable<int> _Category_ID;
 		
+		private System.Nullable<System.DateTime> _CreatedOn;
+		
+		private System.Nullable<System.DateTime> _ModifiedOn;
+		
 		private EntityRef<ContactProcurement> _ContactProcurements;
 		
 		private EntityRef<Category> _Category;
@@ -658,6 +670,10 @@ namespace BidForKids.Models
     partial void OnSoldForChanged();
     partial void OnCategory_IDChanging(System.Nullable<int> value);
     partial void OnCategory_IDChanged();
+    partial void OnCreatedOnChanging(System.Nullable<System.DateTime> value);
+    partial void OnCreatedOnChanged();
+    partial void OnModifiedOnChanging(System.Nullable<System.DateTime> value);
+    partial void OnModifiedOnChanged();
     #endregion
 		
 		public Procurement()
@@ -887,6 +903,46 @@ namespace BidForKids.Models
 					this._Category_ID = value;
 					this.SendPropertyChanged("Category_ID");
 					this.OnCategory_IDChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_CreatedOn", DbType="datetime")]
+		public System.Nullable<System.DateTime> CreatedOn
+		{
+			get
+			{
+				return this._CreatedOn;
+			}
+			set
+			{
+				if ((this._CreatedOn != value))
+				{
+					this.OnCreatedOnChanging(value);
+					this.SendPropertyChanging();
+					this._CreatedOn = value;
+					this.SendPropertyChanged("CreatedOn");
+					this.OnCreatedOnChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_ModifiedOn", DbType="datetime")]
+		public System.Nullable<System.DateTime> ModifiedOn
+		{
+			get
+			{
+				return this._ModifiedOn;
+			}
+			set
+			{
+				if ((this._ModifiedOn != value))
+				{
+					this.OnModifiedOnChanging(value);
+					this.SendPropertyChanging();
+					this._ModifiedOn = value;
+					this.SendPropertyChanged("ModifiedOn");
+					this.OnModifiedOnChanged();
 				}
 			}
 		}
@@ -1293,7 +1349,11 @@ namespace BidForKids.Models
 		
 		private System.Nullable<int> _GeoLocation_ID;
 		
-		private System.Nullable<bool> _Donates;
+		private System.Nullable<int> _Donates;
+		
+		private System.Nullable<System.DateTime> _CreatedOn;
+		
+		private System.Nullable<System.DateTime> _ModifiedOn;
 		
 		private EntitySet<ContactProcurement> _ContactProcurements;
 		
@@ -1339,8 +1399,12 @@ namespace BidForKids.Models
     partial void OnEmailChanged();
     partial void OnGeoLocation_IDChanging(System.Nullable<int> value);
     partial void OnGeoLocation_IDChanged();
-    partial void OnDonatesChanging(System.Nullable<bool> value);
+    partial void OnDonatesChanging(System.Nullable<int> value);
     partial void OnDonatesChanged();
+    partial void OnCreatedOnChanging(System.Nullable<System.DateTime> value);
+    partial void OnCreatedOnChanged();
+    partial void OnModifiedOnChanging(System.Nullable<System.DateTime> value);
+    partial void OnModifiedOnChanged();
     #endregion
 		
 		public Donor()
@@ -1714,8 +1778,8 @@ namespace BidForKids.Models
 			}
 		}
 		
-		[Column(Storage="_Donates", DbType="bit")]
-		public System.Nullable<bool> Donates
+		[Column(Storage="_Donates", DbType="tinyint")]
+		public System.Nullable<int> Donates
 		{
 			get
 			{
@@ -1730,6 +1794,46 @@ namespace BidForKids.Models
 					this._Donates = value;
 					this.SendPropertyChanged("Donates");
 					this.OnDonatesChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_CreatedOn", DbType="datetime")]
+		public System.Nullable<System.DateTime> CreatedOn
+		{
+			get
+			{
+				return this._CreatedOn;
+			}
+			set
+			{
+				if ((this._CreatedOn != value))
+				{
+					this.OnCreatedOnChanging(value);
+					this.SendPropertyChanging();
+					this._CreatedOn = value;
+					this.SendPropertyChanged("CreatedOn");
+					this.OnCreatedOnChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_ModifiedOn", DbType="datetime")]
+		public System.Nullable<System.DateTime> ModifiedOn
+		{
+			get
+			{
+				return this._ModifiedOn;
+			}
+			set
+			{
+				if ((this._ModifiedOn != value))
+				{
+					this.OnModifiedOnChanging(value);
+					this.SendPropertyChanging();
+					this._ModifiedOn = value;
+					this.SendPropertyChanged("ModifiedOn");
+					this.OnModifiedOnChanged();
 				}
 			}
 		}
@@ -2021,6 +2125,51 @@ namespace BidForKids.Models
 		{
 			this.SendPropertyChanging();
 			entity.Procurer = null;
+		}
+	}
+	
+	[Table(Name="dbo.Donates")]
+	public partial class DonatesReference
+	{
+		
+		private System.Nullable<int> _Donates_ID;
+		
+		private string _Description;
+		
+		public DonatesReference()
+		{
+		}
+		
+		[Column(Storage="_Donates_ID", DbType="Int")]
+		public System.Nullable<int> Donates_ID
+		{
+			get
+			{
+				return this._Donates_ID;
+			}
+			set
+			{
+				if ((this._Donates_ID != value))
+				{
+					this._Donates_ID = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_Description", DbType="VarChar(20)")]
+		public string Description
+		{
+			get
+			{
+				return this._Description;
+			}
+			set
+			{
+				if ((this._Description != value))
+				{
+					this._Description = value;
+				}
+			}
 		}
 	}
 }

@@ -122,12 +122,13 @@ namespace BidForKids.Controllers
                 ViewData["GeoLocation_ID"] = GetGeoLocationsSelectList(int.Parse(Request.QueryString["GeoLocation_ID"].ToString()));
             else
                 ViewData["GeoLocation_ID"] = GetGeoLocationsSelectList(null);
-
+            ViewData["Donates"] = GetDonatesSelectList(null);
         }
 
         private void SetupEditViewData(Donor donor)
         {
             ViewData["GeoLocation_ID"] = GetGeoLocationsSelectList(donor.GeoLocation_ID);
+            ViewData["Donates"] = GetDonatesSelectList(donor.Donates);
         }
 
         /// <summary>
@@ -202,6 +203,12 @@ namespace BidForKids.Controllers
         {
             IEnumerable<GeoLocation> lGeoLocations = factory.GetGeoLocations();
             return new SelectList(lGeoLocations.OrderBy(x => x.GeoLocationName), "GeoLocation_ID", "GeoLocationName", selectedValue);
+        }
+
+        private SelectList GetDonatesSelectList(int? selectedValue)
+        {
+            IEnumerable<DonatesReference> lDonatesRef = factory.GetDonatesReferenceList();
+            return new SelectList(lDonatesRef, "Donates_ID", "Description", selectedValue ?? 2); // TODO: Fix hard coded 2 value for unknown Donates value
         }
 
         //

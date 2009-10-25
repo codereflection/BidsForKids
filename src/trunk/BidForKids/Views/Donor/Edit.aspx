@@ -21,14 +21,14 @@
         <p>
             <label for="Donates">
                 Donates:</label>
-            <%= Html.CheckBox("Donates", Model.Donates)%>
+            <%= Html.DropDownList("Donates", "")%>
             <%= Html.ValidationMessage("Donates", "*")%>
         </p>
         <p>
             <label for="BusinessName">
                 Business Name:</label>
             <%= Html.TextBox("BusinessName", Model.BusinessName) %>
-            <%= Html.ValidationMessage("BusinessName", "*") %>
+            <%= Html.ValidationMessage("BusinessName", "*") %><a href="Edit.aspx">Edit.aspx</a>
         </p>
         <p>
             <label for="FirstName">

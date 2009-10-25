@@ -39,6 +39,8 @@ namespace BidForKids.Models
         Procurer GetNewProcurer();
         int AddProcurer(Procurer procurer);
         bool SaveProcurer(Procurer procurer);
+
+        List<DonatesReference> GetDonatesReferenceList();
     }
 
 }

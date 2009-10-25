@@ -1,15 +1,15 @@
 <%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<IEnumerable<BidForKids.Models.Donor>>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
-	Geographic List
+    Geographic List
 </asp:Content>
-
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-
-    <h2>Geographic List</h2>
-
+    <h2>
+        Geographic List</h2>
     <table>
         <tr>
+            <th>
+            </th>
             <th>
                 Business Name
             </th>
@@ -53,10 +53,16 @@
                 Notes
             </th>
         </tr>
-
-    <% foreach (var item in Model) { %>
-    
-        <tr>            
+        <% int rowCount = 1; %>
+        <% foreach (var item in Model)
+           { %>
+        <tr>
+            <td>
+                <% 
+                    Response.Write(rowCount.ToString());
+                    rowCount++;
+                %>
+            </td>
             <td>
                 <%= Html.Encode(item.BusinessName) %>
             </td>
@@ -94,20 +100,24 @@
                 <%= Html.Encode(item.GeoLocation == null ? "" : item.GeoLocation.GeoLocationName) %>
             </td>
             <td>
-                <%= Html.Encode(item.Donates) %>
+                <%
+                    if (item.Donates == null)
+                        Response.Write("Unknown");
+                    else if (item.Donates == 0)
+                        Response.Write("No");
+                    else if (item.Donates == 1)
+                        Response.Write("Yes");
+                    else if (item.Donates == 2)
+                        Response.Write("Unknown");
+                %>
             </td>
             <td>
                 <%= Html.Encode(item.Notes) %>
             </td>
         </tr>
-    
-    <% } %>
-
+        <% } %>
     </table>
-
     <p>
         <%= Html.ActionLink("Create New", "Create") %>
     </p>
-
 </asp:Content>
-

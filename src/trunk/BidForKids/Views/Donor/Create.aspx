@@ -16,12 +16,12 @@
             <label for="GeoLocation_ID">
                 Geographic Location
             </label>
-            <%= Html.DropDownList("GeoLocation_ID", "")%>&nbsp;<%= Html.ActionLink("new", "Create", "GeoLocation", new { ReturnTo = Server.UrlEncode("Donor/Create") }, null)%>
+            <%= Html.DropDownList("GeoLocation_ID", "")%>&nbsp;<%= Html.ActionLink("new", "Create", "GeoLocation", new { ReturnTo = Server.UrlEncode("Donor.aspx/Create") }, null)%>
         </p>
         <p>
             <label for="Donates">
                 Donates:</label>
-            <%= Html.CheckBox("Donates") %>
+            <%= Html.DropDownList("Donates") %>
             <%= Html.ValidationMessage("Donates", "") %>
         </p>
         <p>

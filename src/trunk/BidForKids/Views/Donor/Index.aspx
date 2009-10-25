@@ -42,7 +42,7 @@
                     { name: 'Phone1Desc', index: 'Phone1Desc', label: 'Phone 1 Desc', editable: true },
                     { name: 'GeoLocationName', index: 'GeoLocationName', label: 'GeoLocationName', hidden: true },
                     { name: 'GeoLocation_ID', index: 'GeoLocation_ID', label: 'Geo Location', editable: true, edittype: 'select', editoptions: { value: <%= ViewData["GeoLocationJsonString"] %> }, formatter: 'select' },
-                    { name: 'Donates', index: 'Donates', label: 'Donates', formatter: 'checkbox', editable: true, edittype: 'checkbox', editoptions: { value:"true:false" } },
+                    { name: 'Donates', index: 'Donates', label: 'Donates', formatter: 'select', editable: true, edittype: 'select', editoptions: { value: { 0: "No", 1: "Yes", 2: "Unknown" } } },
                     { name: 'Donor_ID', index: 'Donor_ID', width: 30, hidden: true, key: true }
                 ],
                 pager: '#pager',
@@ -74,6 +74,8 @@
             donorGrid.filterToolbar();
             donorGrid.navGrid("#pager", { edit: false, add: false, del: false, search: false });
         });
+                            //{ name: 'Donates', index: 'Donates', label: 'Donates', formatter: 'checkbox', editable: true, edittype: 'checkbox', editoptions: { value:"true:false" } },
+
     </script>
 
     <h2>

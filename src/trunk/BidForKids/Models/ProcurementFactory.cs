@@ -495,6 +495,13 @@ namespace BidForKids.Models
             return lResult;
         }
 
+        public List<DonatesReference> GetDonatesReferenceList()
+        {
+            List<DonatesReference> lResult = dc.DonatesReferences.ToList();
+
+            return lResult;
+        }
+
         /// <summary>
         /// Returns an Auction object by Auction_ID
         /// </summary>
