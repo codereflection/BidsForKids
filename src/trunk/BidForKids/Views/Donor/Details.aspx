@@ -1,13 +1,12 @@
-<%@ Page Title="Business or Donor Details" Language="C#" MasterPageFile="~/Views/Shared/Admin.Master" Inherits="System.Web.Mvc.ViewPage<BidForKids.Models.Donor>" %>
+<%@ Page Title="Business or Donor Details" Language="C#" MasterPageFile="~/Views/Shared/Admin.Master"
+    Inherits="System.Web.Mvc.ViewPage<BidForKids.Models.Donor>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
-	Donor Details
+    Donor Details
 </asp:Content>
-
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-
-    <h2>Donor Details</h2>
-
+    <h2>
+        Donor Details</h2>
     <fieldset>
         <legend>Fields</legend>
         <p>
@@ -17,7 +16,11 @@
         <p>
             Donates:
             <%= Html.Encode(Model.Donates) %>
-        </p>    
+        </p>
+        <p>
+            Mailed Packet:
+            <%= Html.Encode(Model.MailedPacket) %>
+        </p>
         <p>
             Business Name:
             <%= Html.Encode(Model.BusinessName) %>
@@ -82,12 +85,17 @@
             Notes:
             <%= Html.Encode(Model.Notes) %>
         </p>
+        <p>
+            Created On:
+            <%= Html.Encode(Model.CreatedOn) %>
+        </p>
+        <p>
+            Modified On:
+            <%= Html.Encode(Model.ModifiedOn) %></p>
     </fieldset>
     <p>
-
-        <%=Html.ActionLink("Edit", "Edit", new { id=Model.Donor_ID }) %> |
+        <%=Html.ActionLink("Edit", "Edit", new { id=Model.Donor_ID }) %>
+        |
         <%=Html.ActionLink("Back to List", "Index") %>
     </p>
-
 </asp:Content>
-

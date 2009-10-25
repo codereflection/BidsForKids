@@ -25,6 +25,12 @@
             <%= Html.ValidationMessage("Donates", "*")%>
         </p>
         <p>
+            <label for="MailedPacket">
+                Mailed Packet:</label>
+            <%= Html.CheckBox("MailedPacket", Model.MailedPacket)%>
+            <%= Html.ValidationMessage("MailedPacket", "*")%>
+        </p>
+        <p>
             <label for="BusinessName">
                 Business Name:</label>
             <%= Html.TextBox("BusinessName", Model.BusinessName) %>
@@ -102,7 +108,7 @@
             <%= Html.TextBox("Phone3Desc", Model.Phone3Desc) %>
             <%= Html.ValidationMessage("Phone3Desc", "*") %>
         </p>
-                <p>
+        <p>
             <label for="Email">
                 Email:</label>
             <%= Html.TextBox("Email", Model.Email) %>
@@ -119,6 +125,11 @@
                 Notes:</label>
             <%= Html.TextArea("Notes", Model.Notes, 3, 50, null) %>
             <%= Html.ValidationMessage("Notes", "*") %>
+        </p>
+        <p>
+            Created On:
+            <%= Html.Encode(Model.CreatedOn) %>&nbsp;|&nbsp;Modified On:
+            <%= Html.Encode(Model.ModifiedOn) %>
         </p>
         <p>
             <input type="submit" value="Save" />

@@ -14,16 +14,24 @@
 
             $("#" + rowId).remove();
         }
+
+        function hideLinks() {
+            $(".hideLink").remove();
+        }
     </script>
 
     <h2>
         Geographic List</h2>
+    <a href="javascript:void(0);" onclick="hideLinks();">Hide Links</a><br />
     <table>
         <tr>
             <th>
             </th>
             <th>
                 Business Name
+            </th>
+            <th>
+                Mailed Packet
             </th>
             <th>
                 First Name
@@ -44,10 +52,10 @@
                 Zip
             </th>
             <th>
-                Phone1
+                Phone 1
             </th>
             <th>
-                Phone1 Desc
+                Phone 1 Desc
             </th>
             <th>
                 Website
@@ -73,14 +81,22 @@
                 <% 
                     Response.Write(rowCount.ToString());
                 %>
-                <br />
-                <a href="javascript:void(0);" onclick="hideRow('row_<%= rowCount.ToString() %>');">hide</a>
+                <div class="hideLink">
+                    <br />
+                    <a href="javascript:void(0);" onclick="hideRow('row_<%= rowCount.ToString() %>');">hide</a>
+                </div>
                 <% 
                     rowCount++;
                 %>
             </td>
             <td>
                 <%= Html.Encode(item.BusinessName) %>
+            </td>
+            <td>
+                <% if (item.MailedPacket == false)
+                       Response.Write("No");
+                   else if (item.MailedPacket == true)
+                       Response.Write("Yes"); %>
             </td>
             <td>
                 <%= Html.Encode(item.FirstName) %>

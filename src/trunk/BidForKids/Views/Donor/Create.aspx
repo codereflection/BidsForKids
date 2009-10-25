@@ -25,6 +25,12 @@
             <%= Html.ValidationMessage("Donates", "") %>
         </p>
         <p>
+            <label for="MailedPacket">
+                MailedPacket:</label>
+            <%= Html.CheckBox("MailedPacket") %>
+            <%= Html.ValidationMessage("MailedPacket", "") %>
+        </p>
+        <p>
             <label for="BusinessName">
                 Business Name:</label>
             <%= Html.TextBox("BusinessName") %>

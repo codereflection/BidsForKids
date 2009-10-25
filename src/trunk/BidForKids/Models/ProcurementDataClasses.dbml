@@ -80,6 +80,7 @@
       <Column Name="Donates" Type="System.Int32" DbType="tinyint" CanBeNull="true" />
       <Column Name="CreatedOn" Type="System.DateTime" DbType="datetime" CanBeNull="true" />
       <Column Name="ModifiedOn" Type="System.DateTime" DbType="datetime" CanBeNull="true" />
+      <Column Name="MailedPacket" Type="System.Boolean" DbType="bit" CanBeNull="true" />
       <Association Name="Donor_ContactProcurement" Member="ContactProcurements" ThisKey="Donor_ID" OtherKey="Donor_ID" Type="ContactProcurement" />
       <Association Name="GeoLocation_Donor" Member="GeoLocation" ThisKey="GeoLocation_ID" OtherKey="GeoLocation_ID" Type="GeoLocation" IsForeignKey="true" />
       <Association Name="DonatesReference_Donor" Member="DonatesReference" ThisKey="Donates" OtherKey="Donates_ID" Type="DonatesReference" IsForeignKey="true" />

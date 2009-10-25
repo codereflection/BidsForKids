@@ -186,7 +186,8 @@ namespace BidForKids.Controllers
                     "GeoLocation_ID",
                     "Donates",
                     "Email",
-                    "Website"
+                    "Website",
+                    "MailedPacket"
                 });
 
                 int lNewDonorID = factory.AddDonor(lNewDonor);
@@ -250,7 +251,8 @@ namespace BidForKids.Controllers
                     "GeoLocation_ID",
                     "Donates",
                     "Email",
-                    "Website"
+                    "Website",
+                    "MailedPacket"
                 });
 
                 if (factory.SaveDonor(lDonor) == false)
@@ -296,7 +298,8 @@ namespace BidForKids.Controllers
                     "GeoLocation_ID",
                     "Donates",
                     "Email",
-                    "Website"
+                    "Website",
+                    "MailedPacket"
                 });
 
                 if (factory.SaveDonor(lDonor) == false)

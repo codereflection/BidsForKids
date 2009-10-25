@@ -1355,6 +1355,8 @@ namespace BidForKids.Models
 		
 		private System.Nullable<System.DateTime> _ModifiedOn;
 		
+		private System.Nullable<bool> _MailedPacket;
+		
 		private EntitySet<ContactProcurement> _ContactProcurements;
 		
 		private EntityRef<GeoLocation> _GeoLocation;
@@ -1405,6 +1407,8 @@ namespace BidForKids.Models
     partial void OnCreatedOnChanged();
     partial void OnModifiedOnChanging(System.Nullable<System.DateTime> value);
     partial void OnModifiedOnChanged();
+    partial void OnMailedPacketChanging(System.Nullable<bool> value);
+    partial void OnMailedPacketChanged();
     #endregion
 		
 		public Donor()
@@ -1834,6 +1838,26 @@ namespace BidForKids.Models
 					this._ModifiedOn = value;
 					this.SendPropertyChanged("ModifiedOn");
 					this.OnModifiedOnChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_MailedPacket", DbType="bit")]
+		public System.Nullable<bool> MailedPacket
+		{
+			get
+			{
+				return this._MailedPacket;
+			}
+			set
+			{
+				if ((this._MailedPacket != value))
+				{
+					this.OnMailedPacketChanging(value);
+					this.SendPropertyChanging();
+					this._MailedPacket = value;
+					this.SendPropertyChanged("MailedPacket");
+					this.OnMailedPacketChanged();
 				}
 			}
 		}
