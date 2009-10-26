@@ -264,7 +264,7 @@ namespace BidForKids.Controllers
             }
             catch
             {
-                return Content("");
+                throw new ApplicationException("Unable to save Donor");
             }
         }
 
