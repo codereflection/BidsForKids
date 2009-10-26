@@ -52,7 +52,7 @@ namespace BidForKids.Controllers
         {
             var lGeoLocations = factory.GetGeoLocations();
 
-            var lGeoLocationString = "{";
+            var lGeoLocationString = "{ \"\": \"\",";
 
             foreach (var lGeoLocation in lGeoLocations)
             {
