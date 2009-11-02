@@ -64,7 +64,7 @@ namespace BidForKids.Controllers
 
 
             JsonResult lResult = new JsonResult();
-
+            lResult.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
 
             List<SerializableProcurement> lRows = factory.GetSerializableProcurements(loadOptions);
 
@@ -131,7 +131,7 @@ namespace BidForKids.Controllers
         {
             ViewData["Auction_ID"] = GetAuctionSelectList(null);
 
-            if (string.IsNullOrEmpty(Request.QueryString["Donor_ID"]) == false)
+            if (Request != null && string.IsNullOrEmpty(Request.QueryString["Donor_ID"]) == false)
                 ViewData["Donor_ID"] = GetContactsSelectList(int.Parse(Request.QueryString["Donor_ID"].ToString()));
             else
                 ViewData["Donor_ID"] = GetContactsSelectList(null);

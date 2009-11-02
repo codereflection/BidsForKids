@@ -6,13 +6,13 @@ namespace BidForKids.Tests.Controllers
 {
     public class HomeControllerFacts
     {
-        public class Index
+        public class Index : BidForKidsController
         {
             [Fact]
             public void ReturnsViewResultWithDefaultViewName()
             {
                 // Arrange
-                var controller = new HomeController();
+                var controller = new HomeController(_ProcurementFactory);
 
                 // Act
                 var result = controller.Index();
@@ -26,7 +26,7 @@ namespace BidForKids.Tests.Controllers
             public void SetsViewDataWithNoModel()
             {
                 // Arrange
-                var controller = new HomeController();
+                var controller = new HomeController(_ProcurementFactory);
 
                 // Act
                 var result = controller.Index();
@@ -41,8 +41,8 @@ namespace BidForKids.Tests.Controllers
             public void ReturnsProcurementViewResultWithDefaultViewName()
             {
                 // Arrange
-                var controller = new HomeController();
-                
+                var controller = new HomeController(_ProcurementFactory);
+
                 // Assert
                 var result = controller.Procurement();
 
@@ -55,7 +55,7 @@ namespace BidForKids.Tests.Controllers
             public void ReturnsReportsViewResultwithDefaultViewName()
             {
                 // Arrange
-                var controller = new HomeController();
+                var controller = new HomeController(_ProcurementFactory);
 
                 // Act
                 var result = controller.Reports();
@@ -66,13 +66,13 @@ namespace BidForKids.Tests.Controllers
             }
         }
 
-        public class About
+        public class About : BidForKidsController
         {
             [Fact]
             public void ReturnsViewResultWithDefaultViewName()
             {
                 // Arrange
-                var controller = new HomeController();
+                var controller = new HomeController(_ProcurementFactory);
 
                 // Act
                 var result = controller.About();
@@ -86,7 +86,7 @@ namespace BidForKids.Tests.Controllers
             public void SetsViewDataWithNoModel()
             {
                 // Arrange
-                var controller = new HomeController();
+                var controller = new HomeController(_ProcurementFactory);
 
                 // Act
                 var result = controller.About();

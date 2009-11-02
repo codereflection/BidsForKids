@@ -24,6 +24,8 @@ namespace BidForKids.Tests.Controllers
             lProcurementFactory.Stub(x => x.GetGeoLocation(0)).IgnoreArguments().Return(new GeoLocation());
 
             lProcurementFactory.Stub(x => x.GetCategories()).Return(new List<Category>());
+
+            lProcurementFactory.Stub(x => x.GetProcurers()).Return(new List<Procurer>());
             return lProcurementFactory;
         }
     }

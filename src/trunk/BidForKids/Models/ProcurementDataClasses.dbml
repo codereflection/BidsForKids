@@ -1,5 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Database Name="BidForKids" Class="ProcurementDataClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="BidForKids" Class="ProcurementDataClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="WebSettings" ConnectionString="Data Source=localhost;Initial Catalog=BidForKids;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="BidForKidsConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.Auction" Member="Auctions">
     <Type Name="Auction">
@@ -81,9 +80,11 @@
       <Column Name="CreatedOn" Type="System.DateTime" DbType="datetime" CanBeNull="true" />
       <Column Name="ModifiedOn" Type="System.DateTime" DbType="datetime" CanBeNull="true" />
       <Column Name="MailedPacket" Type="System.Boolean" DbType="bit" CanBeNull="true" />
+      <Column Name="Procurer_ID" Type="System.Int32" DbType="int" CanBeNull="true" />
       <Association Name="Donor_ContactProcurement" Member="ContactProcurements" ThisKey="Donor_ID" OtherKey="Donor_ID" Type="ContactProcurement" />
       <Association Name="GeoLocation_Donor" Member="GeoLocation" ThisKey="GeoLocation_ID" OtherKey="GeoLocation_ID" Type="GeoLocation" IsForeignKey="true" />
       <Association Name="DonatesReference_Donor" Member="DonatesReference" ThisKey="Donates" OtherKey="Donates_ID" Type="DonatesReference" IsForeignKey="true" />
+      <Association Name="Procurer_Donor" Member="Procurer" ThisKey="Procurer_ID" OtherKey="Procurer_ID" Type="Procurer" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Procurer" Member="Procurers">
@@ -95,6 +96,7 @@
       <Column Name="Email" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
       <Column Name="Description" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
       <Association Name="Procurer_ContactProcurement" Member="ContactProcurements" ThisKey="Procurer_ID" OtherKey="Procurer_ID" Type="ContactProcurement" />
+      <Association Name="Procurer_Donor" Member="Donors" ThisKey="Procurer_ID" OtherKey="Procurer_ID" Type="Donor" />
     </Type>
   </Table>
   <Table Name="dbo.Donates" Member="DonatesReferences">

@@ -26,6 +26,7 @@ namespace BidForKids.Controllers
             jqGridLoadOptions loadOptions = jqGridLoadOptions.GetLoadOptions(Request.QueryString);
 
             JsonResult lResult = new JsonResult();
+            lResult.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
 
             List<SerializableDonor> lRows = factory.GetSerializableDonors(loadOptions);
 
@@ -50,6 +51,16 @@ namespace BidForKids.Controllers
 
         public ActionResult Index()
         {
+            ViewData["GeoLocationJsonString"] = GetGeoLocationJSONString(); ;
+
+            ViewData["ProcurerJsonString"] = GetProcurerJSONString();
+            
+            return View(factory.GetDonors());
+        }
+
+
+        private string GetGeoLocationJSONString()
+        {
             var lGeoLocations = factory.GetGeoLocations();
 
             var lGeoLocationString = "{ \"\": \"\",";
@@ -58,11 +69,22 @@ namespace BidForKids.Controllers
             {
                 lGeoLocationString += String.Format("{0}:'{1}',", lGeoLocation.GeoLocation_ID, lGeoLocation.GeoLocationName);
             }
-            lGeoLocationString = lGeoLocationString.TrimEnd(new[] { ',' });
-            lGeoLocationString += "}";
+            lGeoLocationString = lGeoLocationString.TrimEnd(new[] { ',' }) + "}";
+            return lGeoLocationString;
+        }
 
-            ViewData["GeoLocationJsonString"] = lGeoLocationString;
-            return View(factory.GetDonors());
+        private string GetProcurerJSONString()
+        {
+            var lProcurers = factory.GetProcurers();
+
+            var lProcurerString = "{ \"\": \"\",";
+
+            foreach (var lProcurer in lProcurers)
+            {
+                lProcurerString += string.Format("{0}:'{1}',", lProcurer.Procurer_ID, lProcurer.FirstName + " " + lProcurer.LastName);
+            }
+            lProcurerString = lProcurerString.TrimEnd(new[] { ',' }) + "}";
+            return lProcurerString;
         }
 
         //
@@ -123,11 +145,13 @@ namespace BidForKids.Controllers
             else
                 ViewData["GeoLocation_ID"] = GetGeoLocationsSelectList(null);
             ViewData["Donates"] = GetDonatesSelectList(null);
+            ViewData["Procurer_ID"] = GetProcurerSelectList(null);
         }
 
         private void SetupEditViewData(Donor donor)
         {
             ViewData["GeoLocation_ID"] = GetGeoLocationsSelectList(donor.GeoLocation_ID);
+            ViewData["Procurer_ID"] = GetProcurerSelectList(donor.Procurer_ID);
             ViewData["Donates"] = GetDonatesSelectList(donor.Donates);
         }
 
@@ -187,7 +211,8 @@ namespace BidForKids.Controllers
                     "Donates",
                     "Email",
                     "Website",
-                    "MailedPacket"
+                    "MailedPacket",
+                    "Procurer_ID"
                 });
 
                 int lNewDonorID = factory.AddDonor(lNewDonor);
@@ -210,6 +235,18 @@ namespace BidForKids.Controllers
         {
             IEnumerable<DonatesReference> lDonatesRef = factory.GetDonatesReferenceList();
             return new SelectList(lDonatesRef, "Donates_ID", "Description", selectedValue ?? 2); // TODO: Fix hard coded 2 value for unknown Donates value
+        }
+
+        private SelectList GetProcurerSelectList(int? selectedValue)
+        {
+            IEnumerable<Procurer> lProcurers = factory.GetProcurers();
+            var lProcurerQuery = from P in lProcurers
+                                 select new {
+                                     Procurer_ID = P.Procurer_ID,
+                                     FullName = P.FirstName + " " + P.LastName
+                                 };
+
+            return new SelectList(lProcurerQuery, "Procurer_ID", "FullName", selectedValue);
         }
 
         //
@@ -252,7 +289,8 @@ namespace BidForKids.Controllers
                     "Donates",
                     "Email",
                     "Website",
-                    "MailedPacket"
+                    "MailedPacket",
+                    "Procurer_ID"
                 });
 
                 if (factory.SaveDonor(lDonor) == false)
@@ -299,7 +337,8 @@ namespace BidForKids.Controllers
                     "Donates",
                     "Email",
                     "Website",
-                    "MailedPacket"
+                    "MailedPacket",
+                    "Procurer_ID"
                 });
 
                 if (factory.SaveDonor(lDonor) == false)

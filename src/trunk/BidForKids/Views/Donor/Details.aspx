@@ -92,6 +92,13 @@
         <p>
             Modified On:
             <%= Html.Encode(Model.ModifiedOn) %></p>
+        <p>
+            Procurer:
+            <%= Html.Encode(Model.Procurer == null ? "" : Model.Procurer.FirstName + " " + Model.Procurer.LastName)  %></p>
+        <p>
+            Geo Location:
+            <%= Html.Encode(Model.GeoLocation == null ? "" : Model.GeoLocation.GeoLocationName) %>
+        </p>
     </fieldset>
     <p>
         <%=Html.ActionLink("Edit", "Edit", new { id=Model.Donor_ID }) %>
