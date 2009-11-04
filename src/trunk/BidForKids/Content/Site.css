@@ -55,7 +55,7 @@ h1
 }
 h2
 {
-	padding: 0 0 10px 0;
+	padding: 0 0 5px 0;
 }
 h3
 {
@@ -111,7 +111,7 @@ page width. Or, you can specify an exact pixel width. */
 
 #main
 {
-	padding: 30px 30px 15px 30px;
+	padding: 10px 20px 10px 20px;
 	background-color: #fff;
 	margin-bottom: 30px;
 	_height: 1px; /* only IE6 applies CSS properties starting with an underscrore */
@@ -354,3 +354,20 @@ div#title
 	color: Black;
 	width: 215px;
 }
+
+.CreateLinkTop
+{
+	float: left;
+}
+
+.AuctionYearContainer
+{
+	float: right;
+}
+
+.ProcurementListHeader
+{
+	width: 1170px;
+	margin: 0 0 40px 0;
+}
+

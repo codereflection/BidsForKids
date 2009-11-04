@@ -130,7 +130,21 @@ namespace BidForKids.Models
                     lField = "GeoLocation.GeoLocationName";
                 }
 
-                lSql += lField + " LIKE {" + lParamCount.ToString() + "} ";
+
+                if (lField.IndexOf("_ID") > 0)
+                {
+                    lSql += lField + " = {" + lParamCount.ToString() + "} ";
+                }
+                else if (searchParams[item].ToLower() == "null")
+                {
+                    lSql += lField + " IS NULL ";
+                }
+                else
+                {
+                    // only perform LIKE on non-_ID fields
+                    lSql += lField + " LIKE {" + lParamCount.ToString() + "} ";
+                }
+
                 lParamCount += 1;
             }
             lSql += " order by " + sortIndex + " " + sortOrder;
@@ -172,8 +186,25 @@ namespace BidForKids.Models
                     lField = "Donor.BusinessName";
                 }
 
+                if (lField.ToLower() == "auction_id")
+                {
+                    lField = "CP.Auction_ID";
+                }
 
-                lSql += lField + " LIKE {" + lParamCount.ToString() + "} ";
+                if (lField.IndexOf("_ID") > 0)
+                {
+                    lSql += lField + " = {" + lParamCount.ToString() + "} ";
+                }
+                else if (searchParams[item].ToLower() == "null")
+                {
+                    lSql += lField + " IS NULL ";
+                }
+                else
+                {
+                    // only perform LIKE on non-_ID fields
+                    lSql += lField + " LIKE {" + lParamCount.ToString() + "} ";
+                }
+
                 lParamCount += 1;
             }
             lSql += " order by " + sortIndex + " " + sortOrder;
@@ -184,6 +215,9 @@ namespace BidForKids.Models
         {
             foreach (string key in searchParams.Keys.ToList<string>())
             {
+                if ((key.IndexOf("_ID") > -1) || (key.ToLower() == "null"))
+                    continue;
+
                 searchParams[key] = "%" + searchParams[key] + "%";
             }
         }

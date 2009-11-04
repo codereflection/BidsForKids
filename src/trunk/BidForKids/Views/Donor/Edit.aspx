@@ -20,7 +20,7 @@
         </p>
         <p>
             <label for="Procurer_ID">
-                Procurer
+                Default Procurer
             </label>
             <%= Html.DropDownList("Procurer_ID", "") %>
         </p>

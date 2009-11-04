@@ -32,20 +32,33 @@ namespace BidForKids.Controllers
 
         public ActionResult Index()
         {
-            var lCategories = factory.GetCategories();
+            GetCategoryJSONString();
 
+            ViewData["Auction_ID"] = GetAuctionSelectList(null);
+            var lAuctionQuery = factory.GetAuctions();
+            if (lAuctionQuery != null && lAuctionQuery.Count > 0)
+            {
+                Auction lAuction = lAuctionQuery.OrderByDescending(x => x.Year).First();
+                ViewData["DefaultSearchYear"] = lAuction.Year.ToString();
+            }
+            else
+            {
+                ViewData["DefaultSearchYear"] = DateTime.Today.Year.ToString();
+            }
+            return View(factory.GetProcurements());
+        }
+
+        private void GetCategoryJSONString()
+        {
             var lCategoryString = "{";
 
-            foreach (var lCategory in lCategories)
+            foreach (var lCategory in factory.GetCategories())
             {
                 lCategoryString += String.Format("{0}:'{1}',", lCategory.Category_ID, lCategory.CategoryName);
             }
-            lCategoryString = lCategoryString.TrimEnd(new[] { ',' });
-            lCategoryString += "}";
+            lCategoryString = lCategoryString.TrimEnd(new[] { ',' }) + "}";
 
             ViewData["CategoryJsonString"] = lCategoryString;
-
-            return View(factory.GetProcurements());
         }
 
 
@@ -54,7 +67,7 @@ namespace BidForKids.Controllers
         {
             SerializableProcurement lProcurement = SerializableProcurement.ConvertProcurementToSerializableProcurement(factory.GetProcurement((int)id));
 
-            return Json(lProcurement);
+            return Json(lProcurement, JsonRequestBehavior.AllowGet);
         }
 
         //public ActionResult GetProcurements(string _search, string nd, int page, int rows, string sidx, string sord)
