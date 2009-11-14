@@ -124,10 +124,12 @@
         <div class="CreateLinkTop">
             <%= Html.ActionLink("Create New", "Create") %>
         </div>
+        <!--
         <div class="AuctionYearContainer">
             Year to view:
             <%= Html.DropDownList("Auction_ID", "") %>
         </div>
+        -->
     </div>
     <table id="procurementGrid">
     </table>
