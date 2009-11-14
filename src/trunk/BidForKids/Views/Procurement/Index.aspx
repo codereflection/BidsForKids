@@ -179,8 +179,8 @@
                             Description
                         </td>
                         <td class="dataCell" colspan="7">
-                            <div id="Description">
-                            </div>
+                            <span id="Description">
+                            </span>
                         </td>
                     </tr>
                     <tr>

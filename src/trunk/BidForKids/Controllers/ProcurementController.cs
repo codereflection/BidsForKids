@@ -50,7 +50,7 @@ namespace BidForKids.Controllers
 
         private void GetCategoryJSONString()
         {
-            var lCategoryString = "{";
+            var lCategoryString = "{ \"\": \"\",";
 
             foreach (var lCategory in factory.GetCategories())
             {
