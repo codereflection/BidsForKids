@@ -1,6 +1,6 @@
 ﻿<Project DefaultTargets="Build" ToolsVersion="3.5" InitialTargets="ValidateSolutionConfiguration;ValidateToolsVersions" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <_SolutionProjectConfiguration>AutomatedDebug|Any CPU</_SolutionProjectConfiguration>
+    <_SolutionProjectConfiguration>Debug|Any CPU</_SolutionProjectConfiguration>
     <_SolutionProjectToolsVersion>3.5</_SolutionProjectToolsVersion>
     <_SolutionProjectCacheVersion>3.5</_SolutionProjectCacheVersion>
   </PropertyGroup>
@@ -50,11 +50,11 @@
     <AspNetConfiguration>$(Configuration)</AspNetConfiguration>
   </PropertyGroup>
   <PropertyGroup>
-    <SolutionDir>C:\Users\Jeff\Documents\TreeSurgeon\BidForKids\src\trunk\</SolutionDir>
+    <SolutionDir>C:\Users\Jeff\Documents\Visual Studio 2008\Projects\BidForKids - 2010\src\trunk\</SolutionDir>
     <SolutionExt>.sln</SolutionExt>
     <SolutionFileName>BidForKids.sln</SolutionFileName>
     <SolutionName>BidForKids</SolutionName>
-    <SolutionPath>C:\Users\Jeff\Documents\TreeSurgeon\BidForKids\src\trunk\BidForKids.sln</SolutionPath>
+    <SolutionPath>C:\Users\Jeff\Documents\Visual Studio 2008\Projects\BidForKids - 2010\src\trunk\BidForKids.sln</SolutionPath>
   </PropertyGroup>
   <PropertyGroup>
     <TargetFrameworkVersion Condition="'$(TargetFrameworkVersion)' == '' and '$(MSBuildToolsVersion)' == '2.0'">v2.0</TargetFrameworkVersion>
