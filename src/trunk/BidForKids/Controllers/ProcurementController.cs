@@ -150,6 +150,18 @@ namespace BidForKids.Controllers
                 ViewData["Donor_ID"] = GetContactsSelectList(null);
 
             ViewData["Category_ID"] = GetCategoriesSelectList(null);
+            ViewData["Procurer_ID"] = GetProcurerSelectList(null);
+            ViewData["CertificateOptions"] = GetCertificateSelectListItems();
+
+        }
+
+        private static List<SelectListItem> GetCertificateSelectListItems()
+        {
+            List<SelectListItem> certOptions = new List<SelectListItem>();
+            certOptions.Add(new SelectListItem() { Text = "", Value = "", Selected = true });
+            certOptions.Add(new SelectListItem() { Text = "Create", Value = "Create" });
+            certOptions.Add(new SelectListItem() { Text = "Provided", Value = "Provided" });
+            return certOptions;
         }
 
         private void SetupEditViewData(ContactProcurement contactProcurement)
@@ -171,6 +183,7 @@ namespace BidForKids.Controllers
             ViewData["Donor_ID"] = GetContactsSelectList(lContactId);
             ViewData["Category_ID"] = GetCategoriesSelectList(lCategoryId);
             ViewData["Procurer_ID"] = GetProcurerSelectList(lProcurerID);
+            ViewData["CertificateOptions"] = GetCertificateSelectListItems();
         }
 
         private SelectList GetAuctionSelectList(int? selectedValue)
@@ -222,26 +235,10 @@ namespace BidForKids.Controllers
                 lNewProcurement.ContactProcurement = lNewContactProcurement;
 
                 UpdateModel<Procurement>(lNewProcurement,
-                    new[] {
-                        "CatalogNumber",
-                        "AuctionNumber",
-                        "ItemNumber",
-                        "Description",
-                        "Quantity",
-                        "PerItemValue",
-                        "Notes",
-                        "EstimatedValue",
-                        "SoldFor",
-                        "Category_ID"
-                    });
+                    ProcurementColumns());
 
                 UpdateModel<ContactProcurement>(lNewProcurement.ContactProcurement,
-                    new[] {
-                        "Donor_ID",
-                        "Auction_ID",
-                        "Procurer_ID",
-                        "GeoLocation_ID"
-                    });
+                    ContactProcurementColumns());
 
                 int lNewProcurementID = factory.AddProcurement(lNewProcurement);
 
@@ -302,26 +299,10 @@ namespace BidForKids.Controllers
                 SetupEditViewData(lProcurement.ContactProcurement);
 
                 UpdateModel<Procurement>(lProcurement,
-                    new[] {
-                        "CatalogNumber",
-                        "AuctionNumber",
-                        "ItemNumber",
-                        "Description",
-                        "Quantity",
-                        "PerItemValue",
-                        "Notes",
-                        "EstimatedValue",
-                        "SoldFor",
-                        "Category_ID"
-                    });
+                    ProcurementColumns());
 
                 UpdateModel<ContactProcurement>(lProcurement.ContactProcurement,
-                    new[] {
-                        "Donor_ID",
-                        "Auction_ID",
-                        "Procurer_ID",
-                        "GeoLocation_ID"
-                    });
+                    ContactProcurementColumns());
 
                 if (factory.SaveProcurement(lProcurement) == false)
                 {
@@ -361,26 +342,10 @@ namespace BidForKids.Controllers
                 SetupEditViewData(lProcurement.ContactProcurement);
 
                 UpdateModel<Procurement>(lProcurement,
-                    new[] {
-                        "CatalogNumber",
-                        "AuctionNumber",
-                        "ItemNumber",
-                        "Description",
-                        "Quantity",
-                        "PerItemValue",
-                        "Notes",
-                        "EstimatedValue",
-                        "SoldFor",
-                        "Category_ID"
-                    });
+                    ProcurementColumns());
 
                 UpdateModel<ContactProcurement>(lProcurement.ContactProcurement,
-                    new[] {
-                        "Donor_ID",
-                        "Auction_ID",
-                        "Procurer_ID",
-                        "GeoLocation_ID"
-                    });
+                    ContactProcurementColumns());
 
                 if (factory.SaveProcurement(lProcurement) == false)
                 {
@@ -397,6 +362,36 @@ namespace BidForKids.Controllers
 
                 return View(lProcurement);
             }
+        }
+
+        private static string[] ProcurementColumns()
+        {
+            return new[] {
+                        "CatalogNumber",
+                        "AuctionNumber",
+                        "ItemNumber",
+                        "Description",
+                        "Quantity",
+                        "PerItemValue",
+                        "Notes",
+                        "EstimatedValue",
+                        "SoldFor",
+                        "Category_ID",
+                        "Donation",
+                        "ThankYouLetterSent",
+                        "Limitations",
+                        "Certificate"
+                    };
+        }
+
+        private static string[] ContactProcurementColumns()
+        {
+            return new[] {
+                        "Donor_ID",
+                        "Auction_ID",
+                        "Procurer_ID",
+                        "GeoLocation_ID"
+                    };
         }
     }
 }

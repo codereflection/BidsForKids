@@ -5,13 +5,12 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <script type="text/javascript" src="../../Scripts/MicrosoftAjax.js"></script>
-
     <script type="text/javascript">
         function deleteRecord(id) {
             var answer = confirm("Are you sure you want to delete this procurement?");
             if (answer === false)
                 return;
-                
+
             var action = "/Procurement/Delete/" + id;
 
             var request = new Sys.Net.WebRequest();
@@ -31,7 +30,6 @@
             }
         }
     </script>
-
     <h2>
         Edit</h2>
     <%= Html.ValidationSummary("Edit was unsuccessful. Please correct the errors and try again.") %>
@@ -44,8 +42,36 @@
         </p>
         <p>
             <label for="Procurement_ID">
-                Procurement_ID:</label>
+                Procurement ID:</label>
             <%= Html.Encode(Model.Procurement_ID) %>
+        </p>
+        <p>
+            <label for="ThankYouLetterSent">
+                Thank You Letter Sent</label>
+            <%= Html.CheckBox("ThankYouLetterSent") %>
+        </p>
+        <p>
+            <label for="Donor_ID">
+                Donor
+            </label>
+            <%= Html.DropDownList("Donor_ID", "")%>
+        </p>
+        <p>
+            <label for="Auction_ID">
+                Year</label>
+            <%= Html.DropDownList("Auction_ID","")%>
+        </p>
+        <p>
+            <label for="Procurer_ID">
+                Procurer
+            </label>
+            <%= Html.DropDownList("Procurer_ID", "")%>
+        </p>
+        <p>
+            <label for="CatalogNumber">
+                Catalog #:</label>
+            <%= Html.TextBox("CatalogNumber", Model.CatalogNumber, new { maxlength = 20 })%>
+            <%= Html.ValidationMessage("CatalogNumber", "*")%>
         </p>
         <p>
             <label for="Category_ID">
@@ -54,69 +80,52 @@
             <%= Html.DropDownList("Category_ID", "")%>
         </p>
         <p>
-            <label for="CatalogNumber">
-                Catalog #:</label>
-            <%= Html.TextBox("CatalogNumber", Model.CatalogNumber)%>
-            <%= Html.ValidationMessage("CatalogNumber", "*")%>
-        </p>
-        <p>
             <label for="AuctionNumber">
                 Auction #:</label>
-            <%= Html.TextBox("AuctionNumber", Model.AuctionNumber)%>
+            <%= Html.TextBox("AuctionNumber", Model.AuctionNumber, new { maxlength = 20 })%>
             <%= Html.ValidationMessage("AuctionNumber", "*")%>
         </p>
         <p>
             <label for="ItemNumber">
                 Item #:</label>
-            <%= Html.TextBox("ItemNumber", Model.ItemNumber)%>
+            <%= Html.TextBox("ItemNumber", Model.ItemNumber, new { maxlength = 20 })%>
             <%= Html.ValidationMessage("ItemNumber", "*")%>
+        </p>
+        <p>
+            <label for="Donation">
+                Donation:</label>
+            <%= Html.TextArea("Donation", Model.Donation, 3, 50, null)%>
+            <%= Html.ValidationMessage("Donation", "*")%>
         </p>
         <p>
             <label for="Description">
                 Description:</label>
-            <%= Html.TextBox("Description", Model.Description) %>
+            <%= Html.TextArea("Description", Model.Description, 3, 50, null)%>
             <%= Html.ValidationMessage("Description", "*") %>
+        </p>
+        <p>
+            <label for="Certificate">
+                Certificate
+            </label>
+            <%= Html.DropDownList("Certificate", (List<SelectListItem>)ViewData["CertificateOptions"])%>
         </p>
         <p>
             <label for="Quantity">
                 Quantity:</label>
-            <%= Html.TextBox("Quantity", String.Format("{0:F}", Model.Quantity)) %>
+            <%= Html.TextBox("Quantity", String.Format("{0:F}", Model.Quantity), new { maxlength = 10 })%>
             <%= Html.ValidationMessage("Quantity", "*") %>
         </p>
         <p>
             <label for="EstimatedValue">
                 Estimated Value:</label>
-            <%= Html.TextBox("EstimatedValue", String.Format("{0:F}", Model.EstimatedValue))%>
+            <%= Html.TextBox("EstimatedValue", String.Format("{0:F}", Model.EstimatedValue), new { maxlength = 10 })%>
             <%= Html.ValidationMessage("EstimatedValue", "*")%>
-        </p>
-        <p>
-            <label for="Per Item Value">
-                PerItemValue:</label>
-            <%= Html.TextBox("PerItemValue", String.Format("{0:F}", Model.PerItemValue)) %>
-            <%= Html.ValidationMessage("PerItemValue", "*") %>
         </p>
         <p>
             <label for="SoldFor">
                 Sold For:</label>
-            <%= Html.TextBox("SoldFor", String.Format("{0:F}", Model.SoldFor))%>
+            <%= Html.TextBox("SoldFor", String.Format("{0:F}", Model.SoldFor), new { maxlength = 10 })%>
             <%= Html.ValidationMessage("SoldFor", "*")%>
-        </p>
-        <p>
-            <label for="Auction_ID">
-                Year</label>
-            <%= Html.DropDownList("Auction_ID","")%>
-        </p>
-        <p>
-            <label for="Donor_ID">
-                Business/Person
-            </label>
-            <%= Html.DropDownList("Donor_ID", "")%>
-        </p>
-        <p>
-            <label for="Procurer_ID">
-                Procurer
-            </label>
-            <%= Html.DropDownList("Procurer_ID", "")%>
         </p>
         <p>
             <label for="Notes">

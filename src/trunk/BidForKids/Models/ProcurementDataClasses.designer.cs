@@ -640,6 +640,14 @@ namespace BidForKids.Models
 		
 		private System.Nullable<System.DateTime> _ModifiedOn;
 		
+		private string _Donation;
+		
+		private System.Nullable<bool> _ThankYouLetterSent;
+		
+		private string _Limitations;
+		
+		private string _Certificate;
+		
 		private EntityRef<ContactProcurement> _ContactProcurements;
 		
 		private EntityRef<Category> _Category;
@@ -674,6 +682,14 @@ namespace BidForKids.Models
     partial void OnCreatedOnChanged();
     partial void OnModifiedOnChanging(System.Nullable<System.DateTime> value);
     partial void OnModifiedOnChanged();
+    partial void OnDonationChanging(string value);
+    partial void OnDonationChanged();
+    partial void OnThankYouLetterSentChanging(System.Nullable<bool> value);
+    partial void OnThankYouLetterSentChanged();
+    partial void OnLimitationsChanging(string value);
+    partial void OnLimitationsChanged();
+    partial void OnCertificateChanging(string value);
+    partial void OnCertificateChanged();
     #endregion
 		
 		public Procurement()
@@ -943,6 +959,86 @@ namespace BidForKids.Models
 					this._ModifiedOn = value;
 					this.SendPropertyChanged("ModifiedOn");
 					this.OnModifiedOnChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Donation", DbType="VarChar(500)")]
+		public string Donation
+		{
+			get
+			{
+				return this._Donation;
+			}
+			set
+			{
+				if ((this._Donation != value))
+				{
+					this.OnDonationChanging(value);
+					this.SendPropertyChanging();
+					this._Donation = value;
+					this.SendPropertyChanged("Donation");
+					this.OnDonationChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ThankYouLetterSent", DbType="Bit")]
+		public System.Nullable<bool> ThankYouLetterSent
+		{
+			get
+			{
+				return this._ThankYouLetterSent;
+			}
+			set
+			{
+				if ((this._ThankYouLetterSent != value))
+				{
+					this.OnThankYouLetterSentChanging(value);
+					this.SendPropertyChanging();
+					this._ThankYouLetterSent = value;
+					this.SendPropertyChanged("ThankYouLetterSent");
+					this.OnThankYouLetterSentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Limitations", DbType="VarChar(500)")]
+		public string Limitations
+		{
+			get
+			{
+				return this._Limitations;
+			}
+			set
+			{
+				if ((this._Limitations != value))
+				{
+					this.OnLimitationsChanging(value);
+					this.SendPropertyChanging();
+					this._Limitations = value;
+					this.SendPropertyChanged("Limitations");
+					this.OnLimitationsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Certificate", DbType="VarChar(10)")]
+		public string Certificate
+		{
+			get
+			{
+				return this._Certificate;
+			}
+			set
+			{
+				if ((this._Certificate != value))
+				{
+					this.OnCertificateChanging(value);
+					this.SendPropertyChanging();
+					this._Certificate = value;
+					this.SendPropertyChanged("Certificate");
+					this.OnCertificateChanged();
 				}
 			}
 		}

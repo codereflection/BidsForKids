@@ -23,6 +23,10 @@ namespace BidForKids.Models.SerializableObjects
         public string ProcurerName { get; set; }
         public int Procurer_ID { get; set; }
         public string Notes { get; set; }
+        public string Donation { get; set; }
+        public bool? ThankYouLetterSent { get; set; }
+        public string Certificate { get; set; }
+        public string Limitations { get; set; }
         public static SerializableProcurement ConvertProcurementToSerializableProcurement(Procurement procurement)
         {
             return new SerializableProcurement()
@@ -45,7 +49,11 @@ namespace BidForKids.Models.SerializableObjects
                 PersonName = procurement.ContactProcurement.Donor == null ? "" : procurement.ContactProcurement.Donor.FirstName + " " + procurement.ContactProcurement.Donor.LastName,
                 Procurer_ID = procurement.Procurement_ID,
                 ProcurerName = procurement.ContactProcurement.Procurer == null ? "" : procurement.ContactProcurement.Procurer.FirstName + " " + procurement.ContactProcurement.Procurer.LastName,
-                Notes = procurement.Notes
+                Notes = procurement.Notes,
+                Donation = procurement.Donation,
+                ThankYouLetterSent = procurement.ThankYouLetterSent,
+                Certificate = procurement.Certificate,
+                Limitations = procurement.Limitations
             };
         }
     }

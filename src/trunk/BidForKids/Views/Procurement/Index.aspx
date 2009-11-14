@@ -4,12 +4,24 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
     Procurement Search
 </asp:Content>
-<asp:content id="Content2" contentplaceholderid="MainContent" runat="server">
+<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <script src="<%= Url.Content("~/Scripts/jquery-1.3.2.js") %>" type="text/javascript"></script>
     <script src="<%= Url.Content("~/Scripts/jquery-ui-1.7.2.custom.min.js") %>" type="text/javascript"></script>
     <script src="<%= Url.Content("~/Scripts/jqGrid/grid.locale-en.js") %>" type="text/javascript"></script>
     <script src="<%= Url.Content("~/Scripts/jqGrid/jquery.jqGrid.min.js") %>" type="text/javascript"></script>
     <script type="text/javascript">
+        function convertBoolToString(value)
+        {
+            if (value == null)
+                return "";
+                
+            if (value === true)
+                return "Yes";
+                
+            if (value == false)
+                return "No";
+        }
+
         function getProcurement(id) {
             $.get("Procurement.aspx/GetProcurement/" + id.toString(), {}, function(result) {
                 var lContext = $("#summary");
@@ -23,6 +35,10 @@
                 $("#Category", lContext).html(result.CategoryName);
                 $("#GeoLocation", lContext).html(result.GeoLocationName);
                 $("#Notes", lContext).html(result.Notes);
+                $("#Description", lContext).html(result.Description);
+                $("#Donation", lContext).html(result.Donation);
+                $("#ThankYouLetterSent", lContext).html(convertBoolToString(result.ThankYouLetterSent));
+                $("#Certificate", lContext).html(result.Certificate);
             }, "json");
         }
         var lastsel;
@@ -46,7 +62,7 @@
                     { name: 'CatalogNumber', index: 'CatalogNumber', width: 32, label: 'Catalog #' },
                     { name: 'AuctionNumber', index: 'AuctionNumber', width: 32, label: 'Auction #' },
                     { name: 'ItemNumber', index: 'ItemNumber', width: 32, label: 'Item #' },
-                    { name: 'Description', index: 'Description' },
+                    { name: 'Donation', index: 'Donation' },
                     { name: 'EstimatedValue', index: 'EstimatedValue', width: 40, formatter: 'currency', align: 'right', label: 'Estimated $' },
                     { name: 'BusinessName', index: 'BusinessName', label: 'Donor' },
                     { name: 'GeoLocationName', index: 'GeoLocationName', width: 100, label: 'Geo Location', sortable: false },
@@ -54,7 +70,8 @@
                     { name: 'Category_ID', index: 'Category_ID', label: 'Category', width: 100, sortable: false, editable: true, edittype: 'select', editoptions: { value: <%= ViewData["CategoryJsonString"] %> }, formatter: 'select' },
                     { name: 'ProcurerName', index: 'ProcurerName', label: 'Procurer', width: 100, sortable: false },
                     { name: 'Year', index: 'Year', width: 30, sortable: false, searchoptions: { defaultValue: '<%= ViewData["DefaultSearchYear"] %>' } },
-                    { name: 'Procurement_ID', index: 'Procurement_ID', width: 30, hidden: true, key: true }
+                    { name: 'Procurement_ID', index: 'Procurement_ID', width: 30, hidden: true, key: true },
+                    { name: 'ThankYouLetterSent', index: 'ThankYouLetterSent', label: '<span style="font-size: 0.75em;">Thank You Ltr</span>', width: 50, formatter: 'checkbox', editable: true, edittype: 'checkbox', editoptions: { value: "true:false" } }
                 ],
                 pager: '#pager',
                 viewrecords: false,
@@ -121,10 +138,11 @@
     <p>
         <%= Html.ActionLink("Create New", "Create") %>
     </p>
-    <h3>
-        Selected item details:</h2>
+    <div id="summary">
+        <h2>
+            '<span id="Donation"></span>' item details:</h2>
         <div id="summaryContainer">
-            <div id="summary">
+            <div>
                 <table>
                     <tr>
                         <td class="labelCell">
@@ -148,6 +166,22 @@
                             <div id="ItemNumber">
                             </div>
                         </td>
+                        <td class="labelCell">
+                            Certificate
+                        </td>
+                        <td class="dataCell">
+                            <div id="Certificate">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="labelCell">
+                            Description
+                        </td>
+                        <td class="dataCell" colspan="7">
+                            <div id="Description">
+                            </div>
+                        </td>
                     </tr>
                     <tr>
                         <td class="labelCell">
@@ -169,6 +203,13 @@
                         </td>
                         <td class="dataCell">
                             <div id="SoldFor">
+                            </div>
+                        </td>
+                        <td class="labelCell">
+                            Thank You Letter Sent
+                        </td>
+                        <td class="dataCell">
+                            <div id="ThankYouLetterSent">
                             </div>
                         </td>
                     </tr>
@@ -207,5 +248,5 @@
                 </table>
             </div>
         </div>
-    </h3>
-</asp:content>
+    </div>
+</asp:Content>

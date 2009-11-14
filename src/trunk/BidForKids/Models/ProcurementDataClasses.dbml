@@ -36,6 +36,10 @@
       <Column Name="Category_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="CreatedOn" Type="System.DateTime" DbType="datetime" CanBeNull="true" />
       <Column Name="ModifiedOn" Type="System.DateTime" DbType="datetime" CanBeNull="true" />
+      <Column Name="Donation" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="ThankYouLetterSent" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Limitations" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="Certificate" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
       <Association Name="Procurement_ContactProcurement" Member="ContactProcurement" Storage="_ContactProcurements" ThisKey="Procurement_ID" OtherKey="Procurement_ID" Type="ContactProcurement" Cardinality="One" />
       <Association Name="Category_Procurement" Member="Category" ThisKey="Category_ID" OtherKey="Category_ID" Type="Category" IsForeignKey="true" />
     </Type>
