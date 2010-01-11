@@ -81,6 +81,11 @@ namespace BidForKids.Controllers
 
             List<SerializableProcurement> lRows = factory.GetSerializableProcurements(loadOptions);
 
+            if (loadOptions.sortIndex == null)
+            {
+                lRows = lRows.OrderBy(x => x.BusinessName).ToList<SerializableProcurement>();
+            }
+
             int lTotalRows = lRows.Count;
 
             lRows = lRows.Skip((loadOptions.page - 1) * loadOptions.rows).Take(loadOptions.rows).ToList();

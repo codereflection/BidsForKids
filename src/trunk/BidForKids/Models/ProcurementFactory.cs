@@ -33,28 +33,33 @@ namespace BidForKids.Models
         }
 
 
+
+
         public List<SerializableProcurement> GetSerializableProcurements(jqGridLoadOptions loadOptions)
         {
             if (loadOptions == null)
                 throw new ArgumentNullException("loadOptions", "loadOptions is null.");
-            
-            if (string.IsNullOrEmpty(loadOptions.sortIndex))
-                loadOptions.sortIndex = "Description";
 
-            if (string.IsNullOrEmpty(loadOptions.sortOrder))
-                loadOptions.sortOrder = "asc";
+            string sortIndex = loadOptions.sortIndex;
+            string sortOrder = loadOptions.sortOrder;
+
+            if (string.IsNullOrEmpty(sortIndex))
+                sortIndex = "Description";
+
+            if (string.IsNullOrEmpty(sortOrder))
+                sortOrder = "asc";
 
             IEnumerable<Procurement> lProcurements;
 
             if (loadOptions.search == false)
             {
-                lProcurements = dc.Procurements.OrderBy(loadOptions.sortIndex + " " + loadOptions.sortOrder);
+                lProcurements = dc.Procurements.OrderBy(sortIndex + " " + sortOrder);
             }
             else
             {
                 AddLikePercentsToValues(loadOptions.searchParams);
 
-                string lSql = BuildSerializableProcurementSqlStatement(loadOptions.sortIndex, loadOptions.sortOrder, loadOptions.searchParams);
+                string lSql = BuildSerializableProcurementSqlStatement(sortIndex, sortOrder, loadOptions.searchParams);
 
                 lProcurements = dc.ExecuteQuery<Procurement>(lSql, loadOptions.searchParams.Values.ToArray<string>());
             }
@@ -68,6 +73,9 @@ namespace BidForKids.Models
 
             return lResult;
         }
+        
+
+
 
         public List<SerializableDonor> GetSerializableDonors(jqGridLoadOptions loadOptions)
         {
@@ -186,6 +194,7 @@ namespace BidForKids.Models
                     lField = "Donor.BusinessName";
                 }
 
+                // TODO: Fix the hack on the table name
                 if (lField.ToLower() == "auction_id")
                 {
                     lField = "CP.Auction_ID";
