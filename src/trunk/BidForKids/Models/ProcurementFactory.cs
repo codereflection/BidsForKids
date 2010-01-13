@@ -44,10 +44,15 @@ namespace BidForKids.Models
             string sortOrder = loadOptions.sortOrder;
 
             if (string.IsNullOrEmpty(sortIndex))
-                sortIndex = "Description";
-
-            if (string.IsNullOrEmpty(sortOrder))
-                sortOrder = "asc";
+            {
+                sortIndex = "CreatedOn";
+                sortOrder = "desc";
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(sortOrder))
+                    sortOrder = "asc";
+            }
 
             IEnumerable<Procurement> lProcurements;
 

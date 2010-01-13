@@ -83,7 +83,7 @@ namespace BidForKids.Controllers
 
             if (loadOptions.sortIndex == null)
             {
-                lRows = lRows.OrderBy(x => x.BusinessName).ToList<SerializableProcurement>();
+                lRows = lRows.OrderByDescending(x => x.CreatedOn).ToList<SerializableProcurement>();
             }
 
             int lTotalRows = lRows.Count;

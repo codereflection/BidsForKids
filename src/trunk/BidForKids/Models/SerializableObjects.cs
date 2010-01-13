@@ -27,6 +27,7 @@ namespace BidForKids.Models.SerializableObjects
         public bool? ThankYouLetterSent { get; set; }
         public string Certificate { get; set; }
         public string Limitations { get; set; }
+        public DateTime? CreatedOn { get; set; }
         public static SerializableProcurement ConvertProcurementToSerializableProcurement(Procurement procurement)
         {
             return new SerializableProcurement()
@@ -53,7 +54,8 @@ namespace BidForKids.Models.SerializableObjects
                 Donation = procurement.Donation,
                 ThankYouLetterSent = procurement.ThankYouLetterSent,
                 Certificate = procurement.Certificate,
-                Limitations = procurement.Limitations
+                Limitations = procurement.Limitations,
+                CreatedOn = procurement.CreatedOn
             };
         }
     }

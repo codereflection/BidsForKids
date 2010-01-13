@@ -9,6 +9,7 @@
     <script src="<%= Url.Content("~/Scripts/jquery-ui-1.7.2.custom.min.js") %>" type="text/javascript"></script>
     <script src="<%= Url.Content("~/Scripts/jqGrid/grid.locale-en.js") %>" type="text/javascript"></script>
     <script src="<%= Url.Content("~/Scripts/jqGrid/jquery.jqGrid.min.js") %>" type="text/javascript"></script>
+    <script src="<%= Url.Content("~/Scripts/datejs/date.js") %>" type="text/javascript"></script>
     <script type="text/javascript">
         function convertBoolToString(value)
         {
@@ -43,6 +44,29 @@
         }
         var lastsel;
 
+        function GetJSDate(DateStr) {
+            // given the date in the format /Date(1241161200000)/
+            var date = eval(DateStr.replace(/\/Date\((\d+)\)\//gi, "new Date($1)"));
+            // returns Fri May 1 00:00:00 PDT 2009
+            return date;
+        }
+
+        function dateFormatter(cellValue, options, rowObject) {
+            if (cellValue === null || cellValue == "") {
+                return "";
+            }
+            var dateFormat = 'M/d/yy - hh:mm t';
+            var tryParse = Date.parseExact(cellValue, dateFormat);
+            var resultDate;
+            if (tryParse !== null) {
+                resultDate = tryParse;
+            }
+            else {
+                resultDate = Date.parse(GetJSDate(cellValue).toString());            
+            }
+            return resultDate.toString(dateFormat);
+        }
+ 
  
         $(document).ready(function() {
             var procurementGrid = $("#procurementGrid").jqGrid({
@@ -63,7 +87,7 @@
                     { name: 'AuctionNumber', index: 'AuctionNumber', width: 32, label: 'Auction #' },
                     { name: 'ItemNumber', index: 'ItemNumber', width: 32, label: 'Item #' },
                     { name: 'Donation', index: 'Donation' },
-                    { name: 'EstimatedValue', index: 'EstimatedValue', width: 40, formatter: 'currency', align: 'right', label: 'Estimated $' },
+                    { name: 'EstimatedValue', index: 'EstimatedValue', width: 40, formatter: 'currency', align: 'right', label: 'Value' },
                     { name: 'BusinessName', index: 'BusinessName', label: 'Donor' },
                     { name: 'GeoLocationName', index: 'GeoLocationName', width: 100, label: 'Geo Location', sortable: false },
                     { name: 'CategoryName', index: 'CategoryName', label: 'Category', hidden: true, sortable: false, editable: false },
@@ -71,7 +95,8 @@
                     { name: 'ProcurerName', index: 'ProcurerName', label: 'Procurer', width: 100, sortable: false },
                     { name: 'Year', index: 'Year', width: 30, sortable: false, searchoptions: { defaultValue: '<%= ViewData["DefaultSearchYear"] %>' } },
                     { name: 'Procurement_ID', index: 'Procurement_ID', width: 30, hidden: true, key: true },
-                    { name: 'ThankYouLetterSent', index: 'ThankYouLetterSent', label: '<span style="font-size: 0.75em;">Thank You Ltr</span>', width: 50, formatter: 'checkbox', editable: true, edittype: 'checkbox', editoptions: { value: "true:false" } }
+                    { name: 'ThankYouLetterSent', index: 'ThankYouLetterSent', label: '<span style="font-size: 0.75em;">Thank You Ltr</span>', width: 50, formatter: 'checkbox', editable: true, edittype: 'checkbox', editoptions: { value: "true:false" } },
+                    { name: 'CreatedOn', index: 'CreatedOn', label: 'Entered', formatter: dateFormatter, editable: false, width: 80 }
                 ],
                 pager: '#pager',
                 viewrecords: false,
@@ -181,8 +206,7 @@
                             Description
                         </td>
                         <td class="dataCell" colspan="7">
-                            <span id="Description">
-                            </span>
+                            <span id="Description"></span>
                         </td>
                     </tr>
                     <tr>

@@ -141,6 +141,7 @@
   <ItemGroup>
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\datejs\date.js" />
     <Content Include="Views\Home\Procurement.aspx" />
     <Content Include="Web.config" />
     <Content Include="Content\Site.css" />
