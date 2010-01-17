@@ -19,7 +19,10 @@ namespace BidForKids.Models
         Auction GetAuction(int id);
 
         List<Donor> GetDonors();
-        List<SerializableDonor> GetSerializableDonors(jqGridLoadOptions loadOptions);
+        List<SerializableDonor> GetSerializableBusinesses(jqGridLoadOptions loadOptions);
+        List<SerializableDonor> GetSerializableParents(jqGridLoadOptions loadOptions);
+        List<SerializableDonor> GetSerializableDonors(jqGridLoadOptions loadOptions, int donorTypeId, string defaultSortColumnName);
+        DonorType GetDonorTypeByName(string donorTypeDesc);
         Donor GetDonor(int id);
         Donor GetNewDonor();
         int AddDonor(Donor Donor);

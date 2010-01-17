@@ -1,47 +1,17 @@
-<%@ Page Title="Add new business" Language="C#" MasterPageFile="~/Views/Shared/Admin.Master"
+<%@ Page Title="Add new parent" Language="C#" MasterPageFile="~/Views/Shared/Admin.Master"
     Inherits="System.Web.Mvc.ViewPage<BidForKids.Models.Donor>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
-    Add new business
+    Add new parent
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <h2>
-        Add new business</h2>
+        Add new parent</h2>
     <%= Html.ValidationSummary("Create was unsuccessful. Please correct the errors and try again.") %>
     <% using (Html.BeginForm())
        {%>
     <fieldset>
         <legend>Fields</legend>
-        <p>
-            <label for="GeoLocation_ID">
-                Geographic Location
-            </label>
-            <%= Html.DropDownList("GeoLocation_ID", "")%>&nbsp;<%= Html.ActionLink("new", "Create", "GeoLocation", new { ReturnTo = Server.UrlEncode("Donor.aspx/Create") }, null)%>
-        </p>
-        <p>
-            <label for="Procurer_ID">
-                Default Procurer
-            </label>
-            <%= Html.DropDownList("Procurer_ID", "") %>
-        </p>
-        <p>
-            <label for="Donates">
-                Donates:</label>
-            <%= Html.DropDownList("Donates") %>
-            <%= Html.ValidationMessage("Donates", "") %>
-        </p>
-        <p>
-            <label for="MailedPacket">
-                MailedPacket:</label>
-            <%= Html.CheckBox("MailedPacket") %>
-            <%= Html.ValidationMessage("MailedPacket", "") %>
-        </p>
-        <p>
-            <label for="BusinessName">
-                Business Name:</label>
-            <%= Html.TextBox("BusinessName") %>
-            <%= Html.ValidationMessage("BusinessName", "*") %>
-        </p>
         <p>
             <label for="FirstName">
                 First Name:</label>
@@ -119,12 +89,6 @@
                 Email:</label>
             <%= Html.TextBox("Email") %>
             <%= Html.ValidationMessage("Email", "*") %>
-        </p>
-        <p>
-            <label for="Website">
-                Website:</label>
-            <%= Html.TextBox("Website")%>
-            <%= Html.ValidationMessage("Website", "*")%>
         </p>
         <p>
             <label for="Notes">

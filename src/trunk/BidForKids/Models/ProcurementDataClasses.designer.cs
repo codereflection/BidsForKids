@@ -51,6 +51,9 @@ namespace BidForKids.Models
     partial void InsertProcurer(Procurer instance);
     partial void UpdateProcurer(Procurer instance);
     partial void DeleteProcurer(Procurer instance);
+    partial void InsertDonorType(DonorType instance);
+    partial void UpdateDonorType(DonorType instance);
+    partial void DeleteDonorType(DonorType instance);
     #endregion
 		
 		public ProcurementDataClassesDataContext() : 
@@ -144,6 +147,14 @@ namespace BidForKids.Models
 			get
 			{
 				return this.GetTable<DonatesReference>();
+			}
+		}
+		
+		public System.Data.Linq.Table<DonorType> DonorTypes
+		{
+			get
+			{
+				return this.GetTable<DonorType>();
 			}
 		}
 	}
@@ -1455,11 +1466,15 @@ namespace BidForKids.Models
 		
 		private System.Nullable<int> _Procurer_ID;
 		
+		private System.Nullable<int> _DonorType_ID;
+		
 		private EntitySet<ContactProcurement> _ContactProcurements;
 		
 		private EntityRef<GeoLocation> _GeoLocation;
 		
 		private EntityRef<Procurer> _Procurer;
+		
+		private EntityRef<DonorType> _DonorType;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -1511,6 +1526,8 @@ namespace BidForKids.Models
     partial void OnMailedPacketChanged();
     partial void OnProcurer_IDChanging(System.Nullable<int> value);
     partial void OnProcurer_IDChanged();
+    partial void OnDonorType_IDChanging(System.Nullable<int> value);
+    partial void OnDonorType_IDChanged();
     #endregion
 		
 		public Donor()
@@ -1518,6 +1535,7 @@ namespace BidForKids.Models
 			this._ContactProcurements = new EntitySet<ContactProcurement>(new Action<ContactProcurement>(this.attach_ContactProcurements), new Action<ContactProcurement>(this.detach_ContactProcurements));
 			this._GeoLocation = default(EntityRef<GeoLocation>);
 			this._Procurer = default(EntityRef<Procurer>);
+			this._DonorType = default(EntityRef<DonorType>);
 			OnCreated();
 		}
 		
@@ -1989,6 +2007,30 @@ namespace BidForKids.Models
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DonorType_ID", DbType="int")]
+		public System.Nullable<int> DonorType_ID
+		{
+			get
+			{
+				return this._DonorType_ID;
+			}
+			set
+			{
+				if ((this._DonorType_ID != value))
+				{
+					if (this._DonorType.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnDonorType_IDChanging(value);
+					this.SendPropertyChanging();
+					this._DonorType_ID = value;
+					this.SendPropertyChanged("DonorType_ID");
+					this.OnDonorType_IDChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Donor_ContactProcurement", Storage="_ContactProcurements", ThisKey="Donor_ID", OtherKey="Donor_ID")]
 		public EntitySet<ContactProcurement> ContactProcurements
 		{
@@ -2066,6 +2108,40 @@ namespace BidForKids.Models
 						this._Procurer_ID = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("Procurer");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="DonorType_Donor", Storage="_DonorType", ThisKey="DonorType_ID", OtherKey="DonorType_ID", IsForeignKey=true)]
+		public DonorType DonorType
+		{
+			get
+			{
+				return this._DonorType.Entity;
+			}
+			set
+			{
+				DonorType previousValue = this._DonorType.Entity;
+				if (((previousValue != value) 
+							|| (this._DonorType.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._DonorType.Entity = null;
+						previousValue.Donors.Remove(this);
+					}
+					this._DonorType.Entity = value;
+					if ((value != null))
+					{
+						value.Donors.Add(this);
+						this._DonorType_ID = value.DonorType_ID;
+					}
+					else
+					{
+						this._DonorType_ID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("DonorType");
 				}
 			}
 		}
@@ -2383,6 +2459,120 @@ namespace BidForKids.Models
 					this._Description = value;
 				}
 			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.DonorType")]
+	public partial class DonorType : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _DonorType_ID;
+		
+		private string _DonorTypeDesc;
+		
+		private EntitySet<Donor> _Donors;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnDonorType_IDChanging(int value);
+    partial void OnDonorType_IDChanged();
+    partial void OnDonorTypeDescChanging(string value);
+    partial void OnDonorTypeDescChanged();
+    #endregion
+		
+		public DonorType()
+		{
+			this._Donors = new EntitySet<Donor>(new Action<Donor>(this.attach_Donors), new Action<Donor>(this.detach_Donors));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DonorType_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int DonorType_ID
+		{
+			get
+			{
+				return this._DonorType_ID;
+			}
+			set
+			{
+				if ((this._DonorType_ID != value))
+				{
+					this.OnDonorType_IDChanging(value);
+					this.SendPropertyChanging();
+					this._DonorType_ID = value;
+					this.SendPropertyChanged("DonorType_ID");
+					this.OnDonorType_IDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DonorTypeDesc", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string DonorTypeDesc
+		{
+			get
+			{
+				return this._DonorTypeDesc;
+			}
+			set
+			{
+				if ((this._DonorTypeDesc != value))
+				{
+					this.OnDonorTypeDescChanging(value);
+					this.SendPropertyChanging();
+					this._DonorTypeDesc = value;
+					this.SendPropertyChanged("DonorTypeDesc");
+					this.OnDonorTypeDescChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="DonorType_Donor", Storage="_Donors", ThisKey="DonorType_ID", OtherKey="DonorType_ID")]
+		public EntitySet<Donor> Donors
+		{
+			get
+			{
+				return this._Donors;
+			}
+			set
+			{
+				this._Donors.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Donors(Donor entity)
+		{
+			this.SendPropertyChanging();
+			entity.DonorType = this;
+		}
+		
+		private void detach_Donors(Donor entity)
+		{
+			this.SendPropertyChanging();
+			entity.DonorType = null;
 		}
 	}
 }

@@ -28,7 +28,7 @@ namespace BidForKids.Controllers
             JsonResult lResult = new JsonResult();
             lResult.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
 
-            List<SerializableDonor> lRows = factory.GetSerializableDonors(loadOptions);
+            List<SerializableDonor> lRows = factory.GetSerializableBusinesses(loadOptions);
 
             if (lRows == null)
             {
@@ -155,30 +155,6 @@ namespace BidForKids.Controllers
             ViewData["Donates"] = GetDonatesSelectList(donor.Donates);
         }
 
-        /// <summary>
-        /// Redirects to ReturnTo query string value, passing Donor_ID=[NewDonorID], else redirects to Donor index
-        /// </summary>
-        /// <param name="NewDonorID">New Donor_ID to pass back to ReturnTo url</param>
-        /// <returns></returns>
-        private ActionResult ReturnToOrRedirectToIndex(int NewDonorID)
-        {
-            if (string.IsNullOrEmpty(Request.QueryString["ReturnTo"]) == false)
-            {
-                string lServerUrlDecode = Server.UrlDecode(Request.QueryString["ReturnTo"]);
-                if (lServerUrlDecode.IndexOf("http:") == -1 && lServerUrlDecode.IndexOf("/") != 0)
-                {
-                    lServerUrlDecode = "/" + lServerUrlDecode;
-                }
-
-                lServerUrlDecode += lServerUrlDecode.IndexOf("?") == -1 ? "?Donor_ID=" + NewDonorID.ToString() : "&Donor_ID=" + NewDonorID.ToString();
-
-                return Redirect(lServerUrlDecode);
-            }
-            else
-            {
-                return RedirectToAction("Index");
-            }
-        }
 
         //
         // POST: /Donor/Create
@@ -215,9 +191,11 @@ namespace BidForKids.Controllers
                     "Procurer_ID"
                 });
 
+                lNewDonor.DonorType_ID = factory.GetDonorTypeByName("Business").DonorType_ID;
+
                 int lNewDonorID = factory.AddDonor(lNewDonor);
 
-                return ReturnToOrRedirectToIndex(lNewDonorID);
+                return ControllerHelper.ReturnToOrRedirectToIndex(this, lNewDonorID, "Donor_ID");
             }
             catch
             {
@@ -343,7 +321,7 @@ namespace BidForKids.Controllers
 
                 if (factory.SaveDonor(lDonor) == false)
                 {
-                    throw new ApplicationException("Unable to save Donor");
+                    throw new ApplicationException("Unable to save changes to Business");
                 }
 
                 return RedirectToAction("Index");

@@ -85,6 +85,8 @@ namespace BidForKids.Models.SerializableObjects
         public bool? MailedPacket { get; set; }
         public int? Procurer_ID { get; set; }
         public string ProcurerName { get; set; }
+        public int? DonorType_ID { get; set; }
+        public string DonorTypeDesc { get; set; }
         public static SerializableDonor ConvertDonorToSerializableProcurement(Donor donor)
         {
             return new SerializableDonor()
@@ -111,7 +113,9 @@ namespace BidForKids.Models.SerializableObjects
                 Donates = donor.Donates ?? 2, // TODO: Remove hard coded unknown value of 2 for Donor.Donates when null
                 MailedPacket = donor.MailedPacket,
                 Procurer_ID = donor.Procurer_ID,
-                ProcurerName = donor.Procurer == null ? "" : donor.Procurer.FirstName + " " + donor.Procurer.LastName
+                ProcurerName = donor.Procurer == null ? "" : donor.Procurer.FirstName + " " + donor.Procurer.LastName,
+                DonorType_ID = donor.DonorType_ID,
+                DonorTypeDesc = donor.DonorType == null ? "" : donor.DonorType.DonorTypeDesc
             };
         }
     }

@@ -85,10 +85,12 @@
       <Column Name="ModifiedOn" Type="System.DateTime" DbType="datetime" CanBeNull="true" />
       <Column Name="MailedPacket" Type="System.Boolean" DbType="bit" CanBeNull="true" />
       <Column Name="Procurer_ID" Type="System.Int32" DbType="int" CanBeNull="true" />
+      <Column Name="DonorType_ID" Type="System.Int32" DbType="int" CanBeNull="true" />
       <Association Name="Donor_ContactProcurement" Member="ContactProcurements" ThisKey="Donor_ID" OtherKey="Donor_ID" Type="ContactProcurement" />
       <Association Name="GeoLocation_Donor" Member="GeoLocation" ThisKey="GeoLocation_ID" OtherKey="GeoLocation_ID" Type="GeoLocation" IsForeignKey="true" />
       <Association Name="DonatesReference_Donor" Member="DonatesReference" ThisKey="Donates" OtherKey="Donates_ID" Type="DonatesReference" IsForeignKey="true" />
       <Association Name="Procurer_Donor" Member="Procurer" ThisKey="Procurer_ID" OtherKey="Procurer_ID" Type="Procurer" IsForeignKey="true" />
+      <Association Name="DonorType_Donor" Member="DonorType" ThisKey="DonorType_ID" OtherKey="DonorType_ID" Type="DonorType" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Procurer" Member="Procurers">
@@ -108,6 +110,13 @@
       <Column Name="Donates_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="Description" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
       <Association Name="DonatesReference_Donor" Member="Donors" ThisKey="Donates_ID" OtherKey="Donates" Type="Donor" />
+    </Type>
+  </Table>
+  <Table Name="dbo.DonorType" Member="DonorTypes">
+    <Type Name="DonorType">
+      <Column Name="DonorType_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="DonorTypeDesc" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="DonorType_Donor" Member="Donors" ThisKey="DonorType_ID" OtherKey="DonorType_ID" Type="Donor" />
     </Type>
   </Table>
 </Database>

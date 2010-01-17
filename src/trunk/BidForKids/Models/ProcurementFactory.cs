@@ -78,17 +78,46 @@ namespace BidForKids.Models
 
             return lResult;
         }
+
+
+
+
+        public List<SerializableDonor> GetSerializableBusinesses(jqGridLoadOptions loadOptions)
+        {
+            DonorType donorType = GetDonorTypeByName("Business");
+
+            return GetSerializableDonors(loadOptions, donorType.DonorType_ID, "BusinessName");
+        }
+
+        public List<SerializableDonor> GetSerializableParents(jqGridLoadOptions loadOptions)
+        {
+            DonorType donorType = GetDonorTypeByName("Parent");
+
+            return GetSerializableDonors(loadOptions, donorType.DonorType_ID, "LastName");
+        }
+
+
+        public DonorType GetDonorTypeByName(string donorTypeDesc)
+        {
+            DonorType donorType = (from d in dc.DonorTypes where d.DonorTypeDesc == donorTypeDesc select d).FirstOrDefault();
+
+            if (donorType == null)
+            {
+                throw new ApplicationException("Unable to find donor type 'Parent' in DonorTypes");
+            }
+            return donorType;
+        }
         
-
-
-
-        public List<SerializableDonor> GetSerializableDonors(jqGridLoadOptions loadOptions)
+        
+        
+        
+        public List<SerializableDonor> GetSerializableDonors(jqGridLoadOptions loadOptions, int donorTypeId, string defaultSortColumnName)
         {
             if (loadOptions == null)
                 throw new ArgumentNullException("loadOptions", "loadOptions is null.");
 
             if (string.IsNullOrEmpty(loadOptions.sortIndex))
-                loadOptions.sortIndex = "BusinessName";
+                loadOptions.sortIndex = defaultSortColumnName;
 
             if (string.IsNullOrEmpty(loadOptions.sortOrder))
                 loadOptions.sortOrder = "asc";
@@ -97,13 +126,13 @@ namespace BidForKids.Models
 
             if (loadOptions.search == false)
             {
-                lDonors = dc.Donors.OrderBy(loadOptions.sortIndex + " " + loadOptions.sortOrder);
+                lDonors = dc.Donors.Where(x => x.DonorType_ID == donorTypeId).OrderBy(loadOptions.sortIndex + " " + loadOptions.sortOrder);
             }
             else
             {
                 AddLikePercentsToValues(loadOptions.searchParams);
 
-                string lSql = BuildSerializableDonorSqlStatement(loadOptions.sortIndex, loadOptions.sortOrder, loadOptions.searchParams);
+                string lSql = BuildSerializableDonorSqlStatement(loadOptions.sortIndex, loadOptions.sortOrder, loadOptions.searchParams, donorTypeId);
                 
                 lDonors = dc.ExecuteQuery<Donor>(lSql, loadOptions.searchParams.Values.ToArray<string>());
             }
@@ -117,19 +146,21 @@ namespace BidForKids.Models
             return lResult;
         }
 
-        private static string BuildSerializableDonorSqlStatement(string sortIndex, string sortOrder, Dictionary<string, string> searchParams)
+
+
+        private static string BuildSerializableDonorSqlStatement(string sortIndex, string sortOrder, Dictionary<string, string> searchParams, int donorTypeId)
         {
             string lSql = "select Donor.*, GeoLocation.GeoLocationName "
                 + " FROM Donor "
                 + " LEFT JOIN GeoLocation ON Donor.GeoLocation_ID = GeoLocation.GeoLocation_ID "
-                + " where ";
+                + " where Donor.DonorType_ID = " + donorTypeId.ToString() + " ";
 
             int lParamCount = 0;
             foreach (string item in searchParams.Keys.ToList())
             {
                 string lField = item;
-                if (lParamCount > 0)
-                    lSql += " AND ";
+                //if (lParamCount > 0)
+                lSql += " AND ";
 
                 // TODO: Fix the hack on the table name
                 if (lField.ToLower() == "description")
