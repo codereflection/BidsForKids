@@ -54,6 +54,9 @@ namespace BidForKids.Models
     partial void InsertDonorType(DonorType instance);
     partial void UpdateDonorType(DonorType instance);
     partial void DeleteDonorType(DonorType instance);
+    partial void InsertProcurementType(ProcurementType instance);
+    partial void UpdateProcurementType(ProcurementType instance);
+    partial void DeleteProcurementType(ProcurementType instance);
     #endregion
 		
 		public ProcurementDataClassesDataContext() : 
@@ -155,6 +158,14 @@ namespace BidForKids.Models
 			get
 			{
 				return this.GetTable<DonorType>();
+			}
+		}
+		
+		public System.Data.Linq.Table<ProcurementType> ProcurementTypes
+		{
+			get
+			{
+				return this.GetTable<ProcurementType>();
 			}
 		}
 	}
@@ -659,9 +670,13 @@ namespace BidForKids.Models
 		
 		private string _Certificate;
 		
+		private System.Nullable<int> _ProcurementType_ID;
+		
 		private EntityRef<ContactProcurement> _ContactProcurements;
 		
 		private EntityRef<Category> _Category;
+		
+		private EntityRef<ProcurementType> _ProcurementType;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -701,12 +716,15 @@ namespace BidForKids.Models
     partial void OnLimitationsChanged();
     partial void OnCertificateChanging(string value);
     partial void OnCertificateChanged();
+    partial void OnProcurementType_IDChanging(System.Nullable<int> value);
+    partial void OnProcurementType_IDChanged();
     #endregion
 		
 		public Procurement()
 		{
 			this._ContactProcurements = default(EntityRef<ContactProcurement>);
 			this._Category = default(EntityRef<Category>);
+			this._ProcurementType = default(EntityRef<ProcurementType>);
 			OnCreated();
 		}
 		
@@ -1054,6 +1072,30 @@ namespace BidForKids.Models
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcurementType_ID", DbType="int")]
+		public System.Nullable<int> ProcurementType_ID
+		{
+			get
+			{
+				return this._ProcurementType_ID;
+			}
+			set
+			{
+				if ((this._ProcurementType_ID != value))
+				{
+					if (this._ProcurementType.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnProcurementType_IDChanging(value);
+					this.SendPropertyChanging();
+					this._ProcurementType_ID = value;
+					this.SendPropertyChanged("ProcurementType_ID");
+					this.OnProcurementType_IDChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Procurement_ContactProcurement", Storage="_ContactProcurements", ThisKey="Procurement_ID", OtherKey="Procurement_ID", IsUnique=true, IsForeignKey=false)]
 		public ContactProcurement ContactProcurement
 		{
@@ -1113,6 +1155,40 @@ namespace BidForKids.Models
 						this._Category_ID = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("Category");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ProcurementType_Procurement", Storage="_ProcurementType", ThisKey="ProcurementType_ID", OtherKey="ProcurementType_ID", IsForeignKey=true)]
+		public ProcurementType ProcurementType
+		{
+			get
+			{
+				return this._ProcurementType.Entity;
+			}
+			set
+			{
+				ProcurementType previousValue = this._ProcurementType.Entity;
+				if (((previousValue != value) 
+							|| (this._ProcurementType.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ProcurementType.Entity = null;
+						previousValue.Procurements.Remove(this);
+					}
+					this._ProcurementType.Entity = value;
+					if ((value != null))
+					{
+						value.Procurements.Add(this);
+						this._ProcurementType_ID = value.ProcurementType_ID;
+					}
+					else
+					{
+						this._ProcurementType_ID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("ProcurementType");
 				}
 			}
 		}
@@ -2573,6 +2649,120 @@ namespace BidForKids.Models
 		{
 			this.SendPropertyChanging();
 			entity.DonorType = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ProcurementType")]
+	public partial class ProcurementType : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ProcurementType_ID;
+		
+		private string _ProcurementTypeDesc;
+		
+		private EntitySet<Procurement> _Procurements;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnProcurementType_IDChanging(int value);
+    partial void OnProcurementType_IDChanged();
+    partial void OnProcurementTypeDescChanging(string value);
+    partial void OnProcurementTypeDescChanged();
+    #endregion
+		
+		public ProcurementType()
+		{
+			this._Procurements = new EntitySet<Procurement>(new Action<Procurement>(this.attach_Procurements), new Action<Procurement>(this.detach_Procurements));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcurementType_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ProcurementType_ID
+		{
+			get
+			{
+				return this._ProcurementType_ID;
+			}
+			set
+			{
+				if ((this._ProcurementType_ID != value))
+				{
+					this.OnProcurementType_IDChanging(value);
+					this.SendPropertyChanging();
+					this._ProcurementType_ID = value;
+					this.SendPropertyChanged("ProcurementType_ID");
+					this.OnProcurementType_IDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcurementTypeDesc", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string ProcurementTypeDesc
+		{
+			get
+			{
+				return this._ProcurementTypeDesc;
+			}
+			set
+			{
+				if ((this._ProcurementTypeDesc != value))
+				{
+					this.OnProcurementTypeDescChanging(value);
+					this.SendPropertyChanging();
+					this._ProcurementTypeDesc = value;
+					this.SendPropertyChanged("ProcurementTypeDesc");
+					this.OnProcurementTypeDescChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ProcurementType_Procurement", Storage="_Procurements", ThisKey="ProcurementType_ID", OtherKey="ProcurementType_ID")]
+		public EntitySet<Procurement> Procurements
+		{
+			get
+			{
+				return this._Procurements;
+			}
+			set
+			{
+				this._Procurements.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Procurements(Procurement entity)
+		{
+			this.SendPropertyChanging();
+			entity.ProcurementType = this;
+		}
+		
+		private void detach_Procurements(Procurement entity)
+		{
+			this.SendPropertyChanging();
+			entity.ProcurementType = null;
 		}
 	}
 }
