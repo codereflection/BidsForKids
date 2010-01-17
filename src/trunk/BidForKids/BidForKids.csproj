@@ -141,9 +141,16 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\superfish\superfish-navbar.css" />
+    <Content Include="Content\superfish\superfish-vertical.css" />
+    <Content Include="Content\superfish\superfish.css" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\datejs\date.js" />
+    <Content Include="Scripts\superfish\hoverIntent.js" />
+    <Content Include="Scripts\superfish\jquery.bgiframe.min.js" />
+    <Content Include="Scripts\superfish\superfish.js" />
+    <Content Include="Scripts\superfish\supersubs.js" />
     <Content Include="Views\Home\Procurement.aspx" />
     <Content Include="Views\Parent\Create.aspx" />
     <Content Include="Views\Parent\Details.aspx" />

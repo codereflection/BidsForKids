@@ -5,7 +5,6 @@
     Procurement Search
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-    <script src="<%= Url.Content("~/Scripts/jquery-1.3.2.js") %>" type="text/javascript"></script>
     <script src="<%= Url.Content("~/Scripts/jquery-ui-1.7.2.custom.min.js") %>" type="text/javascript"></script>
     <script src="<%= Url.Content("~/Scripts/jqGrid/grid.locale-en.js") %>" type="text/javascript"></script>
     <script src="<%= Url.Content("~/Scripts/jqGrid/jquery.jqGrid.min.js") %>" type="text/javascript"></script>
@@ -62,7 +61,7 @@
                 resultDate = tryParse;
             }
             else {
-                resultDate = Date.parse(GetJSDate(cellValue).toString());            
+                resultDate = GetJSDate(cellValue);
             }
             return resultDate.toString(dateFormat);
         }
