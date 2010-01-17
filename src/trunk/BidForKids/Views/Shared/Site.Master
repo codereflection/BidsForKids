@@ -42,10 +42,22 @@
                         <%= Html.ActionLink("Home", "Index", "Home")%></li>
                     <li><a href="#a">Procurements</a>
                         <ul>
-                            <li>
-                                <%= Html.ActionLink("Business", "Index", "Procurement")%></li>
-                            <li>
-                                <%= Html.ActionLink("Parent", "Index", "Procurement")%></li>
+                            <li><a href="#a">Business</a>
+                                <ul>
+                                    <li>
+                                        <%= Html.ActionLink("New", "Create", "Procurement")%></li>
+                                    <li>
+                                        <%= Html.ActionLink("Search", "Index", "Procurement")%></li>
+                                </ul>
+                            </li>
+                            <li><a href="#a">Parent</a>
+                                <ul>
+                                    <li>
+                                        <%= Html.ActionLink("New", "Create", "Procurement")%></li>
+                                    <li>
+                                        <%= Html.ActionLink("Search", "Index", "Procurement")%></li>
+                                </ul>
+                            </li>
                             <li>
                                 <%= Html.ActionLink("Adventure", "Index", "Procurement")%></li>
                         </ul>
