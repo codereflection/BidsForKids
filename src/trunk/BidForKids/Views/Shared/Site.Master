@@ -42,20 +42,18 @@
                         <%= Html.ActionLink("Home", "Index", "Home")%></li>
                     <li><a href="#a">Procurements</a>
                         <ul>
-                            <li><a href="#a">Business</a>
+                            <li>
+                                <%= Html.ActionLink("Business", "Index", "Procurement", )%>
                                 <ul>
                                     <li>
                                         <%= Html.ActionLink("New", "Create", "Procurement")%></li>
-                                    <li>
-                                        <%= Html.ActionLink("Search", "Index", "Procurement")%></li>
                                 </ul>
                             </li>
-                            <li><a href="#a">Parent</a>
+                            <li>
+                                <%= Html.ActionLink("Parent", "Index", "Procurement")%>
                                 <ul>
                                     <li>
                                         <%= Html.ActionLink("New", "Create", "Procurement")%></li>
-                                    <li>
-                                        <%= Html.ActionLink("Search", "Index", "Procurement")%></li>
                                 </ul>
                             </li>
                             <li>
@@ -64,27 +62,8 @@
                     </li>
                     <li>
                         <%= Html.ActionLink("Geo Locations", "Index", "GeoLocation")%></li>
-                    <li><a href="#a">Reports</a>
-                        <ul>
-                            <li>
-                                <%= Html.ActionLink("Reports", "Reports", "Home")%></li>
-                            <li><a href="#a">Procurement Reports</a>
-                                <ul>
-                                    <li>
-                                        <%= Html.ActionLink("2008 Procurement List", "ProcurementList", "Procurement", new { Year = "2008" }, null)%></li>
-                                    <li>
-                                        <%= Html.ActionLink("2009 Procurement List", "ProcurementList", "Procurement", new { Year = "2009" }, null)%></li>
-                                    <li>
-                                        <%= Html.ActionLink("2010 Procurement List", "ProcurementList", "Procurement", new { Year = "2010" }, null)%></li>
-                                </ul>
-                            </li>
-                            <li><a href="#a">Geo Location Reports</a>
-                                <ul>
-                                    <li>
-                                        <%= Html.ActionLink("By geo Location","GeoLocationReports", "Home") %></li>
-                                </ul>
-                            </li>
-                        </ul>
+                    <li>
+                        <%= Html.ActionLink("Reports", "Reports", "Home")%>
                     </li>
                     <li>
                         <%= Html.ActionLink("Admin", "Menu", "Admin")%>
@@ -105,8 +84,6 @@
         <div id="main">
             <asp:ContentPlaceHolder ID="MainContent" runat="server" />
             <div id="footer">
-                Current server date and time:
-                <%= DateTime.Now %>.
             </div>
         </div>
     </div>
