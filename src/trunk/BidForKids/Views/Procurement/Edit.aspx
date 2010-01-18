@@ -11,7 +11,7 @@
             if (answer === false)
                 return;
 
-            var action = "/Procurement/Delete/" + id;
+            var action = '<%= Url.Action("Delete") %>/' + id.toString(); // "/Procurement/Delete/" + id;
 
             var request = new Sys.Net.WebRequest();
             request.set_httpVerb("DELETE");
@@ -23,7 +23,7 @@
         function deleteCompleted(c1, c2, c3) {
             if (c1._xmlHttpRequest.responseText == "True") {
                 alert("Procurement deleted.");
-                window.location = "/Procurement";
+                window.location = '<%= Url.Action("Index", "Home") %>';
             }
             else {
                 alert("Unknown result: " + c1._xmlHttpRequest.ResponseText);
