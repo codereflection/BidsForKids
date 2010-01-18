@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Admin Menu" Language="C#" MasterPageFile="~/Views/Shared/Admin.Master" Inherits="System.Web.Mvc.ViewPage" %>
+﻿<%@ Page Title="Admin Menu" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
 
 <asp:Content ID="adminTitle" ContentPlaceHolderID="TitleContent" runat="server">
     Admin Menu

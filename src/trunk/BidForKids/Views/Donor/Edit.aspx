@@ -1,4 +1,4 @@
-<%@ Page Title="Edit Business or Donor" Language="C#" MasterPageFile="~/Views/Shared/Admin.Master"
+<%@ Page Title="Edit Business or Donor" Language="C#" MasterPageFile="~/Views/Shared/Site.Master"
     Inherits="System.Web.Mvc.ViewPage<BidForKids.Models.Donor>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">

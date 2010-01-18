@@ -28,6 +28,7 @@ namespace BidForKids.Models.SerializableObjects
         public string Certificate { get; set; }
         public string Limitations { get; set; }
         public DateTime? CreatedOn { get; set; }
+        public int? ProcurementType_ID { get; set; }
         public static SerializableProcurement ConvertProcurementToSerializableProcurement(Procurement procurement)
         {
             return new SerializableProcurement()
@@ -55,7 +56,8 @@ namespace BidForKids.Models.SerializableObjects
                 ThankYouLetterSent = procurement.ThankYouLetterSent,
                 Certificate = procurement.Certificate,
                 Limitations = procurement.Limitations,
-                CreatedOn = procurement.CreatedOn
+                CreatedOn = procurement.CreatedOn,
+                ProcurementType_ID = procurement.ProcurementType_ID
             };
         }
     }

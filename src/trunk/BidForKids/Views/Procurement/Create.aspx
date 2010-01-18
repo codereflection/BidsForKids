@@ -1,11 +1,11 @@
 <%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<BidForKids.Models.Procurement>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
-    Create
+    Create <%= ViewData["CreateType"] %> Procurement
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <h2>
-        Create</h2>
+        Create <%= ViewData["CreateType"] %> Procurement</h2>
     <%= Html.ValidationSummary("Create was unsuccessful. Please correct the errors and try again.") %>
     <% using (Html.BeginForm())
        {%>
@@ -18,9 +18,10 @@
         </p>
         <p>
             <label for="Donor_ID">
-                Donor
+                <%= ViewData["CreateType"] %> Donor
             </label>
-            <%= Html.DropDownList("Donor_ID") %>&nbsp;<%= Html.ActionLink("new", "Create", "Donor", new { ReturnTo = Server.UrlEncode("Procurement.aspx/Create") }, null)%>
+            <%= Html.DropDownList("Donor_ID", "") %>&nbsp;<%= Html.ActionLink("new", "Create", ViewData["CreateNewController"].ToString(), 
+                                                              new { ReturnTo = ViewData["ReturnToUrl"] }, null)%>
         </p>
         <p>
             <label for="Auction_ID">
@@ -31,7 +32,7 @@
             <label for="Procurer_ID">
                 Procurer
             </label>
-            <%= Html.DropDownList("Procurer_ID")%>
+            <%= Html.DropDownList("Procurer_ID", "")%>
         </p>
         <p>
             <label for="Catalog #">
@@ -100,6 +101,7 @@
             <%= Html.ValidationMessage("Notes", "*") %>
         </p>
         <p>
+            <%= Html.Hidden("ProcurementType", ViewData["CreateType"]) %>
             <input type="submit" value="Create" />
         </p>
     </fieldset>

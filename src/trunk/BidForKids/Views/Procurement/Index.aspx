@@ -2,7 +2,7 @@
     Inherits="System.Web.Mvc.ViewPage<IEnumerable<BidForKids.Models.Procurement>>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
-    Procurement Search
+    <%= ViewData["ProcurementType"] %> Procurement Search
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <script src="<%= Url.Content("~/Scripts/jquery-ui-1.7.2.custom.min.js") %>" type="text/javascript"></script>
@@ -23,7 +23,8 @@
         }
 
         function getProcurement(id) {
-            $.get("Procurement.aspx/GetProcurement/" + id.toString(), {}, function(result) {
+            var url = '<%= Url.Action("GetProcurement") %>/' + id.toString();
+            $.get(url, {}, function(result) {
                 var lContext = $("#summary");
                 $("#CatalogNumber", lContext).html(result.CatalogNumber);
                 $("#AuctionNumber", lContext).html(result.AuctionNumber);
@@ -68,9 +69,10 @@
  
  
         $(document).ready(function() {
+            var location = window.location;
             var procurementGrid = $("#procurementGrid").jqGrid({
                 datatype: 'json',
-                url: 'Procurement.aspx/GetProcurements/',
+                url: '<%= Url.Action("GetProcurements", new { id = ViewData["ProcurementType"] }) %>',
                 jsonReader: {
                     root: "rows",
                     page: "page",
@@ -99,16 +101,17 @@
                 ],
                 pager: '#pager',
                 viewrecords: false,
-                editurl: 'Procurement.aspx/AjaxEdit',
+                editurl: '<%= Url.Action("AjaxEdit") %>',
                 rowNum: 20,
                 rowList: [2, 10, 20, 30, 40, 50, 100, 200, 300],
-                width: 1170,
+                width: 1240,
                 height: 'auto',
                 loadComplete: function() {
-                    var ids = $("#procurementGrid").getDataIDs();
+                    var ids = $('#procurementGrid').getDataIDs();
                     for (var i = 0; i < ids.length; i++) {
                         var cl = ids[i];
-                        var editLink = "<a href='Procurement.aspx/Edit/" + cl + "'>Edit</a>";
+                        var editUrl = '<%= Url.Action("Edit") %>';
+                        var editLink = "<a href='" + editUrl + "/" + cl + "'>Edit</a>";
                         var detailsLink = ""; //= "&nbsp;|&nbsp;<a href='Details/" + cl + "'>Details</a>";
                         jQuery("#procurementGrid").setRowData(ids[i], { act: editLink + detailsLink });
                     }
@@ -143,10 +146,10 @@
         });
     </script>
     <h2>
-        Procurement Search</h2>
+        <%= ViewData["ProcurementType"] %> Procurement Search</h2>
     <div class="ProcurementListHeader">
         <div class="CreateLinkTop">
-            <%= Html.ActionLink("Create New", "Create") %>
+            <a href="<%= ViewData["ProcurementCreateLink"] %>">Create</a>
         </div>
         <!--
         <div class="AuctionYearContainer">
@@ -160,9 +163,9 @@
     <div id="pager">
     </div>
     <div id="filter" style="margin-left: 30%; display: none">
-        Search Procurements</div>
+        Search <%= ViewData["ProcurementType"] %> Procurements</div>
     <p>
-        <%= Html.ActionLink("Create New", "Create") %>
+        <a href="<%= ViewData["ProcurementCreateLink"] %>">Create</a>
     </p>
     <div id="summary">
         <h2>

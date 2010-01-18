@@ -24,13 +24,7 @@ namespace BidForKids.Controllers
             return View(factory.GetProcurements(Year));
         }
 
-        //
-        // GET: /Procurement/GridIndex
-
-        //
-        // GET: /Procurement/
-
-        public ActionResult Index()
+        private void SetupIndex(string procurementType)
         {
             GetCategoryJSONString();
 
@@ -45,7 +39,38 @@ namespace BidForKids.Controllers
             {
                 ViewData["DefaultSearchYear"] = DateTime.Today.Year.ToString();
             }
-            return View(factory.GetProcurements());
+            ViewData["ProcurementType"] = procurementType;
+
+            if (string.IsNullOrEmpty(procurementType) == false)
+            {
+                ViewData["ProcurementCreateLink"] = Url.Action("CreateByType", new { id = procurementType });
+            }
+            else
+            {
+                ViewData["ProcurementCreateLink"] = Url.Action("Create");
+            }
+
+        }
+
+        //
+        // GET: /Procurement/
+
+        public ActionResult Index()
+        {
+            SetupIndex(null);
+            return View();
+        }
+
+        public ActionResult BusinessIndex()
+        {
+            SetupIndex("Business");
+            return View("Index");
+        }
+
+        public ActionResult ParentIndex()
+        {
+            SetupIndex("Parent");
+            return View("Index");
         }
 
         private void GetCategoryJSONString()
@@ -71,7 +96,7 @@ namespace BidForKids.Controllers
         }
 
         //public ActionResult GetProcurements(string _search, string nd, int page, int rows, string sidx, string sord)
-        public ActionResult GetProcurements()
+        public ActionResult GetProcurements(string id)
         {
             jqGridLoadOptions loadOptions = jqGridLoadOptions.GetLoadOptions(Request.QueryString);
 
@@ -84,6 +109,12 @@ namespace BidForKids.Controllers
             if (loadOptions.sortIndex == null)
             {
                 lRows = lRows.OrderByDescending(x => x.CreatedOn).ToList<SerializableProcurement>();
+            }
+
+            if (string.IsNullOrEmpty(id) == false)
+            {
+                ProcurementType procurementType = factory.GetProcurementTypeByName(id);
+                lRows = lRows.Where(x => x.ProcurementType_ID == procurementType.ProcurementType_ID).ToList<SerializableProcurement>();
             }
 
             int lTotalRows = lRows.Count;
@@ -140,24 +171,51 @@ namespace BidForKids.Controllers
 
         public ActionResult Create()
         {
-            SetupCreateViewData();
+            SetupCreateViewData(null);
 
             return View();
         }
 
-        private void SetupCreateViewData()
+        //
+        // GET: /Procurement/Create
+
+        public ActionResult CreateByType(string id)
+        {
+            SetupCreateViewData(id);
+
+            return View("Create");
+        }
+
+        private void SetupCreateViewData(string createType)
         {
             ViewData["Auction_ID"] = GetAuctionSelectList(null);
 
             if (Request != null && string.IsNullOrEmpty(Request.QueryString["Donor_ID"]) == false)
-                ViewData["Donor_ID"] = GetContactsSelectList(int.Parse(Request.QueryString["Donor_ID"].ToString()));
+                ViewData["Donor_ID"] = GetContactsSelectList(int.Parse(Request.QueryString["Donor_ID"].ToString()), createType);
             else
-                ViewData["Donor_ID"] = GetContactsSelectList(null);
+                ViewData["Donor_ID"] = GetContactsSelectList(null, createType);
 
             ViewData["Category_ID"] = GetCategoriesSelectList(null);
             ViewData["Procurer_ID"] = GetProcurerSelectList(null);
             ViewData["CertificateOptions"] = GetCertificateSelectListItems();
-
+            ViewData["CreateType"] = createType == null ? "" : createType;
+            if (string.IsNullOrEmpty(createType) == false)
+            {
+                ViewData["ReturnToUrl"] = Server.UrlEncode(Url.Action("CreateByType", new { id = createType }));
+                if (createType == "Business")
+                {
+                    ViewData["CreateNewController"] = "Donor";
+                }
+                else if (createType == "Parent")
+                {
+                    ViewData["CreateNewController"] = "Parent";
+                }
+            }
+            else
+            {
+                ViewData["ReturnToUrl"] = Server.UrlEncode(Url.Action("Create"));
+                ViewData["CreateNewController"] = "Donor";
+            }
         }
 
         private static List<SelectListItem> GetCertificateSelectListItems()
@@ -185,7 +243,7 @@ namespace BidForKids.Controllers
             }
 
             ViewData["Auction_ID"] = GetAuctionSelectList(lAuctionId);
-            ViewData["Donor_ID"] = GetContactsSelectList(lContactId);
+            ViewData["Donor_ID"] = GetContactsSelectList(lContactId, null);
             ViewData["Category_ID"] = GetCategoriesSelectList(lCategoryId);
             ViewData["Procurer_ID"] = GetProcurerSelectList(lProcurerID);
             ViewData["CertificateOptions"] = GetCertificateSelectListItems();
@@ -196,10 +254,41 @@ namespace BidForKids.Controllers
             return new SelectList(factory.GetAuctions().OrderByDescending(x => x.Year), "Auction_ID", "Year", selectedValue);
         }
 
-        private SelectList GetContactsSelectList(int? selectedValue)
+        private SelectList GetContactsSelectList(int? selectedValue, string createType)
         {
-            IEnumerable<Donor> lContacts = factory.GetDonors();
-            return new SelectList(lContacts.OrderBy(x => x.BusinessName), "Donor_ID", "BusinessName", selectedValue);
+            IEnumerable<Donor> lDonors = factory.GetDonors();
+
+            if (string.IsNullOrEmpty(createType) == false)
+            {
+                DonorType donorType = factory.GetDonorTypeByName(createType);
+                if (createType == "Business")
+                {
+                    var lBusinesses = from D in lDonors
+                                      where D.DonorType_ID == donorType.DonorType_ID
+                                      orderby D.BusinessName
+                                      select new
+                                      {
+                                          BusinessName = D.BusinessName,
+                                          Donor_ID = D.Donor_ID
+                                      };
+                    return new SelectList(lBusinesses, "Donor_ID", "BusinessName", selectedValue);
+                }
+                else if (createType == "Parent")
+                {
+                    var lParents = from D in lDonors
+                                   where D.DonorType_ID == donorType.DonorType_ID
+                                   orderby D.FirstName, D.LastName
+                                   select new
+                                   {
+                                       FirstName = D.FirstName,
+                                       LastName = D.LastName,
+                                       Donor_ID = D.Donor_ID,
+                                       FullName = D.FirstName + " " + D.LastName
+                                   };
+                    return new SelectList(lParents, "Donor_ID", "FullName", selectedValue);
+                }
+            }
+            return new SelectList(lDonors.OrderBy(x => x.BusinessName), "Donor_ID", "BusinessName", selectedValue);
         }
 
 
@@ -231,7 +320,19 @@ namespace BidForKids.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Create(FormCollection collection)
         {
-            SetupCreateViewData();
+            return CreateNewProcurement(collection);
+        }
+
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult CreateByType(FormCollection collection)
+        {
+            return CreateNewProcurement(collection);
+        }
+
+        private ActionResult CreateNewProcurement(FormCollection collection)
+        {
+            SetupCreateViewData(null);
 
             try
             {
@@ -245,9 +346,18 @@ namespace BidForKids.Controllers
                 UpdateModel<ContactProcurement>(lNewProcurement.ContactProcurement,
                     ContactProcurementColumns());
 
+                string actionToRedirectTo = "";
+
+                if (collection["procurementType"] != null)
+                {
+                    ProcurementType procurementType = factory.GetProcurementTypeByName(collection["procurementType"]);
+                    lNewProcurement.ProcurementType_ID = procurementType.ProcurementType_ID;
+                    actionToRedirectTo = collection["procurementType"];
+                }
+
                 int lNewProcurementID = factory.AddProcurement(lNewProcurement);
 
-                return RedirectToAction("Index");
+                return RedirectToAction(actionToRedirectTo + "Index");
             }
             catch
             {

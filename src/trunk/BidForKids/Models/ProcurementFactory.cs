@@ -103,12 +103,22 @@ namespace BidForKids.Models
 
             if (donorType == null)
             {
-                throw new ApplicationException("Unable to find donor type 'Parent' in DonorTypes");
+                throw new ApplicationException("Unable to find donor type " + donorTypeDesc + " in DonorTypes");
             }
             return donorType;
         }
-        
-        
+
+
+        public ProcurementType GetProcurementTypeByName(string procurementTypeDesc)
+        {
+            ProcurementType procurementType = (from d in dc.ProcurementTypes where d.ProcurementTypeDesc == procurementTypeDesc select d).FirstOrDefault();
+
+            if (procurementType == null)
+            {
+                throw new ApplicationException("Unable to find procurement type " + procurementTypeDesc + " in ProcurementTypes");
+            }
+            return procurementType;
+        }
         
         
         public List<SerializableDonor> GetSerializableDonors(jqGridLoadOptions loadOptions, int donorTypeId, string defaultSortColumnName)

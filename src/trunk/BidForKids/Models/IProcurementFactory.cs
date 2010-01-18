@@ -44,6 +44,8 @@ namespace BidForKids.Models
         bool SaveProcurer(Procurer procurer);
 
         List<DonatesReference> GetDonatesReferenceList();
+
+        ProcurementType GetProcurementTypeByName(string procurementTypeDesc);
     }
 
 }

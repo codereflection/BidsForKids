@@ -141,6 +141,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\images\arrows-ffffff.png" />
+    <Content Include="Content\images\shadow.png" />
     <Content Include="Content\superfish\superfish-navbar.css" />
     <Content Include="Content\superfish\superfish-vertical.css" />
     <Content Include="Content\superfish\superfish.css" />
@@ -232,7 +234,6 @@
     <Content Include="Views\Procurer\Details.aspx" />
     <Content Include="Views\Procurer\Edit.aspx" />
     <Content Include="Views\Procurer\Index.aspx" />
-    <Content Include="Views\Shared\Admin.Master" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Models\ProcurementDataClasses.dbml">
