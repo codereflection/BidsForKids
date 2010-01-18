@@ -43,7 +43,7 @@
                 viewrecords: true,
                 rowNum: 20,
                 rowList: [2, 10, 20, 30, 40, 50, 60, 70, 100],
-                width: 1170,
+                width: 1240,
                 height: '460',
                 loadComplete: function() {
                     var ids = $("#parentGrid").getDataIDs();
