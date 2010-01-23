@@ -243,7 +243,7 @@ namespace BidForKids.Controllers
             }
 
             ViewData["Auction_ID"] = GetAuctionSelectList(lAuctionId);
-            ViewData["Donor_ID"] = GetContactsSelectList(lContactId, null);
+            ViewData["Donor_ID"] = GetContactsSelectList(lContactId, contactProcurement.Procurement.ProcurementType.ProcurementTypeDesc);
             ViewData["Category_ID"] = GetCategoriesSelectList(lCategoryId);
             ViewData["Procurer_ID"] = GetProcurerSelectList(lProcurerID);
             ViewData["CertificateOptions"] = GetCertificateSelectListItems();
