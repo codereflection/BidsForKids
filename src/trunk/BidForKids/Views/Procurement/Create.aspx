@@ -18,7 +18,7 @@
         </p>
         <p>
             <label for="Donor_ID">
-                <%= ViewData["CreateType"] %> Donor
+                Donor
             </label>
             <%= Html.DropDownList("Donor_ID", "") %>&nbsp;<%= Html.ActionLink("new", "Create", ViewData["CreateNewController"].ToString(), 
                                                               new { ReturnTo = ViewData["ReturnToUrl"] }, null)%>
