@@ -467,7 +467,9 @@ namespace BidForKids.Controllers
                     throw new ApplicationException("Unable to save procurement");
                 }
 
-                return RedirectToAction("Index");
+                string actionToRedirectTo = lProcurement.ProcurementType.ProcurementTypeDesc;
+
+                return RedirectToAction(actionToRedirectTo + "Index");
             }
             catch
             {
