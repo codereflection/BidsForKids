@@ -84,7 +84,7 @@ namespace BidForKids.Controllers
                 return result;
             }
 
-            reportHtml.AppendLine("<table style=\"width: 100%\">");
+            reportHtml.AppendLine("<table class=\"customReport\">");
 
             bool includeRowNumbers = false;
             if (collection["IncludeRowNumbers"].Contains("true"))
