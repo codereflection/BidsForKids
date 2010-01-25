@@ -63,8 +63,14 @@
                     </li>
                     <li>
                         <%= Html.ActionLink("Geo Locations", "Index", "GeoLocation")%></li>
-                    <li>
-                        <%= Html.ActionLink("Reports", "Reports", "Home")%>
+                    <li><a href="#a">Reports</a>
+                        <ul>
+<%--                            <li>
+                                <%= Html.ActionLink("Donor", "CreateByType", "Report", new { id = "Donor" }, null)%></li>--%>
+                            <li>
+                                <%= Html.ActionLink("Procurement", "CreateByType", "Report", new { id = "Procurement" }, null)%></li>
+                        </ul>
+                        <%--<%= Html.ActionLink("Reports", "Reports", "Home")%>--%>
                     </li>
                     <li>
                         <%= Html.ActionLink("Admin", "Menu", "Admin")%>

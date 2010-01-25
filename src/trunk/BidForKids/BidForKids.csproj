@@ -121,6 +121,7 @@
     <Compile Include="Controllers\ParentController.cs" />
     <Compile Include="Controllers\ProcurementController.cs" />
     <Compile Include="Controllers\ProcurerController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -137,6 +138,7 @@
       <DependentUpon>ProcurementDataClasses.dbml</DependentUpon>
     </Compile>
     <Compile Include="Models\ProcurementFactory.cs" />
+    <Compile Include="Models\ReportModels.cs" />
     <Compile Include="Models\SerializableObjects.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -158,6 +160,8 @@
     <Content Include="Views\Parent\Details.aspx" />
     <Content Include="Views\Parent\Edit.aspx" />
     <Content Include="Views\Parent\Index.aspx" />
+    <Content Include="Views\Report\CreateByType.aspx" />
+    <Content Include="Views\Report\Index.aspx" />
     <Content Include="Web.config" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\jquery-1.3.2.js" />

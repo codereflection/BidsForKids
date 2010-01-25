@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 namespace BidForKids.Models.SerializableObjects
 {
 
@@ -61,6 +62,17 @@ namespace BidForKids.Models.SerializableObjects
                 ProcurementType_ID = procurement.ProcurementType_ID,
                 ProcurementType = procurement.ProcurementType == null ? "" : procurement.ProcurementType.ProcurementTypeDesc
             };
+        }
+        public static List<SerializableProcurement> ConvertProcurementListToSerializableProcurementList(List<Procurement> procurementList)
+        {
+            List<SerializableProcurement> result = new List<SerializableProcurement>();
+
+            procurementList.ForEach(row =>
+            {
+                result.Add(SerializableProcurement.ConvertProcurementToSerializableProcurement(row));
+            });
+
+            return result;
         }
     }
 
