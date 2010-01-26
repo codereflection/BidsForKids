@@ -139,17 +139,29 @@ namespace BidForKids.Controllers
         [AcceptVerbs(HttpVerbs.Delete)]
         public ActionResult Delete(int? id)
         {
-            if (id.HasValue == false)
+            try
             {
-                return RedirectToAction("Index", "Home");
+                if (id.HasValue == false)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
+                bool lResult = factory.DeleteProcurement((int)id);
+
+                ContentResult contentResult = new ContentResult();
+                contentResult.Content = lResult.ToString();
+
+                return contentResult;
             }
+            catch (Exception ex)
+            {
+                Elmah.ErrorSignal.FromCurrentContext().Raise(ex);
 
-            bool lResult = factory.DeleteProcurement((int)id);
+                ContentResult contentResult = new ContentResult();
+                contentResult.Content = "Error deleting procurement";
 
-            ContentResult contentResult = new ContentResult();
-            contentResult.Content = lResult.ToString();
-
-            return contentResult;
+                return contentResult;
+            }
         }
 
 

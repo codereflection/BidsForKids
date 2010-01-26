@@ -119,8 +119,8 @@ namespace BidForKids.Models
             }
             return procurementType;
         }
-        
-        
+
+
         public List<SerializableDonor> GetSerializableDonors(jqGridLoadOptions loadOptions, int donorTypeId, string defaultSortColumnName)
         {
             if (loadOptions == null)
@@ -143,7 +143,7 @@ namespace BidForKids.Models
                 AddLikePercentsToValues(loadOptions.searchParams);
 
                 string lSql = BuildSerializableDonorSqlStatement(loadOptions.sortIndex, loadOptions.sortOrder, loadOptions.searchParams, donorTypeId);
-                
+
                 lDonors = dc.ExecuteQuery<Donor>(lSql, loadOptions.searchParams.Values.ToArray<string>());
             }
 
@@ -285,14 +285,23 @@ namespace BidForKids.Models
         /// <returns>An instance of a Procurement object</returns>
         public Procurement GetProcurement(int id)
         {
-            var lProcurement = from P in dc.Procurements where P.Procurement_ID == id select P;
-
-            if (lProcurement == null || lProcurement.Count() == 0)
+            try
             {
-                throw new ApplicationException("Unable to locate procurement by ID " + id.ToString());
-            }
+                var lProcurement = from P in dc.Procurements where P.Procurement_ID == id select P;
 
-            return lProcurement.First();
+                if (lProcurement == null || lProcurement.Count() == 0)
+                {
+                    throw new ApplicationException("Unable to locate procurement by ID " + id.ToString());
+                }
+
+                return lProcurement.First();
+            }
+            catch (Exception ex)
+            {
+                Elmah.ErrorSignal.FromCurrentContext().Raise(ex);
+
+                return null;
+            }
         }
 
 
@@ -627,7 +636,7 @@ namespace BidForKids.Models
         }
 
 
-        
+
         /// <summary>
         /// Returns a GeoLocation object by GeoLocation_ID
         /// </summary>

@@ -11,23 +11,25 @@
             if (answer === false)
                 return;
 
-            var action = '<%= Url.Action("Delete") %>/' + id.toString(); // "/Procurement/Delete/" + id;
-
-            var request = new Sys.Net.WebRequest();
-            request.set_httpVerb("DELETE");
-            request.set_url(action);
-            request.add_completed(deleteCompleted);
-            request.invoke();
-        }
-
-        function deleteCompleted(c1, c2, c3) {
-            if (c1._xmlHttpRequest.responseText == "True") {
-                alert("Procurement deleted.");
-                window.location = '<%= Url.Action("Index", "Home") %>';
-            }
-            else {
-                alert("Unknown result: " + c1._xmlHttpRequest.ResponseText);
-            }
+            $.ajax({
+                url: '<%= Url.Action("Delete") %>/' + id.toString(),  // "/Procurement/Delete/" + id;
+                data: null,
+                type: 'DELETE',
+                dataType: 'text',
+                success: function (data, textStatus, XMLHttpRequest) {
+                    if (data == "True") {
+                        alert("Procurement deleted, now sending you back to the home page.");
+                        window.location = '<%= Url.Action("Index", "Home") %>';
+                    }
+                    else {
+                        alert("Procurement was NOT deleted: " + data);
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    debugger;
+                    alert("Error: " + textStatus);
+                }
+            });
         }
     </script>
     <h2>
