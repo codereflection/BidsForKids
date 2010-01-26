@@ -275,6 +275,11 @@ table th
 	font-size: 0.75em;
 }
 
+.reportNumber
+{
+	text-align: right;
+}
+
 /* MISC  
 ----------------------------------------------------------*/
 .clear

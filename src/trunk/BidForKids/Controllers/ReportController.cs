@@ -233,15 +233,42 @@ namespace BidForKids.Controllers
                     if (propInfo != null)
                     {
                         var value = propInfo.GetValue(row, null);
-                        if (value == null)
-                            value = string.Empty;
 
-                        reportHtml.AppendLine("<td>" + value.ToString() + "</td>");
+                        reportHtml.AppendLine(FormatHtmlTableCellValueByType(value));
                     }
                 }
                 reportHtml.AppendLine("</tr>");
             });
             reportHtml.AppendLine("</tbody>");
+        }
+
+        private static string FormatHtmlTableCellValueByType(object value)
+        {
+            if (value == null)
+                return string.Format("<td>&nbsp;</td>");
+            else
+            {
+                if (value is Int32 || value is Int32?)
+                {
+                    return string.Format("<td class='reportNumber'>{0:D}</td>", Int32.Parse(value.ToString()));
+                }
+                else if (value is Int64 || value is Int64?)
+                {
+                    return string.Format("<td class='reportNumber'>{0:D}</td>", Int64.Parse(value.ToString()));
+                }
+                else if (value is decimal || value is decimal?)
+                {
+                    return string.Format("<td class='reportNumber'>{0:N2}</td>", decimal.Parse(value.ToString()));
+                }
+                else if (value is double || value is double?)
+                {
+                    return string.Format("<td class='reportNumber'>{0:N2}</td>", double.Parse(value.ToString()));
+                }
+                else
+                {
+                    return string.Format("<td>{0}</td>", value.ToString());
+                }
+            }
         }
 
         private static void BuildReportHeader(StringBuilder reportHtml, List<string> columns, bool includeRowNumbers)
