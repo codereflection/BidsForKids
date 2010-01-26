@@ -158,6 +158,7 @@
     <Content Include="Scripts\superfish\jquery.bgiframe.min.js" />
     <Content Include="Scripts\superfish\superfish.js" />
     <Content Include="Scripts\superfish\supersubs.js" />
+    <Content Include="Views\Admin\BackupDatabase.aspx" />
     <Content Include="Views\Home\Procurement.aspx" />
     <Content Include="Views\Parent\Create.aspx" />
     <Content Include="Views\Parent\Details.aspx" />

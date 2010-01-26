@@ -81,6 +81,8 @@
                                 <%= Html.ActionLink("Parents", "Index", "Parent")%></li>
                             <li>
                                 <%= Html.ActionLink("Procurers", "Index", "Procurer")%></li>
+                            <li>
+                                <%= Html.ActionLink("Backup", "BackupDatabase", "Admin")%></li>
                         </ul>
                     </li>
                     <li>

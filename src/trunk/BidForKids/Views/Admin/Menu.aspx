@@ -10,5 +10,7 @@
     <%= Html.ActionLink("Parents", "Index", "Parent")%>
     <br />
     <%= Html.ActionLink("Procurers", "Index", "Procurer")%>
+    <br />
+    <%= Html.ActionLink("Backup Database", "BackupDatabase")%>
     </p>
 </asp:Content>

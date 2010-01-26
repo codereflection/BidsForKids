@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Configuration;
 
 namespace BidForKids.Controllers
 {
@@ -13,6 +14,43 @@ namespace BidForKids.Controllers
         {
             ViewData["Message"] = "Please choose an admin item from the menu below";
             return View();
+        }
+
+        public ActionResult BackupDatabase()
+        {
+            return View();
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult StartDatabaseBackup()
+        {
+            try
+            {
+                Models.ProcurementDataClassesDataContext dc = new Models.ProcurementDataClassesDataContext();
+
+
+                ContentResult result = new ContentResult();
+
+                string backupLocation = ConfigurationManager.AppSettings["SQLBackupLocation"];
+
+                if (string.IsNullOrEmpty(backupLocation) == true)
+                {
+                    throw new ApplicationException("SQLBackupLocation is not set in web.config");
+                }
+
+                dc.BackupDatabase(backupLocation);
+
+                result.Content = "Database has been backed up.";
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Elmah.ErrorSignal.FromCurrentContext().Raise(ex);
+                ContentResult errResult = new ContentResult();
+                errResult.Content = "Error backing up database: " + ex.Message;
+                return errResult;
+            }
         }
     }
 }

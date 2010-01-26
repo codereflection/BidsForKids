@@ -168,6 +168,13 @@ namespace BidForKids.Models
 				return this.GetTable<ProcurementType>();
 			}
 		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.BackupDatabase")]
+		public int BackupDatabase([global::System.Data.Linq.Mapping.ParameterAttribute(Name="BackupFileLocation", DbType="VarChar(1024)")] string backupFileLocation)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), backupFileLocation);
+			return ((int)(result.ReturnValue));
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Auction")]
