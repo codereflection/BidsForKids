@@ -183,7 +183,7 @@ namespace BidForKids.Controllers
                         }
                         catch (Exception ex)
                         {
-                            string error = ex.ToString();
+                            Elmah.ErrorSignal.FromCurrentContext().Raise(ex);
                         }
                     }
                 }
