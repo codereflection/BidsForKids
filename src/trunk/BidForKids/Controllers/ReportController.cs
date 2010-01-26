@@ -67,6 +67,10 @@ namespace BidForKids.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult RunReport(FormCollection collection)
         {
+            try
+            {
+
+
             ContentResult result = new ContentResult();
 
             StringBuilder reportHtml = new StringBuilder();
@@ -100,6 +104,13 @@ namespace BidForKids.Controllers
 
             result.Content = reportHtml.ToString();
             return result;
+            }
+            catch (Exception ex)
+            {
+                Elmah.ErrorSignal.FromCurrentContext().Raise(ex);
+            }
+
+            return null;
         }
 
         private ProcurementReport GetReportData(FormCollection collection)
