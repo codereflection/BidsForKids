@@ -12,9 +12,9 @@
                 return;
 
             $.ajax({
-                url: '<%= Url.Action("Delete") %>/' + id.toString(),  // "/Procurement/Delete/" + id;
-                data: null,
-                type: 'DELETE',
+                url: '<%= Url.Action("Delete") %>', // + id.toString(),  // "/Procurement/Delete/" + id;
+                data: { id: id.toString() },
+                type: 'POST',
                 dataType: 'text',
                 success: function (data, textStatus, XMLHttpRequest) {
                     if (data == "True") {
@@ -26,8 +26,7 @@
                     }
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    debugger;
-                    alert("Error: " + textStatus);
+                    alert("Error: " + textStatus + " (" + XMLHttpRequest.statusText + ")");
                 }
             });
         }
