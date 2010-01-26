@@ -6,6 +6,54 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <h2>
         Create <%= ViewData["CreateType"] %> Procurement</h2>
+        <script type="text/javascript">
+            checkItemNumber = function () {
+                var itemValue = $("#ItemNumber").val();
+                var itemId = -1;
+                $.ajax({
+                    url: '<%= Url.Action("CheckItemNumber") %>',
+                    data: { id: itemId, itemNumber: itemValue },
+                    type: 'POST',
+                    dataType: 'text',
+                    success: function (data, textStatus, XMLHttpRequest) {
+                        if (data != 'false') {
+                            alert(data);
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert('Error: ' + textStatus);
+                    }
+                });
+            }
+
+            getLastItemNumber = function () {
+                var itemValue = $("#ItemNumber").val();
+
+                if (itemValue.indexOf(" -") === -1) {
+                    return;
+                }
+
+                var itemId = -1;
+                $.ajax({
+                    url: '<%= Url.Action("GetLastItemNumber") %>',
+                    data: { id: itemId, itemNumber: itemValue },
+                    type: 'POST',
+                    dataType: 'text',
+                    success: function (data, textStatus, XMLHttpRequest) {
+                        if ($.trim(data).length > 0) {
+                            $("#LastItemNumber").text('Last similar item number: "' + data + '"');
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert('Error: ' + textStatus);
+                    }
+                });
+            }
+
+            $(document).ready(function () {
+                $("#ItemNumber").blur(checkItemNumber).keyup(getLastItemNumber);
+            });
+        </script>
     <%= Html.ValidationSummary("Create was unsuccessful. Please correct the errors and try again.") %>
     <% using (Html.BeginForm())
        {%>
@@ -49,7 +97,8 @@
         <p>
             <label for="ItemNumber">
                 Item #:</label>
-            <%= Html.TextBox("ItemNumber", null, new { maxlength = 20 })%>
+            <%= Html.TextBox("ItemNumber", null, new { maxlength = 20 })%>&nbsp;
+            <span id="LastItemNumber"></span>
             <%= Html.ValidationMessage("ItemNumber", "*")%>
         </p>
         <p>
