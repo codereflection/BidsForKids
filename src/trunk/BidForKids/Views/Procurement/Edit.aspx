@@ -68,12 +68,6 @@
             <%= Html.DropDownList("Procurer_ID", "")%>
         </p>
         <p>
-            <label for="CatalogNumber">
-                Catalog #:</label>
-            <%= Html.TextBox("CatalogNumber", Model.CatalogNumber, new { maxlength = 20 })%>
-            <%= Html.ValidationMessage("CatalogNumber", "*")%>
-        </p>
-        <p>
             <label for="Category_ID">
                 Category
             </label>
