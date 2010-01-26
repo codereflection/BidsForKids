@@ -499,6 +499,52 @@ namespace BidForKids.Controllers
             }
         }
 
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult CheckItemNumber(int id, FormCollection collection)
+        {
+            try
+            {
+                ContentResult result = new ContentResult();
+
+                string itemNumber = collection["itemNumber"];
+
+                if (factory.CheckForExistingItemNumber(id, itemNumber) == true)
+                    result.Content = itemNumber + " already exists in the database";
+                else
+                    result.Content = "false";
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Elmah.ErrorSignal.FromCurrentContext().Raise(ex);
+                ContentResult errResult = new ContentResult();
+                errResult.Content = "Error checking for item number: " + ex.Message;
+                return errResult;
+            }
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult GetLastItemNumber(int id, FormCollection collection)
+        {
+            ContentResult result = new ContentResult();
+
+            string itemNumber = collection["itemNumber"];
+
+            string lastSimilar = factory.CheckForLastSimilarItemNumber(id, itemNumber);
+
+            if (string.IsNullOrEmpty(lastSimilar) == false)
+            {
+                result.Content = lastSimilar;
+            }
+            else
+            {
+                result.Content = string.Empty;
+            }
+
+            return result;
+        }
+
         private static string[] ProcurementColumns()
         {
             return new[] {

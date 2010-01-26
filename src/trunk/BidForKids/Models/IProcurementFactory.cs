@@ -46,6 +46,9 @@ namespace BidForKids.Models
         List<DonatesReference> GetDonatesReferenceList();
 
         ProcurementType GetProcurementTypeByName(string procurementTypeDesc);
+
+        bool CheckForExistingItemNumber(int id, string itemNumber);
+        string CheckForLastSimilarItemNumber(int id, string itemNumber);
     }
 
 }

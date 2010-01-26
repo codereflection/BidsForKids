@@ -685,6 +685,43 @@ namespace BidForKids.Models
             return lProcurer.First();
         }
 
+
+        public bool CheckForExistingItemNumber(int id, string itemNumber)
+        {
+            var lQuery = from P in dc.Procurements
+                         where P.ItemNumber == itemNumber
+                         && P.Procurement_ID != id
+                         select P;
+
+            if (lQuery == null || lQuery.Count() == 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public string CheckForLastSimilarItemNumber(int id, string itemNumber)
+        {
+            var lQuery = from P in dc.Procurements
+                         where P.ItemNumber.StartsWith(itemNumber) == true
+                         && P.Procurement_ID != id
+                         orderby P.ItemNumber descending
+                         select P.ItemNumber;
+
+            if (lQuery == null || lQuery.Count() == 0)
+            {
+                return "";
+            }
+            else
+            {
+                return lQuery.First();
+            }
+        }
+
+
         #region IDisposable Members
 
         public void Dispose()

@@ -6,6 +6,53 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <script type="text/javascript" src="../../Scripts/MicrosoftAjax.js"></script>
     <script type="text/javascript">
+        checkItemNumber = function () {
+            var itemValue = $("#ItemNumber").val();
+            var itemId = $("#Procurement_ID").val();
+            $.ajax({
+                url: '<%= Url.Action("CheckItemNumber") %>',
+                data: { id: itemId, itemNumber: itemValue },
+                type: 'POST',
+                dataType: 'text',
+                success: function (data, textStatus, XMLHttpRequest) {
+                    if (data != 'false') {
+                        alert(data);
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert('Error: ' + textStatus);
+                }
+            });
+        }
+
+        getLastItemNumber = function () {
+            var itemValue = $("#ItemNumber").val();
+
+            if (itemValue.indexOf(" -") === -1) {
+                return;
+            }
+
+            var itemId = $("#Procurement_ID").val();
+            $.ajax({
+                url: '<%= Url.Action("GetLastItemNumber") %>',
+                data: { id: itemId, itemNumber: itemValue },
+                type: 'POST',
+                dataType: 'text',
+                success: function (data, textStatus, XMLHttpRequest) {
+                    if ($.trim(data).length > 0) {
+                        $("#LastItemNumber").text('Last similar item number: "' + data + '"');
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert('Error: ' + textStatus);
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            $("#ItemNumber").blur(checkItemNumber).keyup(getLastItemNumber);
+        });
+
         function deleteRecord(id) {
             var answer = confirm("Are you sure you want to delete this procurement?");
             if (answer === false)
@@ -41,10 +88,10 @@
         <p>
             <input type="submit" value="Save" />
         </p>
-        <p>
+        <p style="display: none;">
             <label for="Procurement_ID">
                 Procurement ID:</label>
-            <%= Html.Encode(Model.Procurement_ID) %>
+            <%= Html.Hidden("Procurement_ID", Model.Procurement_ID) %>
         </p>
         <p>
             <label for="ThankYouLetterSent">
@@ -83,7 +130,8 @@
         <p>
             <label for="ItemNumber">
                 Item #:</label>
-            <%= Html.TextBox("ItemNumber", Model.ItemNumber, new { maxlength = 20 })%>
+            <%= Html.TextBox("ItemNumber", Model.ItemNumber, new { maxlength = 20 })%>&nbsp;
+            <span id="LastItemNumber"></span>
             <%= Html.ValidationMessage("ItemNumber", "*")%>
         </p>
         <p>
