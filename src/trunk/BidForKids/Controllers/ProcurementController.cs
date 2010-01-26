@@ -359,8 +359,10 @@ namespace BidForKids.Controllers
 
                 return RedirectToAction(actionToRedirectTo + "Index");
             }
-            catch
+            catch (Exception ex)
             {
+                Elmah.ErrorSignal.FromCurrentContext().Raise(ex);
+
                 return View();
             }
         }
@@ -427,8 +429,10 @@ namespace BidForKids.Controllers
 
                 return this.JavaScript("alert('Saved.');");
             }
-            catch
+            catch (Exception ex)
             {
+                Elmah.ErrorSignal.FromCurrentContext().Raise(ex);
+
                 Procurement lProcurement = factory.GetProcurement((int)id);
 
                 SetupEditViewData(lProcurement.ContactProcurement);
@@ -471,8 +475,10 @@ namespace BidForKids.Controllers
 
                 return RedirectToAction(actionToRedirectTo + "Index");
             }
-            catch
+            catch (Exception ex)
             {
+                Elmah.ErrorSignal.FromCurrentContext().Raise(ex);
+
                 Procurement lProcurement = factory.GetProcurement((int)id);
 
                 SetupEditViewData(lProcurement.ContactProcurement);

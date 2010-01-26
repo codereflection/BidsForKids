@@ -24,7 +24,7 @@
   <Table Name="dbo.Procurement" Member="Procurements">
     <Type Name="Procurement">
       <Column Name="Procurement_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Description" Type="System.String" DbType="VarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(2000) NOT NULL" CanBeNull="false" />
       <Column Name="Quantity" Type="System.Double" DbType="Float" CanBeNull="true" />
       <Column Name="PerItemValue" Type="System.Decimal" DbType="Money" CanBeNull="true" />
       <Column Name="Notes" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
@@ -36,7 +36,7 @@
       <Column Name="Category_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="CreatedOn" Type="System.DateTime" DbType="datetime" CanBeNull="true" />
       <Column Name="ModifiedOn" Type="System.DateTime" DbType="datetime" CanBeNull="true" />
-      <Column Name="Donation" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="Donation" Type="System.String" DbType="VarChar(2000)" CanBeNull="true" />
       <Column Name="ThankYouLetterSent" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Column Name="Limitations" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
       <Column Name="Certificate" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />

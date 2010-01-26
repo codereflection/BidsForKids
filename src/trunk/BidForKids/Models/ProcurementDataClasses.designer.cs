@@ -748,7 +748,7 @@ namespace BidForKids.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="VarChar(500) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="VarChar(2000) NOT NULL", CanBeNull=false)]
 		public string Description
 		{
 			get
@@ -992,7 +992,7 @@ namespace BidForKids.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Donation", DbType="VarChar(500)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Donation", DbType="VarChar(2000)")]
 		public string Donation
 		{
 			get
