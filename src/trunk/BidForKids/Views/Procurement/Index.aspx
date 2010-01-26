@@ -26,7 +26,6 @@
             var url = '<%= Url.Action("GetProcurement") %>/' + id.toString();
             $.get(url, {}, function(result) {
                 var lContext = $("#summary");
-                $("#CatalogNumber", lContext).html(result.CatalogNumber);
                 $("#AuctionNumber", lContext).html(result.AuctionNumber);
                 $("#ItemNumber", lContext).html(result.ItemNumber);
                 $("#Year", lContext).html(result.Year);
@@ -84,9 +83,8 @@
                 //colNames: ['Actions', 'CatalogNumber', 'AuctionNumber', 'ItemNumber', 'Description', 'EstimatedValue', 'GeoLocation',  'Year', 'ID'],
                 colModel: [
                     { name: 'act', index: 'act', width: 20, sortable: false, search: false, label: ' ', align: 'center' },
-                    { name: 'CatalogNumber', index: 'CatalogNumber', width: 32, label: 'Catalog #' },
-                    { name: 'AuctionNumber', index: 'AuctionNumber', width: 32, label: 'Auction #' },
-                    { name: 'ItemNumber', index: 'ItemNumber', width: 32, label: 'Item #' },
+                    { name: 'AuctionNumber', index: 'AuctionNumber', width: 32, label: 'Auc #' },
+                    { name: 'ItemNumber', index: 'ItemNumber', width: 32, label: 'Itm #' },
                     { name: 'Donation', index: 'Donation' },
                     { name: 'EstimatedValue', index: 'EstimatedValue', width: 40, formatter: 'currency', align: 'right', label: 'Value' },
                     { name: 'BusinessName', index: 'BusinessName', label: 'Donor' },
@@ -104,7 +102,7 @@
                 editurl: '<%= Url.Action("AjaxEdit") %>',
                 rowNum: 20,
                 rowList: [2, 10, 20, 30, 40, 50, 100, 200, 300],
-                width: 1240,
+                width: 1020,
                 height: 'auto',
                 loadComplete: function() {
                     var ids = $('#procurementGrid').getDataIDs();
@@ -175,10 +173,10 @@
                 <table>
                     <tr>
                         <td class="labelCell">
-                            Catalog #
+                            Category
                         </td>
                         <td class="dataCell">
-                            <div id="CatalogNumber">
+                            <div id="Category">
                             </div>
                         </td>
                         <td class="labelCell">
@@ -242,24 +240,17 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="labelCell">
+                        <td class="labelCell" colspan="2">
                             Donor
                         </td>
-                        <td class="dataCell">
+                        <td class="dataCell" colspan="2">
                             <div id="Donor">
                             </div>
                         </td>
-                        <td class="labelCell">
-                            Category
-                        </td>
-                        <td class="dataCell">
-                            <div id="Category">
-                            </div>
-                        </td>
-                        <td class="labelCell">
+                        <td class="labelCell" colspan="2">
                             Location
                         </td>
-                        <td class="dataCell">
+                        <td class="dataCell" colspan="2">
                             <div id="GeoLocation">
                             </div>
                         </td>
@@ -268,7 +259,7 @@
                         <td class="labelCell">
                             Notes
                         </td>
-                        <td class="dataCell" colspan="5">
+                        <td class="dataCell" colspan="7">
                             <div id="Notes">
                             </div>
                         </td>
