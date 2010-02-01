@@ -14,7 +14,12 @@ namespace BidForKids.Models
         public static jqGridLoadOptions GetLoadOptions(System.Collections.Specialized.NameValueCollection QueryString)
         {
 
-            System.Collections.Specialized.NameValueCollection lParams = QueryString;
+            var lParams = QueryString;
+
+            if (lParams == null)
+            {
+                return new jqGridLoadOptions();
+            }
 
             jqGridLoadOptions loadOptions = new jqGridLoadOptions
             {

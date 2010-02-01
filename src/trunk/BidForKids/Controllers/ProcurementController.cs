@@ -9,9 +9,9 @@ using System.Collections.Specialized;
 namespace BidForKids.Controllers
 {
 
-    public class ProcurementController : Controller
+    public class ProcurementController : BidForKidsControllerBase
     {
-        private IProcurementFactory factory;
+        public ProcurementController() {}
 
         public ProcurementController(IProcurementFactory factory)
         {

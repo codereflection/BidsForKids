@@ -9,11 +9,14 @@ using BidForKids.Models.SerializableObjects;
 
 namespace BidForKids.Controllers
 {
-    public class DonorController : Controller
+    public class DonorController : BidForKidsControllerBase
     {
-        private IProcurementFactory factory;
+        public DonorController()
+        {
+            
+        }
 
-        public DonorController(IProcurementFactory factory)
+        public DonorController(IProcurementFactory factory) 
         {
             this.factory = factory;
         }
@@ -39,7 +42,7 @@ namespace BidForKids.Controllers
 
             lRows = lRows.Skip((loadOptions.page - 1) * loadOptions.rows).Take(loadOptions.rows).ToList();
 
-            int lTotalPages = (int)Math.Ceiling((decimal)lTotalRows / (decimal)loadOptions.rows);
+            int lTotalPages = lTotalRows == 0 ? 0 : (int)Math.Ceiling((decimal)lTotalRows / (decimal)loadOptions.rows);
 
             lResult.Data = new { total = lTotalPages, page = loadOptions.page, records = lTotalRows.ToString(), rows = lRows };
 
@@ -212,7 +215,10 @@ namespace BidForKids.Controllers
         private SelectList GetDonatesSelectList(int? selectedValue)
         {
             IEnumerable<DonatesReference> lDonatesRef = factory.GetDonatesReferenceList();
-            return new SelectList(lDonatesRef, "Donates_ID", "Description", selectedValue ?? 2); // TODO: Fix hard coded 2 value for unknown Donates value
+            if (lDonatesRef != null)
+                return new SelectList(lDonatesRef, "Donates_ID", "Description", selectedValue ?? 2); // TODO: Fix hard coded 2 value for unknown Donates value                
+            else
+                return new SelectList(new List<DonatesReference>(), "Donates_ID", "Description");
         }
 
         private SelectList GetProcurerSelectList(int? selectedValue)

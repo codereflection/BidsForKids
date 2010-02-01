@@ -9,7 +9,7 @@ namespace BidForKids.Tests.Controllers
 {
     public class ProcurementControllerFacts
     {
-        public class Details : BidForKidsController
+        public class Details : BidForKidsControllerTestBase
         {
             [Fact]
             public void ReturnsViewResultWithDefaultViewName()
@@ -58,14 +58,14 @@ namespace BidForKids.Tests.Controllers
             }
         }
 
-        public class Create : BidForKidsController
+        public class Create : BidForKidsControllerTestBase
         {
             [Fact]
             public void ReturnsViewResultWithDefaultViewName()
             {
                 // Arrange
-                var controller = new ProcurementController(_ProcurementFactory);
-
+                var controller = SetupNewControllerWithMockContext<ProcurementController>(_ProcurementFactory);
+                
                 // Act
                 var result = controller.Create();
 
@@ -92,7 +92,7 @@ namespace BidForKids.Tests.Controllers
             }
         }
 
-        public class Edit : BidForKidsController
+        public class Edit : BidForKidsControllerTestBase
         {
             [Fact]
             public void ReturnsViewResultWithDefaultViewName()

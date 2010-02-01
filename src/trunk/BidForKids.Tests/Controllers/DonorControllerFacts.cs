@@ -1,4 +1,7 @@
+using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
+using BidForKids.Models.SerializableObjects;
 using Xunit;
 using BidForKids.Controllers;
 using BidForKids.Models;
@@ -10,7 +13,7 @@ namespace BidForKids.Tests.Controllers
 {
     internal class DonorControllerFacts
     {
-        public class Index : BidForKidsController
+        public class Index : BidForKidsControllerTestBase
         {
             [Fact]
             public void ReturnsViewResultWithDefaultViewName()
@@ -42,25 +45,31 @@ namespace BidForKids.Tests.Controllers
             }
         }
 
-        public class Create : BidForKidsController
+        public class Create : BidForKidsControllerTestBase
         {
             [Fact]
             public void ReturnsViewResultWithDefaultViewName()
             {
                 // Arrange
-                var controller = new DonorController(_ProcurementFactory);
+                var controller = SetupNewControllerWithMockContext<DonorController>(_ProcurementFactory);
+
+                controller.ControllerContext.HttpContext
+                    .Request.Expect(x => x.QueryString["GeoLocation_ID"]).Return("");
 
                 // Act
                 var result = controller.Create();
 
                 // Assert
+                controller.ControllerContext.HttpContext
+                    .VerifyAllExpectations();
                 var viewResult = Assert.IsType<ViewResult>(result);
                 Assert.IsType<SelectList>(viewResult.ViewData["GeoLocation_ID"]);
                 Assert.Empty(viewResult.ViewName);
             }
+
         }
 
-        public class Edit : BidForKidsController
+        public class Edit : BidForKidsControllerTestBase
         {
             [Fact]
             public void ReturnsViewResultWithDefaultViewName()
@@ -92,7 +101,7 @@ namespace BidForKids.Tests.Controllers
             }
         }
 
-        public class Details : BidForKidsController
+        public class Details : BidForKidsControllerTestBase
         {
             [Fact]
             public void ReturnsViewResultWithDefaultViewName()
@@ -124,19 +133,59 @@ namespace BidForKids.Tests.Controllers
             }
         }
 
-        public class GetDonors : BidForKidsController
+        public class GetDonors : BidForKidsControllerTestBase
         {
             [Fact]
-            public void ReturnsJsonResult()
+            public void Throws_exception_when_QueryString_parameters_are_not_present()
+            {
+                var controller =
+                    SetupNewControllerWithMockContext<DonorController>(_ProcurementFactory);
+
+                ActionResult result = null;
+
+                Assert.Throws<ApplicationException>(() => result = controller.GetDonors());
+            }
+
+
+            [Fact]
+            public void Returns_an_empty_Json_object_array_of_Donors()
             {
                 // Arrange
-                var controller = new DonorController(_ProcurementFactory);
-
+                var controller =
+                    SetupNewControllerWithMockContext<DonorController>(_ProcurementFactory);
+                controller = SetupQueryStringParameters<DonorController>(controller, "_search=true&sidx=&sord=&page=&rows=");
+                _ProcurementFactory.Stub(x => x.GetSerializableBusinesses(new jqGridLoadOptions())).IgnoreArguments().Return(new List<SerializableDonor>());
+                
                 // Act
                 var result = controller.GetDonors();
 
                 // Assert
+                controller.HttpContext.Request.VerifyAllExpectations();
                 var viewResult = Assert.IsType<JsonResult>(result);
+                Assert.True(viewResult.Data.ToString().Contains("records = 0"));
+            }
+
+            [Fact]
+            public void Returns_a_json_object_with_one_record()
+            {
+                // Arrange
+                var controller =
+                    SetupNewControllerWithMockContext<DonorController>(_ProcurementFactory);
+                controller = SetupQueryStringParameters<DonorController>(controller, "_search=false&sidx=&sord=&page1=&rows=25");
+
+
+                var objToReturn = new List<SerializableDonor>();
+                objToReturn.Add(new SerializableDonor());
+                _ProcurementFactory.Expect(x => x.GetSerializableBusinesses(new jqGridLoadOptions())).IgnoreArguments().
+                    Return(objToReturn);
+                    
+                // Act
+                var result = controller.GetDonors();
+
+                // Assert
+                controller.HttpContext.Request.VerifyAllExpectations();
+                var viewResult = Assert.IsType<JsonResult>(result);
+                Assert.True(viewResult.Data.ToString().Contains("records = 1"));
             }
         }
     }

@@ -29,7 +29,7 @@ namespace BidForKids.Controllers
         {
             ViewData["Message"] = "Welcome to the Gatewood Elementary 'Bid For Kids' Auction Procurement Database!";
 
-            return View(factory.GetGeoLocations());
+            return View();
         }
 
         public ActionResult About()
