@@ -73,14 +73,20 @@ namespace BidForKids.Controllers
             return View("Index");
         }
 
+        public ActionResult AdventureIndex()
+        {
+            SetupIndex("Adventure");
+            return View("Index");
+        }
+
+
         private void GetCategoryJSONString()
         {
             var lCategoryString = "{ \"\": \"\",";
 
             foreach (var lCategory in factory.GetCategories())
-            {
                 lCategoryString += String.Format("{0}:'{1}',", lCategory.Category_ID, lCategory.CategoryName);
-            }
+            
             lCategoryString = lCategoryString.TrimEnd(new[] { ',' }) + "}";
 
             ViewData["CategoryJsonString"] = lCategoryString;
@@ -100,8 +106,7 @@ namespace BidForKids.Controllers
         {
             jqGridLoadOptions loadOptions = jqGridLoadOptions.GetLoadOptions(Request.QueryString);
 
-
-            JsonResult lResult = new JsonResult();
+            var lResult = new JsonResult();
             lResult.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
 
             List<SerializableProcurement> lRows = factory.GetSerializableProcurements(loadOptions);
@@ -117,11 +122,11 @@ namespace BidForKids.Controllers
                 lRows = lRows.Where(x => x.ProcurementType_ID == procurementType.ProcurementType_ID).ToList<SerializableProcurement>();
             }
 
-            int lTotalRows = lRows.Count;
+            var lTotalRows = lRows.Count;
 
             lRows = lRows.Skip((loadOptions.page - 1) * loadOptions.rows).Take(loadOptions.rows).ToList();
 
-            int lTotalPages = (int)Math.Ceiling((decimal)lTotalRows / (decimal)loadOptions.rows);
+            var lTotalPages = (int)Math.Ceiling((decimal)lTotalRows / (decimal)loadOptions.rows);
 
             lResult.Data = new { total = lTotalPages, page = loadOptions.page, records = lTotalRows.ToString(), rows = lRows };
 
@@ -202,23 +207,25 @@ namespace BidForKids.Controllers
         {
             ViewData["Auction_ID"] = GetAuctionSelectList(null);
 
+            var procurementType = factory.GetProcurementTypeByName(createType);
+
             if (Request != null && string.IsNullOrEmpty(Request.QueryString["Donor_ID"]) == false)
-                ViewData["Donor_ID"] = GetContactsSelectList(int.Parse(Request.QueryString["Donor_ID"].ToString()), createType);
+                ViewData["Donor_ID"] = GetDonorsSelectList(int.Parse(Request.QueryString["Donor_ID"].ToString()), procurementType.DonorType_ID);
             else
-                ViewData["Donor_ID"] = GetContactsSelectList(null, createType);
+                ViewData["Donor_ID"] = GetDonorsSelectList(null, procurementType.DonorType_ID);
 
             ViewData["Category_ID"] = GetCategoriesSelectList(null);
             ViewData["Procurer_ID"] = GetProcurerSelectList(null);
             ViewData["CertificateOptions"] = GetCertificateSelectListItems();
-            ViewData["CreateType"] = createType == null ? "" : createType;
+            ViewData["CreateType"] = createType ?? "";
             if (string.IsNullOrEmpty(createType) == false)
             {
                 ViewData["ReturnToUrl"] = Server.UrlEncode(Url.Action("CreateByType", new { id = createType }));
-                if (createType == "Business")
+                if (procurementType.DonorType.DonorTypeDesc == "Business")
                 {
                     ViewData["CreateNewController"] = "Donor";
                 }
-                else if (createType == "Parent")
+                else if (procurementType.DonorType.DonorTypeDesc == "Parent")
                 {
                     ViewData["CreateNewController"] = "Parent";
                 }
@@ -252,28 +259,36 @@ namespace BidForKids.Controllers
                 lContactId = contactProcurement.Donor_ID;
                 lCategoryId = contactProcurement.Procurement.Category_ID;
                 lProcurerID = contactProcurement.Procurer_ID;
+                ViewData["Donor_ID"] = GetDonorsSelectList(lContactId, contactProcurement.Procurement.ProcurementType.DonorType_ID);
             }
+            else
+                ViewData["Donor_ID"] = GetDonorsSelectList(lContactId, null);
 
             ViewData["Auction_ID"] = GetAuctionSelectList(lAuctionId);
-            ViewData["Donor_ID"] = GetContactsSelectList(lContactId, contactProcurement.Procurement.ProcurementType.ProcurementTypeDesc);
             ViewData["Category_ID"] = GetCategoriesSelectList(lCategoryId);
             ViewData["Procurer_ID"] = GetProcurerSelectList(lProcurerID);
             ViewData["CertificateOptions"] = GetCertificateSelectListItems();
         }
+
+
 
         private SelectList GetAuctionSelectList(int? selectedValue)
         {
             return new SelectList(factory.GetAuctions().OrderByDescending(x => x.Year), "Auction_ID", "Year", selectedValue);
         }
 
-        private SelectList GetContactsSelectList(int? selectedValue, string createType)
+
+
+        private SelectList GetDonorsSelectList(int? selectedValue, int? donorTypeID)
         {
             IEnumerable<Donor> lDonors = factory.GetDonors();
 
-            if (string.IsNullOrEmpty(createType) == false)
+            if (donorTypeID != null && donorTypeID != 0)
             {
-                DonorType donorType = factory.GetDonorTypeByName(createType);
-                if (createType == "Business")
+                DonorType donorType = factory.GetDonorTypeByID(donorTypeID.Value);
+
+                // TODO: Refactor the logic to build a Business / Parent select list
+                if (donorType.DonorTypeDesc == "Business")
                 {
                     var lBusinesses = from D in lDonors
                                       where D.DonorType_ID == donorType.DonorType_ID
@@ -285,7 +300,7 @@ namespace BidForKids.Controllers
                                       };
                     return new SelectList(lBusinesses, "Donor_ID", "BusinessName", selectedValue);
                 }
-                else if (createType == "Parent")
+                else if (donorType.DonorTypeDesc == "Parent")
                 {
                     var lParents = from D in lDonors
                                    where D.DonorType_ID == donorType.DonorType_ID
@@ -302,6 +317,7 @@ namespace BidForKids.Controllers
             }
             return new SelectList(lDonors.OrderBy(x => x.BusinessName), "Donor_ID", "BusinessName", selectedValue);
         }
+
 
 
         private SelectList GetCategoriesSelectList(int? selectedValue)
@@ -344,7 +360,7 @@ namespace BidForKids.Controllers
 
         private ActionResult CreateNewProcurement(FormCollection collection)
         {
-            SetupCreateViewData(null);
+            SetupCreateViewData(collection["ProcurementType"]);
 
             try
             {
@@ -468,7 +484,12 @@ namespace BidForKids.Controllers
 
             try
             {
-                Procurement lProcurement = factory.GetProcurement((int)id);
+                var lProcurement = factory.GetProcurement((int)id);
+
+                if (lProcurement.Procurement_ID != id)
+                {
+                    throw new ApplicationException("Unable to load procurement from database for editing by id " + id.ToString());
+                }
 
                 SetupEditViewData(lProcurement.ContactProcurement);
 
@@ -508,10 +529,9 @@ namespace BidForKids.Controllers
 
                 string itemNumber = collection["itemNumber"];
 
-                if (factory.CheckForExistingItemNumber(id, itemNumber) == true)
-                    result.Content = itemNumber + " already exists in the database";
-                else
-                    result.Content = "false";
+                result.Content = factory.CheckForExistingItemNumber(id, itemNumber) == true
+                                     ? itemNumber + " already exists in the database"
+                                     : "false";
 
                 return result;
             }
@@ -533,14 +553,9 @@ namespace BidForKids.Controllers
 
             string lastSimilar = factory.CheckForLastSimilarItemNumber(id, itemNumber);
 
-            if (string.IsNullOrEmpty(lastSimilar) == false)
-            {
-                result.Content = lastSimilar;
-            }
-            else
-            {
-                result.Content = string.Empty;
-            }
+            result.Content = 
+                string.IsNullOrEmpty(lastSimilar) == false ? 
+                lastSimilar : string.Empty;
 
             return result;
         }

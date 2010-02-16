@@ -73,12 +73,12 @@ namespace BidForKids.Controllers
 
             ContentResult result = new ContentResult();
 
-            StringBuilder reportHtml = new StringBuilder();
+            var reportHtml = new StringBuilder();
 
             reportHtml.AppendLine("<h3>" + collection["ReportTitle"] + "</h3>");
 
 
-            List<string> columns = new List<string>();
+            var columns = new List<string>();
             columns = GetSelectedColumns(collection);
 
             if (columns == null)
@@ -126,6 +126,8 @@ namespace BidForKids.Controllers
                 procurmentTypes.Add("Business");
             if (collection["ParentType"].Contains("true"))
                 procurmentTypes.Add("Parent");
+            if (collection["AdventureType"].Contains("true"))
+                procurmentTypes.Add("Adventure");
 
             // This is really fucking inefficient, and I don't like it one bit.
 

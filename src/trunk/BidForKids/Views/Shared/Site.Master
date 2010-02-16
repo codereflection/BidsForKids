@@ -57,6 +57,13 @@
                                         <%= Html.ActionLink("New", "CreateByType", "Procurement", new { id = "Parent" }, null)%></li>
                                 </ul>
                             </li>
+                            <li>
+                                <%= Html.ActionLink("Adventure", "AdventureIndex", "Procurement")%>
+                                <ul>
+                                    <li>
+                                        <%= Html.ActionLink("New", "CreateByType", "Procurement", new { id = "Adventure" }, null)%></li>
+                                </ul>
+                            </li>
                             <%--<li>
                                 <%= Html.ActionLink("Adventure", "Index", "Procurement")%></li>--%>
                         </ul>
@@ -65,7 +72,7 @@
                         <%= Html.ActionLink("Geo Locations", "Index", "GeoLocation")%></li>
                     <li><a href="#a">Reports</a>
                         <ul>
-<%--                            <li>
+                            <%--                            <li>
                                 <%= Html.ActionLink("Donor", "CreateByType", "Report", new { id = "Donor" }, null)%></li>--%>
                             <li>
                                 <%= Html.ActionLink("Procurement", "CreateByType", "Report", new { id = "Procurement" }, null)%></li>

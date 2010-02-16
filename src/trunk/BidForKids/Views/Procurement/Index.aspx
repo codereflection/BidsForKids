@@ -13,33 +13,33 @@
         function convertBoolToString(value)
         {
             if (value == null)
-                return "";
+                return '';
                 
             if (value === true)
-                return "Yes";
+                return 'Yes';
                 
             if (value == false)
-                return "No";
+                return 'No';
         }
 
         function getProcurement(id) {
             var url = '<%= Url.Action("GetProcurement") %>/' + id.toString();
             $.get(url, {}, function(result) {
-                var lContext = $("#summary");
-                $("#AuctionNumber", lContext).html(result.AuctionNumber);
-                $("#ItemNumber", lContext).html(result.ItemNumber);
-                $("#Year", lContext).html(result.Year);
-                $("#EstimatedValue", lContext).html(result.EstimatedValue);
-                $("#SoldFor", lContext).html(result.SoldFor);
-                $("#Donor", lContext).html(result.BusinessName + ' : ' + result.PersonName);
-                $("#Category", lContext).html(result.CategoryName);
-                $("#GeoLocation", lContext).html(result.GeoLocationName);
-                $("#Notes", lContext).html(result.Notes);
-                $("#Description", lContext).html(result.Description);
-                $("#Donation", lContext).html(result.Donation);
-                $("#ThankYouLetterSent", lContext).html(convertBoolToString(result.ThankYouLetterSent));
-                $("#Certificate", lContext).html(result.Certificate);
-            }, "json");
+                var lContext = $('#summary');
+                $('#AuctionNumber', lContext).html(result.AuctionNumber);
+                $('#ItemNumber', lContext).html(result.ItemNumber);
+                $('#Year', lContext).html(result.Year);
+                $('#EstimatedValue', lContext).html(result.EstimatedValue);
+                $('#SoldFor', lContext).html(result.SoldFor);
+                $('#Donor', lContext).html(result.BusinessName + ' : ' + result.PersonName);
+                $('#Category', lContext).html(result.CategoryName);
+                $('#GeoLocation', lContext).html(result.GeoLocationName);
+                $('#Notes', lContext).html(result.Notes);
+                $('#Description', lContext).html(result.Description);
+                $('#Donation', lContext).html(result.Donation);
+                $('#ThankYouLetterSent', lContext).html(convertBoolToString(result.ThankYouLetterSent));
+                $('#Certificate', lContext).html(result.Certificate);
+            }, 'json');
         }
         var lastsel;
 

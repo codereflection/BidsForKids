@@ -1,3 +1,4 @@
+using System;
 using System.Web.Mvc;
 using Xunit;
 using BidForKids.Controllers;
@@ -78,7 +79,7 @@ namespace BidForKids.Tests.Controllers
             public void SetsViewDataWithSelectLists()
             {
                 // Arrange
-                var controller = new ProcurementController(_ProcurementFactory);
+                var controller = SetupNewControllerWithMockContext<ProcurementController>(_ProcurementFactory);
 
                 // Act
                 var result = controller.Create();
@@ -98,7 +99,7 @@ namespace BidForKids.Tests.Controllers
             public void ReturnsViewResultWithDefaultViewName()
             {
                 // Arrange
-                var controller = new ProcurementController(_ProcurementFactory);
+                var controller = SetupNewControllerWithMockContext<ProcurementController>(_ProcurementFactory);
 
                 // Act
                 var result = controller.Edit((int?)0);
@@ -112,10 +113,10 @@ namespace BidForKids.Tests.Controllers
             public void SetsViewDataWithSelectLists()
             {
                 // Arrange
-                var controller = new ProcurementController(_ProcurementFactory);
+                var controller = SetupNewControllerWithMockContext<ProcurementController>(_ProcurementFactory);
 
                 // Act
-                var result = controller.Edit((int?)0);
+                var result = controller.Edit(0);
 
                 // Assert
                 var viewResult = Assert.IsType<ViewResult>(result);
@@ -129,8 +130,8 @@ namespace BidForKids.Tests.Controllers
             public void ReturnsIndexViewAfterSave()
             {
                 // Arrange
-                var controller = new ProcurementController(_ProcurementFactory);
-                FormCollection collection = new FormCollection();
+                var controller = SetupNewControllerWithMockContext<ProcurementController>(_ProcurementFactory);
+                var collection = new FormCollection();
 
                 // Act
                 var result = controller.Edit(1, collection);
@@ -138,6 +139,17 @@ namespace BidForKids.Tests.Controllers
                 // Assert
                 var viewResult = Assert.IsType<ViewResult>(result);
                 Assert.Empty(viewResult.ViewName);
+            }
+
+            [Fact]
+            public void Throws_when_cannot_find_procruement_in_database_to_edit()
+            {
+                // Arrange
+                var controller = SetupNewControllerWithMockContext<ProcurementController>(_ProcurementFactory);
+                var collection = new FormCollection();
+
+                // Act & assert
+                Assert.Throws<ApplicationException>(() => controller.Edit(1, collection));
             }
         }
     }

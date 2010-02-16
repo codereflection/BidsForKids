@@ -108,6 +108,17 @@ namespace BidForKids.Models
             return donorType;
         }
 
+        public DonorType GetDonorTypeByID(int donorTypeId)
+        {
+            DonorType donorType = (from d in dc.DonorTypes where d.DonorType_ID == donorTypeId select d).FirstOrDefault();
+
+            if (donorType == null)
+            {
+                throw new ApplicationException("Unable to find DonorType_ID " + donorTypeId.ToString() + " in DonorTypes");
+            }
+            return donorType;
+        }
+
 
         public ProcurementType GetProcurementTypeByName(string procurementTypeDesc)
         {

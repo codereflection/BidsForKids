@@ -69,7 +69,10 @@
                         <%= Html.CheckBox("BusinessType", true)%><br />
                         <label for="ParentType">
                             Parent</label>
-                        <%= Html.CheckBox("ParentType", true)%>
+                        <%= Html.CheckBox("ParentType", true)%><br />
+                        <label for="AdventureType">
+                            Adventure</label>
+                        <%= Html.CheckBox("AdventureType", true)%>
                     </td>
                 </tr>
             </table>

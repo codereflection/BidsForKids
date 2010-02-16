@@ -26,23 +26,23 @@ namespace BidForKids.Controllers
 
         public ActionResult GetDonors()
         {
-            jqGridLoadOptions loadOptions = jqGridLoadOptions.GetLoadOptions(Request.QueryString);
+            var loadOptions = jqGridLoadOptions.GetLoadOptions(Request.QueryString);
 
-            JsonResult lResult = new JsonResult();
-            lResult.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+            var lResult = new JsonResult
+                              {
+                                  JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                              };
 
             List<SerializableDonor> lRows = factory.GetSerializableBusinesses(loadOptions);
 
             if (lRows == null)
-            {
                 throw new ApplicationException("Unable to load Donors list");
-            }
 
-            int lTotalRows = lRows.Count;
+            var lTotalRows = lRows.Count;
 
             lRows = lRows.Skip((loadOptions.page - 1) * loadOptions.rows).Take(loadOptions.rows).ToList();
 
-            int lTotalPages = lTotalRows == 0 ? 0 : (int)Math.Ceiling((decimal)lTotalRows / (decimal)loadOptions.rows);
+            var lTotalPages = lTotalRows == 0 ? 0 : (int)Math.Ceiling((decimal)lTotalRows / (decimal)loadOptions.rows);
 
             lResult.Data = new { total = lTotalPages, page = loadOptions.page, records = lTotalRows.ToString(), rows = lRows };
 
@@ -69,9 +69,9 @@ namespace BidForKids.Controllers
             var lGeoLocationString = "{ \"\": \"\",";
 
             foreach (var lGeoLocation in lGeoLocations)
-            {
-                lGeoLocationString += String.Format("{0}:'{1}',", lGeoLocation.GeoLocation_ID, lGeoLocation.GeoLocationName);
-            }
+                lGeoLocationString += String.Format("{0}:'{1}',", lGeoLocation.GeoLocation_ID,
+                                                    lGeoLocation.GeoLocationName);
+
             lGeoLocationString = lGeoLocationString.TrimEnd(new[] { ',' }) + "}";
             return lGeoLocationString;
         }
@@ -83,9 +83,9 @@ namespace BidForKids.Controllers
             var lProcurerString = "{ \"\": \"\",";
 
             foreach (var lProcurer in lProcurers)
-            {
-                lProcurerString += string.Format("{0}:'{1}',", lProcurer.Procurer_ID, lProcurer.FirstName + " " + lProcurer.LastName);
-            }
+                lProcurerString += string.Format("{0}:'{1}',", lProcurer.Procurer_ID,
+                                                 lProcurer.FirstName + " " + lProcurer.LastName);
+
             lProcurerString = lProcurerString.TrimEnd(new[] { ',' }) + "}";
             return lProcurerString;
         }
@@ -147,6 +147,7 @@ namespace BidForKids.Controllers
                 ViewData["GeoLocation_ID"] = GetGeoLocationsSelectList(int.Parse(Request.QueryString["GeoLocation_ID"].ToString()));
             else
                 ViewData["GeoLocation_ID"] = GetGeoLocationsSelectList(null);
+
             ViewData["Donates"] = GetDonatesSelectList(null);
             ViewData["Procurer_ID"] = GetProcurerSelectList(null);
         }

@@ -119,13 +119,16 @@
       <Column Name="DonorType_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="DonorTypeDesc" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
       <Association Name="DonorType_Donor" Member="Donors" ThisKey="DonorType_ID" OtherKey="DonorType_ID" Type="Donor" />
+      <Association Name="DonorType_ProcurementType" Member="ProcurementTypes" ThisKey="DonorType_ID" OtherKey="DonorType_ID" Type="ProcurementType" />
     </Type>
   </Table>
   <Table Name="dbo.ProcurementType" Member="ProcurementTypes">
     <Type Name="ProcurementType">
       <Column Name="ProcurementType_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="ProcurementTypeDesc" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="DonorType_ID" Type="System.Int32" DbType="int" CanBeNull="true" />
       <Association Name="ProcurementType_Procurement" Member="Procurements" ThisKey="ProcurementType_ID" OtherKey="ProcurementType_ID" Type="Procurement" />
+      <Association Name="DonorType_ProcurementType" Member="DonorType" ThisKey="DonorType_ID" OtherKey="DonorType_ID" Type="DonorType" IsForeignKey="true" />
     </Type>
   </Table>
   <Function Name="dbo.BackupDatabase" Method="BackupDatabase">
