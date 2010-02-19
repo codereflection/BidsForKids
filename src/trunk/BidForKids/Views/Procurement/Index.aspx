@@ -90,7 +90,7 @@
                     { name: 'BusinessName', index: 'BusinessName', label: 'Donor' },
                     { name: 'GeoLocationName', index: 'GeoLocationName', width: 100, label: 'Geo Location', sortable: false },
                     { name: 'CategoryName', index: 'CategoryName', label: 'Category', hidden: true, sortable: false, editable: false },
-                    { name: 'Category_ID', index: 'Category_ID', label: 'Category', width: 100, sortable: false, editable: true, edittype: 'select', editoptions: { value: <%= ViewData["CategoryJsonString"] %> }, formatter: 'select' },
+                    { name: 'Category_ID', index: 'Category_ID', label: 'Category', width: 100, sortable: true, editable: true, edittype: 'select', editoptions: { value: <%= ViewData["CategoryJsonString"] %> }, formatter: 'select' },
                     { name: 'ProcurerName', index: 'ProcurerName', label: 'Procurer', width: 100, sortable: false },
                     { name: 'Year', index: 'Year', width: 30, sortable: false, searchoptions: { defaultValue: '<%= ViewData["DefaultSearchYear"] %>' } },
                     { name: 'Procurement_ID', index: 'Procurement_ID', width: 30, hidden: true, key: true },

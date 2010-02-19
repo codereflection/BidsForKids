@@ -257,6 +257,13 @@ namespace BidForKids.Models
                     lField = "CP.Auction_ID";
                 }
 
+                // TODO: Fix the hack on the table name
+                if (lField.ToLower() == "category_id")
+                {
+                    lField = "Category.CategoryName";
+                }
+
+
                 if (lField.IndexOf("_ID") > 0)
                 {
                     lSql += lField + " = {" + lParamCount.ToString() + "} ";

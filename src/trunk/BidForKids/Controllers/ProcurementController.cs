@@ -11,7 +11,7 @@ namespace BidForKids.Controllers
 
     public class ProcurementController : BidForKidsControllerBase
     {
-        public ProcurementController() {}
+        public ProcurementController() { }
 
         public ProcurementController(IProcurementFactory factory)
         {
@@ -86,7 +86,7 @@ namespace BidForKids.Controllers
 
             foreach (var lCategory in factory.GetCategories())
                 lCategoryString += String.Format("{0}:'{1}',", lCategory.Category_ID, lCategory.CategoryName);
-            
+
             lCategoryString = lCategoryString.TrimEnd(new[] { ',' }) + "}";
 
             ViewData["CategoryJsonString"] = lCategoryString;
@@ -96,7 +96,13 @@ namespace BidForKids.Controllers
         [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult GetProcurement(int? id)
         {
-            SerializableProcurement lProcurement = SerializableProcurement.ConvertProcurementToSerializableProcurement(factory.GetProcurement((int)id));
+            if (id == null)
+            {
+                throw new ArgumentNullException("id", "id cannot be null");
+            }
+
+            var lProcurement = SerializableProcurement.
+                ConvertProcurementToSerializableProcurement(factory.GetProcurement(id.Value));
 
             return Json(lProcurement, JsonRequestBehavior.AllowGet);
         }
@@ -104,17 +110,15 @@ namespace BidForKids.Controllers
         //public ActionResult GetProcurements(string _search, string nd, int page, int rows, string sidx, string sord)
         public ActionResult GetProcurements(string id)
         {
-            jqGridLoadOptions loadOptions = jqGridLoadOptions.GetLoadOptions(Request.QueryString);
+            var loadOptions = jqGridLoadOptions.GetLoadOptions(Request.QueryString);
 
-            var lResult = new JsonResult();
-            lResult.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+            var lResult = new JsonResult() { JsonRequestBehavior = JsonRequestBehavior.AllowGet };
 
+            // TODO: Should not have to fetch all of the rows here, need to refactor
             List<SerializableProcurement> lRows = factory.GetSerializableProcurements(loadOptions);
 
             if (loadOptions.sortIndex == null)
-            {
                 lRows = lRows.OrderByDescending(x => x.CreatedOn).ToList<SerializableProcurement>();
-            }
 
             if (string.IsNullOrEmpty(id) == false)
             {
@@ -553,8 +557,8 @@ namespace BidForKids.Controllers
 
             string lastSimilar = factory.CheckForLastSimilarItemNumber(id, itemNumber);
 
-            result.Content = 
-                string.IsNullOrEmpty(lastSimilar) == false ? 
+            result.Content =
+                string.IsNullOrEmpty(lastSimilar) == false ?
                 lastSimilar : string.Empty;
 
             return result;
