@@ -106,6 +106,8 @@
                             Procurer</label><%= Html.CheckBox("ProcurerNameColumn", true)%><br />
                         <label for="NotesColumn">
                             Notes</label><%= Html.CheckBox("NotesColumn", true)%><br />
+                        <label for="ItemNumberColumn">
+                            Item #</label><%= Html.CheckBox("ItemNumberColumn", true)%><br />
                     </td>
                 </tr>
             </table>
@@ -139,6 +141,8 @@
                             Procurer</label><%= Html.TextBox("ProcurerNameFilter")%><br />
                         <label for="NotesFilter">
                             Notes</label><%= Html.TextBox("NotesFilter")%><br />
+                        <label for="ItemNumberFilter">
+                            Item #</label><%= Html.TextBox("ItemNumberFilter")%><br />
                     </td>
                 </tr>
             </table>
@@ -151,8 +155,7 @@
                         <input type="submit" id="RunReport" value="Run Report" />&nbsp
                         <div style="background-color: Silver; color: Blue; font-size: large; font-family: Verdana;
                             float: right; display: none; width: 150px; height: 25px; text-align: center;
-                            vertical-align: middle;"
-                            id="ReportStatus">
+                            vertical-align: middle;" id="ReportStatus">
                         </div>
                     </td>
                     <%--                    <td>
