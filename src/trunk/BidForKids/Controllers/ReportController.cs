@@ -33,7 +33,7 @@ namespace BidForKids.Controllers
 
         private static List<SelectListItem> GetReportTypeSelectList()
         {
-            List<SelectListItem> reportTypeOptions = new List<SelectListItem>();
+            var reportTypeOptions = new List<SelectListItem>();
             reportTypeOptions.Add(new SelectListItem() { Text = "", Value = "", Selected = true });
             reportTypeOptions.Add(new SelectListItem() { Text = "Business", Value = "Business" });
             reportTypeOptions.Add(new SelectListItem() { Text = "Parent", Value = "Parent" });
@@ -70,40 +70,39 @@ namespace BidForKids.Controllers
             try
             {
 
+                var result = new ContentResult();
 
-            ContentResult result = new ContentResult();
+                var reportHtml = new StringBuilder();
 
-            var reportHtml = new StringBuilder();
-
-            reportHtml.AppendLine("<h3>" + collection["ReportTitle"] + "</h3>");
+                reportHtml.AppendLine("<h3>" + collection["ReportTitle"] + "</h3>");
 
 
-            var columns = new List<string>();
-            columns = GetSelectedColumns(collection);
+                var columns = new List<string>();
+                columns = GetSelectedColumns(collection);
 
-            if (columns == null)
-            {
-                reportHtml.AppendLine("<br />No columns found");
+                if (columns == null)
+                {
+                    reportHtml.AppendLine("<br />No columns found");
+                    result.Content = reportHtml.ToString();
+                    return result;
+                }
+
+                reportHtml.AppendLine("<table class=\"customReport\">");
+
+                bool includeRowNumbers = false;
+                if (collection["IncludeRowNumbers"].Contains("true"))
+                    includeRowNumbers = true;
+
+                BuildReportHeader(reportHtml, columns, includeRowNumbers);
+
+                ProcurementReport report = GetReportData(collection);
+
+
+                BuildReportBody(reportHtml, columns, report, includeRowNumbers);
+                reportHtml.AppendLine("</table>");
+
                 result.Content = reportHtml.ToString();
                 return result;
-            }
-
-            reportHtml.AppendLine("<table class=\"customReport\">");
-
-            bool includeRowNumbers = false;
-            if (collection["IncludeRowNumbers"].Contains("true"))
-                includeRowNumbers = true;
-
-            BuildReportHeader(reportHtml, columns, includeRowNumbers);
-
-            ProcurementReport report = GetReportData(collection);
-
-
-            BuildReportBody(reportHtml, columns, report, includeRowNumbers);
-            reportHtml.AppendLine("</table>");
-
-            result.Content = reportHtml.ToString();
-            return result;
             }
             catch (Exception ex)
             {
@@ -115,7 +114,7 @@ namespace BidForKids.Controllers
 
         private ProcurementReport GetReportData(FormCollection collection)
         {
-            ProcurementReport report = new ProcurementReport();
+            var report = new ProcurementReport();
 
             List<SerializableProcurement> procurements = SerializableProcurement.ConvertProcurementListToSerializableProcurementList(factory.GetProcurements());
 
@@ -148,13 +147,13 @@ namespace BidForKids.Controllers
                         {
                             foreach (SerializableProcurement item in procurements.ToArray())
                             {
-                                // ugly special case
+                                // TODO: Fix ugly special case
                                 if (filter.Key == "Donor")
                                 {
                                     if ((item.BusinessName == null || item.PersonName == null) ||
                                         (item.BusinessName.IndexOf(filter.Value, StringComparison.CurrentCultureIgnoreCase) == -1 &&
                                         item.PersonName.IndexOf(filter.Value, StringComparison.CurrentCultureIgnoreCase) == -1))
-                                        
+
                                         procurements.Remove(item);
 
                                     continue;
@@ -241,8 +240,8 @@ namespace BidForKids.Controllers
                         reportHtml.AppendLine("</td>");
                         continue;
                     }
-                    
-                    PropertyInfo propInfo = row.GetType().GetProperty(item);
+
+                    var propInfo = row.GetType().GetProperty(item);
                     if (propInfo != null)
                     {
                         var value = propInfo.GetValue(row, null);
@@ -305,7 +304,7 @@ namespace BidForKids.Controllers
             if (columnQuery == null || columnQuery.Count() == 0)
                 return null;
 
-            List<string> result = new List<string>();
+            var result = new List<string>();
 
             foreach (var item in columnQuery)
             {
@@ -323,7 +322,7 @@ namespace BidForKids.Controllers
             if (filterQuery == null || filterQuery.Count() == 0)
                 return null;
 
-            Dictionary<string, string> result = new Dictionary<string, string>();
+            var result = new Dictionary<string, string>();
 
             foreach (var item in filterQuery)
             {
