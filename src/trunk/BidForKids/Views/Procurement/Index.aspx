@@ -83,7 +83,7 @@
                 //colNames: ['Actions', 'CatalogNumber', 'AuctionNumber', 'ItemNumber', 'Description', 'EstimatedValue', 'GeoLocation',  'Year', 'ID'],
                 colModel: [
                     { name: 'act', index: 'act', width: 20, sortable: false, search: false, label: ' ', align: 'center' },
-                    { name: 'AuctionNumber', index: 'AuctionNumber', width: 32, label: 'Auc #' },
+                    { name: 'AuctionNumber', index: 'AuctionNumber', width: 32, label: 'Auc #', editable: true },
                     { name: 'ItemNumber', index: 'ItemNumber', width: 40, label: 'Itm #' },
                     { name: 'Donation', index: 'Donation' },
                     { name: 'EstimatedValue', index: 'EstimatedValue', width: 40, formatter: 'currency', align: 'right', label: 'Value' },
