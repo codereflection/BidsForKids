@@ -2,7 +2,8 @@
     Inherits="System.Web.Mvc.ViewPage<IEnumerable<BidForKids.Models.Procurement>>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
-    <%= ViewData["ProcurementType"] %> Procurement Search
+    <%= ViewData["ProcurementType"] %>
+    Procurement Search
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <script src="<%= Url.Content("~/Scripts/jquery-ui-1.7.2.custom.min.js") %>" type="text/javascript"></script>
@@ -65,6 +66,21 @@
             }
             return resultDate.toString(dateFormat);
         }
+
+        pricelessCurrencyFormatter = function (cellval, opts, rowObject) {
+    		var op = $.extend({},opts.currency);
+    		if(!isUndefined(opts.colModel.formatoptions)) {
+    			op = $.extend({},op,opts.colModel.formatoptions);
+    		}
+    		if(isEmpty(cellval)) {
+    			return "";
+    		}
+            if(cellval == "-1") {
+                return "priceless";
+            }
+    		return $.fmatter.util.NumberFormat(cellval,op);
+    	};
+
  
  
         $(document).ready(function() {
@@ -86,7 +102,7 @@
                     { name: 'AuctionNumber', index: 'AuctionNumber', width: 32, label: 'Auc #', editable: true },
                     { name: 'ItemNumber', index: 'ItemNumber', width: 40, label: 'Itm #' },
                     { name: 'Donation', index: 'Donation' },
-                    { name: 'EstimatedValue', index: 'EstimatedValue', width: 40, formatter: 'currency', align: 'right', label: 'Value' },
+                    { name: 'EstimatedValue', index: 'EstimatedValue', width: 40, formatter: pricelessCurrencyFormatter, align: 'right', label: 'Value', editable: true },
                     { name: 'BusinessName', index: 'BusinessName', label: 'Donor' },
                     { name: 'GeoLocationName', index: 'GeoLocationName', width: 100, label: 'Geo Location', sortable: false },
                     { name: 'CategoryName', index: 'CategoryName', label: 'Category', hidden: true, sortable: false, editable: false },
@@ -144,7 +160,8 @@
         });
     </script>
     <h2>
-        <%= ViewData["ProcurementType"] %> Procurement Search</h2>
+        <%= ViewData["ProcurementType"] %>
+        Procurement Search</h2>
     <div class="ProcurementListHeader">
         <div class="CreateLinkTop">
             <a href="<%= ViewData["ProcurementCreateLink"] %>">Create</a>
@@ -161,7 +178,9 @@
     <div id="pager">
     </div>
     <div id="filter" style="margin-left: 30%; display: none">
-        Search <%= ViewData["ProcurementType"] %> Procurements</div>
+        Search
+        <%= ViewData["ProcurementType"] %>
+        Procurements</div>
     <p>
         <a href="<%= ViewData["ProcurementCreateLink"] %>">Create</a>
     </p>

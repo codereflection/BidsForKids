@@ -226,7 +226,7 @@ namespace BidForKids.Controllers
                         reportHtml.AppendLine("<td>");
                         if (string.IsNullOrEmpty(row.BusinessName) == false)
                             reportHtml.Append(row.BusinessName);
-                        if (string.IsNullOrEmpty(row.PersonName.Trim()) == false)
+                        if (row.PersonName != null && string.IsNullOrEmpty(row.PersonName.Trim()) == false)
                         {
                             if (string.IsNullOrEmpty(row.BusinessName) == false)
                                 reportHtml.Append(": " + row.PersonName);
@@ -236,6 +236,17 @@ namespace BidForKids.Controllers
                         if (string.IsNullOrEmpty(row.BusinessName) == true && string.IsNullOrEmpty(row.PersonName) == true)
                         {
                             reportHtml.AppendLine("&nbsp;");
+                        }
+                        reportHtml.AppendLine("</td>");
+                        continue;
+                    }
+
+                    if (item == "EstimatedValue")
+                    {
+                        reportHtml.AppendLine("<td>");
+                        if (string.IsNullOrEmpty(row.EstimatedValue.ToString()) == false)
+                        {
+                            reportHtml.Append(row.EstimatedValue == -1 ? "priceless" : row.EstimatedValue.ToString());
                         }
                         reportHtml.AppendLine("</td>");
                         continue;

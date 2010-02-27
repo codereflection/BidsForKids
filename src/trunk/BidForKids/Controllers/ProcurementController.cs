@@ -437,7 +437,7 @@ namespace BidForKids.Controllers
         {
             if (id.HasValue == false)
             {
-                return this.JavaScript("alert('Error saving.');");
+                return this.JavaScript("alert('Error saving. Please try again or refresh the page and try again.');");
                 throw new ArgumentException("Invalid Procurement ID was passed.");
             }
 
