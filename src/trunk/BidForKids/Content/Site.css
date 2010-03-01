@@ -399,3 +399,9 @@ div#title
 	margin: 0 0 40px 0;
 }
 
+.groupedItemPart:hover
+{
+	border: 1px solid #e3e3e3;
+	background-color: Gainsboro;
+	color: Blue;
+}
