@@ -280,6 +280,15 @@ table th
 	text-align: right;
 }
 
+.customReportAuctionItemHeader
+{
+	background-color: #e3e3e3;
+}
+
+.customReportAuctionItemHeader td
+{
+	background-color: #e3e3e3;
+}
 /* MISC  
 ----------------------------------------------------------*/
 .clear

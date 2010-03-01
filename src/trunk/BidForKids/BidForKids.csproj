@@ -122,6 +122,8 @@
     <Compile Include="Configuration\StructureMapControllerFactory.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\AuctionController.cs" />
+    <Compile Include="Models\AuctionItem.cs" />
     <Compile Include="Controllers\BidForKidsControllerBase.cs" />
     <Compile Include="Controllers\ControllerHelper.cs" />
     <Compile Include="Controllers\DonorController.cs" />
@@ -165,6 +167,7 @@
     <Content Include="Scripts\superfish\superfish.js" />
     <Content Include="Scripts\superfish\supersubs.js" />
     <Content Include="Views\Admin\BackupDatabase.aspx" />
+    <Content Include="Views\Auction\Index.aspx" />
     <Content Include="Views\Home\Procurement.aspx" />
     <Content Include="Views\Parent\Create.aspx" />
     <Content Include="Views\Parent\Details.aspx" />
