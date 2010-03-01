@@ -116,10 +116,10 @@ namespace BidForKids.Controllers
         {
             var report = new ProcurementReport();
 
-            List<SerializableProcurement> procurements = SerializableProcurement.ConvertProcurementListToSerializableProcurementList(factory.GetProcurements());
+            var procurements = SerializableProcurement.ConvertProcurementListToSerializableProcurementList(factory.GetProcurements());
 
-            Dictionary<string, string> filters = GetFilteredColumns(collection);
-            List<string> procurmentTypes = new List<string>();
+            var filters = GetFilteredColumns(collection);
+            var procurmentTypes = new List<string>();
 
             if (collection["BusinessType"].Contains("true"))
                 procurmentTypes.Add("Business");
@@ -130,7 +130,7 @@ namespace BidForKids.Controllers
 
             // This is really fucking inefficient, and I don't like it one bit.
 
-            foreach (SerializableProcurement item in procurements.ToArray())
+            foreach (var item in procurements.OrderBy((x) => x.ItemNumber).ToArray())
             {
                 if (procurmentTypes.Contains(item.ProcurementType) == false)
                     procurements.Remove(item);

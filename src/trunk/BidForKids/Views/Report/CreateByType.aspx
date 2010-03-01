@@ -82,14 +82,16 @@
             <table style="width: 100%">
                 <tr>
                     <td>
+                        <label for="AuctionNumberColumn">
+                            Auction #</label><%= Html.CheckBox("AuctionNumberColumn", true)%><br />
+                        <label for="ItemNumberColumn">
+                            Item #</label><%= Html.CheckBox("ItemNumberColumn", true)%><br />
+                        <label for="DonorColumn">
+                            Donor</label><%= Html.CheckBox("DonorColumn", true)%><br />
                         <label for="DonationColumn">
                             Donation</label><%= Html.CheckBox("DonationColumn", true)%><br />
                         <label for="DescriptionColumn">
                             Description</label><%= Html.CheckBox("DescriptionColumn", true)%><br />
-                        <label for="YearColumn">
-                            Year</label><%= Html.CheckBox("YearColumn", true)%><br />
-                        <label for="QuantityColumn">
-                            Quantity</label><%= Html.CheckBox("QuantityColumn", true)%><br />
                         <label for="EstimatedValueColumn">
                             Estimated Value</label><%= Html.CheckBox("EstimatedValueColumn", true)%><br />
                         <label for="GeoLocationNameColumn">
@@ -98,16 +100,16 @@
                     <td>
                         <label for="CategoryNameColumn">
                             Category</label><%= Html.CheckBox("CategoryNameColumn", true)%><br />
-                        <label for="CertificateColumn">
-                            Certificate</label><%= Html.CheckBox("CertificateColumn", true)%><br />
-                        <label for="DonorColumn">
-                            Donor</label><%= Html.CheckBox("DonorColumn", true)%><br />
                         <label for="ProcurerNameColumn">
                             Procurer</label><%= Html.CheckBox("ProcurerNameColumn", true)%><br />
+                        <label for="YearColumn">
+                            Year</label><%= Html.CheckBox("YearColumn", true)%><br />
+                        <label for="QuantityColumn">
+                            Quantity</label><%= Html.CheckBox("QuantityColumn", true)%><br />
+                        <label for="CertificateColumn">
+                            Certificate</label><%= Html.CheckBox("CertificateColumn", true)%><br />
                         <label for="NotesColumn">
                             Notes</label><%= Html.CheckBox("NotesColumn", true)%><br />
-                        <label for="ItemNumberColumn">
-                            Item #</label><%= Html.CheckBox("ItemNumberColumn", true)%><br />
                     </td>
                 </tr>
             </table>
@@ -143,6 +145,8 @@
                             Notes</label><%= Html.TextBox("NotesFilter")%><br />
                         <label for="ItemNumberFilter">
                             Item #</label><%= Html.TextBox("ItemNumberFilter")%><br />
+                        <label for="AuctionNumberFilter">
+                            Auction #</label><%= Html.TextBox("AuctionNumberFilter")%><br />
                     </td>
                 </tr>
             </table>
