@@ -23,7 +23,12 @@ namespace BidForKids.Models
                 subTotal = subTotal + item.EstimatedValue.Value;
             }
 
-            return hasPriceless ? subTotal.ToString("C") + " & priceless" : subTotal.ToString("C");
+            if (hasPriceless && subTotal > 0)
+                return subTotal.ToString("C") + " & priceless";
+            else if (hasPriceless && subTotal == 0)
+                return "priceless";
+            else
+                return subTotal.ToString("C");
         }
     }
 }

@@ -7,7 +7,80 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <h2>
         Report - Auction Items</h2>
-    <table class="customReport">
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $("#ResultContainer").hide();
+
+            var theForm = $("#CreateReportForm");
+
+            theForm.submit(function () {
+                var action = theForm.attr("action");
+                var serializedForm = theForm.serialize();
+
+                $("#ReportStatus").text("Loading...").show();
+
+                $.ajax({
+                    url: action,
+                    data: serializedForm,
+                    type: "POST",
+                    dataType: "html",
+                    success: function (data, textStatus, XMLHttpRequest) {
+                        $("#Result").html(data);
+                        $("#ResultContainer").show();
+                        $("#ReportStatus").text("Complete").fadeOut("slow");
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert("Error: " + textStatus);
+                    }
+                });
+
+                return false;
+            });
+        });
+    
+    </script>
+    <div id="ReportSettingsContainer">
+        <% using (Html.BeginForm("RunAuctionReport", "Report", FormMethod.Post, new { id = "CreateReportForm" }))
+           { %>
+        <fieldset id="ReportFilters">
+            <legend>Report Filters</legend>
+            <label for="AuctionNumberStartFilter">
+                Auction #:</label><%= Html.TextBox("AuctionNumberStartFilter")%>&nbsp;to&nbsp;<%= Html.TextBox("AuctionNumberEndFilter")%>
+            <br />
+            <label for="CategoryNameFilter">
+                Category</label><%= Html.DropDownList("CategoryNameFilter",(IEnumerable<SelectListItem>)ViewData["CategoryList"],"")%><br />
+            <label for="YearFilter">
+                Year</label><%= Html.TextBox("YearFilter")%><br />
+        </fieldset>
+        <fieldset id="ReportCommands">
+            <legend>Report Commands</legend>
+            <table style="width: 100%">
+                <tr>
+                    <td>
+                        <input type="submit" id="RunReport" value="Run Report" />&nbsp
+                        <div style="background-color: Silver; color: Blue; font-size: large; font-family: Verdana;
+                            float: right; display: none; width: 150px; height: 25px; text-align: center;
+                            vertical-align: middle;" id="ReportStatus">
+                        </div>
+                    </td>
+                    <%--                    <td>
+                        <input type="button" id="SaveReport" value="Save Report" />
+                    </td>--%>
+                </tr>
+            </table>
+        </fieldset>
+        <% } %>
+    </div>
+    <div id="ResultContainer">
+        <hr />
+        <h2>
+            Report:</h2>
+        <hr />
+        <div id="Result">
+        </div>
+    </div>
+    <%--<table class="customReport">
         <thead>
             <tr>
                 <th>
@@ -87,5 +160,5 @@
             </tr>
             <% } %>
         </tbody>
-    </table>
+    </table>--%>
 </asp:Content>

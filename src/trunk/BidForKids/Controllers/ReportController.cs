@@ -346,21 +346,85 @@ namespace BidForKids.Controllers
             return result;
         }
 
+        private SelectList GetCategoriesSelectList()
+        {
+            IEnumerable<Category> lCategories = factory.GetCategories();
+            return new SelectList(lCategories.OrderBy(x => x.CategoryName), "Category_ID", "CategoryName");
+        }
+
+
+        private void SetupAuctionItemViewData()
+        {
+            ViewData["CategoryList"] = GetCategoriesSelectList();
+        }
+
         public ActionResult AuctionItem()
         {
-            var procurementItems = factory.GetProcurements(2010);
-
-            var auctionItems = from P in procurementItems
-                               where P.AuctionNumber != null
-                               group P by P.AuctionNumber
-                                   into g
-                                   select new AuctionItem()
-                                   {
-                                       AuctionNumber = g.Key,
-                                       Items = g
-                                   };
-
-            return View(auctionItems);
+            SetupAuctionItemViewData();
+            return View();
         }
+
+        private IEnumerable<AuctionItem> GetAuctionItems(int? Year)
+        {
+            var procurementItems = new List<Procurement>();
+
+            if (Year != null)
+                procurementItems = factory.GetProcurements(Year.Value);
+            else
+            {
+                procurementItems = factory.GetProcurements();
+            }
+
+            return from P in procurementItems
+                   where P.AuctionNumber != null
+                   group P by P.AuctionNumber
+                       into g
+                       select new AuctionItem()
+                                  {
+                                      AuctionNumber = g.Key,
+                                      Items = g
+                                  };
+        }
+
+        //
+        // POST: /Report/RunReport
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult RunAuctionReport(FormCollection collection)
+        {
+            int? Year = null;
+            if (!string.IsNullOrEmpty(collection["YearFilter"]))
+                Year = int.Parse(collection["YearFilter"]);
+
+            var Category = collection["CategoryNameFilter"];
+            var AuctionNumberStart = collection["AuctionNumberStartFilter"];
+            var AuctionNumberEnd = collection["AuctionNumberEndFilter"];
+
+            var auctionItems = GetAuctionItems(Year);
+
+            if (!string.IsNullOrEmpty(Category))
+            {
+                auctionItems = from P in auctionItems
+                               where P.Items.Any((x) => x.Category != null ? x.Category.Category_ID == int.Parse(Category) : false)
+                               select P;
+            }
+
+            if (!string.IsNullOrEmpty(AuctionNumberStart))
+            {
+                auctionItems = from P in auctionItems
+                               where string.CompareOrdinal(P.AuctionNumber, AuctionNumberStart) >= 0
+                               select P;
+            }
+
+            if (!string.IsNullOrEmpty(AuctionNumberEnd))
+            {
+                auctionItems = from P in auctionItems
+                               where string.CompareOrdinal(P.AuctionNumber, AuctionNumberEnd) <= 0
+                               select P;
+            }
+
+            return PartialView("AuctionItemReportData", auctionItems);
+        }
+
     }
 }
