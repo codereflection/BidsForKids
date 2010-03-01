@@ -246,7 +246,7 @@ namespace BidForKids.Controllers
                         reportHtml.AppendLine("<td>");
                         if (string.IsNullOrEmpty(row.EstimatedValue.ToString()) == false)
                         {
-                            reportHtml.Append(row.EstimatedValue == -1 ? "priceless" : row.EstimatedValue.ToString());
+                            reportHtml.Append(row.EstimatedValue == -1 ? "priceless" : row.EstimatedValue == null ? "" : row.EstimatedValue.Value.ToString("C"));
                         }
                         reportHtml.AppendLine("</td>");
                         continue;
