@@ -32,15 +32,15 @@
                 </td>
                 <td>
                     <%
-                        var Donation = item.Items.Aggregate("", (current, procItem) => current + (procItem.Donation + " & "));
-                        Donation = Donation.Substring(0, Donation.Length - 3);
+                        var Donation = item.Items.Aggregate("", (current, procItem) => current + (procItem.Donation + ", "));
+                        Donation = Donation.Substring(0, Donation.Length - 2);
                     %>
                     <%= Donation %>
                 </td>
                 <td>
                     <%
-                        var Description = item.Items.Aggregate("", (current, procItem) => current + (procItem.Description + " & "));
-                        Description = Description.Substring(0, Description.Length - 3);
+                        var Description = item.Items.Aggregate("", (current, procItem) => current + (procItem.Description + ", "));
+                        Description = Description.Substring(0, Description.Length - 2);
                     %>
                     <%= Description%>
                 </td>
@@ -51,15 +51,15 @@
                         {
                             if (procItem.ContactProcurement.Donor.DonorType.DonorTypeDesc == "Business")
                             {
-                                Donor += procItem.ContactProcurement.Donor.BusinessName + " & ";
+                                Donor += procItem.ContactProcurement.Donor.BusinessName + " and ";
                             }
                             else
                             {
                                 Donor += procItem.ContactProcurement.Donor.FirstName + " " +
-                                         procItem.ContactProcurement.Donor.LastName + " & ";
+                                         procItem.ContactProcurement.Donor.LastName + " and ";
                             }
                         }
-                        Donor = Donor.Substring(0, Donor.Length - 3);
+                        Donor = Donor.Substring(0, Donor.Length - 5);
                     %>
                     <%= Donor%>
                 </td>

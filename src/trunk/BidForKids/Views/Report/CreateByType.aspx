@@ -49,7 +49,7 @@
     
     </script>
     <div id="ReportSettingsContainer">
-        <% using (Html.BeginForm("RunReport", "Report", FormMethod.Post, new { id = "CreateReportForm" }))
+        <% using (Html.BeginForm("RunCreateByTypeReport", "Report", FormMethod.Post, new { id = "CreateReportForm" }))
            { %>
         <fieldset id="ReportOptions">
             <legend>Procurement Options and Types</legend>

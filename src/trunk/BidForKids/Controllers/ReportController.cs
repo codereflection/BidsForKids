@@ -62,10 +62,10 @@ namespace BidForKids.Controllers
 
 
         //
-        // POST: /Report/RunReport
+        // POST: /Report/RunCreateByTypeReport
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult RunReport(FormCollection collection)
+        public ActionResult RunCreateByTypeReport(FormCollection collection)
         {
             try
             {
@@ -387,7 +387,7 @@ namespace BidForKids.Controllers
         }
 
         //
-        // POST: /Report/RunReport
+        // POST: /Report/RunCreateByTypeReport
 
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult RunAuctionReport(FormCollection collection)
