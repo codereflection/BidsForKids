@@ -75,6 +75,8 @@
                             <%--                            <li>
                                 <%= Html.ActionLink("Donor", "CreateByType", "Report", new { id = "Donor" }, null)%></li>--%>
                             <li>
+                                <%= Html.ActionLink("Auction Items", "AuctionItem", "Report", new { id = "AuctionItem" }, null)%></li>
+                            <li>
                                 <%= Html.ActionLink("Procurement", "CreateByType", "Report", new { id = "Procurement" }, null)%></li>
                         </ul>
                         <%--<%= Html.ActionLink("Reports", "Reports", "Home")%>--%>

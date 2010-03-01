@@ -2,7 +2,6 @@
 using System.Text;
 using System.Web.Mvc;
 using BidForKids.Models;
-using System.Collections.Generic;
 
 namespace BidForKids.Controllers
 {

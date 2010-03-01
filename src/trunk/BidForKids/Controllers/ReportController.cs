@@ -345,5 +345,22 @@ namespace BidForKids.Controllers
 
             return result;
         }
+
+        public ActionResult AuctionItem()
+        {
+            var procurementItems = factory.GetProcurements(2010);
+
+            var auctionItems = from P in procurementItems
+                               where P.AuctionNumber != null
+                               group P by P.AuctionNumber
+                                   into g
+                                   select new AuctionItem()
+                                   {
+                                       AuctionNumber = g.Key,
+                                       Items = g
+                                   };
+
+            return View(auctionItems);
+        }
     }
 }
