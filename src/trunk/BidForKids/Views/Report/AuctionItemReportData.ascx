@@ -32,15 +32,15 @@
                 </td>
                 <td>
                     <%
-                        var Donation = item.Items.Aggregate("", (current, procItem) => current + ("<span class=\"groupedItemPart\">" + procItem.Donation + "</span>, "));
-                        Donation = Donation.Substring(0, Donation.Length - 2);
+                        var Donation = item.Items.Aggregate("", (current, procItem) => current + ("<span class=\"groupedItemPart\">" + procItem.Donation + "</span> & "));
+                        Donation = Donation.Substring(0, Donation.Length - 3);
                     %>
                     <%= Donation %>
                 </td>
                 <td>
                     <%
-                        var Description = item.Items.Aggregate("", (current, procItem) => current + ("<span class=\"groupedItemPart\">" + procItem.Description + "</span>, "));
-                        Description = Description.Substring(0, Description.Length - 2);
+                        var Description = item.Items.Aggregate("", (current, procItem) => current + ("<span class=\"groupedItemPart\">" + procItem.Description + "</span> "));
+                        Description = Description.Substring(0, Description.Length - 1);
                     %>
                     <%= Description%>
                 </td>
