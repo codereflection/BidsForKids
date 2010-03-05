@@ -40,7 +40,7 @@
             <label for="BusinessName">
                 Business Name:</label>
             <%= Html.TextBox("BusinessName", Model.BusinessName) %>
-            <%= Html.ValidationMessage("BusinessName", "*") %><a href="Edit.aspx">Edit.aspx</a>
+            <%= Html.ValidationMessage("BusinessName", "*") %>
         </p>
         <p>
             <label for="FirstName">

@@ -118,7 +118,7 @@
                 editurl: '<%= Url.Action("AjaxEdit") %>',
                 rowNum: 20,
                 rowList: [2, 10, 20, 30, 40, 50, 100, 200, 300],
-                width: 1020,
+                width: $("#procurementGrid").parent().width() - 10,
                 height: 'auto',
                 loadComplete: function() {
                     var ids = $('#procurementGrid').getDataIDs();
