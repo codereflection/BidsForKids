@@ -1,11 +1,12 @@
 using System.Linq;
+using System.Collections.Generic;
 
 namespace BidForKids.Models
 {
     public class AuctionItem
     {
         public string AuctionNumber { get; set; }
-        public IGrouping<string, Procurement> Items { get; set; }
+        public IOrderedEnumerable<Procurement> Items { get; set; }
 
         public static string GetAuctionItemTotal(AuctionItem auctionItem)
         {

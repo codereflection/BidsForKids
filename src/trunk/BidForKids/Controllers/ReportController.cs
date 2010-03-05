@@ -382,7 +382,7 @@ namespace BidForKids.Controllers
                        select new AuctionItem()
                                   {
                                       AuctionNumber = g.Key,
-                                      Items = g
+                                      Items = g.OrderByDescending((x) => x.EstimatedValue)
                                   };
         }
 

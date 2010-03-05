@@ -33,6 +33,7 @@ namespace BidForKids.Controllers
             tableSB.AppendLine("</thead>");
 
 
+            // TODO : If we're keeping this page, fix the hard coded year
             var procurementItems = factory.GetProcurements(2010);
 
             var auctionItems = from P in procurementItems
@@ -42,7 +43,7 @@ namespace BidForKids.Controllers
                                    select new AuctionItem()
                                               {
                                                   AuctionNumber = g.Key,
-                                                  Items = g
+                                                  Items = g.OrderByDescending((x) => x.EstimatedValue)
                                               };
 
 

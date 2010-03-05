@@ -19,7 +19,7 @@ namespace BidForKids.Tests.ModelLogic
                 var itemGroup = from P in items
                                 group P by P.AuctionNumber
                                     into g
-                                    select new AuctionItem() { AuctionNumber = g.Key, Items = g };
+                                    select new AuctionItem() { AuctionNumber = g.Key, Items = g.OrderByDescending((x) => x.EstimatedValue) };
 
                 var result = AuctionItem.GetAuctionItemTotal(itemGroup.First());
 
@@ -35,7 +35,7 @@ namespace BidForKids.Tests.ModelLogic
                 var itemGroup = from P in items
                                 group P by P.AuctionNumber
                                     into g
-                                    select new AuctionItem() { AuctionNumber = g.Key, Items = g };
+                                    select new AuctionItem() { AuctionNumber = g.Key, Items = g.OrderByDescending((x) => x.EstimatedValue) };
 
                 var result = AuctionItem.GetAuctionItemTotal(itemGroup.First());
 
@@ -51,7 +51,7 @@ namespace BidForKids.Tests.ModelLogic
                 var itemGroup = from P in items
                                 group P by P.AuctionNumber
                                     into g
-                                    select new AuctionItem() { AuctionNumber = g.Key, Items = g };
+                                    select new AuctionItem() { AuctionNumber = g.Key, Items = g.OrderByDescending((x) => x.EstimatedValue) };
 
                 var result = AuctionItem.GetAuctionItemTotal(itemGroup.First());
 
