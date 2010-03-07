@@ -3,9 +3,11 @@
     .AuctionItem
     {
         border: solid 1px #e3e3e3;
-        width: 500px;
+        width: 400px;
         padding: 10px;
         font-family: arial;
+        background-color: White;
+        color: Black;
     }
     .AuctionNumber
     {
