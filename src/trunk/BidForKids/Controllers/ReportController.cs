@@ -423,7 +423,10 @@ namespace BidForKids.Controllers
                                select P;
             }
 
-            return PartialView("AuctionItemReportData", auctionItems);
+            if (collection["CatalogLayout"].Contains("true"))
+                return PartialView("AuctionItemReportDataCatalogLayout", auctionItems);
+            else
+                return PartialView("AuctionItemReportData", auctionItems);
         }
 
     }

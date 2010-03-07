@@ -52,6 +52,9 @@
                 Category</label><%= Html.DropDownList("CategoryNameFilter",(IEnumerable<SelectListItem>)ViewData["CategoryList"],"")%><br />
             <label for="YearFilter">
                 Year</label><%= Html.TextBox("YearFilter")%><br />
+            <label for="CatalogLayout">
+                Catalog Layout</label>
+            <%= Html.CheckBox("CatalogLayout", false) %>
         </fieldset>
         <fieldset id="ReportCommands">
             <legend>Report Commands</legend>
