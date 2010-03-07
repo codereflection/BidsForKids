@@ -49,8 +49,14 @@
             });
         }
 
+        ChangeViewDonorLink = function () {
+            $('#ViewDonor').attr('href', '<%= Url.Action("Edit", "Donor") %>' + '/' + $("#Donor_ID").val());
+        };
+
         $(document).ready(function () {
-            $("#ItemNumber").blur(checkItemNumber).keyup(getLastItemNumber);
+            $('#ItemNumber').blur(checkItemNumber).keyup(getLastItemNumber);
+
+            $('#Donor_ID').change(ChangeViewDonorLink);
         });
 
         function deleteRecord(id) {
@@ -102,7 +108,8 @@
             <label for="Donor_ID">
                 Donor
             </label>
-            <%= Html.DropDownList("Donor_ID", "")%>
+            <%= Html.DropDownList("Donor_ID", "")%>&nbsp;<%= Html.ActionLink("view", "Edit", "Donor",
+                                                              new { id = Model.ContactProcurement.Donor_ID }, new { id = "ViewDonor", target = "_blank", title = "View donor in a new window" })%>
         </p>
         <p>
             <label for="Auction_ID">
