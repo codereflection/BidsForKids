@@ -17,7 +17,7 @@
         $(document).ready(function() {
             var donorGrid = $("#donorGrid").jqGrid({
                 datatype: 'json',
-                url: 'Donor.aspx/GetDonors/',
+                url: 'Donor/GetDonors/',
                 jsonReader: {
                     root: "rows",
                     page: "page",
@@ -55,7 +55,7 @@
                 var ids = $("#donorGrid").getDataIDs();
                     for (var i = 0; i < ids.length; i++) {
                         var cl = ids[i];
-                        var editLink = "<a href='Donor.aspx/Edit/" + cl + "'>Edit</a>";
+                        var editLink = "<a href='Donor/Edit/" + cl + "'>Edit</a>";
                         var detailsLink = ""; //= "&nbsp;|&nbsp;<a href='Details/" + cl + "'>Details</a>";
                         jQuery("#donorGrid").setRowData(ids[i], { act: editLink + detailsLink });
                     }
@@ -69,7 +69,7 @@
                         lastsel = rowid;
                     }
                 },
-                editurl: 'Donor.aspx/AjaxEdit'
+                editurl: 'Donor/AjaxEdit'
             });
             donorGrid.filterToolbar();
             donorGrid.navGrid("#pager", { edit: false, add: false, del: false, search: false });

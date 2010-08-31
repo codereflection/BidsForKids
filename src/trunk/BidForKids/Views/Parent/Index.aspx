@@ -17,7 +17,7 @@
         $(document).ready(function() {
             var parentGrid = $("#parentGrid").jqGrid({
                 datatype: 'json',
-                url: 'Parent.aspx/GetParents/',
+                url: 'Parent/GetParents/',
                 jsonReader: {
                     root: "rows",
                     page: "page",
@@ -49,7 +49,7 @@
                     var ids = $("#parentGrid").getDataIDs();
                     for (var i = 0; i < ids.length; i++) {
                         var cl = ids[i];
-                        var editLink = "<a href='Parent.aspx/Edit/" + cl + "'>Edit</a>";
+                        var editLink = "<a href='Parent/Edit/" + cl + "'>Edit</a>";
                         var detailsLink = ""; //= "&nbsp;|&nbsp;<a href='Details/" + cl + "'>Details</a>";
                         jQuery("#parentGrid").setRowData(ids[i], { act: editLink + detailsLink });
                     }
@@ -66,7 +66,7 @@
                         lastsel = rowid;
                     }
                 },
-                editurl: 'Parent.aspx/AjaxEdit'
+                editurl: 'Parent/AjaxEdit'
             });
             parentGrid.filterToolbar();
             parentGrid.navGrid("#pager", { edit: false, add: false, del: false, search: false });
