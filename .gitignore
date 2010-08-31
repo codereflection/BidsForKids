@@ -1,14 +1,13 @@
-
-/build
-AssemblyInfo.cs
-
-# Standard VS.NET and ReSharper Foo
-src/*/[Oo]bj
-src/*/[Bb]in
-*.csproj.user
-*ReSharper.user
-_ReSharper*
-*resharper*
+*resharper.user
+[Dd]ebug/
+[Rr]elease/
+build/
+[Bb]in/
+[Oo]bj/
 *.suo
-*.cache
-* Thumbs.db
+*.sln.cache
+_ReSharper.*/
+*.user
+logs/
+UpgradeLog*
+_UpgradeReport_Files/
