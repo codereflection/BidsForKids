@@ -13,7 +13,7 @@ namespace BidForKids.Controllers
     {
         public ProcurementController() { }
 
-        public ProcurementController(IProcurementFactory factory)
+        public ProcurementController(IProcurementRepository factory)
         {
             this.factory = factory;
         }

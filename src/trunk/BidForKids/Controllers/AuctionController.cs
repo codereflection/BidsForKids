@@ -7,9 +7,9 @@ namespace BidForKids.Controllers
 {
     public class AuctionController : Controller
     {
-        private readonly IProcurementFactory factory;
+        private readonly IProcurementRepository factory;
 
-        public AuctionController(IProcurementFactory factory)
+        public AuctionController(IProcurementRepository factory)
         {
             this.factory = factory;
         }

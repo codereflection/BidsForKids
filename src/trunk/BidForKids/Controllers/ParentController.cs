@@ -11,9 +11,9 @@ namespace BidForKids.Controllers
 {
     public class ParentController : Controller
     {
-        private IProcurementFactory factory;
+        private IProcurementRepository factory;
 
-        public ParentController(IProcurementFactory factory)
+        public ParentController(IProcurementRepository factory)
         {
             this.factory = factory;
         }

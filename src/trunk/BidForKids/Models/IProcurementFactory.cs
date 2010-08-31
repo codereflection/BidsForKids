@@ -4,7 +4,7 @@ using BidForKids.Models.SerializableObjects;
 
 namespace BidForKids.Models
 {
-    public interface IProcurementFactory
+    public interface IProcurementRepository
     {
         List<Procurement> GetProcurements();
         List<Procurement> GetProcurements(int Year);

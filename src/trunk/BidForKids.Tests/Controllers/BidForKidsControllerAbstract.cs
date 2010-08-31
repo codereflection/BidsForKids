@@ -10,13 +10,13 @@ namespace BidForKids.Tests.Controllers
 {
     public class BidForKidsControllerTestBase
     {
-        static public IProcurementFactory _ProcurementFactory;
+        static public IProcurementRepository _ProcurementFactory;
         public BidForKidsControllerTestBase()
         {
             _ProcurementFactory = ProcurementFactoryHelper.GenerateMockProcurementFactory();
         }
 
-        public static T SetupNewControllerWithMockContext<T>(IProcurementFactory factory)
+        public static T SetupNewControllerWithMockContext<T>(IProcurementRepository factory)
             where T : BidForKidsControllerBase, new()
         {
             var controller = new T() { factory = factory };

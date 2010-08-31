@@ -16,7 +16,7 @@ namespace BidForKids.Controllers
             
         }
 
-        public DonorController(IProcurementFactory factory) 
+        public DonorController(IProcurementRepository factory) 
         {
             this.factory = factory;
         }

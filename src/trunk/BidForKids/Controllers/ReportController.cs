@@ -14,9 +14,9 @@ namespace BidForKids.Controllers
 {
     public class ReportController : Controller
     {
-        private IProcurementFactory factory;
+        private IProcurementRepository factory;
 
-        public ReportController(IProcurementFactory factory)
+        public ReportController(IProcurementRepository factory)
         {
             this.factory = factory;
         }

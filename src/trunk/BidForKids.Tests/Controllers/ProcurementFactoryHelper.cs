@@ -9,9 +9,9 @@ namespace BidForKids.Tests.Controllers
 {
     public class ProcurementFactoryHelper
     {
-        public static IProcurementFactory GenerateMockProcurementFactory()
+        public static IProcurementRepository GenerateMockProcurementFactory()
         {
-            IProcurementFactory lProcurementFactory = MockRepository.GenerateStub<IProcurementFactory>();
+            IProcurementRepository lProcurementFactory = MockRepository.GenerateStub<IProcurementRepository>();
             lProcurementFactory.Stub(x => x.GetProcurements()).Return(new List<Procurement>());
             lProcurementFactory.Stub(x => x.GetProcurement(0)).IgnoreArguments().Return(new Procurement());
             

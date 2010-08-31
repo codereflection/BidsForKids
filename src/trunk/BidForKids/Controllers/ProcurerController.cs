@@ -6,9 +6,9 @@ namespace BidForKids.Controllers
 {
     public class ProcurerController : Controller
     {
-        private IProcurementFactory factory;
+        private IProcurementRepository factory;
 
-        public ProcurerController(IProcurementFactory factory)
+        public ProcurerController(IProcurementRepository factory)
         {
             this.factory = factory;
         }

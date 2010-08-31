@@ -6,9 +6,9 @@ namespace BidForKids.Controllers
 {
     public class GeoLocationController : Controller
     {
-        private IProcurementFactory factory;
+        private IProcurementRepository factory;
 
-        public GeoLocationController(IProcurementFactory factory)
+        public GeoLocationController(IProcurementRepository factory)
         {
             this.factory = factory;
         }

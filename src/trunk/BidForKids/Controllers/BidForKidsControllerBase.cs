@@ -5,13 +5,13 @@ namespace BidForKids.Controllers
 {
     public class BidForKidsControllerBase : Controller
     {
-        public IProcurementFactory factory;
+        public IProcurementRepository factory;
 
         public BidForKidsControllerBase()
         {
             
         }
-        public BidForKidsControllerBase(IProcurementFactory factory)
+        public BidForKidsControllerBase(IProcurementRepository factory)
         {
             this.factory = factory;
         }

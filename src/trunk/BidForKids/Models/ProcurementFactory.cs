@@ -6,11 +6,11 @@ using BidForKids.Models.SerializableObjects;
 
 namespace BidForKids.Models
 {
-    public class ProcurementFactory : BidForKids.Models.IProcurementFactory, IDisposable
+    public class ProcurementRepository : IProcurementRepository, IDisposable
     {
         ProcurementDataClassesDataContext dc;
 
-        public ProcurementFactory()
+        public ProcurementRepository()
         {
             dc = new ProcurementDataClassesDataContext();
         }

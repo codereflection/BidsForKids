@@ -10,9 +10,9 @@ namespace BidForKids.Controllers
     [HandleError]
     public class HomeController : Controller
     {
-        private IProcurementFactory factory;
+        private IProcurementRepository factory;
 
-        public HomeController(IProcurementFactory factory)
+        public HomeController(IProcurementRepository factory)
         {
             this.factory = factory;
         }
