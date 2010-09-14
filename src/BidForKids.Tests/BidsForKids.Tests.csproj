@@ -78,9 +78,9 @@
     <Reference Include="System.ComponentModel.DataAnnotations">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="xunit, Version=1.5.0.1479, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+    <Reference Include="xunit, Version=1.6.1.1521, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>3rdParty\xunit\xunit.dll</HintPath>
+      <HintPath>..\..\lib\xunit.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -95,29 +95,6 @@
     <Compile Include="Routes\RouteFacts.cs" />
     <Compile Include="TestDoubles\StubContext.cs" />
     <Compile Include="TestDoubles\StubRequest.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="3rdParty\xunit\xunit.console.exe.config" />
-    <None Include="3rdParty\xunit\xunit.console.x86.exe.config" />
-    <None Include="3rdParty\xunit\xunit.dll.tdnet" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="3rdParty\Rhino.Mocks.dll" />
-    <Content Include="3rdParty\xunit\HTML.xslt" />
-    <Content Include="3rdParty\xunit\NUnitXml.xslt" />
-    <Content Include="3rdParty\xunit\xunit.console.exe" />
-    <Content Include="3rdParty\xunit\xunit.console.x86.exe" />
-    <Content Include="3rdParty\xunit\xunit.dll" />
-    <Content Include="3rdParty\xunit\xunit.extensions.dll" />
-    <Content Include="3rdParty\xunit\xunit.extensions.xml" />
-    <Content Include="3rdParty\xunit\xunit.gui.exe" />
-    <Content Include="3rdParty\xunit\xunit.gui.x86.exe" />
-    <Content Include="3rdParty\xunit\xunit.installer.exe" />
-    <Content Include="3rdParty\xunit\xunit.runner.msbuild.dll" />
-    <Content Include="3rdParty\xunit\xunit.runner.tdnet.dll" />
-    <Content Include="3rdParty\xunit\xunit.runner.utility.dll" />
-    <Content Include="3rdParty\xunit\xunit.runner.utility.xml" />
-    <Content Include="3rdParty\xunit\xunit.xml" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
