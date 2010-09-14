@@ -1,4 +1,4 @@
-<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<IEnumerable<BidForKids.Models.GeoLocation>>" %>
+<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<IEnumerable<BidsForKids.Models.GeoLocation>>" %>
 <table>
     <tr>
         <th>

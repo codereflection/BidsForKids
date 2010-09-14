@@ -9,7 +9,7 @@ using System.Collections.Specialized;
 namespace BidsForKids.Controllers
 {
 
-    public class ProcurementController : BidForKidsControllerBase
+    public class ProcurementController : BidsForKidsControllerBase
     {
         public ProcurementController() { }
 
@@ -486,43 +486,31 @@ namespace BidsForKids.Controllers
             }
 
 
-            try
+            var lProcurement = factory.GetProcurement((int)id);
+
+            if (lProcurement.Procurement_ID != id)
             {
-                var lProcurement = factory.GetProcurement((int)id);
-
-                if (lProcurement.Procurement_ID != id)
-                {
-                    throw new ApplicationException("Unable to load procurement from database for editing by id " + id.ToString());
-                }
-
-                SetupEditViewData(lProcurement.ContactProcurement);
-
-                UpdateModel<Procurement>(lProcurement,
-                    ProcurementColumns());
-
-                UpdateModel<ContactProcurement>(lProcurement.ContactProcurement,
-                    ContactProcurementColumns());
-
-                if (factory.SaveProcurement(lProcurement) == false)
-                {
-                    throw new ApplicationException("Unable to save procurement");
-                }
-
-                string actionToRedirectTo = lProcurement.ProcurementType.ProcurementTypeDesc;
-
-                return RedirectToAction(actionToRedirectTo + "Index");
+                throw new ApplicationException("Unable to load procurement from database for editing by id " + id.ToString());
             }
-            catch (Exception ex)
+
+            SetupEditViewData(lProcurement.ContactProcurement);
+
+            UpdateModel<Procurement>(lProcurement,
+                ProcurementColumns());
+
+            UpdateModel<ContactProcurement>(lProcurement.ContactProcurement,
+                ContactProcurementColumns());
+
+            if (factory.SaveProcurement(lProcurement) == false)
             {
-                Elmah.ErrorSignal.FromCurrentContext().Raise(ex);
-
-                Procurement lProcurement = factory.GetProcurement((int)id);
-
-                SetupEditViewData(lProcurement.ContactProcurement);
-
-                return View(lProcurement);
+                throw new ApplicationException("Unable to save procurement");
             }
+
+            string actionToRedirectTo = lProcurement.ProcurementType.ProcurementTypeDesc;
+
+            return RedirectToAction(actionToRedirectTo + "Index");
         }
+
 
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult CheckItemNumber(int id, FormCollection collection)

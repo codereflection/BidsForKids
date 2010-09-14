@@ -9,7 +9,7 @@ using BidsForKids.Models.SerializableObjects;
 
 namespace BidsForKids.Controllers
 {
-    public class DonorController : BidForKidsControllerBase
+    public class DonorController : BidsForKidsControllerBase
     {
         public DonorController()
         {

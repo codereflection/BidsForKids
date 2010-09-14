@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="Report - Auction Items" Language="C#" MasterPageFile="~/Views/Shared/Site.Master"
-    Inherits="System.Web.Mvc.ViewPage<IEnumerable<BidForKids.Models.AuctionItem>>" %>
+    Inherits="System.Web.Mvc.ViewPage<IEnumerable<BidsForKids.Models.AuctionItem>>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
     Report - Auction Items
@@ -148,7 +148,7 @@
                 </td>
                 <td>
                     <%
-                        var EstimatedValue = BidForKids.Models.AuctionItem.GetAuctionItemTotal(item);
+                        var EstimatedValue = BidsForKids.Models.AuctionItem.GetAuctionItemTotal(item);
                     %>
                     <%= EstimatedValue%>
                 </td>

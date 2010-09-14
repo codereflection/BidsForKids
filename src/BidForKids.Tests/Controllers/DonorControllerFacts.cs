@@ -13,7 +13,7 @@ namespace BidsForKids.Tests.Controllers
 {
     internal class DonorControllerFacts
     {
-        public class Index : BidForKidsControllerTestBase
+        public class Index : BidsForKidsControllerTestBase
         {
             [Fact]
             public void ReturnsViewResultWithDefaultViewName()
@@ -45,7 +45,7 @@ namespace BidsForKids.Tests.Controllers
             }
         }
 
-        public class Create : BidForKidsControllerTestBase
+        public class Create : BidsForKidsControllerTestBase
         {
             [Fact]
             public void ReturnsViewResultWithDefaultViewName()
@@ -69,7 +69,7 @@ namespace BidsForKids.Tests.Controllers
 
         }
 
-        public class Edit : BidForKidsControllerTestBase
+        public class Edit : BidsForKidsControllerTestBase
         {
             [Fact]
             public void ReturnsViewResultWithDefaultViewName()
@@ -101,7 +101,7 @@ namespace BidsForKids.Tests.Controllers
             }
         }
 
-        public class Details : BidForKidsControllerTestBase
+        public class Details : BidsForKidsControllerTestBase
         {
             [Fact]
             public void ReturnsViewResultWithDefaultViewName()
@@ -133,7 +133,7 @@ namespace BidsForKids.Tests.Controllers
             }
         }
 
-        public class GetDonors : BidForKidsControllerTestBase
+        public class GetDonors : BidsForKidsControllerTestBase
         {
             [Fact]
             public void Throws_exception_when_QueryString_parameters_are_not_present()

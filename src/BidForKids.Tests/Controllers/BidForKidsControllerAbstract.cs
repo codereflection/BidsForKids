@@ -8,16 +8,16 @@ using System.Collections.Specialized;
 
 namespace BidsForKids.Tests.Controllers
 {
-    public class BidForKidsControllerTestBase
+    public class BidsForKidsControllerTestBase
     {
         static public IProcurementRepository _ProcurementFactory;
-        public BidForKidsControllerTestBase()
+        public BidsForKidsControllerTestBase()
         {
             _ProcurementFactory = ProcurementFactoryHelper.GenerateMockProcurementFactory();
         }
 
         public static T SetupNewControllerWithMockContext<T>(IProcurementRepository factory)
-            where T : BidForKidsControllerBase, new()
+            where T : BidsForKidsControllerBase, new()
         {
             var controller = new T() { factory = factory };
             controller.ControllerContext =
@@ -27,7 +27,7 @@ namespace BidsForKids.Tests.Controllers
             return controller;
         }
 
-        public static T SetupQueryStringParameters<T>(Controller controller, string queryString) where T : BidForKidsControllerBase
+        public static T SetupQueryStringParameters<T>(Controller controller, string queryString) where T : BidsForKidsControllerBase
         {
             if (controller == null)
                 throw new ArgumentNullException("controller");

@@ -22,7 +22,7 @@ namespace BidsForKids.Models
 	using System;
 	
 	
-	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="BidForKids")]
+	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="BidsForKids")]
 	public partial class ProcurementDataClassesDataContext : System.Data.Linq.DataContext
 	{
 		
@@ -60,7 +60,7 @@ namespace BidsForKids.Models
     #endregion
 		
 		public ProcurementDataClassesDataContext() : 
-				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["BidForKidsConnectionString"].ConnectionString, mappingSource)
+				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["BidsForKidsConnectionString"].ConnectionString, mappingSource)
 		{
 			OnCreated();
 		}

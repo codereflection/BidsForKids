@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<IEnumerable<BidForKids.Models.AuctionItem>>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<IEnumerable<BidsForKids.Models.AuctionItem>>" %>
 <style type='text/css'>
     .AuctionItem
     {
@@ -77,7 +77,7 @@
     <div class='Value'>
         Value:
         <%
-            var EstimatedValue = BidForKids.Models.AuctionItem.GetAuctionItemTotal(item);
+            var EstimatedValue = BidsForKids.Models.AuctionItem.GetAuctionItemTotal(item);
         %>
         <%= String.Format("{0:C}", EstimatedValue) %>
     </div>

@@ -10,7 +10,7 @@ namespace BidsForKids.Tests.Controllers
 {
     public class GeoLocationControllerFacts
     {
-        public class Index : BidForKidsControllerTestBase
+        public class Index : BidsForKidsControllerTestBase
         {
             [Fact]
             public void ReturnsViewResultWithDefaultViewName()
@@ -41,7 +41,7 @@ namespace BidsForKids.Tests.Controllers
             }
         }
 
-        public class Create : BidForKidsControllerTestBase
+        public class Create : BidsForKidsControllerTestBase
         {
             [Fact]
             public void ReturnsViewResultWithDefaultViewName()
@@ -58,7 +58,7 @@ namespace BidsForKids.Tests.Controllers
             }
         }
 
-        public class Edit : BidForKidsControllerTestBase
+        public class Edit : BidsForKidsControllerTestBase
         {
             [Fact]
             public void ReturnsViewResultWithDefaultViewName()
@@ -89,7 +89,7 @@ namespace BidsForKids.Tests.Controllers
             }
         }
 
-        public class Details : BidForKidsControllerTestBase
+        public class Details : BidsForKidsControllerTestBase
         {
             [Fact]
             public void ReturnsViewResultWithDefaultViewName()

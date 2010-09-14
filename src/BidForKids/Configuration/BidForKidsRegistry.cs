@@ -9,9 +9,9 @@ using BidsForKids.Models;
 
 namespace BidsForKids.Configuration
 {
-    public class BidForKidsRegistry : Registry
+    public class BidsForKidsRegistry : Registry
     {
-        public BidForKidsRegistry()
+        public BidsForKidsRegistry()
         {
             //ForRequestedType<IProcurementFactory>().TheDefaultIsConcreteType<ProcurementFactory>();
             Scan(assemblyScanner =>

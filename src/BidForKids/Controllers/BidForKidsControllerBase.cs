@@ -3,15 +3,15 @@ using BidsForKids.Models;
 
 namespace BidsForKids.Controllers
 {
-    public class BidForKidsControllerBase : Controller
+    public class BidsForKidsControllerBase : Controller
     {
         public IProcurementRepository factory;
 
-        public BidForKidsControllerBase()
+        public BidsForKidsControllerBase()
         {
             
         }
-        public BidForKidsControllerBase(IProcurementRepository factory)
+        public BidsForKidsControllerBase(IProcurementRepository factory)
         {
             this.factory = factory;
         }

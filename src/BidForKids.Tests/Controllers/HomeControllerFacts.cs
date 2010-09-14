@@ -6,7 +6,7 @@ namespace BidsForKids.Tests.Controllers
 {
     public class HomeControllerFacts
     {
-        public class Index : BidForKidsControllerTestBase
+        public class Index : BidsForKidsControllerTestBase
         {
             [Fact]
             public void ReturnsViewResultWithDefaultViewName()
@@ -66,7 +66,7 @@ namespace BidsForKids.Tests.Controllers
             }
         }
 
-        public class About : BidForKidsControllerTestBase
+        public class About : BidsForKidsControllerTestBase
         {
             [Fact]
             public void ReturnsViewResultWithDefaultViewName()

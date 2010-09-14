@@ -10,19 +10,19 @@ namespace BidsForKids.Tests.Controllers
 {
     public class ProcurementControllerFacts
     {
-        public class Details : BidForKidsControllerTestBase
+        public class Details : BidsForKidsControllerTestBase
         {
             [Fact]
             public void ReturnsViewResultWithDefaultViewName()
             {
-                // Arrange
+
                 var controller = new ProcurementController(_ProcurementFactory);
 
-                // Act
+
                 int parameter = (int)1;
                 var result = controller.Details(parameter);
 
-                // Assert
+
                 var viewResult = Assert.IsType<ViewResult>(result);
                 Assert.Empty(viewResult.ViewName);
             }
@@ -30,14 +30,14 @@ namespace BidsForKids.Tests.Controllers
             [Fact]
             public void SetsViewDataWithProcurementModel()
             {
-                // Arrange
+
                 var controller = new ProcurementController(_ProcurementFactory);
 
-                // Act
+
                 int parameter = (int)1;
                 var result = controller.Details(parameter);
 
-                // Assert
+
                 var viewResult = Assert.IsType<ViewResult>(result);
                 Assert.IsType<Procurement>(viewResult.ViewData.Model);
             }
@@ -45,32 +45,29 @@ namespace BidsForKids.Tests.Controllers
             [Fact]
             public void RedirectsToHomeWhenNoIdIsPassed()
             {
-                // Arrange
+
                 var controller = new ProcurementController(_ProcurementFactory);
 
-                // Act
+
                 int? parameter = null;
                 var result = controller.Details(parameter);
 
-                // Assert
+
                 var viewResult = Assert.IsType<RedirectToRouteResult>(result);
                 Assert.Equal("Home", viewResult.RouteValues["controller"]);
                 Assert.Equal("Index", viewResult.RouteValues["action"]);
             }
         }
 
-        public class Create : BidForKidsControllerTestBase
+        public class Create : BidsForKidsControllerTestBase
         {
             [Fact]
             public void ReturnsViewResultWithDefaultViewName()
             {
-                // Arrange
                 var controller = SetupNewControllerWithMockContext<ProcurementController>(_ProcurementFactory);
                 
-                // Act
                 var result = controller.Create();
 
-                // Assert
                 var viewResult = Assert.IsType<ViewResult>(result);
                 Assert.Empty(viewResult.ViewName);
             }
@@ -78,13 +75,10 @@ namespace BidsForKids.Tests.Controllers
             [Fact]
             public void SetsViewDataWithSelectLists()
             {
-                // Arrange
                 var controller = SetupNewControllerWithMockContext<ProcurementController>(_ProcurementFactory);
 
-                // Act
                 var result = controller.Create();
 
-                // Assert
                 var viewResult = Assert.IsType<ViewResult>(result);
                 Assert.Empty(viewResult.ViewName);
                 Assert.IsType<SelectList>(viewResult.ViewData["Auction_ID"]);
@@ -93,18 +87,15 @@ namespace BidsForKids.Tests.Controllers
             }
         }
 
-        public class Edit : BidForKidsControllerTestBase
+        public class Edit : BidsForKidsControllerTestBase
         {
             [Fact]
             public void ReturnsViewResultWithDefaultViewName()
             {
-                // Arrange
                 var controller = SetupNewControllerWithMockContext<ProcurementController>(_ProcurementFactory);
 
-                // Act
                 var result = controller.Edit((int?)0);
 
-                // Assert
                 var viewResult = Assert.IsType<ViewResult>(result);
                 Assert.Empty(viewResult.ViewName);
             }
@@ -112,13 +103,10 @@ namespace BidsForKids.Tests.Controllers
             [Fact]
             public void SetsViewDataWithSelectLists()
             {
-                // Arrange
                 var controller = SetupNewControllerWithMockContext<ProcurementController>(_ProcurementFactory);
 
-                // Act
                 var result = controller.Edit(0);
 
-                // Assert
                 var viewResult = Assert.IsType<ViewResult>(result);
                 Assert.Empty(viewResult.ViewName);
                 Assert.IsType<SelectList>(viewResult.ViewData["Auction_ID"]);
@@ -129,26 +117,21 @@ namespace BidsForKids.Tests.Controllers
             [Fact]
             public void ReturnsIndexViewAfterSave()
             {
-                // Arrange
                 var controller = SetupNewControllerWithMockContext<ProcurementController>(_ProcurementFactory);
                 var collection = new FormCollection();
 
-                // Act
                 var result = controller.Edit(1, collection);
 
-                // Assert
                 var viewResult = Assert.IsType<ViewResult>(result);
                 Assert.Empty(viewResult.ViewName);
             }
 
             [Fact]
-            public void Throws_when_cannot_find_procruement_in_database_to_edit()
+            public void Throws_when_cannot_find_procurement_in_database_to_edit()
             {
-                // Arrange
                 var controller = SetupNewControllerWithMockContext<ProcurementController>(_ProcurementFactory);
                 var collection = new FormCollection();
 
-                // Act & assert
                 Assert.Throws<ApplicationException>(() => controller.Edit(1, collection));
             }
         }

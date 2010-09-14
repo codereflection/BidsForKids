@@ -11,7 +11,7 @@ namespace BidsForKids.Configuration
     {
         public static void ConfigureStructureMap()
         {
-            ObjectFactory.Initialize(x => x.AddRegistry(new BidForKidsRegistry()));
+            ObjectFactory.Initialize(x => x.AddRegistry(new BidsForKidsRegistry()));
         }
     }
 }
