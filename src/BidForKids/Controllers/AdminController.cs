@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Configuration;
 
-namespace BidForKids.Controllers
+namespace BidsForKids.Controllers
 {
     [HandleError]
     public class AdminController : Controller

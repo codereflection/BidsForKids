@@ -1,12 +1,12 @@
 using System;
 using System.Web.Mvc;
 using Xunit;
-using BidForKids.Controllers;
-using BidForKids.Models;
+using BidsForKids.Controllers;
+using BidsForKids.Models;
 using Rhino.Mocks;
 using System.Collections.Generic;
 
-namespace BidForKids.Tests.Controllers
+namespace BidsForKids.Tests.Controllers
 {
     public class ProcurementControllerFacts
     {

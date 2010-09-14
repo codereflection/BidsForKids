@@ -1,9 +1,9 @@
 ﻿using System.Web;
 using System.Web.Routing;
 using Xunit;
-using BidForKids;
+using BidsForKids;
 
-namespace BidForKids.Tests.Routes
+namespace BidsForKids.Tests.Routes
 {
     public class RouteFacts
     {

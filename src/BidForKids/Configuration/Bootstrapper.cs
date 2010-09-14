@@ -5,7 +5,7 @@ using System.Web;
 using StructureMap;
 using StructureMap.Configuration.DSL;
 
-namespace BidForKids.Configuration
+namespace BidsForKids.Configuration
 {
     public class Bootstrapper
     {

@@ -1,15 +1,15 @@
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using BidForKids.Models.SerializableObjects;
+using BidsForKids.Models.SerializableObjects;
 using Xunit;
-using BidForKids.Controllers;
-using BidForKids.Models;
+using BidsForKids.Controllers;
+using BidsForKids.Models;
 using Rhino.Mocks;
 using System.Collections.Generic;
 using System;
 
-namespace BidForKids.Tests.Controllers
+namespace BidsForKids.Tests.Controllers
 {
     internal class DonorControllerFacts
     {

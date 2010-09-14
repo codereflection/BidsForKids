@@ -5,9 +5,9 @@ using System.Web;
 using System.Web.Mvc;
 using StructureMap;
 using StructureMap.Configuration.DSL;
-using BidForKids.Models;
+using BidsForKids.Models;
 
-namespace BidForKids.Configuration
+namespace BidsForKids.Configuration
 {
     public class BidForKidsRegistry : Registry
     {

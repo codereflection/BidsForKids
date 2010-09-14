@@ -1,12 +1,12 @@
 using System;
-using BidForKids.Models;
+using BidsForKids.Models;
 using System.Web.Mvc;
-using BidForKids.Controllers;
+using BidsForKids.Controllers;
 using System.Web.Routing;
 using Rhino.Mocks;
 using System.Collections.Specialized;
 
-namespace BidForKids.Tests.Controllers
+namespace BidsForKids.Tests.Controllers
 {
     public class BidForKidsControllerTestBase
     {

@@ -1,8 +1,8 @@
 ﻿using System.Web.Mvc;
 using Xunit;
-using BidForKids.Controllers;
+using BidsForKids.Controllers;
 
-namespace BidForKids.Tests.Controllers
+namespace BidsForKids.Tests.Controllers
 {
     public class HomeControllerFacts
     {

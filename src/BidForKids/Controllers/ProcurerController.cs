@@ -1,8 +1,8 @@
 using System;
 using System.Web.Mvc;
-using BidForKids.Models;
+using BidsForKids.Models;
 
-namespace BidForKids.Controllers
+namespace BidsForKids.Controllers
 {
     public class ProcurerController : Controller
     {

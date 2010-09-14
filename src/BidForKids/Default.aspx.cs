@@ -2,7 +2,7 @@
 using System.Web.Mvc;
 using System.Web.UI;
 
-namespace BidForKids
+namespace BidsForKids
 {
     public partial class _Default : Page
     {

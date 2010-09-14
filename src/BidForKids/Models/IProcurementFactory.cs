@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using BidForKids.Models.SerializableObjects;
+using BidsForKids.Models.SerializableObjects;
 
-namespace BidForKids.Models
+namespace BidsForKids.Models
 {
     public interface IProcurementRepository
     {

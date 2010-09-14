@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BidForKids", "BidForKids\BidForKids.csproj", "{46F2C317-EDD6-4238-95D4-E0BD658B10D2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BidsForKids", "BidForKids\BidsForKids.csproj", "{46F2C317-EDD6-4238-95D4-E0BD658B10D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BidForKids.Tests", "BidForKids.Tests\BidForKids.Tests.csproj", "{5F471AEA-DEDC-41B0-82C2-9EB36E39F18E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BidsForKids.Tests", "BidForKids.Tests\BidsForKids.Tests.csproj", "{5F471AEA-DEDC-41B0-82C2-9EB36E39F18E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

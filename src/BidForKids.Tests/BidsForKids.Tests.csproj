@@ -8,8 +8,8 @@
     <ProjectGuid>{5F471AEA-DEDC-41B0-82C2-9EB36E39F18E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BidForKids.Tests</RootNamespace>
-    <AssemblyName>BidForKids.Tests</AssemblyName>
+    <RootNamespace>BidsForKids.Tests</RootNamespace>
+    <AssemblyName>BidsForKids.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
@@ -73,7 +73,6 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.ComponentModel.DataAnnotations">
@@ -101,12 +100,6 @@
     <None Include="3rdParty\xunit\xunit.console.exe.config" />
     <None Include="3rdParty\xunit\xunit.console.x86.exe.config" />
     <None Include="3rdParty\xunit\xunit.dll.tdnet" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\BidForKids\BidForKids.csproj">
-      <Project>{46F2C317-EDD6-4238-95D4-E0BD658B10D2}</Project>
-      <Name>BidForKids</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="3rdParty\Rhino.Mocks.dll" />
@@ -147,6 +140,12 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BidForKids\BidsForKids.csproj">
+      <Project>{46F2C317-EDD6-4238-95D4-E0BD658B10D2}</Project>
+      <Name>BidsForKids</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic;
-using BidForKids.Models.SerializableObjects;
+using BidsForKids.Models.SerializableObjects;
 
-namespace BidForKids.Models
+namespace BidsForKids.Models
 {
     public class ProcurementRepository : IProcurementRepository, IDisposable
     {

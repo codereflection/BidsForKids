@@ -4,10 +4,10 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
-using BidForKids.Models;
-using BidForKids.Models.SerializableObjects;
+using BidsForKids.Models;
+using BidsForKids.Models.SerializableObjects;
 
-namespace BidForKids.Controllers
+namespace BidsForKids.Controllers
 {
     public class DonorController : BidForKidsControllerBase
     {

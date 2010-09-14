@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace BidForKids.Models.ReportModels
+namespace BidsForKids.Models.ReportModels
 {
     public class BaseReport
     {

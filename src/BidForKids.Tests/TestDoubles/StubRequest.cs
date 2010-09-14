@@ -1,6 +1,6 @@
 ﻿using System.Web;
 
-namespace BidForKids.Tests
+namespace BidsForKids.Tests
 {
     public class StubRequest : HttpRequestBase
     {

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using BidForKids.Models;
+using BidsForKids.Models;
 
-namespace BidForKids.Controllers
+namespace BidsForKids.Controllers
 {
     [HandleError]
     public class HomeController : Controller

@@ -4,7 +4,7 @@ using System.Web.Routing;
 using Rhino.Mocks;
 using System.Collections.Specialized;
 
-namespace BidForKids.Tests
+namespace BidsForKids.Tests
 {
     class StubContext : HttpContextBase
     {

@@ -9,7 +9,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BidForKids.Models
+namespace BidsForKids.Models
 {
 	using System.Data.Linq;
 	using System.Data.Linq.Mapping;

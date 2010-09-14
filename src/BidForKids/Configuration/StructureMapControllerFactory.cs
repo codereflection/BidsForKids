@@ -3,7 +3,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using StructureMap;
 
-namespace BidForKids.Configuration
+namespace BidsForKids.Configuration
 {
     public class StructureMapControllerFactory : DefaultControllerFactory
     {

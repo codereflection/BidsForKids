@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using BidForKids.Models;
+using BidsForKids.Models;
 using Xunit;
 
-namespace BidForKids.Tests.ModelLogic
+namespace BidsForKids.Tests.ModelLogic
 {
     class AuctionItemSpecs
     {

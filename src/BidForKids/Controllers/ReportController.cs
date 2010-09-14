@@ -5,12 +5,12 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using System.Text;
-using BidForKids.Models;
-using BidForKids.Models.ReportModels;
+using BidsForKids.Models;
+using BidsForKids.Models.ReportModels;
 using System.Reflection;
-using BidForKids.Models.SerializableObjects;
+using BidsForKids.Models.SerializableObjects;
 
-namespace BidForKids.Controllers
+namespace BidsForKids.Controllers
 {
     public class ReportController : Controller
     {

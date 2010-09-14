@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Collections.Generic;
 
-namespace BidForKids.Models
+namespace BidsForKids.Models
 {
     public class AuctionItem
     {

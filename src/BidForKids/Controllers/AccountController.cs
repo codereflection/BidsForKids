@@ -8,7 +8,7 @@ using System.Web.Mvc;
 using System.Web.Security;
 using System.Web.UI;
 
-namespace BidForKids.Controllers
+namespace BidsForKids.Controllers
 {
 
     [HandleError]

@@ -1,7 +1,7 @@
 ﻿using System.Web.Mvc;
 using System.Web;
 using System.Web.Routing;
-namespace BidForKids.Controllers
+namespace BidsForKids.Controllers
 {
     public class ControllerHelper
     {

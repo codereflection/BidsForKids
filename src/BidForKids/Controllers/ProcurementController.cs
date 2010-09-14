@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using BidForKids.Models;
-using BidForKids.Models.SerializableObjects;
+using BidsForKids.Models;
+using BidsForKids.Models.SerializableObjects;
 using System.Collections.Specialized;
 
-namespace BidForKids.Controllers
+namespace BidsForKids.Controllers
 {
 
     public class ProcurementController : BidForKidsControllerBase

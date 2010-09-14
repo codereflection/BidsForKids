@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-namespace BidForKids.Models.SerializableObjects
+namespace BidsForKids.Models.SerializableObjects
 {
 
     public class SerializableProcurement

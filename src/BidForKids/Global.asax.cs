@@ -6,9 +6,9 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using StructureMap;
 using StructureMap.Configuration;
-using BidForKids.Configuration;
+using BidsForKids.Configuration;
 
-namespace BidForKids
+namespace BidsForKids
 {
     // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
     // visit http://go.microsoft.com/?LinkId=9394801
