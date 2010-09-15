@@ -97,6 +97,9 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\ProjectVersion.cs">
+      <Link>Properties\ProjectVersion.cs</Link>
+    </Compile>
     <Compile Include="Configuration\BidForKidsRegistry.cs" />
     <Compile Include="Configuration\Bootstrapper.cs" />
     <Compile Include="Configuration\StructureMapControllerFactory.cs" />
