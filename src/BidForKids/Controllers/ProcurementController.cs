@@ -192,9 +192,7 @@ namespace BidsForKids.Controllers
 
         public ActionResult Create()
         {
-            SetupCreateViewData(null);
-
-            return View();
+            throw new NotSupportedException("Direct creation of procurements without a type is not supported.");
         }
 
         //
@@ -486,7 +484,7 @@ namespace BidsForKids.Controllers
             }
 
 
-            var lProcurement = factory.GetProcurement((int)id);
+            var lProcurement = factory.GetProcurement(id.Value);
 
             if (lProcurement.Procurement_ID != id)
             {
