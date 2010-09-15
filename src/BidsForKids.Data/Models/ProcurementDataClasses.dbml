@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="BidsForKids" Class="ProcurementDataClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=localhost;Initial Catalog=BidsForKids;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="BidsForKidsConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Auction" Member="Auctions">
+    <Type Name="Auction">
+      <Column Name="Auction_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Year" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Association Name="Auction_ContactProcurement" Member="ContactProcurements" ThisKey="Auction_ID" OtherKey="Auction_ID" Type="ContactProcurement" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ContactProcurement" Member="ContactProcurements">
+    <Type Name="ContactProcurement">
+      <Column Name="ContactProcurement_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Donor_ID" Storage="_Contact_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Procurement_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Auction_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Procurer_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Auction_ContactProcurement" Member="Auction" ThisKey="Auction_ID" OtherKey="Auction_ID" Type="Auction" IsForeignKey="true" />
+      <Association Name="Procurement_ContactProcurement" Member="Procurement" ThisKey="Procurement_ID" OtherKey="Procurement_ID" Type="Procurement" IsForeignKey="true" />
+      <Association Name="Donor_ContactProcurement" Member="Donor" Storage="_Contact" ThisKey="Donor_ID" OtherKey="Donor_ID" Type="Donor" IsForeignKey="true" />
+      <Association Name="Procurer_ContactProcurement" Member="Procurer" ThisKey="Procurer_ID" OtherKey="Procurer_ID" Type="Procurer" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Procurement" Member="Procurements">
+    <Type Name="Procurement">
+      <Column Name="Procurement_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(2000) NOT NULL" CanBeNull="false" />
+      <Column Name="Quantity" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="PerItemValue" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="Notes" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="CatalogNumber" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="AuctionNumber" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="ItemNumber" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="EstimatedValue" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="SoldFor" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="Category_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="datetime" CanBeNull="true" />
+      <Column Name="ModifiedOn" Type="System.DateTime" DbType="datetime" CanBeNull="true" />
+      <Column Name="Donation" Type="System.String" DbType="VarChar(2000)" CanBeNull="true" />
+      <Column Name="ThankYouLetterSent" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Limitations" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="Certificate" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="ProcurementType_ID" Type="System.Int32" DbType="int" CanBeNull="true" />
+      <Association Name="Procurement_ContactProcurement" Member="ContactProcurement" Storage="_ContactProcurements" ThisKey="Procurement_ID" OtherKey="Procurement_ID" Type="ContactProcurement" Cardinality="One" />
+      <Association Name="Category_Procurement" Member="Category" ThisKey="Category_ID" OtherKey="Category_ID" Type="Category" IsForeignKey="true" />
+      <Association Name="ProcurementType_Procurement" Member="ProcurementType" ThisKey="ProcurementType_ID" OtherKey="ProcurementType_ID" Type="ProcurementType" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Category" Member="Categories">
+    <Type Name="Category">
+      <Column Name="Category_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CategoryName" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Association Name="Category_Procurement" Member="Procurements" ThisKey="Category_ID" OtherKey="Category_ID" Type="Procurement" />
+    </Type>
+  </Table>
+  <Table Name="dbo.GeoLocation" Member="GeoLocations">
+    <Type Name="GeoLocation">
+      <Column Name="GeoLocation_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="GeoLocationName" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Association Name="GeoLocation_Donor" Member="Donors" Storage="_Contacts" ThisKey="GeoLocation_ID" OtherKey="GeoLocation_ID" Type="Donor" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Donor" Member="Donors">
+    <Type Name="Donor">
+      <Column Name="Donor_ID" Storage="_Contact_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="BusinessName" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="FirstName" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="LastName" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="Address" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="City" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="State" Type="System.String" DbType="VarChar(2)" CanBeNull="true" />
+      <Column Name="ZipCode" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="Phone1" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="Phone1Desc" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="Phone2" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="Phone2Desc" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="Phone3" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="Phone3Desc" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="Notes" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="Website" Type="System.String" DbType="VarChar(1024)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="GeoLocation_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Donates" Type="System.Int32" DbType="tinyint" CanBeNull="true" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="datetime" CanBeNull="true" />
+      <Column Name="ModifiedOn" Type="System.DateTime" DbType="datetime" CanBeNull="true" />
+      <Column Name="MailedPacket" Type="System.Boolean" DbType="bit" CanBeNull="true" />
+      <Column Name="Procurer_ID" Type="System.Int32" DbType="int" CanBeNull="true" />
+      <Column Name="DonorType_ID" Type="System.Int32" DbType="int" CanBeNull="true" />
+      <Association Name="Donor_ContactProcurement" Member="ContactProcurements" ThisKey="Donor_ID" OtherKey="Donor_ID" Type="ContactProcurement" />
+      <Association Name="GeoLocation_Donor" Member="GeoLocation" ThisKey="GeoLocation_ID" OtherKey="GeoLocation_ID" Type="GeoLocation" IsForeignKey="true" />
+      <Association Name="DonatesReference_Donor" Member="DonatesReference" ThisKey="Donates" OtherKey="Donates_ID" Type="DonatesReference" IsForeignKey="true" />
+      <Association Name="Procurer_Donor" Member="Procurer" ThisKey="Procurer_ID" OtherKey="Procurer_ID" Type="Procurer" IsForeignKey="true" />
+      <Association Name="DonorType_Donor" Member="DonorType" ThisKey="DonorType_ID" OtherKey="DonorType_ID" Type="DonorType" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Procurer" Member="Procurers">
+    <Type Name="Procurer">
+      <Column Name="Procurer_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="FirstName" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="LastName" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="Phone" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Association Name="Procurer_ContactProcurement" Member="ContactProcurements" ThisKey="Procurer_ID" OtherKey="Procurer_ID" Type="ContactProcurement" />
+      <Association Name="Procurer_Donor" Member="Donors" ThisKey="Procurer_ID" OtherKey="Procurer_ID" Type="Donor" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Donates" Member="DonatesReferences">
+    <Type Name="DonatesReference">
+      <Column Name="Donates_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Association Name="DonatesReference_Donor" Member="Donors" ThisKey="Donates_ID" OtherKey="Donates" Type="Donor" />
+    </Type>
+  </Table>
+  <Table Name="dbo.DonorType" Member="DonorTypes">
+    <Type Name="DonorType">
+      <Column Name="DonorType_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="DonorTypeDesc" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="DonorType_Donor" Member="Donors" ThisKey="DonorType_ID" OtherKey="DonorType_ID" Type="Donor" />
+      <Association Name="DonorType_ProcurementType" Member="ProcurementTypes" ThisKey="DonorType_ID" OtherKey="DonorType_ID" Type="ProcurementType" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ProcurementType" Member="ProcurementTypes">
+    <Type Name="ProcurementType">
+      <Column Name="ProcurementType_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProcurementTypeDesc" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="DonorType_ID" Type="System.Int32" DbType="int" CanBeNull="true" />
+      <Association Name="ProcurementType_Procurement" Member="Procurements" ThisKey="ProcurementType_ID" OtherKey="ProcurementType_ID" Type="Procurement" />
+      <Association Name="DonorType_ProcurementType" Member="DonorType" ThisKey="DonorType_ID" OtherKey="DonorType_ID" Type="DonorType" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Function Name="dbo.BackupDatabase" Method="BackupDatabase">
+    <Parameter Name="BackupFileLocation" Parameter="backupFileLocation" Type="System.String" DbType="VarChar(1024)" />
+    <Return Type="System.Int32" />
+  </Function>
+</Database>
