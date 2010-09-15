@@ -1,6 +1,7 @@
 using System;
 using System.Web.Mvc;
-using BidsForKids.Models;
+using BidsForKids.Data.Models;
+using BidsForKids.Data.Models;
 
 namespace BidsForKids.Controllers
 {

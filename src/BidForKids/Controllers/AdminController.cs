@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Configuration;
+using BidsForKids.Data.Models;
 
 namespace BidsForKids.Controllers
 {
@@ -26,7 +27,7 @@ namespace BidsForKids.Controllers
         {
             try
             {
-                Models.ProcurementDataClassesDataContext dc = new Models.ProcurementDataClassesDataContext();
+                var dc = new ProcurementDataClassesDataContext();
 
 
                 ContentResult result = new ContentResult();

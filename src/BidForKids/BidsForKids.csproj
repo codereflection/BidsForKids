@@ -106,7 +106,6 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AuctionController.cs" />
-    <Compile Include="Models\AuctionItem.cs" />
     <Compile Include="Controllers\BidForKidsControllerBase.cs" />
     <Compile Include="Controllers\ControllerHelper.cs" />
     <Compile Include="Controllers\DonorController.cs" />
@@ -123,16 +122,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\IProcurementFactory.cs" />
-    <Compile Include="Models\jqGridLoadOptions.cs" />
-    <Compile Include="Models\ProcurementDataClasses.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ProcurementDataClasses.dbml</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ProcurementFactory.cs" />
-    <Compile Include="Models\ReportModels.cs" />
-    <Compile Include="Models\SerializableObjects.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -240,19 +229,7 @@
     <Content Include="Views\Procurer\Index.aspx" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Models\ProcurementDataClasses.dbml">
-      <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>ProcurementDataClasses.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Models\ProcurementDataClasses.dbml.layout">
-      <DependentUpon>ProcurementDataClasses.dbml</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\logs\" />

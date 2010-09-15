@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using BidsForKids.Models;
+using BidsForKids.Data.Models;
 
 namespace BidsForKids.Controllers
 {

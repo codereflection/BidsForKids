@@ -2,9 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using BidsForKids.Models;
-using BidsForKids.Models.SerializableObjects;
+using BidsForKids.Data.Models;
 using System.Collections.Specialized;
+using BidsForKids.Data.Models;
+using BidsForKids.Data.Models.SerializableObjects;
 
 namespace BidsForKids.Controllers
 {

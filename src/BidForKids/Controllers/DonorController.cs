@@ -4,8 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
-using BidsForKids.Models;
-using BidsForKids.Models.SerializableObjects;
+using BidsForKids.Data.Models;
+using BidsForKids.Data.Models.SerializableObjects;
 
 namespace BidsForKids.Controllers
 {

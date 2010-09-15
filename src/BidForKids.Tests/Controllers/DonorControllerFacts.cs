@@ -1,10 +1,10 @@
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using BidsForKids.Models.SerializableObjects;
+using BidsForKids.Data.Models.SerializableObjects;
 using Xunit;
 using BidsForKids.Controllers;
-using BidsForKids.Models;
+using BidsForKids.Data.Models;
 using Rhino.Mocks;
 using System.Collections.Generic;
 using System;

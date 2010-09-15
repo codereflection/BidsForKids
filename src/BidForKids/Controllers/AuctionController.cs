@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Text;
 using System.Web.Mvc;
-using BidsForKids.Models;
+using BidsForKids.Data.Models;
 
 namespace BidsForKids.Controllers
 {

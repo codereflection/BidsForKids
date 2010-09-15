@@ -1,5 +1,5 @@
 using System;
-using BidsForKids.Models;
+using BidsForKids.Data.Models;
 using System.Web.Mvc;
 using BidsForKids.Controllers;
 using System.Web.Routing;

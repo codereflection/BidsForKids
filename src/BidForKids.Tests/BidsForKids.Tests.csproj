@@ -128,6 +128,10 @@
       <Project>{46F2C317-EDD6-4238-95D4-E0BD658B10D2}</Project>
       <Name>BidsForKids</Name>
     </ProjectReference>
+    <ProjectReference Include="..\BidsForKids.Data\BidsForKids.Data.csproj">
+      <Project>{7BF4666B-8841-4B18-B3AD-457DF2F93E7A}</Project>
+      <Name>BidsForKids.Data</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

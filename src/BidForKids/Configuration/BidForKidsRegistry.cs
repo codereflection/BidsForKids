@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using StructureMap;
 using StructureMap.Configuration.DSL;
-using BidsForKids.Models;
+using BidsForKids.Data.Models;
 
 namespace BidsForKids.Configuration
 {

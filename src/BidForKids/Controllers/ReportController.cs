@@ -5,10 +5,10 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using System.Text;
-using BidsForKids.Models;
-using BidsForKids.Models.ReportModels;
+using BidsForKids.Data.Models;
+using BidsForKids.Data.Models.ReportModels;
 using System.Reflection;
-using BidsForKids.Models.SerializableObjects;
+using BidsForKids.Data.Models.SerializableObjects;
 
 namespace BidsForKids.Controllers
 {
