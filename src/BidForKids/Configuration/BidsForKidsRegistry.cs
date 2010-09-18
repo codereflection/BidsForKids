@@ -17,6 +17,7 @@ namespace BidsForKids.Configuration
             Scan(assemblyScanner =>
                 {
                     assemblyScanner.TheCallingAssembly();
+                    assemblyScanner.AssemblyContainingType<IProcurementRepository>();
                     assemblyScanner.WithDefaultConventions();
                 });
         }
