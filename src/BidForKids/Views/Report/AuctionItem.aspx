@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="Report - Auction Items" Language="C#" MasterPageFile="~/Views/Shared/Site.Master"
-    Inherits="System.Web.Mvc.ViewPage<IEnumerable<BidsForKids.Models.AuctionItem>>" %>
+    Inherits="System.Web.Mvc.ViewPage<IEnumerable<BidsForKids.Data.Models.AuctionItem>>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
     Report - Auction Items

@@ -1,4 +1,4 @@
-<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<BidsForKids.Models.Procurement>" %>
+<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<BidsForKids.Data.Models.Procurement>" %>
 <tr>
     <td>
         <%= Html.ActionLink("Edit", "Edit", new { id = Model.Procurement_ID })%>
