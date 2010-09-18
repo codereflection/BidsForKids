@@ -60,7 +60,7 @@ namespace BidsForKids.Data.Models
     #endregion
 		
 		public ProcurementDataClassesDataContext() : 
-				base(global::BidsForKids.Data.Properties.Settings.Default.BidsForKidsConnectionString, mappingSource)
+				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["BidsForKidsConnectionString"].ConnectionString, mappingSource)
 		{
 			OnCreated();
 		}
