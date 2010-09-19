@@ -8,11 +8,16 @@ namespace BidsForKids.Data.Models
 {
     public class ProcurementRepository : IProcurementRepository, IDisposable
     {
-        ProcurementDataClassesDataContext dc;
+        readonly ProcurementDataClassesDataContext dc;
 
         public ProcurementRepository()
         {
             dc = new ProcurementDataClassesDataContext();
+        }
+
+        public ProcurementRepository(string connectionString)
+        {
+            dc = new ProcurementDataClassesDataContext(connectionString);
         }
 
 
@@ -40,8 +45,8 @@ namespace BidsForKids.Data.Models
             if (loadOptions == null)
                 throw new ArgumentNullException("loadOptions", "loadOptions is null.");
 
-            string sortIndex = loadOptions.sortIndex;
-            string sortOrder = loadOptions.sortOrder;
+            var sortIndex = loadOptions.sortIndex;
+            var sortOrder = loadOptions.sortOrder;
 
             if (string.IsNullOrEmpty(sortIndex))
             {
@@ -54,29 +59,23 @@ namespace BidsForKids.Data.Models
                     sortOrder = "asc";
             }
 
-            IEnumerable<Procurement> lProcurements;
+            IEnumerable<Procurement> procurements;
 
             if (loadOptions.search == false)
             {
-                lProcurements = dc.Procurements.OrderBy(sortIndex + " " + sortOrder);
+                procurements = dc.Procurements.OrderBy(sortIndex + " " + sortOrder);
             }
             else
             {
                 AddLikePercentsToValues(loadOptions.searchParams);
 
-                string lSql = BuildSerializableProcurementSqlStatement(sortIndex, sortOrder, loadOptions.searchParams);
+                var sql = BuildSerializableProcurementSqlStatement(sortIndex, sortOrder, loadOptions.searchParams);
 
-                lProcurements = dc.ExecuteQuery<Procurement>(lSql, loadOptions.searchParams.Values.ToArray<string>());
+                procurements = dc.ExecuteQuery<Procurement>(sql, loadOptions.searchParams.Values.ToArray());
             }
 
-            List<SerializableProcurement> lResult = new List<SerializableProcurement>();
-
-            foreach (var lProcurement in lProcurements)
-            {
-                lResult.Add(SerializableProcurement.ConvertProcurementToSerializableProcurement(lProcurement));
-            }
-
-            return lResult;
+            return procurements.Select(SerializableProcurement.ConvertProcurementToSerializableProcurement)
+                .ToList();
         }
 
 
@@ -84,14 +83,14 @@ namespace BidsForKids.Data.Models
 
         public List<SerializableDonor> GetSerializableBusinesses(jqGridLoadOptions loadOptions)
         {
-            DonorType donorType = GetDonorTypeByName("Business");
+            var donorType = GetDonorTypeByName("Business");
 
             return GetSerializableDonors(loadOptions, donorType.DonorType_ID, "BusinessName");
         }
 
         public List<SerializableDonor> GetSerializableParents(jqGridLoadOptions loadOptions)
         {
-            DonorType donorType = GetDonorTypeByName("Parent");
+            var donorType = GetDonorTypeByName("Parent");
 
             return GetSerializableDonors(loadOptions, donorType.DonorType_ID, "LastName");
         }
@@ -99,7 +98,7 @@ namespace BidsForKids.Data.Models
 
         public DonorType GetDonorTypeByName(string donorTypeDesc)
         {
-            DonorType donorType = (from d in dc.DonorTypes where d.DonorTypeDesc == donorTypeDesc select d).FirstOrDefault();
+            var donorType = (from d in dc.DonorTypes where d.DonorTypeDesc == donorTypeDesc select d).FirstOrDefault();
 
             if (donorType == null)
             {
@@ -110,11 +109,11 @@ namespace BidsForKids.Data.Models
 
         public DonorType GetDonorTypeByID(int donorTypeId)
         {
-            DonorType donorType = (from d in dc.DonorTypes where d.DonorType_ID == donorTypeId select d).FirstOrDefault();
+            var donorType = (from d in dc.DonorTypes where d.DonorType_ID == donorTypeId select d).FirstOrDefault();
 
             if (donorType == null)
             {
-                throw new ApplicationException("Unable to find DonorType_ID " + donorTypeId.ToString() + " in DonorTypes");
+                throw new ApplicationException("Unable to find DonorType_ID " + donorTypeId + " in DonorTypes");
             }
             return donorType;
         }
@@ -122,7 +121,7 @@ namespace BidsForKids.Data.Models
 
         public ProcurementType GetProcurementTypeByName(string procurementTypeDesc)
         {
-            ProcurementType procurementType = (from d in dc.ProcurementTypes where d.ProcurementTypeDesc == procurementTypeDesc select d).FirstOrDefault();
+            var procurementType = (from d in dc.ProcurementTypes where d.ProcurementTypeDesc == procurementTypeDesc select d).FirstOrDefault();
 
             if (procurementType == null)
             {
@@ -153,144 +152,138 @@ namespace BidsForKids.Data.Models
             {
                 AddLikePercentsToValues(loadOptions.searchParams);
 
-                string lSql = BuildSerializableDonorSqlStatement(loadOptions.sortIndex, loadOptions.sortOrder, loadOptions.searchParams, donorTypeId);
+                var sql = BuildSerializableDonorSqlStatement(loadOptions.sortIndex, loadOptions.sortOrder, loadOptions.searchParams, donorTypeId);
 
-                lDonors = dc.ExecuteQuery<Donor>(lSql, loadOptions.searchParams.Values.ToArray<string>());
+                lDonors = dc.ExecuteQuery<Donor>(sql, loadOptions.searchParams.Values.ToArray());
             }
 
-            List<SerializableDonor> lResult = new List<SerializableDonor>();
-
-            foreach (var lDonor in lDonors)
-            {
-                lResult.Add(SerializableDonor.ConvertDonorToSerializableProcurement(lDonor));
-            }
-            return lResult;
+            return lDonors.Select(SerializableDonor.ConvertDonorToSerializableProcurement).ToList();
         }
 
 
 
         private static string BuildSerializableDonorSqlStatement(string sortIndex, string sortOrder, Dictionary<string, string> searchParams, int donorTypeId)
         {
-            string lSql = "select Donor.*, GeoLocation.GeoLocationName "
-                + " FROM Donor "
-                + " LEFT JOIN GeoLocation ON Donor.GeoLocation_ID = GeoLocation.GeoLocation_ID "
-                + " where Donor.DonorType_ID = " + donorTypeId.ToString() + " ";
+            var sql =
+                @"select Donor.*, GeoLocation.GeoLocationName
+                FROM Donor
+                LEFT JOIN GeoLocation ON Donor.GeoLocation_ID = GeoLocation.GeoLocation_ID
+                where Donor.DonorType_ID = " + donorTypeId;
 
-            int lParamCount = 0;
-            foreach (string item in searchParams.Keys.ToList())
+            var paramCount = 0;
+            foreach (var item in searchParams.Keys.ToList())
             {
-                string lField = item;
-                //if (lParamCount > 0)
-                lSql += " AND ";
+                var field = item;
+
+                sql += " AND ";
 
                 // TODO: Fix the hack on the table name
-                if (lField.ToLower() == "description")
+                if (field.ToLower() == "description")
                 {
-                    lField = "Donor.Description";
+                    field = "Donor.Description";
                 }
 
                 // TODO: Fix the hack on the table name
-                if (lField.ToLower() == "geolocation_id")
+                if (field.ToLower() == "geolocation_id")
                 {
-                    lField = "GeoLocation.GeoLocationName";
+                    field = "GeoLocation.GeoLocationName";
                 }
 
 
-                if (lField.IndexOf("_ID") > 0)
+                if (field.IndexOf("_ID") > 0)
                 {
-                    lSql += lField + " = {" + lParamCount.ToString() + "} ";
+                    sql += field + " = {" + paramCount + "} ";
                 }
                 else if (searchParams[item].ToLower() == "null")
                 {
-                    lSql += lField + " IS NULL ";
+                    sql += field + " IS NULL ";
                 }
                 else
                 {
                     // only perform LIKE on non-_ID fields
-                    lSql += lField + " LIKE {" + lParamCount.ToString() + "} ";
+                    sql += field + " LIKE {" + paramCount + "} ";
                 }
 
-                lParamCount += 1;
+                paramCount += 1;
             }
-            lSql += " order by " + sortIndex + " " + sortOrder;
-            return lSql;
+            sql += " order by " + sortIndex + " " + sortOrder;
+            return sql;
         }
 
         private static string BuildSerializableProcurementSqlStatement(string sortIndex, string sortOrder, Dictionary<string, string> searchParams)
         {
-            string lSql = "select Procurement.*, Auction.*, GeoLocation.GeoLocationName, Category.CategoryName from Procurement "
-                + " JOIN ContactProcurement CP on Procurement.Procurement_ID = CP.Procurement_ID "
-                + " JOIN Auction ON CP.Auction_ID = Auction.Auction_ID "
-                + " LEFT JOIN Donor ON CP.Donor_ID = Donor.Donor_ID "
-                + " LEFT JOIN GeoLocation ON Donor.GeoLocation_ID = GeoLocation.GeoLocation_ID "
-                + " LEFT JOIN Category ON Procurement.Category_ID = Category.Category_ID "
-                + " LEFT JOIN Procurer ON CP.Procurer_ID = Procurer.Procurer_ID "
-                + " where ";
-            int lParamCount = 0;
-            foreach (string item in searchParams.Keys.ToList())
+            string sql =  @"select Procurement.*, Auction.*, GeoLocation.GeoLocationName, Category.CategoryName from Procurement
+                          JOIN ContactProcurement CP on Procurement.Procurement_ID = CP.Procurement_ID
+                          JOIN Auction ON CP.Auction_ID = Auction.Auction_ID
+                          LEFT JOIN Donor ON CP.Donor_ID = Donor.Donor_ID
+                          LEFT JOIN GeoLocation ON Donor.GeoLocation_ID = GeoLocation.GeoLocation_ID
+                          LEFT JOIN Category ON Procurement.Category_ID = Category.Category_ID
+                          LEFT JOIN Procurer ON CP.Procurer_ID = Procurer.Procurer_ID
+                          where ";
+            var paramCount = 0;
+            foreach (var item in searchParams.Keys.ToList())
             {
-                string lField = item;
-                if (lParamCount > 0)
-                    lSql += " AND ";
+                var field = item;
+                if (paramCount > 0)
+                    sql += " AND ";
 
                 // TODO: Fix the hack on the table name
-                if (lField.ToLower() == "description")
+                if (field.ToLower() == "description")
                 {
-                    lField = "Procurement.Description";
+                    field = "Procurement.Description";
                 }
 
                 // TODO: Fix the hack on the table name
-                if (lField.ToLower() == "procurername")
+                if (field.ToLower() == "procurername")
                 {
-                    lField = "Procurer.FirstName + ' ' + Procurer.LastName";
+                    field = "Procurer.FirstName + ' ' + Procurer.LastName";
                 }
 
                 // TODO: Fix the hack on the table name
-                if (lField.ToLower() == "businessname")
+                if (field.ToLower() == "businessname")
                 {
-                    lField = "Donor.BusinessName";
+                    field = "Donor.BusinessName";
                 }
 
                 // TODO: Fix the hack on the table name
-                if (lField.ToLower() == "auction_id")
+                if (field.ToLower() == "auction_id")
                 {
-                    lField = "CP.Auction_ID";
+                    field = "CP.Auction_ID";
                 }
 
                 // TODO: Fix the hack on the table name
-                if (lField.ToLower() == "category_id")
+                if (field.ToLower() == "category_id")
                 {
-                    lField = "Category.CategoryName";
+                    field = "Category.CategoryName";
                 }
 
 
-                if (lField.IndexOf("_ID") > 0)
+                if (field.IndexOf("_ID") > 0)
                 {
-                    lSql += lField + " = {" + lParamCount.ToString() + "} ";
+                    sql += field + " = {" + paramCount + "} ";
                 }
                 else if (searchParams[item].ToLower() == "null")
                 {
-                    lSql += lField + " IS NULL ";
+                    sql += field + " IS NULL ";
                 }
                 else
                 {
                     // only perform LIKE on non-_ID fields
-                    lSql += lField + " LIKE {" + lParamCount.ToString() + "} ";
+                    sql += field + " LIKE {" + paramCount + "} ";
                 }
 
-                lParamCount += 1;
+                paramCount += 1;
             }
-            lSql += " order by " + sortIndex + " " + sortOrder;
-            return lSql;
+            sql += " order by " + sortIndex + " " + sortOrder;
+            return sql;
         }
 
         private static void AddLikePercentsToValues(Dictionary<string, string> searchParams)
         {
-            foreach (string key in searchParams.Keys.ToList<string>())
+            foreach (var key in searchParams.Keys.ToList()
+                                                .Where(key => (key.IndexOf("_ID") <= -1) 
+                                                            && (key.ToLower() != "null")))
             {
-                if ((key.IndexOf("_ID") > -1) || (key.ToLower() == "null"))
-                    continue;
-
                 searchParams[key] = "%" + searchParams[key] + "%";
             }
         }
@@ -303,14 +296,14 @@ namespace BidsForKids.Data.Models
         /// <returns>An instance of a Procurement object</returns>
         public Procurement GetProcurement(int id)
         {
-            var lProcurement = from P in dc.Procurements where P.Procurement_ID == id select P;
+            var procurement = from P in dc.Procurements where P.Procurement_ID == id select P;
 
-            if (lProcurement == null || lProcurement.Count() == 0)
+            if (procurement == null || procurement.Count() == 0)
             {
-                throw new ApplicationException("Unable to locate procurement by ID " + id.ToString());
+                throw new ApplicationException("Unable to locate procurement by ID " + id);
             }
 
-            return lProcurement.First();
+            return procurement.First();
         }
 
 
@@ -326,16 +319,14 @@ namespace BidsForKids.Data.Models
                 throw new ArgumentException("procurement was null", "procurement");
             }
 
-            bool lResult = false;
-            Procurement lOld = GetProcurement(procurement.Procurement_ID);
+            var lOld = GetProcurement(procurement.Procurement_ID);
 
             lOld = procurement;
 
             dc.SubmitChanges();
 
             // TODO: Compare object properties here
-            lResult = true;
-            return lResult;
+            return true;
         }
 
 
@@ -347,25 +338,25 @@ namespace BidsForKids.Data.Models
         /// <returns>True if successfull.</returns>
         public bool DeleteProcurement(int id)
         {
-            bool lResult = false;
+            var result = false;
 
-            Procurement lProcurementToDelete = GetProcurement(id);
+            var procurementToDelete = GetProcurement(id);
 
-            if (lProcurementToDelete == null)
-                return lResult;
+            if (procurementToDelete == null)
+                return result;
 
-            ContactProcurement lContactProcurement = lProcurementToDelete.ContactProcurement;
+            var lContactProcurement = procurementToDelete.ContactProcurement;
 
             if (lContactProcurement != null)
                 dc.ContactProcurements.DeleteOnSubmit(lContactProcurement);
 
-            dc.Procurements.DeleteOnSubmit(lProcurementToDelete);
+            dc.Procurements.DeleteOnSubmit(procurementToDelete);
 
             dc.SubmitChanges();
 
-            lResult = true;
+            result = true;
 
-            return lResult;
+            return result;
         }
 
 
@@ -373,24 +364,23 @@ namespace BidsForKids.Data.Models
         /// Saves changes to the Donor object passed
         /// </summary>
         /// <param name="procurement">Donor object with changes to be saved</param>
+        /// <param name="donor"></param>
         /// <returns>True if save was successful, false if it was not.</returns>
-        public bool SaveDonor(Donor Donor)
+        public bool SaveDonor(Donor donor)
         {
-            if (Donor == null)
+            if (donor == null)
             {
                 throw new ArgumentNullException("Donor");
             }
 
-            bool lResult = false;
-            Donor lOld = GetDonor(Donor.Donor_ID);
+            var lOld = GetDonor(donor.Donor_ID);
 
-            lOld = Donor;
+            lOld = donor;
 
             dc.SubmitChanges();
 
             // TODO: Compare object properties here
-            lResult = true;
-            return lResult;
+            return true;
         }
 
 
@@ -406,15 +396,14 @@ namespace BidsForKids.Data.Models
                 throw new ArgumentNullException("geoLocation");
             }
 
-            bool lResult = false;
-            GeoLocation lOld = GetGeoLocation(geoLocation.GeoLocation_ID);
 
-            lOld = geoLocation;
+            var old = GetGeoLocation(geoLocation.GeoLocation_ID);
+
+            old = geoLocation;
 
             dc.SubmitChanges();
 
-            lResult = true;
-            return lResult;
+            return true;
         }
 
 
@@ -425,15 +414,13 @@ namespace BidsForKids.Data.Models
                 throw new ArgumentNullException("procurer");
             }
 
-            bool lResult = false;
-            Procurer lOld = GetProcurer(procurer.Procurer_ID);
+            var old = GetProcurer(procurer.Procurer_ID);
 
-            lOld = procurer;
+            old = procurer;
 
             dc.SubmitChanges();
 
-            lResult = true;
-            return lResult;
+            return true;
         }
 
 
@@ -553,9 +540,7 @@ namespace BidsForKids.Data.Models
         /// <returns>A List collection of Auction objects</returns>
         public List<Auction> GetAuctions()
         {
-            List<Auction> lResult = dc.Auctions.ToList();
-
-            return lResult;
+            return dc.Auctions.ToList();
         }
 
 
@@ -565,9 +550,7 @@ namespace BidsForKids.Data.Models
         /// <returns>A list of Donor objects</returns>
         public List<Donor> GetDonors()
         {
-            List<Donor> lResult = dc.Donors.ToList();
-
-            return lResult;
+            return dc.Donors.ToList();
         }
 
 
@@ -577,9 +560,7 @@ namespace BidsForKids.Data.Models
         /// <returns>A list of GeoLocation objects</returns>
         public List<GeoLocation> GetGeoLocations()
         {
-            List<GeoLocation> lResult = dc.GeoLocations.ToList();
-
-            return lResult;
+            return dc.GeoLocations.ToList();
         }
 
 
@@ -589,24 +570,18 @@ namespace BidsForKids.Data.Models
         /// <returns>A list of Category objects</returns>
         public List<Category> GetCategories()
         {
-            List<Category> lResult = dc.Categories.ToList();
-
-            return lResult;
+            return dc.Categories.ToList();
         }
 
 
         public List<Procurer> GetProcurers()
         {
-            List<Procurer> lResult = dc.Procurers.ToList();
-
-            return lResult;
+            return dc.Procurers.ToList();
         }
 
         public List<DonatesReference> GetDonatesReferenceList()
         {
-            List<DonatesReference> lResult = dc.DonatesReferences.ToList();
-
-            return lResult;
+            return dc.DonatesReferences.ToList();
         }
 
         /// <summary>
@@ -616,14 +591,14 @@ namespace BidsForKids.Data.Models
         /// <returns>An instance of an Auction object</returns>
         public Auction GetAuction(int id)
         {
-            var lAuction = from A in dc.Auctions where A.Auction_ID == id select A;
+            var auctions = from A in dc.Auctions where A.Auction_ID == id select A;
 
-            if (lAuction == null || lAuction.Count() == 0)
+            if (auctions == null || auctions.Count() == 0)
             {
-                throw new ApplicationException("Unable to locate auction by ID " + id.ToString());
+                throw new ApplicationException("Unable to locate auction by ID " + id);
             }
 
-            return lAuction.First();
+            return auctions.First();
         }
 
 
@@ -634,14 +609,14 @@ namespace BidsForKids.Data.Models
         /// <returns>An instance of a Donor object</returns>
         public Donor GetDonor(int id)
         {
-            var lContact = from C in dc.Donors where C.Donor_ID == id select C;
+            var contacts = from C in dc.Donors where C.Donor_ID == id select C;
 
-            if (lContact == null || lContact.Count() == 0)
+            if (contacts == null || contacts.Count() == 0)
             {
-                throw new ApplicationException("Unable to locate Donor by ID " + id.ToString());
+                throw new ApplicationException("Unable to locate Donor by ID " + id);
             }
 
-            return lContact.First();
+            return contacts.First();
         }
 
 
@@ -653,14 +628,14 @@ namespace BidsForKids.Data.Models
         /// <returns>An instance of a GeoLocation object</returns>
         public GeoLocation GetGeoLocation(int id)
         {
-            var lGeoLocation = from G in dc.GeoLocations where G.GeoLocation_ID == id select G;
+            var geoLocations = from G in dc.GeoLocations where G.GeoLocation_ID == id select G;
 
-            if (lGeoLocation == null || lGeoLocation.Count() == 0)
+            if (geoLocations == null || geoLocations.Count() == 0)
             {
-                throw new ApplicationException("Unable to locate GeoLocation by ID " + id.ToString());
+                throw new ApplicationException("Unable to locate GeoLocation by ID " + id);
             }
 
-            return lGeoLocation.First();
+            return geoLocations.First();
         }
 
 
@@ -671,65 +646,49 @@ namespace BidsForKids.Data.Models
         /// <returns>An instance of a Category object</returns>
         public Category GetCategory(int id)
         {
-            var lCategory = from C in dc.Categories where C.Category_ID == id select C;
+            var categories = from C in dc.Categories where C.Category_ID == id select C;
 
-            if (lCategory == null || lCategory.Count() == 0)
+            if (categories == null || categories.Count() == 0)
             {
-                throw new ApplicationException("Unable to locate Category by ID " + id.ToString());
+                throw new ApplicationException("Unable to locate Category by ID " + id);
             }
 
-            return lCategory.First();
+            return categories.First();
         }
 
 
         public Procurer GetProcurer(int id)
         {
-            var lProcurer = from P in dc.Procurers where P.Procurer_ID == id select P;
+            var procurers = from P in dc.Procurers where P.Procurer_ID == id select P;
 
-            if (lProcurer == null || lProcurer.Count() == 0)
+            if (procurers == null || procurers.Count() == 0)
             {
-                throw new ApplicationException("Unable to locate Procurer by ID " + id.ToString());
+                throw new ApplicationException("Unable to locate Procurer by ID " + id);
             }
 
-            return lProcurer.First();
+            return procurers.First();
         }
 
 
         public bool CheckForExistingItemNumber(int id, string itemNumber)
         {
-            var lQuery = from P in dc.Procurements
+            var query = from P in dc.Procurements
                          where P.ItemNumber == itemNumber
                          && P.Procurement_ID != id
                          select P;
 
-            if (lQuery == null || lQuery.Count() == 0)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return query.Count() != 0;
         }
 
         public string CheckForLastSimilarItemNumber(int id, string itemNumber)
         {
-            var lQuery = from P in dc.Procurements
-                         where P.ItemNumber.StartsWith(itemNumber) == true
-                         && P.Procurement_ID != id
+            var query = from P in dc.Procurements
+                         where P.ItemNumber.StartsWith(itemNumber) && P.Procurement_ID != id
                          orderby P.ItemNumber descending
                          select P.ItemNumber;
 
-            if (lQuery == null || lQuery.Count() == 0)
-            {
-                return "";
-            }
-            else
-            {
-                return lQuery.First();
-            }
+            return query.Count() == 0 ? "" : query.First();
         }
-
 
         #region IDisposable Members
 
