@@ -53,7 +53,7 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Include="Models\ProcurementFactory.cs" />
+    <Compile Include="Models\ProcurementRepository.cs" />
     <Compile Include="Models\ReportModels.cs" />
     <Compile Include="Models\SerializableObjects.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
