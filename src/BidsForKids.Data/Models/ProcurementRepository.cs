@@ -27,8 +27,7 @@ namespace BidsForKids.Data.Models
         /// <returns></returns>
         public List<Procurement> GetProcurements()
         {
-            var lProcurements = dc.Procurements.ToList();
-            return lProcurements;
+            return dc.Procurements.ToList();
         }
 
         public List<Procurement> GetProcurements(int Year)
@@ -142,11 +141,11 @@ namespace BidsForKids.Data.Models
             if (string.IsNullOrEmpty(loadOptions.sortOrder))
                 loadOptions.sortOrder = "asc";
 
-            IEnumerable<Donor> lDonors;
+            IEnumerable<Donor> donors;
 
             if (loadOptions.search == false)
             {
-                lDonors = dc.Donors.Where(x => x.DonorType_ID == donorTypeId).OrderBy(loadOptions.sortIndex + " " + loadOptions.sortOrder);
+                donors = dc.Donors.Where(x => x.DonorType_ID == donorTypeId).OrderBy(loadOptions.sortIndex + " " + loadOptions.sortOrder);
             }
             else
             {
@@ -154,10 +153,10 @@ namespace BidsForKids.Data.Models
 
                 var sql = BuildSerializableDonorSqlStatement(loadOptions.sortIndex, loadOptions.sortOrder, loadOptions.searchParams, donorTypeId);
 
-                lDonors = dc.ExecuteQuery<Donor>(sql, loadOptions.searchParams.Values.ToArray());
+                donors = dc.ExecuteQuery<Donor>(sql, loadOptions.searchParams.Values.ToArray());
             }
 
-            return lDonors.Select(SerializableDonor.ConvertDonorToSerializableProcurement).ToList();
+            return donors.Select(SerializableDonor.ConvertDonorToSerializableProcurement).ToList();
         }
 
 
@@ -319,9 +318,9 @@ namespace BidsForKids.Data.Models
                 throw new ArgumentException("procurement was null", "procurement");
             }
 
-            var lOld = GetProcurement(procurement.Procurement_ID);
+            var old = GetProcurement(procurement.Procurement_ID);
 
-            lOld = procurement;
+            old = procurement;
 
             dc.SubmitChanges();
 
@@ -335,35 +334,31 @@ namespace BidsForKids.Data.Models
         /// Removes a Procurement from the database
         /// </summary>
         /// <param name="id">ID of the Procurement to remove</param>
-        /// <returns>True if successfull.</returns>
+        /// <returns>True if successful.</returns>
         public bool DeleteProcurement(int id)
         {
-            var result = false;
 
             var procurementToDelete = GetProcurement(id);
 
             if (procurementToDelete == null)
-                return result;
+                return false;
 
-            var lContactProcurement = procurementToDelete.ContactProcurement;
+            var contactProcurement = procurementToDelete.ContactProcurement;
 
-            if (lContactProcurement != null)
-                dc.ContactProcurements.DeleteOnSubmit(lContactProcurement);
+            if (contactProcurement != null)
+                dc.ContactProcurements.DeleteOnSubmit(contactProcurement);
 
             dc.Procurements.DeleteOnSubmit(procurementToDelete);
 
             dc.SubmitChanges();
 
-            result = true;
-
-            return result;
+            return true;
         }
 
 
         /// <summary>
         /// Saves changes to the Donor object passed
         /// </summary>
-        /// <param name="procurement">Donor object with changes to be saved</param>
         /// <param name="donor"></param>
         /// <returns>True if save was successful, false if it was not.</returns>
         public bool SaveDonor(Donor donor)
@@ -385,7 +380,7 @@ namespace BidsForKids.Data.Models
 
 
         /// <summary>
-        /// Saves changesto the GeoLocation object passed
+        /// Saves changes to the GeoLocation object passed
         /// </summary>
         /// <param name="geoLocation">GeoLocation object with changes to be saved</param>
         /// <returns>True if save was successful, false if it was not.</returns>
@@ -501,7 +496,7 @@ namespace BidsForKids.Data.Models
         /// <summary>
         /// Adds a new Geo Location to the GeoLocation collection
         /// </summary>
-        /// <param name="geoLocation">Instnace of GeoLocation oject to add to collection</param>
+        /// <param name="geoLocation">Instance of GeoLocation object to add to collection</param>
         /// <returns>GeoLocation_ID of the newly added GeoLocation</returns>
         public int AddGeoLocation(GeoLocation geoLocation)
         {
