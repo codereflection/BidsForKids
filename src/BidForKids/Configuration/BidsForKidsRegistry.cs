@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using StructureMap;
+using System.Configuration;
 using StructureMap.Configuration.DSL;
 using BidsForKids.Data.Models;
 
@@ -13,13 +8,16 @@ namespace BidsForKids.Configuration
     {
         public BidsForKidsRegistry()
         {
-            //ForRequestedType<IProcurementFactory>().TheDefaultIsConcreteType<ProcurementFactory>();
+            ForRequestedType<IProcurementRepository>().TheDefault.Is.OfConcreteType<ProcurementRepository>()
+                .WithCtorArg("connectionString").EqualTo(
+                    ConfigurationManager.ConnectionStrings["BidsForKidsConnectionString"].ConnectionString);
+
             Scan(assemblyScanner =>
                 {
                     assemblyScanner.TheCallingAssembly();
                     assemblyScanner.AssemblyContainingType<IProcurementRepository>();
                     assemblyScanner.WithDefaultConventions();
-                });
+                });           
         }
     }
 }
