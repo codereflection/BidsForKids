@@ -102,9 +102,9 @@
     <Compile Include="Controllers\HomeControllerFacts.cs" />
     <Compile Include="Controllers\ProcurementControllerFacts.cs" />
     <Compile Include="Controllers\ProcurementFactoryHelper.cs" />
-    <Compile Include="Data\AuctionRepository.cs" />
     <Compile Include="Data\AuctionRepositorySpecs.cs" />
     <Compile Include="Data\InMemoryDataSource.cs" />
+    <Compile Include="Data\InMemorySpecificationBase.cs" />
     <Compile Include="Data\InMemoryUnitOfWork.cs" />
     <Compile Include="ModelLogic\AuctionItemSpecs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

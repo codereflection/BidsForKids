@@ -1,8 +1,7 @@
 ﻿using System.Linq;
 using BidsForKids.Data.Models;
-using BidsForKids.Data.Repositories;
 
-namespace BidsForKids.Tests.Data
+namespace BidsForKids.Data.Repositories
 {
     public class AuctionRepository : RepositoryBase<Auction>
     {

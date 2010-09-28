@@ -6,18 +6,13 @@ using Machine.Specifications;
 
 namespace BidsForKids.Tests.Data
 {
-    public abstract class with_an_auction_repo
+    public abstract class with_an_auction_repo : InMemorySpecificationBase
     {
         protected static AuctionRepository repo;
         protected static Auction result;
-        protected static IUnitOfWork unitOfWork;
-        protected static IDataSource<Auction> source;
 
-        Establish context = () =>
-                                    {
-                                        unitOfWork = new InMemoryUnitOfWork();
-                                        repo = new AuctionRepository(unitOfWork);
-                                    };
+        Establish context = () => 
+            repo = new AuctionRepository(unitOfWork);
     }
 
     [Subject(typeof(AuctionRepository))]
