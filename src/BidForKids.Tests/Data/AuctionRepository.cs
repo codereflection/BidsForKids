@@ -1,41 +1,18 @@
-using System;
+﻿using System.Linq;
 using BidsForKids.Data.Models;
-using Machine.Specifications;
+using BidsForKids.Data.Repositories;
 
 namespace BidsForKids.Tests.Data
 {
-    public abstract class with_an_auction_repo
+    public class AuctionRepository : RepositoryBase<Auction>
     {
-        protected static AuctionRepository repo;
-        protected static Auction result;
-    }
-
-    [Subject(typeof(AuctionRepository))]
-    public class when_requesting_an_auction_by_year : with_an_auction_repo
-    {
-
-        Establish context = () => repo = new AuctionRepository();
-
-        Because of = () => result = repo.GetBy(2010);
-
-        It should_return_the_correct_auction_year = () => 
-            result.Year.ShouldEqual(2010);
-    }
-
-
-    public class AuctionRepository
-    {
-        public AuctionRepository()
-        {
-            
-        }
+        public AuctionRepository(IUnitOfWork unitOfWork)
+            : base(unitOfWork)
+        { }
 
         public Auction GetBy(int year)
         {
-            throw new NotImplementedException("sad pandas can't implement the codez");
+            return _source.Where(x => x.Year == year).FirstOrDefault();
         }
     }
-
-
-
 }
