@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace BidsForKids.Data.Repositories
 {
-    public static class PrimaryKeyHelper
+    internal static class PrimaryKeyHelper
     {
         public static PropertyInfo GetPrimaryKey(this Type entityType)
         {
