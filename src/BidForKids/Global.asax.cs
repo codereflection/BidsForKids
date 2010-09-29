@@ -1,20 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using StructureMap;
-using StructureMap.Configuration;
 using BidsForKids.Configuration;
+using BidsForKids.Data.Repositories;
+using StructureMap;
 
 namespace BidsForKids
 {
-    // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
-    // visit http://go.microsoft.com/?LinkId=9394801
-
-    public class MvcApplication : System.Web.HttpApplication
+    public class MvcApplication : HttpApplication
     {
+        private IUnitOfWork _currentUnitOfWork;
+
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
@@ -26,12 +23,6 @@ namespace BidsForKids
                 new { controller = "Home", action = "Index", id = "" }  // Parameter defaults
             );
 
-            //routes.MapRoute(
-            //    "Default",
-            //    "{controller}.aspx/{action}/{id}",
-            //    new { controller = "Home", action = "Index", id = "" }
-            //    );
-
         }
 
         protected void Application_Start()
@@ -39,6 +30,16 @@ namespace BidsForKids
             RegisterRoutes(RouteTable.Routes);
             Bootstrapper.ConfigureStructureMap();
             ControllerBuilder.Current.SetControllerFactory(new StructureMapControllerFactory());
+        }
+
+        protected void Application_BeginRequest(object sender, EventArgs e)
+        {
+            _currentUnitOfWork = ObjectFactory.GetInstance<IUnitOfWork>();
+        }
+
+        protected void Application_EndRequest(object sender, EventArgs e)
+        {
+            _currentUnitOfWork.Dispose();
         }
     }
 }

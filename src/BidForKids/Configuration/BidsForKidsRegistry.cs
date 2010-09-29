@@ -1,4 +1,6 @@
 using System.Configuration;
+using System.Data.Linq;
+using BidsForKids.Data.Repositories;
 using StructureMap.Configuration.DSL;
 using BidsForKids.Data.Models;
 
@@ -12,12 +14,19 @@ namespace BidsForKids.Configuration
                 .WithCtorArg("connectionString").EqualTo(
                     ConfigurationManager.ConnectionStrings["BidsForKidsConnectionString"].ConnectionString);
 
+            SelectConstructor<DataContext>(() => new DataContext("whatchoodoo"));
+            ForConcreteType<DataContext>().Configure
+                .WithCtorArg("fileOrServerOrConnection")
+                .EqualTo(ConfigurationManager.ConnectionStrings["BidsForKidsConnectionString"].ConnectionString);
+
+            ForRequestedType<IUnitOfWork>().TheDefault.Is.OfConcreteType<DatabaseUnitOfWork>();
+
             Scan(assemblyScanner =>
                 {
                     assemblyScanner.TheCallingAssembly();
                     assemblyScanner.AssemblyContainingType<IProcurementRepository>();
                     assemblyScanner.WithDefaultConventions();
-                });           
+                });
         }
     }
 }
