@@ -24,10 +24,10 @@ namespace BidsForKids.Tests.Controllers
 
     public class when_viewing_a_list_of_auctions : with_an_auction_controller
     {
-        private static ActionResult result;
+        private static ViewResult result;
 
         Because of = () => 
-            result = controller.Index();
+            result = controller.Index() as ViewResult;
 
         It should_return_a_result = () =>
             result.ShouldNotBeNull();
@@ -39,13 +39,13 @@ namespace BidsForKids.Tests.Controllers
             repo.Received().GetAll();
 
         It should_have_view_data = () =>
-            (result as ViewResult).ViewData.Model.ShouldNotBeNull();
+            result.ViewData.Model.ShouldNotBeNull();
 
         It should_have_view_data_of_type_auction = () =>
-            (result as ViewResult).ViewData.Model.ShouldBeOfType
+            result.ViewData.Model.ShouldBeOfType
                 <IEnumerable<Auction>>();
 
         It should_have_two_auctions_in_the_model = () => 
-            ((result as ViewResult).ViewData.Model as IEnumerable<Auction>).Count().ShouldEqual(2);
+            (result.ViewData.Model as IEnumerable<Auction>).Count().ShouldEqual(2);
     }
 }
