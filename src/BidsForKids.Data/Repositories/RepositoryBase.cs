@@ -52,6 +52,11 @@ namespace BidsForKids.Data.Repositories
             return _source.GetById(id);
         }
 
+        public IEnumerable<T> GetAll()
+        {
+            return _source.GetAll();
+        }
+
         public void InsertOnSubmit(T entity)
         {
             _source.InsertOnSubmit(entity);

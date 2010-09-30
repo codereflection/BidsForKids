@@ -86,6 +86,11 @@ namespace BidsForKids.Data.Repositories
 
         public abstract void InsertOnSubmit(T entity);
         public abstract void DeleteonSubmit(T entity);
+
+        public IEnumerable<T> GetAll()
+        {
+            return _source;
+        }
     }
 
     public interface IDataSource<T> : IQueryable<T> where T : class, new()
@@ -93,5 +98,6 @@ namespace BidsForKids.Data.Repositories
         T GetById(int id);
         void InsertOnSubmit(T entity);
         void DeleteonSubmit(T entity);
+        IEnumerable<T> GetAll();
     }
 }

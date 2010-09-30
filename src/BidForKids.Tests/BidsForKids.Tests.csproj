@@ -96,6 +96,8 @@
     <Compile Include="..\ProjectVersion.cs">
       <Link>Properties\ProjectVersion.cs</Link>
     </Compile>
+    <Compile Include="Controllers\AdminControllerSpecs.cs" />
+    <Compile Include="Controllers\AuctionControllerSpecs.cs" />
     <Compile Include="Controllers\BidForKidsControllerAbstract.cs" />
     <Compile Include="Controllers\DonorControllerFacts.cs" />
     <Compile Include="Controllers\GeoLocationControllerFacts.cs" />
