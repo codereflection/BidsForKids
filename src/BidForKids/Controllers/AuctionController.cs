@@ -2,6 +2,7 @@
 using System.Text;
 using System.Web.Mvc;
 using BidsForKids.Data.Models;
+using BidsForKids.Data.Repositories;
 
 namespace BidsForKids.Controllers
 {
@@ -9,7 +10,7 @@ namespace BidsForKids.Controllers
     {
         private readonly IProcurementRepository factory;
 
-        public AuctionController(IProcurementRepository factory)
+        public AuctionController(IProcurementRepository factory, IAuctionRepository auctionRepository)
         {
             this.factory = factory;
         }

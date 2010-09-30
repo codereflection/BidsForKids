@@ -3,7 +3,12 @@ using BidsForKids.Data.Models;
 
 namespace BidsForKids.Data.Repositories
 {
-    public class AuctionRepository : RepositoryBase<Auction>
+    public interface IAuctionRepository
+    {
+        Auction GetBy(int year);
+    }
+
+    public class AuctionRepository : RepositoryBase<Auction>, IAuctionRepository
     {
         public AuctionRepository(IUnitOfWork unitOfWork)
             : base(unitOfWork)
