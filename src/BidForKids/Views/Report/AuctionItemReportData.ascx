@@ -65,7 +65,7 @@
                 </td>
                 <td>
                     <%
-                        var EstimatedValue = BidsForKids.Models.AuctionItem.GetAuctionItemTotal(item);
+                        var EstimatedValue = BidsForKids.Data.Models.AuctionItem.GetAuctionItemTotal(item);
                     %>
                     <%= EstimatedValue%>
                 </td>
