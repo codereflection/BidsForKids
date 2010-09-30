@@ -21,37 +21,10 @@ namespace BidsForKids.Controllers
             this.factory = factory;
         }
 
-
-        //
-        // GET: /Report/
-
         public ActionResult Index()
         {
             return View();
         }
-
-
-        private static List<SelectListItem> GetReportTypeSelectList()
-        {
-            var reportTypeOptions = new List<SelectListItem>();
-            reportTypeOptions.Add(new SelectListItem() { Text = "", Value = "", Selected = true });
-            reportTypeOptions.Add(new SelectListItem() { Text = "Business", Value = "Business" });
-            reportTypeOptions.Add(new SelectListItem() { Text = "Parent", Value = "Parent" });
-            return reportTypeOptions;
-        }
-
-
-
-        void SetupCreateReportViewData(string createByType)
-        {
-            ViewData["CreateByType"] = createByType;
-
-            ViewData["ReportType"] = GetReportTypeSelectList();
-        }
-
-
-        //
-        // GET: /Report/CreateByType/{id}
 
         public ActionResult CreateByType(string id)
         {
@@ -59,10 +32,6 @@ namespace BidsForKids.Controllers
 
             return View();
         }
-
-
-        //
-        // POST: /Report/RunCreateByTypeReport
 
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult RunCreateByTypeReport(FormCollection collection)
@@ -110,6 +79,59 @@ namespace BidsForKids.Controllers
             }
 
             return null;
+        }
+
+        public ActionResult AuctionItem()
+        {
+            SetupAuctionItemViewData();
+            return View();
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult RunAuctionReport(FormCollection collection)
+        {
+            int? Year = null;
+            if (!string.IsNullOrEmpty(collection["YearFilter"]))
+                Year = int.Parse(collection["YearFilter"]);
+
+            var Category = collection["CategoryNameFilter"];
+            var AuctionNumberStart = collection["AuctionNumberStartFilter"];
+            var AuctionNumberEnd = collection["AuctionNumberEndFilter"];
+
+            var auctionItems = GetAuctionItems(Year);
+
+            if (!string.IsNullOrEmpty(Category))
+            {
+                auctionItems = from P in auctionItems
+                               where P.Items.Any((x) => x.Category != null ? x.Category.Category_ID == int.Parse(Category) : false)
+                               select P;
+            }
+
+            if (!string.IsNullOrEmpty(AuctionNumberStart))
+            {
+                auctionItems = from P in auctionItems
+                               where string.CompareOrdinal(P.AuctionNumber, AuctionNumberStart) >= 0
+                               select P;
+            }
+
+            if (!string.IsNullOrEmpty(AuctionNumberEnd))
+            {
+                auctionItems = from P in auctionItems
+                               where string.CompareOrdinal(P.AuctionNumber, AuctionNumberEnd) <= 0
+                               select P;
+            }
+
+            if (collection["CatalogLayout"].Contains("true"))
+                return PartialView("AuctionItemReportDataCatalogLayout", auctionItems);
+            else
+                return PartialView("AuctionItemReportData", auctionItems);
+        }
+
+        private void SetupCreateReportViewData(string createByType)
+        {
+            ViewData["CreateByType"] = createByType;
+
+            ViewData["ReportType"] = GetReportTypeSelectList();
         }
 
         private ProcurementReport GetReportData(FormCollection collection)
@@ -206,7 +228,16 @@ namespace BidsForKids.Controllers
             return report;
         }
 
-        private void BuildReportBody(StringBuilder reportHtml, List<string> columns, ProcurementReport report, bool includeRowNumbers)
+        private static List<SelectListItem> GetReportTypeSelectList()
+        {
+            var reportTypeOptions = new List<SelectListItem>();
+            reportTypeOptions.Add(new SelectListItem() { Text = "", Value = "", Selected = true });
+            reportTypeOptions.Add(new SelectListItem() { Text = "Business", Value = "Business" });
+            reportTypeOptions.Add(new SelectListItem() { Text = "Parent", Value = "Parent" });
+            return reportTypeOptions;
+        }
+
+        private void BuildReportBody(StringBuilder reportHtml, IEnumerable<string> columns, ProcurementReport report, bool includeRowNumbers)
         {
             reportHtml.AppendLine("<tbody>");
 
@@ -352,16 +383,9 @@ namespace BidsForKids.Controllers
             return new SelectList(lCategories.OrderBy(x => x.CategoryName), "Category_ID", "CategoryName");
         }
 
-
         private void SetupAuctionItemViewData()
         {
             ViewData["CategoryList"] = GetCategoriesSelectList();
-        }
-
-        public ActionResult AuctionItem()
-        {
-            SetupAuctionItemViewData();
-            return View();
         }
 
         private IEnumerable<AuctionItem> GetAuctionItems(int? Year)
@@ -385,49 +409,5 @@ namespace BidsForKids.Controllers
                                       Items = g.OrderByDescending((x) => x.EstimatedValue)
                                   };
         }
-
-        //
-        // POST: /Report/RunCreateByTypeReport
-
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult RunAuctionReport(FormCollection collection)
-        {
-            int? Year = null;
-            if (!string.IsNullOrEmpty(collection["YearFilter"]))
-                Year = int.Parse(collection["YearFilter"]);
-
-            var Category = collection["CategoryNameFilter"];
-            var AuctionNumberStart = collection["AuctionNumberStartFilter"];
-            var AuctionNumberEnd = collection["AuctionNumberEndFilter"];
-
-            var auctionItems = GetAuctionItems(Year);
-
-            if (!string.IsNullOrEmpty(Category))
-            {
-                auctionItems = from P in auctionItems
-                               where P.Items.Any((x) => x.Category != null ? x.Category.Category_ID == int.Parse(Category) : false)
-                               select P;
-            }
-
-            if (!string.IsNullOrEmpty(AuctionNumberStart))
-            {
-                auctionItems = from P in auctionItems
-                               where string.CompareOrdinal(P.AuctionNumber, AuctionNumberStart) >= 0
-                               select P;
-            }
-
-            if (!string.IsNullOrEmpty(AuctionNumberEnd))
-            {
-                auctionItems = from P in auctionItems
-                               where string.CompareOrdinal(P.AuctionNumber, AuctionNumberEnd) <= 0
-                               select P;
-            }
-
-            if (collection["CatalogLayout"].Contains("true"))
-                return PartialView("AuctionItemReportDataCatalogLayout", auctionItems);
-            else
-                return PartialView("AuctionItemReportData", auctionItems);
-        }
-
     }
 }
