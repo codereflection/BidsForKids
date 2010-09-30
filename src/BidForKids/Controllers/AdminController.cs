@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using System.Configuration;
 using BidsForKids.Data.Models;
@@ -29,10 +26,9 @@ namespace BidsForKids.Controllers
             {
                 var dc = new ProcurementDataClassesDataContext();
 
+                var result = new ContentResult();
 
-                ContentResult result = new ContentResult();
-
-                string backupLocation = ConfigurationManager.AppSettings["SQLBackupLocation"];
+                var backupLocation = ConfigurationManager.AppSettings["SQLBackupLocation"];
 
                 if (string.IsNullOrEmpty(backupLocation) == true)
                 {
@@ -48,9 +44,10 @@ namespace BidsForKids.Controllers
             catch (Exception ex)
             {
                 Elmah.ErrorSignal.FromCurrentContext().Raise(ex);
-                ContentResult errResult = new ContentResult();
-                errResult.Content = "Error backing up database: " + ex.Message;
-                return errResult;
+                return new ContentResult
+                           {
+                               Content = "Error backing up database: " + ex.Message
+                           };
             }
         }
     }
