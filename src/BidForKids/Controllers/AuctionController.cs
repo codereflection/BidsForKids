@@ -35,6 +35,7 @@ namespace BidsForKids.Controllers
             throw new NotImplementedException();
         }
 
+        [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Edit(Auction auction)
         {
             _repo.Save(auction);
