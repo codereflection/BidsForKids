@@ -17,7 +17,9 @@ namespace BidsForKids.Tests.Controllers
         Establish context = () =>
                                 {
                                     repo = Substitute.For<IAuctionRepository>();
-                                    repo.GetAll().Returns(new[] { new Auction { Year = 2009 }, new Auction { Year = 2010 } });
+                                    var auctions = new[] { new Auction { Year = 2009, Auction_ID = 1}, new Auction { Year = 2010, Auction_ID = 2} };
+                                    repo.GetAll().Returns(auctions);
+                                    repo.GetById(1).Returns(auctions.Where(x => x.Auction_ID == 1).FirstOrDefault());
                                     controller = new AuctionController(repo);
                                 };
     }
@@ -32,9 +34,6 @@ namespace BidsForKids.Tests.Controllers
         It should_return_a_result = () =>
             result.ShouldNotBeNull();
 
-        It should_be_a_view_result_type = () =>
-            result.ShouldBeOfType<ViewResult>();
-
         It should_get_all_of_the_auctions = () => 
             repo.Received().GetAll();
 
@@ -47,5 +46,45 @@ namespace BidsForKids.Tests.Controllers
 
         It should_have_two_auctions_in_the_model = () => 
             (result.ViewData.Model as IEnumerable<Auction>).Count().ShouldEqual(2);
+    }
+
+    public class when_getting_an_auction_details_to_view : with_an_auction_controller
+    {
+        private static ViewResult result;
+
+        Because of = () =>
+            result = controller.Details(1) as ViewResult;
+
+        It should_return_a_result = () =>
+            result.ShouldNotBeNull();
+
+        It should_get_the_auction_by_id = () =>
+            repo.Received().GetById(1);
+
+        It should_have_an_auction_in_the_view_model = () =>
+            result.ViewData.Model.ShouldBeOfType<Auction>();
+
+        It should_return_the_correct_view_model = () =>
+            (result.ViewData.Model as Auction).Year.ShouldEqual(2009);
+    }
+
+    public class when_getting_auction_details_to_edit : with_an_auction_controller
+    {
+        private static ViewResult result;
+
+        Because of = () =>
+            result = controller.Edit(1) as ViewResult;
+
+        It should_return_the_correct_result = () =>
+            result.ShouldNotBeNull();
+
+        It should_get_the_auction_by_id = () =>
+            repo.Received().GetById(1);
+
+        It should_have_an_auction_in_the_view_model = () =>
+            result.ViewData.Model.ShouldBeOfType<Auction>();
+
+        It should_return_the_correct_view_model = () =>
+            (result.ViewData.Model as Auction).Year.ShouldEqual(2009);
     }
 }

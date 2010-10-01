@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using BidsForKids.Data.Repositories;
 
 namespace BidsForKids.Controllers
@@ -18,5 +19,19 @@ namespace BidsForKids.Controllers
             return View(_auctionRepository.GetAll());
         }
 
+        public ActionResult Edit(int id)
+        {
+            return View(_auctionRepository.GetById(id));
+        }
+
+        public ActionResult Details(int id)
+        {
+            return View(_auctionRepository.GetById(id));
+        }
+
+        public ActionResult Delete()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

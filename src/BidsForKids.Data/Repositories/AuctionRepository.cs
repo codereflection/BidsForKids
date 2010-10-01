@@ -7,6 +7,7 @@ namespace BidsForKids.Data.Repositories
     public interface IAuctionRepository
     {
         Auction GetBy(int year);
+        Auction GetById(int id);
         IEnumerable<Auction> GetAll();
     }
 
