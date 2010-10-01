@@ -102,7 +102,7 @@ namespace BidsForKids.Tests.Data
             get { return _source.Provider; }
         }
 
-        public override void InsertOnSubmit(T entity)
+        public override void Save(T entity)
         {
             Track(entity);
             _trackedObjects[entity].ChangedState(InMemoryTrackedState.Added);

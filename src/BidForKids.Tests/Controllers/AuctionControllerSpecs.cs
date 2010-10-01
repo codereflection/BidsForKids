@@ -87,4 +87,27 @@ namespace BidsForKids.Tests.Controllers
         It should_return_the_correct_view_model = () =>
             (result.ViewData.Model as Auction).Year.ShouldEqual(2009);
     }
+
+    public class when_updating_an_auction : with_an_auction_controller
+    {
+        private static RedirectToRouteResult result;
+        private static Auction auction = new Auction();
+
+        Establish context = () => 
+            auction = new Auction { Year = 2010, Name = "Save the day!" };
+
+        Because of = () =>
+                         {
+                             result = controller.Edit(auction) as RedirectToRouteResult;
+                         };
+
+        It should_have_a_result = () =>
+            result.ShouldNotBeNull();
+
+        It should_save_the_auction = () =>
+            repo.Received().Save(auction);
+
+        It should_redirect_to_the_index_after_saving = () =>
+            result.RouteValues["action"].ShouldEqual("Index");
+    }
 }

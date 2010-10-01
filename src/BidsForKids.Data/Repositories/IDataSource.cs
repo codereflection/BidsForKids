@@ -41,7 +41,7 @@ namespace BidsForKids.Data.Repositories
             get { return _source.Provider; }
         }
 
-        public override void InsertOnSubmit(T entity)
+        public override void Save(T entity)
         {
             (_source as Table<T>).InsertOnSubmit(entity);
         }
@@ -84,7 +84,7 @@ namespace BidsForKids.Data.Repositories
             return _source.Where(whereExpression).Single();
         }
 
-        public abstract void InsertOnSubmit(T entity);
+        public abstract void Save(T entity);
         public abstract void DeleteonSubmit(T entity);
 
         public IEnumerable<T> GetAll()
@@ -96,7 +96,7 @@ namespace BidsForKids.Data.Repositories
     public interface IDataSource<T> : IQueryable<T> where T : class, new()
     {
         T GetById(int id);
-        void InsertOnSubmit(T entity);
+        void Save(T entity);
         void DeleteonSubmit(T entity);
         IEnumerable<T> GetAll();
     }

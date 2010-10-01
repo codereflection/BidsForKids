@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using BidsForKids.Data.Models;
 using BidsForKids.Data.Repositories;
 using Machine.Specifications;
@@ -15,12 +13,11 @@ namespace BidsForKids.Tests.Data
             repo = new AuctionRepository(unitOfWork);
     }
 
-    [Subject(typeof(AuctionRepository))]
     public class when_requesting_an_auction_by_year : with_an_auction_repo
     {
 
         Establish context = () => 
-            unitOfWork.GetDataSource<Auction>().InsertOnSubmit(new Auction { Year = 2010 });
+            unitOfWork.GetDataSource<Auction>().Save(new Auction { Year = 2010 });
 
         Because of = () => 
             result = repo.GetBy(2010);

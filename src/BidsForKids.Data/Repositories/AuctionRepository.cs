@@ -9,6 +9,7 @@ namespace BidsForKids.Data.Repositories
         Auction GetBy(int year);
         Auction GetById(int id);
         IEnumerable<Auction> GetAll();
+        void Save(Auction auction);
     }
 
     public class AuctionRepository : RepositoryBase<Auction>, IAuctionRepository
