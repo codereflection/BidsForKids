@@ -97,9 +97,7 @@ namespace BidsForKids.Tests.Controllers
             auction = new Auction { Year = 2010, Name = "Save the day!" };
 
         Because of = () =>
-                         {
-                             result = controller.Edit(auction) as RedirectToRouteResult;
-                         };
+            result = controller.Edit(auction) as RedirectToRouteResult;
 
         It should_have_a_result = () =>
             result.ShouldNotBeNull();

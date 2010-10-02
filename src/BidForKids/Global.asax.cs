@@ -46,7 +46,10 @@ namespace BidsForKids
         protected void Application_EndRequest(object sender, EventArgs e)
         {
             if (_unitOfWork != null)
+            {
+                _unitOfWork.SubmitChanges();
                 _unitOfWork.Dispose();
+            }
         }
     }
 }

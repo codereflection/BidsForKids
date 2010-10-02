@@ -38,7 +38,7 @@ namespace BidsForKids.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Edit(Auction auction)
         {
-            _repo.Save(auction);
+            //_repo.Save(auction);
 
             return RedirectToAction("Index");
         }

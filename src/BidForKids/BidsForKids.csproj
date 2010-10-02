@@ -126,6 +126,7 @@
     <Content Include="Scripts\superfish\supersubs.js" />
     <Content Include="Views\Admin\BackupDatabase.aspx" />
     <Content Include="Views\Auction\Details.aspx" />
+    <Content Include="Views\Auction\Edit.aspx" />
     <Content Include="Views\Auction\Index.aspx" />
     <Content Include="Views\Home\Procurement.aspx" />
     <Content Include="Views\Parent\Create.aspx" />
