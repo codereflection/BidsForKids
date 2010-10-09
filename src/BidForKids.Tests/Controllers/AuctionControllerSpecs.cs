@@ -119,14 +119,8 @@ namespace BidsForKids.Tests.Controllers
         It should_have_a_result = () =>
             result.ShouldNotBeNull();
 
-        //It should_load_the_existing_auction = () =>
-        //    repo.Received().GetById(auction.Auction_ID);
-
-        It the_repo_should_be_called_twice = () =>
-            repo.ReceivedCalls().Count().ShouldEqual(2);
-
-        It should_save_the_auction = () =>
-            repo.Received().Save(auction);
+        It the_repo_should_be_called_once = () =>
+            repo.ReceivedCalls().Count().ShouldEqual(1);
 
         It should_redirect_to_the_index_after_saving = () =>
             result.RouteValues["action"].ShouldEqual("Index");
@@ -138,5 +132,36 @@ namespace BidsForKids.Tests.Controllers
             auction.Name.ShouldEqual(updatedAuction.Name);
     }
 
+    public class when_creating_a_new_auction : with_an_auction_controller
+    {
+        private static ActionResult result;
+        private static AuctionViewModel newAuction;
+
+        Establish context = () =>
+            newAuction = new AuctionViewModel { Id = 0, Name = "Test", Year = 2012 };
+
+        Because of = () =>
+            result = controller.Create(newAuction);
+
+        It should_have_called_the_repo_once = () =>
+            repo.Received().Add(Arg.Any<Auction>());
+
+        It should_add_an_auction_with_the_correct_values = () =>
+                                                               {
+                                                                   var addedAuction = repo.ReceivedCalls().First().GetArguments().First() as Auction;
+                                                                   addedAuction.Year.ShouldEqual(newAuction.Year);
+                                                                   addedAuction.Name.ShouldEqual(newAuction.Name);
+                                                               };
+
+        It should_have_a_result = () =>
+            result.ShouldNotBeNull();
+
+        It should_redirect = () =>
+            result.ShouldBeOfType<RedirectToRouteResult>();
+
+        It should_redirect_back_to_the_index = () =>
+            (result as RedirectToRouteResult).RouteValues["action"].ShouldEqual("Index");
+			
+    }
     
 }

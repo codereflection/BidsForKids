@@ -57,9 +57,9 @@ namespace BidsForKids.Data.Repositories
             return _source.GetAll();
         }
 
-        public void Save(T entity)
+        public void Add(T entity)
         {
-            _source.Save(entity);
+            _source.Add(entity);
         }
 
         public void Delete(T entity)

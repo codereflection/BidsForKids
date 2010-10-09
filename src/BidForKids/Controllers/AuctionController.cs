@@ -50,9 +50,22 @@ namespace BidsForKids.Controllers
 
             Mapper.Map<AuctionViewModel, Auction>(updatedAuction, auction);
 
-            _repo.Save(auction);
+            return RedirectToAction("Index");
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Create(AuctionViewModel newAuction)
+        {
+            var auction = Mapper.Map<AuctionViewModel, Auction>(newAuction);
+
+            _repo.Add(auction);
 
             return RedirectToAction("Index");
+        }
+
+        public ActionResult Create()
+        {
+            return View();
         }
     }
 }

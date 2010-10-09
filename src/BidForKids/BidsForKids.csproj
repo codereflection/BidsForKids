@@ -129,6 +129,7 @@
     <Content Include="Scripts\superfish\superfish.js" />
     <Content Include="Scripts\superfish\supersubs.js" />
     <Content Include="Views\Admin\BackupDatabase.aspx" />
+    <Content Include="Views\Auction\Create.aspx" />
     <Content Include="Views\Auction\Details.aspx" />
     <Content Include="Views\Auction\Edit.aspx" />
     <Content Include="Views\Auction\Index.aspx" />

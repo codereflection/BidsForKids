@@ -17,7 +17,7 @@ namespace BidsForKids.Tests.Data
     {
 
         Establish context = () => 
-            unitOfWork.GetDataSource<Auction>().Save(new Auction { Year = 2010 });
+            unitOfWork.GetDataSource<Auction>().Add(new Auction { Year = 2010 });
 
         Because of = () => 
             result = repo.GetBy(2010);
