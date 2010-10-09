@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<BidsForKids.Data.Models.Auction>" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<BidsForKids.ViewModels.AuctionViewModel>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
 	Edit
@@ -15,11 +15,11 @@
 			<legend>Fields</legend>
 			
 			<div class="editor-label">
-				<%: Html.LabelFor(model => model.Auction_ID) %>
+				<%: Html.LabelFor(model => model.Id) %>
 			</div>
 			<div class="editor-field">
-				<%: Html.TextBoxFor(model => model.Auction_ID) %>
-				<%: Html.ValidationMessageFor(model => model.Auction_ID) %>
+				<%: Html.TextBoxFor(model => model.Id) %>
+				<%: Html.ValidationMessageFor(model => model.Id) %>
 			</div>
 			
 			<div class="editor-label">

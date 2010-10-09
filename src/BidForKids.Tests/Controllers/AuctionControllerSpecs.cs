@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using AutoMapper;
 using BidsForKids.Controllers;
 using BidsForKids.Data.Models;
 using BidsForKids.Data.Repositories;
+using BidsForKids.ViewModels;
 using Machine.Specifications;
 using NSubstitute;
 
@@ -24,6 +26,15 @@ namespace BidsForKids.Tests.Controllers
                                 };
     }
 
+    public class instantiating_the_controller : with_an_auction_controller
+    {
+        It should_have_setup_the_auction_to_auction_view_model_mapping = () =>
+            Mapper.FindTypeMapFor(typeof(Auction), typeof(AuctionViewModel)).ShouldNotBeNull();
+
+        It should_have_setup_the_auction_view_model_to_auction_mapping = () =>
+            Mapper.FindTypeMapFor(typeof(AuctionViewModel), typeof(Auction)).ShouldNotBeNull();
+    }
+
     public class when_viewing_a_list_of_auctions : with_an_auction_controller
     {
         private static ViewResult result;
@@ -42,10 +53,10 @@ namespace BidsForKids.Tests.Controllers
 
         It should_have_view_data_of_type_auction = () =>
             result.ViewData.Model.ShouldBeOfType
-                <IEnumerable<Auction>>();
+                <IEnumerable<AuctionViewModel>>();
 
         It should_have_two_auctions_in_the_model = () => 
-            (result.ViewData.Model as IEnumerable<Auction>).Count().ShouldEqual(2);
+            (result.ViewData.Model as IEnumerable<AuctionViewModel>).Count().ShouldEqual(2);
     }
 
     public class when_getting_an_auction_details_to_view : with_an_auction_controller
@@ -62,10 +73,10 @@ namespace BidsForKids.Tests.Controllers
             repo.Received().GetById(1);
 
         It should_have_an_auction_in_the_view_model = () =>
-            result.ViewData.Model.ShouldBeOfType<Auction>();
+            result.ViewData.Model.ShouldBeOfType<AuctionViewModel>();
 
         It should_return_the_correct_view_model = () =>
-            (result.ViewData.Model as Auction).Year.ShouldEqual(2009);
+            (result.ViewData.Model as AuctionViewModel).Year.ShouldEqual(2009);
     }
 
     public class when_getting_auction_details_to_edit : with_an_auction_controller
@@ -82,30 +93,50 @@ namespace BidsForKids.Tests.Controllers
             repo.Received().GetById(1);
 
         It should_have_an_auction_in_the_view_model = () =>
-            result.ViewData.Model.ShouldBeOfType<Auction>();
+            result.ViewData.Model.ShouldBeOfType<AuctionViewModel>();
 
         It should_return_the_correct_view_model = () =>
-            (result.ViewData.Model as Auction).Year.ShouldEqual(2009);
+            (result.ViewData.Model as AuctionViewModel).Year.ShouldEqual(2009);
     }
 
     public class when_updating_an_auction : with_an_auction_controller
     {
         private static RedirectToRouteResult result;
-        private static Auction auction = new Auction();
+        private static AuctionViewModel updatedAuction;
+        private static Auction auction;
 
-        Establish context = () => 
-            auction = new Auction { Year = 2010, Name = "Save the day!" };
-
+        Establish context = () =>
+                                {
+                                    AuctionViewModel.CreateSourceMap();
+                                    updatedAuction = new AuctionViewModel { Id = 1, Year = 2010, Name = "Save the day!" };
+                                    auction = new Auction { Auction_ID = 1, Year = 1234, Name = "Sad Pandas" };
+                                    repo.GetById(updatedAuction.Id).Returns(auction);
+                                };
+        
         Because of = () =>
-            result = controller.Edit(auction) as RedirectToRouteResult;
+            result = controller.Edit(updatedAuction) as RedirectToRouteResult;
 
         It should_have_a_result = () =>
             result.ShouldNotBeNull();
+
+        //It should_load_the_existing_auction = () =>
+        //    repo.Received().GetById(auction.Auction_ID);
+
+        It the_repo_should_be_called_twice = () =>
+            repo.ReceivedCalls().Count().ShouldEqual(2);
 
         It should_save_the_auction = () =>
             repo.Received().Save(auction);
 
         It should_redirect_to_the_index_after_saving = () =>
             result.RouteValues["action"].ShouldEqual("Index");
+
+        It should_correctly_update_the_auction_year = () =>
+            auction.Year.ShouldEqual(updatedAuction.Year);
+
+        It should_correctly_update_the_auction_name = () =>
+            auction.Name.ShouldEqual(updatedAuction.Name);
     }
+
+    
 }

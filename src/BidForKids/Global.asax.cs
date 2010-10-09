@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -11,12 +10,7 @@ namespace BidsForKids
 {
     public class MvcApplication : HttpApplication
     {
-        private static IUnitOfWork _unitOfWork;
-
-        public static IUnitOfWork UnitOfWork
-        {
-            get { return _unitOfWork; }
-        }
+        public IUnitOfWork UnitOfWork { get; private set; }
 
         public static void RegisterRoutes(RouteCollection routes)
         {
@@ -40,16 +34,16 @@ namespace BidsForKids
 
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
-            _unitOfWork = ObjectFactory.GetInstance<IUnitOfWork>();
+            UnitOfWork = ObjectFactory.GetInstance<IUnitOfWork>();
         }
         
         protected void Application_EndRequest(object sender, EventArgs e)
         {
-            if (_unitOfWork != null)
-            {
-                _unitOfWork.SubmitChanges();
-                _unitOfWork.Dispose();
-            }
+            if (UnitOfWork == null) return;
+
+            UnitOfWork.SubmitChanges();
+            UnitOfWork.Dispose();
+            UnitOfWork = null;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Linq;
 
 namespace BidsForKids.Data.Repositories
@@ -26,6 +27,8 @@ namespace BidsForKids.Data.Repositories
 
         public void SubmitChanges()
         {
+            var updates = dataContext.GetChangeSet().Updates;
+
             dataContext.SubmitChanges();
         }
 

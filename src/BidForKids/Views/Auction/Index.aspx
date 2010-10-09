@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<IEnumerable<BidsForKids.Data.Models.Auction>>" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<IEnumerable<BidsForKids.ViewModels.AuctionViewModel>>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
 	Index
@@ -26,12 +26,12 @@
 	
 		<tr>
 			<td>
-				<%: Html.ActionLink("Edit", "Edit", new { id=item.Auction_ID }) %> |
-				<%: Html.ActionLink("Details", "Details", new { id=item.Auction_ID })%> |
-				<%: Html.ActionLink("Delete", "Delete", new { id=item.Auction_ID })%>
+				<%: Html.ActionLink("Edit", "Edit", new { id=item.Id }) %> |
+				<%: Html.ActionLink("Details", "Details", new { id=item.Id })%> |
+				<%: Html.ActionLink("Delete", "Delete", new { id=item.Id })%>
 			</td>
 			<td>
-				<%: item.Auction_ID %>
+				<%: item.Id %>
 			</td>
 			<td>
 				<%: item.Year %>

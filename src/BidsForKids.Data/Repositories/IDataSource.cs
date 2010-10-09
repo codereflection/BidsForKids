@@ -43,10 +43,20 @@ namespace BidsForKids.Data.Repositories
 
         public override void Save(T entity)
         {
-            (_source as Table<T>).InsertOnSubmit(entity);
+            var table = (_source as Table<T>);
+            
+            // implement insert scenario
+            try
+            {
+                table.Attach(entity, true);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
 
-        public override void DeleteonSubmit(T entity)
+        public override void Delete(T entity)
         {
             (_source as Table<T>).DeleteOnSubmit(entity);
         }
@@ -85,7 +95,7 @@ namespace BidsForKids.Data.Repositories
         }
 
         public abstract void Save(T entity);
-        public abstract void DeleteonSubmit(T entity);
+        public abstract void Delete(T entity);
 
         public IEnumerable<T> GetAll()
         {
@@ -97,7 +107,7 @@ namespace BidsForKids.Data.Repositories
     {
         T GetById(int id);
         void Save(T entity);
-        void DeleteonSubmit(T entity);
+        void Delete(T entity);
         IEnumerable<T> GetAll();
     }
 }

@@ -108,7 +108,7 @@ namespace BidsForKids.Tests.Data
             _trackedObjects[entity].ChangedState(InMemoryTrackedState.Added);
         }
 
-        public override void DeleteonSubmit(T entity)
+        public override void Delete(T entity)
         {
             Track(entity);
             _trackedObjects[entity].ChangedState(InMemoryTrackedState.Deleted);

@@ -62,9 +62,9 @@ namespace BidsForKids.Data.Repositories
             _source.Save(entity);
         }
 
-        public void DeleteonSubmit(T entity)
+        public void Delete(T entity)
         {
-            _source.DeleteonSubmit(entity);
+            _source.Delete(entity);
         }
 
         public void Dispose()
