@@ -48,7 +48,7 @@ namespace BidsForKids.Controllers
         {
             var auction = _repo.GetById(updatedAuction.Id);
 
-            Mapper.Map<AuctionViewModel, Auction>(updatedAuction, auction);
+            Mapper.Map(updatedAuction, auction);
 
             return RedirectToAction("Index");
         }
