@@ -1,4 +1,4 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<BidsForKids.Data.Models.Procurement>" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<BidsForKids.ViewModels.ProcurementViewModel>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
     Edit
@@ -97,7 +97,7 @@
         <p style="display: none;">
             <label for="Procurement_ID">
                 Procurement ID:</label>
-            <%= Html.Hidden("Procurement_ID", Model.Procurement_ID) %>
+            <%= Html.Hidden("Procurement_ID", Model.Id) %>
         </p>
         <p>
             <label for="ThankYouLetterSent">
@@ -108,9 +108,17 @@
             <label for="Donor_ID">
                 Donor
             </label>
-            <%= Html.DropDownList("Donor_ID", "")%>&nbsp;<%= Html.ActionLink("view", "Edit", "Donor",
-                                                              new { id = Model.ContactProcurement.Donor_ID }, new { id = "ViewDonor", target = "_blank", title = "View donor in a new window" })%>
+            <%--            <%= Html.DropDownList("Donor_ID", "")%>&nbsp;<%= Html.ActionLink("view", "Edit", "Donor",
+                                                              new { id = Model.ContactProcurement.Donor_ID }, new { id = "ViewDonor", target = "_blank", title = "View donor in a new window" })%>--%>
         </p>
+        <div>
+            <ul>
+                <% foreach (var item in Model.Donors)
+                   { %>
+                <% Html.RenderPartial("ProcurementDonor", item); %>
+                <% } %>
+            </ul>
+        </div>
         <p>
             <label for="Auction_ID">
                 Year</label>
@@ -172,12 +180,6 @@
             <%= Html.ValidationMessage("EstimatedValue", "*")%>
         </p>
         <p>
-            <label for="SoldFor">
-                Sold For:</label>
-            <%= Html.TextBox("SoldFor", String.Format("{0:F}", Model.SoldFor), new { maxlength = 10 })%>
-            <%= Html.ValidationMessage("SoldFor", "*")%>
-        </p>
-        <p>
             <label for="Notes">
                 Notes:</label>
             <%= Html.TextArea("Notes", Model.Notes, 3, 50, null) %>
@@ -185,8 +187,8 @@
         </p>
         <p>
             <input type="submit" value="Save" /><br />
-            <a onclick="deleteRecord(<%= Model.Procurement_ID %>)" href="javascript:void(0);">Delete
-                this procurement item</a>
+            <a onclick="deleteRecord(<%= Model.Id %>)" href="javascript:void(0);">Delete this procurement
+                item</a>
         </p>
     </fieldset>
     <% } %>

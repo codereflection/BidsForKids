@@ -121,6 +121,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\AuctionViewModel.cs" />
     <Compile Include="ViewModels\DonorReportViewModel.cs" />
+    <Compile Include="ViewModels\ProcurementViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\images\arrows-ffffff.png" />
@@ -148,6 +149,7 @@
     <Content Include="Views\Parent\Index.aspx" />
     <Content Include="Views\ReportGen\Donor.aspx" />
     <Content Include="Views\ReportGen\Index.aspx" />
+    <Content Include="Views\Procurement\ProcurementDonor.ascx" />
     <Content Include="Views\Report\AuctionItem.aspx" />
     <Content Include="Views\Report\AuctionItemReportDataCatalogLayout.ascx" />
     <Content Include="Views\Report\AuctionItemReportData.ascx" />

@@ -2,19 +2,27 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using AutoMapper;
 using BidsForKids.Data.Models;
 using BidsForKids.Data.Models.SerializableObjects;
+using BidsForKids.ViewModels;
 
 namespace BidsForKids.Controllers
 {
 
     public class ProcurementController : BidsForKidsControllerBase
     {
-        public ProcurementController() { }
+        public ProcurementController()
+        {
+            ProcurementDonorViewModel.CreateDestinationMaps();
+            ProcurementViewModel.CreateDestinationMap();
+        }
 
         public ProcurementController(IProcurementRepository factory)
         {
             this.factory = factory;
+            ProcurementDonorViewModel.CreateDestinationMaps();
+            ProcurementViewModel.CreateDestinationMap();
         }
 
         public ActionResult ProcurementList(int Year)
@@ -248,25 +256,26 @@ namespace BidsForKids.Controllers
 
         private void SetupEditViewData(ContactProcurement contactProcurement)
         {
-            int? lAuctionId = null;
-            int? lContactId = null;
-            int? lCategoryId = null;
-            int? lProcurerID = null;
+            int? auctionId = null;
+            int? contactId = null;
+            int? categoryId = null;
+            int? procurerId = null;
 
             if (contactProcurement != null)
             {
-                lAuctionId = contactProcurement.Auction_ID;
-                lContactId = contactProcurement.Donor_ID;
-                lCategoryId = contactProcurement.Procurement.Category_ID;
-                lProcurerID = contactProcurement.Procurer_ID;
-                ViewData["Donor_ID"] = GetDonorsSelectList(lContactId, contactProcurement.Procurement.ProcurementType.DonorType_ID);
+                auctionId = contactProcurement.Auction_ID;
+                //ContactId = contactProcurement.Donor_ID;
+                categoryId = contactProcurement.Procurement.Category_ID;
+                procurerId = contactProcurement.Procurer_ID;
+                //ViewData["Donor_ID"] = GetDonorsSelectList(ContactId, contactProcurement.Procurement.ProcurementType.DonorType_ID);
+                //ViewData["Donors"] = GetDonorsSelectList(null, contactProcurement.Procurement.ProcurementType.DonorType_ID);
             }
             else
-                ViewData["Donor_ID"] = GetDonorsSelectList(lContactId, null);
+                ViewData["Donors"] = GetDonorsSelectList(contactId, null);
 
-            ViewData["Auction_ID"] = GetAuctionSelectList(lAuctionId);
-            ViewData["Category_ID"] = GetCategoriesSelectList(lCategoryId);
-            ViewData["Procurer_ID"] = GetProcurerSelectList(lProcurerID);
+            ViewData["Auction_ID"] = GetAuctionSelectList(auctionId);
+            ViewData["Category_ID"] = GetCategoriesSelectList(categoryId);
+            ViewData["Procurer_ID"] = GetProcurerSelectList(procurerId);
             ViewData["CertificateOptions"] = GetCertificateSelectListItems();
         }
 
@@ -395,17 +404,6 @@ namespace BidsForKids.Controllers
             }
         }
 
-        //[AcceptVerbs(HttpVerbs.Post)]
-        //public Action Edit()
-        //{
-        //    NameValueCollection collection = Request.Form;
-
-        //    return null;
-        //}
-
-        //
-        // GET: /Procurement/Edit/5
-
         public ActionResult Edit(int? id)
         {
 
@@ -418,7 +416,14 @@ namespace BidsForKids.Controllers
 
             SetupEditViewData(procurement.ContactProcurement);
 
-            return View(procurement);
+            var result = Mapper.Map<Procurement, ProcurementViewModel>(procurement);
+
+            foreach (var donor in result.Donors)
+            {
+                ViewData["Donor-" + donor.Id] = GetDonorsSelectList(donor.Id, procurement.ProcurementType.DonorType_ID);
+            }
+
+            return View(result);
         }
 
         public ActionResult CategorySelectList()
