@@ -91,6 +91,8 @@
                             <li>
                                 <%= Html.ActionLink("Procurers", "Index", "Procurer")%></li>
                             <li>
+                                <%= Html.ActionLink("Auctions", "Index", "Auction")%></li>
+                            <li>
                                 <%= Html.ActionLink("Backup", "BackupDatabase", "Admin")%></li>
                         </ul>
                     </li>
