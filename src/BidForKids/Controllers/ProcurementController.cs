@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using BidsForKids.Data.Models;
-using System.Collections.Specialized;
-using BidsForKids.Data.Models;
 using BidsForKids.Data.Models.SerializableObjects;
 
 namespace BidsForKids.Controllers
@@ -83,14 +81,13 @@ namespace BidsForKids.Controllers
 
         private void GetCategoryJSONString()
         {
-            var lCategoryString = "{ \"\": \"\",";
+            var categoryString = factory.GetCategories()
+                                         .Aggregate("{ \"\": \"\",", (current, lCategory) => 
+                                                                        current + String.Format("{0}:'{1}',", lCategory.Category_ID, lCategory.CategoryName));
 
-            foreach (var lCategory in factory.GetCategories())
-                lCategoryString += String.Format("{0}:'{1}',", lCategory.Category_ID, lCategory.CategoryName);
+            categoryString = categoryString.TrimEnd(new[] { ',' }) + "}";
 
-            lCategoryString = lCategoryString.TrimEnd(new[] { ',' }) + "}";
-
-            ViewData["CategoryJsonString"] = lCategoryString;
+            ViewData["CategoryJsonString"] = categoryString;
         }
 
 
@@ -156,10 +153,9 @@ namespace BidsForKids.Controllers
                     throw new ArgumentException("id did not have a value", "id");
                 }
 
-                bool lResult = factory.DeleteProcurement((int)id);
+                var lResult = factory.DeleteProcurement((int)id);
 
-                ContentResult contentResult = new ContentResult();
-                contentResult.Content = lResult.ToString();
+                var contentResult = new ContentResult {Content = lResult.ToString()};
 
                 return contentResult;
             }
@@ -167,8 +163,7 @@ namespace BidsForKids.Controllers
             {
                 Elmah.ErrorSignal.FromCurrentContext().Raise(ex);
 
-                ContentResult contentResult = new ContentResult();
-                contentResult.Content = ex.Message;
+                var contentResult = new ContentResult {Content = ex.Message};
 
                 return contentResult;
             }
@@ -242,10 +237,12 @@ namespace BidsForKids.Controllers
 
         private static List<SelectListItem> GetCertificateSelectListItems()
         {
-            List<SelectListItem> certOptions = new List<SelectListItem>();
-            certOptions.Add(new SelectListItem() { Text = "", Value = "", Selected = true });
-            certOptions.Add(new SelectListItem() { Text = "Create", Value = "Create" });
-            certOptions.Add(new SelectListItem() { Text = "Provided", Value = "Provided" });
+            var certOptions = new List<SelectListItem>
+                                  {
+                                      new SelectListItem() {Text = "", Value = "", Selected = true},
+                                      new SelectListItem() {Text = "Create", Value = "Create"},
+                                      new SelectListItem() {Text = "Provided", Value = "Provided"}
+                                  };
             return certOptions;
         }
 
@@ -325,15 +322,15 @@ namespace BidsForKids.Controllers
 
         private SelectList GetCategoriesSelectList(int? selectedValue)
         {
-            IEnumerable<Category> lCategories = factory.GetCategories();
-            return new SelectList(lCategories.OrderBy(x => x.CategoryName), "Category_ID", "CategoryName", selectedValue);
+            var categories = factory.GetCategories();
+            return new SelectList(categories.OrderBy(x => x.CategoryName), "Category_ID", "CategoryName", selectedValue);
         }
 
         private SelectList GetProcurerSelectList(int? selectedValue)
         {
-            IEnumerable<Procurer> lProcurers = factory.GetProcurers();
+            var lProcurers = factory.GetProcurers();
 
-            var lProcurerList = from P in lProcurers
+            var procurerList = from P in lProcurers
                                 select new
                                 {
                                     Procurer_ID = P.Procurer_ID,
@@ -342,7 +339,7 @@ namespace BidsForKids.Controllers
                                     FullName = P.FirstName + " " + P.LastName
                                 };
 
-            return new SelectList(lProcurerList.OrderBy(x => x.LastName), "Procurer_ID", "FullName", selectedValue);
+            return new SelectList(procurerList.OrderBy(x => x.LastName), "Procurer_ID", "FullName", selectedValue);
         }
 
         //
@@ -367,26 +364,26 @@ namespace BidsForKids.Controllers
 
             try
             {
-                Procurement lNewProcurement = factory.GetNewProcurement();
-                ContactProcurement lNewContactProcurement = new ContactProcurement();
-                lNewProcurement.ContactProcurement = lNewContactProcurement;
+                var newProcurement = factory.GetNewProcurement();
+                var newContactProcurement = new ContactProcurement();
+                newProcurement.ContactProcurement = newContactProcurement;
 
-                UpdateModel<Procurement>(lNewProcurement,
+                UpdateModel(newProcurement,
                     ProcurementColumns());
 
-                UpdateModel<ContactProcurement>(lNewProcurement.ContactProcurement,
+                UpdateModel(newProcurement.ContactProcurement,
                     ContactProcurementColumns());
 
-                string actionToRedirectTo = "";
+                var actionToRedirectTo = "";
 
                 if (collection["procurementType"] != null)
                 {
-                    ProcurementType procurementType = factory.GetProcurementTypeByName(collection["procurementType"]);
-                    lNewProcurement.ProcurementType_ID = procurementType.ProcurementType_ID;
+                    var procurementType = factory.GetProcurementTypeByName(collection["procurementType"]);
+                    newProcurement.ProcurementType_ID = procurementType.ProcurementType_ID;
                     actionToRedirectTo = collection["procurementType"];
                 }
 
-                int lNewProcurementID = factory.AddProcurement(lNewProcurement);
+                factory.AddProcurement(newProcurement);
 
                 return RedirectToAction(actionToRedirectTo + "Index");
             }
@@ -417,11 +414,11 @@ namespace BidsForKids.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            Procurement lProcurement = factory.GetProcurement((int)id);
+            var procurement = factory.GetProcurement((int)id);
 
-            SetupEditViewData(lProcurement.ContactProcurement);
+            SetupEditViewData(procurement.ContactProcurement);
 
-            return View(lProcurement);
+            return View(procurement);
         }
 
         public ActionResult CategorySelectList()
@@ -442,17 +439,17 @@ namespace BidsForKids.Controllers
 
             try
             {
-                Procurement lProcurement = factory.GetProcurement((int)id);
+                var procurement = factory.GetProcurement((int)id);
 
-                SetupEditViewData(lProcurement.ContactProcurement);
+                SetupEditViewData(procurement.ContactProcurement);
 
-                UpdateModel<Procurement>(lProcurement,
+                UpdateModel<Procurement>(procurement,
                     ProcurementColumns());
 
-                UpdateModel<ContactProcurement>(lProcurement.ContactProcurement,
+                UpdateModel<ContactProcurement>(procurement.ContactProcurement,
                     ContactProcurementColumns());
 
-                if (factory.SaveProcurement(lProcurement) == false)
+                if (factory.SaveProcurement(procurement) == false)
                 {
                     return this.JavaScript("alert('Error saving.');");
                     throw new ApplicationException("Unable to save procurement");
@@ -464,9 +461,9 @@ namespace BidsForKids.Controllers
             {
                 Elmah.ErrorSignal.FromCurrentContext().Raise(ex);
 
-                Procurement lProcurement = factory.GetProcurement((int)id);
+                var procurement = factory.GetProcurement((int)id);
 
-                SetupEditViewData(lProcurement.ContactProcurement);
+                SetupEditViewData(procurement.ContactProcurement);
 
                 return this.JavaScript("alert('Error saving.');");
                 //return View(lProcurement);
@@ -485,27 +482,27 @@ namespace BidsForKids.Controllers
             }
 
 
-            var lProcurement = factory.GetProcurement(id.Value);
+            var procurement = factory.GetProcurement(id.Value);
 
-            if (lProcurement.Procurement_ID != id)
+            if (procurement.Procurement_ID != id)
             {
                 throw new ApplicationException("Unable to load procurement from database for editing by id " + id.ToString());
             }
 
-            SetupEditViewData(lProcurement.ContactProcurement);
+            SetupEditViewData(procurement.ContactProcurement);
 
-            UpdateModel<Procurement>(lProcurement,
+            UpdateModel(procurement,
                 ProcurementColumns());
 
-            UpdateModel<ContactProcurement>(lProcurement.ContactProcurement,
+            UpdateModel(procurement.ContactProcurement,
                 ContactProcurementColumns());
 
-            if (factory.SaveProcurement(lProcurement) == false)
+            if (factory.SaveProcurement(procurement) == false)
             {
                 throw new ApplicationException("Unable to save procurement");
             }
 
-            string actionToRedirectTo = lProcurement.ProcurementType.ProcurementTypeDesc;
+            var actionToRedirectTo = procurement.ProcurementType.ProcurementTypeDesc;
 
             return RedirectToAction(actionToRedirectTo + "Index");
         }
@@ -516,9 +513,9 @@ namespace BidsForKids.Controllers
         {
             try
             {
-                ContentResult result = new ContentResult();
+                var result = new ContentResult();
 
-                string itemNumber = collection["itemNumber"];
+                var itemNumber = collection["itemNumber"];
 
                 result.Content = factory.CheckForExistingItemNumber(id, itemNumber) == true
                                      ? itemNumber + " already exists in the database"
@@ -529,8 +526,10 @@ namespace BidsForKids.Controllers
             catch (Exception ex)
             {
                 Elmah.ErrorSignal.FromCurrentContext().Raise(ex);
-                ContentResult errResult = new ContentResult();
-                errResult.Content = "Error checking for item number: " + ex.Message;
+                var errResult = new ContentResult
+                                    {
+                                        Content = "Error checking for item number: " + ex.Message
+                                    };
                 return errResult;
             }
         }
@@ -538,11 +537,11 @@ namespace BidsForKids.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult GetLastItemNumber(int id, FormCollection collection)
         {
-            ContentResult result = new ContentResult();
+            var result = new ContentResult();
 
-            string itemNumber = collection["itemNumber"];
+            var itemNumber = collection["itemNumber"];
 
-            string lastSimilar = factory.CheckForLastSimilarItemNumber(id, itemNumber);
+            var lastSimilar = factory.CheckForLastSimilarItemNumber(id, itemNumber);
 
             result.Content =
                 string.IsNullOrEmpty(lastSimilar) == false ?
