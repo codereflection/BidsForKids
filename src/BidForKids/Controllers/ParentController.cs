@@ -14,7 +14,6 @@ namespace BidsForKids.Controllers
             this.factory = factory;
         }
 
-        // GetParents
         public ActionResult GetParents()
         {
             var loadOptions = jqGridLoadOptions.GetLoadOptions(Request.QueryString);
@@ -42,32 +41,20 @@ namespace BidsForKids.Controllers
             return result;
         }
 
-        //
-        // GET: /Parent/
-
         public ActionResult Index()
         {
             return View();
         }
-
-        //
-        // GET: /Parent/Details/5
 
         public ActionResult Details(int id)
         {
             return View(factory.GetDonor(id));
         }
 
-        //
-        // GET: /Parent/Create
-
         public ActionResult Create()
         {
             return View();
         } 
-
-        //
-        // POST: /Parent/Create
 
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Create(FormCollection collection)
@@ -104,16 +91,11 @@ namespace BidsForKids.Controllers
                 return View();
             }
         }
-        //
-        // GET: /Parent/Edit/5
  
         public ActionResult Edit(int id)
         {
             return View(factory.GetDonor(id));
         }
-
-        //
-        // POST: /Parent/Edit/5
 
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Edit(int id, FormCollection collection)
