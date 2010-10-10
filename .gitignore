@@ -11,3 +11,4 @@ _ReSharper.*/
 logs/
 UpgradeLog*
 _UpgradeReport_Files/
+deploy/
