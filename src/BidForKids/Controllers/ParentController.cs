@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Mvc.Ajax;
 using BidsForKids.Data.Models;
-using BidsForKids.Data.Models.SerializableObjects;
 
 namespace BidsForKids.Controllers
 {
@@ -21,27 +17,29 @@ namespace BidsForKids.Controllers
         // GetParents
         public ActionResult GetParents()
         {
-            jqGridLoadOptions loadOptions = jqGridLoadOptions.GetLoadOptions(Request.QueryString);
+            var loadOptions = jqGridLoadOptions.GetLoadOptions(Request.QueryString);
 
-            JsonResult lResult = new JsonResult();
-            lResult.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+            var result = new JsonResult
+                              {
+                                  JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                              };
 
-            List<SerializableDonor> lRows = factory.GetSerializableParents(loadOptions);
+            var rows = factory.GetSerializableParents(loadOptions);
 
-            if (lRows == null)
+            if (rows == null)
             {
                 throw new ApplicationException("Unable to load Donors list");
             }
 
-            int lTotalRows = lRows.Count;
+            var totalRows = rows.Count;
 
-            lRows = lRows.Skip((loadOptions.page - 1) * loadOptions.rows).Take(loadOptions.rows).ToList();
+            rows = rows.Skip((loadOptions.page - 1) * loadOptions.rows).Take(loadOptions.rows).ToList();
 
-            int lTotalPages = loadOptions.rows == 0 ? 0 : (int)Math.Ceiling((decimal)lTotalRows / (decimal)loadOptions.rows);
+            var totalPages = loadOptions.rows == 0 ? 0 : (int)Math.Ceiling((decimal)totalRows / (decimal)loadOptions.rows);
 
-            lResult.Data = new { total = lTotalPages, page = loadOptions.page, records = lTotalRows.ToString(), rows = lRows };
+            result.Data = new { total = totalPages, page = loadOptions.page, records = totalRows.ToString(), rows = rows };
 
-            return lResult;
+            return result;
         }
 
         //
@@ -76,9 +74,9 @@ namespace BidsForKids.Controllers
         {
             try
             {
-                Donor lNewParent = factory.GetNewDonor();
+                var newParent = factory.GetNewDonor();
 
-                UpdateModel<Donor>(lNewParent, new[] {
+                UpdateModel(newParent, new[] {
                     "Address",
                     "City",
                     "FirstName",
@@ -95,11 +93,11 @@ namespace BidsForKids.Controllers
                     "Email",
                 });
 
-                lNewParent.DonorType_ID = factory.GetDonorTypeByName("Parent").DonorType_ID;
+                newParent.DonorType_ID = factory.GetDonorTypeByName("Parent").DonorType_ID;
 
-                int lNewDonorID = factory.AddDonor(lNewParent);
+                var newDonorId = factory.AddDonor(newParent);
 
-                return ControllerHelper.ReturnToOrRedirectToIndex(this, lNewDonorID, "Donor_ID");
+                return ControllerHelper.ReturnToOrRedirectToIndex(this, newDonorId, "Donor_ID");
             }
             catch
             {
@@ -122,10 +120,10 @@ namespace BidsForKids.Controllers
         {
             try
             {
-                Donor lDonor = factory.GetDonor(id);
+                var donor = factory.GetDonor(id);
 
 
-                UpdateModel<Donor>(lDonor, new[] {
+                UpdateModel(donor, new[] {
                     "Address",
                     "City",
                     "FirstName",
@@ -142,7 +140,7 @@ namespace BidsForKids.Controllers
                     "Email"
                 });
 
-                if (factory.SaveDonor(lDonor) == false)
+                if (factory.SaveDonor(donor) == false)
                 {
                     throw new ApplicationException("Unable to save changes to Parent");
                 }

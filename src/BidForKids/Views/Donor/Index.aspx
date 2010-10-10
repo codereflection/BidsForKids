@@ -5,13 +5,9 @@
     Donors
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-
     <script src="<%= Url.Content("~/Scripts/jquery-ui-1.7.2.custom.min.js") %>" type="text/javascript"></script>
-
     <script src="<%= Url.Content("~/Scripts/jqGrid/grid.locale-en.js") %>" type="text/javascript"></script>
-
     <script src="<%= Url.Content("~/Scripts/jqGrid/jquery.jqGrid.min.js") %>" type="text/javascript"></script>
-
     <script type="text/javascript">
         var lastsel;
         $(document).ready(function() {
@@ -77,7 +73,6 @@
                             //{ name: 'Donates', index: 'Donates', label: 'Donates', formatter: 'checkbox', editable: true, edittype: 'checkbox', editoptions: { value:"true:false" } },
 
     </script>
-
     <h2>
         Donors</h2>
     <p>

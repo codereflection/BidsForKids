@@ -201,7 +201,6 @@
     <Content Include="Views\Donor\Edit.aspx" />
     <Content Include="Views\Donor\GeoList.aspx" />
     <Content Include="Views\Donor\Index.aspx" />
-    <Content Include="Views\Donor\IndexOld.aspx" />
     <Content Include="Views\GeoLocation\Create.aspx" />
     <Content Include="Views\GeoLocation\Details.aspx" />
     <Content Include="Views\GeoLocation\Edit.aspx" />
