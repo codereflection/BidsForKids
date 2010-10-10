@@ -34,6 +34,9 @@
       </Objects>
     </PublishDatabaseSettings>
     <PublishDatabases>false</PublishDatabases>
+    <DesktopBuildPackageLocation>..\..\deploy\BidsForKids.zip</DesktopBuildPackageLocation>
+    <DeployIisAppPath>BidsForKids</DeployIisAppPath>
+    <ExcludeApp_Data>false</ExcludeApp_Data>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -43,6 +46,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <DesktopBuildPackageLocation>..\..\deploy\BidsForKids.zip</DesktopBuildPackageLocation>
+    <DeployIisAppPath>BidsForKids</DeployIisAppPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AutomatedDebug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
