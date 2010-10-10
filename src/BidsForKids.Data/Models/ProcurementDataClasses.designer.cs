@@ -57,6 +57,9 @@ namespace BidsForKids.Data.Models
     partial void InsertProcurementType(ProcurementType instance);
     partial void UpdateProcurementType(ProcurementType instance);
     partial void DeleteProcurementType(ProcurementType instance);
+    partial void InsertProcurementDonor(ProcurementDonor instance);
+    partial void UpdateProcurementDonor(ProcurementDonor instance);
+    partial void DeleteProcurementDonor(ProcurementDonor instance);
     #endregion
 		
 		public ProcurementDataClassesDataContext() : 
@@ -166,6 +169,14 @@ namespace BidsForKids.Data.Models
 			get
 			{
 				return this.GetTable<ProcurementType>();
+			}
+		}
+		
+		public System.Data.Linq.Table<ProcurementDonor> ProcurementDonors
+		{
+			get
+			{
+				return this.GetTable<ProcurementDonor>();
 			}
 		}
 		
@@ -681,6 +692,8 @@ namespace BidsForKids.Data.Models
 		
 		private EntityRef<ContactProcurement> _ContactProcurements;
 		
+		private EntitySet<ProcurementDonor> _ProcurementDonors;
+		
 		private EntityRef<Category> _Category;
 		
 		private EntityRef<ProcurementType> _ProcurementType;
@@ -730,6 +743,7 @@ namespace BidsForKids.Data.Models
 		public Procurement()
 		{
 			this._ContactProcurements = default(EntityRef<ContactProcurement>);
+			this._ProcurementDonors = new EntitySet<ProcurementDonor>(new Action<ProcurementDonor>(this.attach_ProcurementDonors), new Action<ProcurementDonor>(this.detach_ProcurementDonors));
 			this._Category = default(EntityRef<Category>);
 			this._ProcurementType = default(EntityRef<ProcurementType>);
 			OnCreated();
@@ -1132,6 +1146,19 @@ namespace BidsForKids.Data.Models
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Procurement_ProcurementDonor", Storage="_ProcurementDonors", ThisKey="Procurement_ID", OtherKey="Procurement_ID")]
+		public EntitySet<ProcurementDonor> ProcurementDonors
+		{
+			get
+			{
+				return this._ProcurementDonors;
+			}
+			set
+			{
+				this._ProcurementDonors.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Category_Procurement", Storage="_Category", ThisKey="Category_ID", OtherKey="Category_ID", IsForeignKey=true)]
 		public Category Category
 		{
@@ -1218,6 +1245,18 @@ namespace BidsForKids.Data.Models
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+		
+		private void attach_ProcurementDonors(ProcurementDonor entity)
+		{
+			this.SendPropertyChanging();
+			entity.Procurement = this;
+		}
+		
+		private void detach_ProcurementDonors(ProcurementDonor entity)
+		{
+			this.SendPropertyChanging();
+			entity.Procurement = null;
 		}
 	}
 	
@@ -1553,6 +1592,8 @@ namespace BidsForKids.Data.Models
 		
 		private EntitySet<ContactProcurement> _ContactProcurements;
 		
+		private EntitySet<ProcurementDonor> _ProcurementDonors;
+		
 		private EntityRef<GeoLocation> _GeoLocation;
 		
 		private EntityRef<Procurer> _Procurer;
@@ -1616,6 +1657,7 @@ namespace BidsForKids.Data.Models
 		public Donor()
 		{
 			this._ContactProcurements = new EntitySet<ContactProcurement>(new Action<ContactProcurement>(this.attach_ContactProcurements), new Action<ContactProcurement>(this.detach_ContactProcurements));
+			this._ProcurementDonors = new EntitySet<ProcurementDonor>(new Action<ProcurementDonor>(this.attach_ProcurementDonors), new Action<ProcurementDonor>(this.detach_ProcurementDonors));
 			this._GeoLocation = default(EntityRef<GeoLocation>);
 			this._Procurer = default(EntityRef<Procurer>);
 			this._DonorType = default(EntityRef<DonorType>);
@@ -2127,6 +2169,19 @@ namespace BidsForKids.Data.Models
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Donor_ProcurementDonor", Storage="_ProcurementDonors", ThisKey="Donor_ID", OtherKey="Donor_ID")]
+		public EntitySet<ProcurementDonor> ProcurementDonors
+		{
+			get
+			{
+				return this._ProcurementDonors;
+			}
+			set
+			{
+				this._ProcurementDonors.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="GeoLocation_Donor", Storage="_GeoLocation", ThisKey="GeoLocation_ID", OtherKey="GeoLocation_ID", IsForeignKey=true)]
 		public GeoLocation GeoLocation
 		{
@@ -2256,6 +2311,18 @@ namespace BidsForKids.Data.Models
 		}
 		
 		private void detach_ContactProcurements(ContactProcurement entity)
+		{
+			this.SendPropertyChanging();
+			entity.Donor = null;
+		}
+		
+		private void attach_ProcurementDonors(ProcurementDonor entity)
+		{
+			this.SendPropertyChanging();
+			entity.Donor = this;
+		}
+		
+		private void detach_ProcurementDonors(ProcurementDonor entity)
 		{
 			this.SendPropertyChanging();
 			entity.Donor = null;
@@ -2863,6 +2930,198 @@ namespace BidsForKids.Data.Models
 		{
 			this.SendPropertyChanging();
 			entity.ProcurementType = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ProcurementDonor")]
+	public partial class ProcurementDonor : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ProcurementDonor_ID;
+		
+		private int _Contact_ID;
+		
+		private int _Procurement_ID;
+		
+		private EntityRef<Procurement> _Procurement;
+		
+		private EntityRef<Donor> _Donor;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnProcurementDonor_IDChanging(int value);
+    partial void OnProcurementDonor_IDChanged();
+    partial void OnDonor_IDChanging(int value);
+    partial void OnDonor_IDChanged();
+    partial void OnProcurement_IDChanging(int value);
+    partial void OnProcurement_IDChanged();
+    #endregion
+		
+		public ProcurementDonor()
+		{
+			this._Procurement = default(EntityRef<Procurement>);
+			this._Donor = default(EntityRef<Donor>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcurementDonor_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ProcurementDonor_ID
+		{
+			get
+			{
+				return this._ProcurementDonor_ID;
+			}
+			set
+			{
+				if ((this._ProcurementDonor_ID != value))
+				{
+					this.OnProcurementDonor_IDChanging(value);
+					this.SendPropertyChanging();
+					this._ProcurementDonor_ID = value;
+					this.SendPropertyChanged("ProcurementDonor_ID");
+					this.OnProcurementDonor_IDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Contact_ID", DbType="Int NOT NULL")]
+		public int Donor_ID
+		{
+			get
+			{
+				return this._Contact_ID;
+			}
+			set
+			{
+				if ((this._Contact_ID != value))
+				{
+					if (this._Donor.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnDonor_IDChanging(value);
+					this.SendPropertyChanging();
+					this._Contact_ID = value;
+					this.SendPropertyChanged("Donor_ID");
+					this.OnDonor_IDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Procurement_ID", DbType="Int NOT NULL")]
+		public int Procurement_ID
+		{
+			get
+			{
+				return this._Procurement_ID;
+			}
+			set
+			{
+				if ((this._Procurement_ID != value))
+				{
+					if (this._Procurement.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnProcurement_IDChanging(value);
+					this.SendPropertyChanging();
+					this._Procurement_ID = value;
+					this.SendPropertyChanged("Procurement_ID");
+					this.OnProcurement_IDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Procurement_ProcurementDonor", Storage="_Procurement", ThisKey="Procurement_ID", OtherKey="Procurement_ID", IsForeignKey=true)]
+		public Procurement Procurement
+		{
+			get
+			{
+				return this._Procurement.Entity;
+			}
+			set
+			{
+				Procurement previousValue = this._Procurement.Entity;
+				if (((previousValue != value) 
+							|| (this._Procurement.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Procurement.Entity = null;
+						previousValue.ProcurementDonors.Remove(this);
+					}
+					this._Procurement.Entity = value;
+					if ((value != null))
+					{
+						value.ProcurementDonors.Add(this);
+						this._Procurement_ID = value.Procurement_ID;
+					}
+					else
+					{
+						this._Procurement_ID = default(int);
+					}
+					this.SendPropertyChanged("Procurement");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Donor_ProcurementDonor", Storage="_Donor", ThisKey="Donor_ID", OtherKey="Donor_ID", IsForeignKey=true)]
+		public Donor Donor
+		{
+			get
+			{
+				return this._Donor.Entity;
+			}
+			set
+			{
+				Donor previousValue = this._Donor.Entity;
+				if (((previousValue != value) 
+							|| (this._Donor.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Donor.Entity = null;
+						previousValue.ProcurementDonors.Remove(this);
+					}
+					this._Donor.Entity = value;
+					if ((value != null))
+					{
+						value.ProcurementDonors.Add(this);
+						this._Contact_ID = value.Donor_ID;
+					}
+					else
+					{
+						this._Contact_ID = default(int);
+					}
+					this.SendPropertyChanged("Donor");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 }

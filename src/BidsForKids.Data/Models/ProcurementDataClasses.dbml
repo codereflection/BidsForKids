@@ -42,6 +42,7 @@
       <Column Name="Certificate" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
       <Column Name="ProcurementType_ID" Type="System.Int32" DbType="int" CanBeNull="true" />
       <Association Name="Procurement_ContactProcurement" Member="ContactProcurement" Storage="_ContactProcurements" ThisKey="Procurement_ID" OtherKey="Procurement_ID" Type="ContactProcurement" Cardinality="One" />
+      <Association Name="Procurement_ProcurementDonor" Member="ProcurementDonors" ThisKey="Procurement_ID" OtherKey="Procurement_ID" Type="ProcurementDonor" />
       <Association Name="Category_Procurement" Member="Category" ThisKey="Category_ID" OtherKey="Category_ID" Type="Category" IsForeignKey="true" />
       <Association Name="ProcurementType_Procurement" Member="ProcurementType" ThisKey="ProcurementType_ID" OtherKey="ProcurementType_ID" Type="ProcurementType" IsForeignKey="true" />
     </Type>
@@ -89,6 +90,7 @@
       <Column Name="Procurer_ID" Type="System.Int32" DbType="int" CanBeNull="true" />
       <Column Name="DonorType_ID" Type="System.Int32" DbType="int" CanBeNull="true" />
       <Association Name="Donor_ContactProcurement" Member="ContactProcurements" ThisKey="Donor_ID" OtherKey="Donor_ID" Type="ContactProcurement" />
+      <Association Name="Donor_ProcurementDonor" Member="ProcurementDonors" ThisKey="Donor_ID" OtherKey="Donor_ID" Type="ProcurementDonor" />
       <Association Name="GeoLocation_Donor" Member="GeoLocation" ThisKey="GeoLocation_ID" OtherKey="GeoLocation_ID" Type="GeoLocation" IsForeignKey="true" />
       <Association Name="DonatesReference_Donor" Member="DonatesReference" ThisKey="Donates" OtherKey="Donates_ID" Type="DonatesReference" IsForeignKey="true" />
       <Association Name="Procurer_Donor" Member="Procurer" ThisKey="Procurer_ID" OtherKey="Procurer_ID" Type="Procurer" IsForeignKey="true" />
@@ -129,6 +131,15 @@
       <Column Name="DonorType_ID" Type="System.Int32" DbType="int" CanBeNull="true" />
       <Association Name="ProcurementType_Procurement" Member="Procurements" ThisKey="ProcurementType_ID" OtherKey="ProcurementType_ID" Type="Procurement" />
       <Association Name="DonorType_ProcurementType" Member="DonorType" ThisKey="DonorType_ID" OtherKey="DonorType_ID" Type="DonorType" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ProcurementDonor" Member="ProcurementDonors">
+    <Type Name="ProcurementDonor">
+      <Column Name="ProcurementDonor_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Donor_ID" Storage="_Contact_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Procurement_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Procurement_ProcurementDonor" Member="Procurement" ThisKey="Procurement_ID" OtherKey="Procurement_ID" Type="Procurement" IsForeignKey="true" />
+      <Association Name="Donor_ProcurementDonor" Member="Donor" ThisKey="Donor_ID" OtherKey="Donor_ID" Type="Donor" IsForeignKey="true" />
     </Type>
   </Table>
   <Function Name="dbo.BackupDatabase" Method="BackupDatabase">
