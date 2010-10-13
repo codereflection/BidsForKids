@@ -33,7 +33,13 @@ namespace BidsForKids.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult GenerateDonorReport(DonorReportSetupVideModel reportSetup)
         {
-            var donors = Mapper.Map<IEnumerable<Donor>, IEnumerable<DonorReportViewModel>>(_repo.GetDonors(reportSetup.AuctionYearFilter));
+            var donors = Mapper.Map<IEnumerable<Donor>, IEnumerable<DonorReportViewModel>>(_repo.GetDonors(reportSetup.AuctionYearFilter)).ToList();
+
+            if (reportSetup.BusinessType == false)
+                donors.Where(x => x.DonorType == "Business").ToList().ForEach(x => donors.Remove(x));
+
+            if (reportSetup.ParentType == false)
+                donors.Where(x => x.DonorType == "Parent").ToList().ForEach(x => donors.Remove(x));
 
             var reportHtml = new StringBuilder();
 

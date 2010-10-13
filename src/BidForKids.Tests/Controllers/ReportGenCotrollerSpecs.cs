@@ -78,4 +78,92 @@ namespace BidsForKids.Tests.Controllers
             content.Contains("BusinessName").ShouldBeTrue();
 			
     }
+
+    public class when_creating_a_business_donor_report : with_a_report_gen_controller
+    {
+        private static DonorReportSetupVideModel reportSetup;
+        private static ActionResult result;
+        private static IEnumerable<Donor> donors;
+        private static int donationYear;
+        private static string content;
+
+        Establish context = () =>
+        {
+            donationYear = 2010;
+            reportSetup = new DonorReportSetupVideModel
+            {
+                ReportTitle = "If I only where a goth",
+                AuctionYearFilter = donationYear,
+                BusinessNameColumn = true,
+                BusinessType = true,
+                DonorTypeColumn = true,
+                ParentType = false
+            };
+            donors = Builder<Donor>.CreateListOfSize(10)
+                .WhereTheFirst(5).Have(x => x.DonorType = Builder<DonorType>.CreateNew().With(y => y.DonorTypeDesc = "Business").Build())
+                .AndTheNext(5).Have(x => x.DonorType = Builder<DonorType>.CreateNew().With(y => y.DonorTypeDesc = "Parent").Build())
+                .Build();
+            DonorReportViewModel.CreateDestinationMaps();
+            repo.GetDonors(donationYear).Returns(donors);
+        };
+
+        Because of = () =>
+        {
+            result = controller.GenerateDonorReport(reportSetup);
+            content = (result as ContentResult).Content;
+        };
+
+        It should_have_the_donor_type_column = () =>
+			content.Contains("<th>DonorType</th>").ShouldBeTrue();
+
+        It should_have_business_donors = () =>
+            content.Contains("<td>Business</td>").ShouldBeTrue();
+
+        It should_not_have_parent_donors = () =>
+            content.Contains("<td>Parent</td>").ShouldBeFalse();
+    }
+
+    public class when_creating_a_parent_donor_report : with_a_report_gen_controller
+    {
+        private static DonorReportSetupVideModel reportSetup;
+        private static ActionResult result;
+        private static IEnumerable<Donor> donors;
+        private static int donationYear;
+        private static string content;
+
+        Establish context = () =>
+        {
+            donationYear = 2010;
+            reportSetup = new DonorReportSetupVideModel
+            {
+                ReportTitle = "If I only where a goth",
+                AuctionYearFilter = donationYear,
+                BusinessNameColumn = true,
+                BusinessType = false,
+                DonorTypeColumn = true,
+                ParentType = true
+            };
+            donors = Builder<Donor>.CreateListOfSize(10)
+                .WhereTheFirst(5).Have(x => x.DonorType = Builder<DonorType>.CreateNew().With(y => y.DonorTypeDesc = "Business").Build())
+                .AndTheNext(5).Have(x => x.DonorType = Builder<DonorType>.CreateNew().With(y => y.DonorTypeDesc = "Parent").Build())
+                .Build();
+            DonorReportViewModel.CreateDestinationMaps();
+            repo.GetDonors(donationYear).Returns(donors);
+        };
+
+        Because of = () =>
+        {
+            result = controller.GenerateDonorReport(reportSetup);
+            content = (result as ContentResult).Content;
+        };
+
+        It should_have_the_donor_type_column = () =>
+            content.Contains("<th>DonorType</th>").ShouldBeTrue();
+
+        It should_have_parent_donors = () =>
+            content.Contains("<td>Parent</td>").ShouldBeTrue();
+
+        It should_not_have_business_donors = () =>
+            content.Contains("<td>Business</td>").ShouldBeFalse();
+    }
 }
