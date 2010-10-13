@@ -24,7 +24,7 @@ namespace BidsForKids.Controllers
         {
             try
             {
-                var dc = new ProcurementDataClassesDataContext();
+                var dc = new ProcurementDataClassesDataContext(ConfigurationManager.ConnectionStrings["BidsForKidsConnectionString"].ConnectionString);
 
                 var result = new ContentResult();
 
