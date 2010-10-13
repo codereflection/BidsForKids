@@ -82,7 +82,7 @@
                 <tr>
                     <td>
                         <label for="AuctionYearFilter">
-                            Auction Year</label>
+                            Donated in Auction Year (leave blank for all donors)</label>
                         <%= Html.TextBox("AuctionYearFilter")%><br />
 <%--                        <label for="BusinessNameFilter">
                             Business Name

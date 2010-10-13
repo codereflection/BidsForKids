@@ -76,7 +76,7 @@ namespace BidsForKids.Tests.Controllers
 
         It should_have_the_business_name_header = () =>
             content.Contains("BusinessName").ShouldBeTrue();
-			
+
     }
 
     public class when_creating_a_business_donor_report : with_a_report_gen_controller
@@ -114,7 +114,7 @@ namespace BidsForKids.Tests.Controllers
         };
 
         It should_have_the_donor_type_column = () =>
-			content.Contains("<th>DonorType</th>").ShouldBeTrue();
+            content.Contains("<th>DonorType</th>").ShouldBeTrue();
 
         It should_have_business_donors = () =>
             content.Contains("<td>Business</td>").ShouldBeTrue();
@@ -165,5 +165,46 @@ namespace BidsForKids.Tests.Controllers
 
         It should_not_have_business_donors = () =>
             content.Contains("<td>Business</td>").ShouldBeFalse();
+    }
+
+    public class when_creating_a_donor_report_without_specifying_a_donation_year : with_a_report_gen_controller
+    {
+        private static DonorReportSetupVideModel reportSetup;
+        private static ActionResult result;
+        private static IEnumerable<Donor> donors;
+        private static int donationYear;
+        private static string content;
+
+        Establish context = () =>
+        {
+            donationYear = 0;
+            reportSetup = new DonorReportSetupVideModel
+            {
+                ReportTitle = "If I only where a goth",
+                AuctionYearFilter = donationYear,
+                BusinessNameColumn = true,
+                BusinessType = false,
+                DonorTypeColumn = true,
+                ParentType = true
+            };
+            donors = Builder<Donor>.CreateListOfSize(10)
+                .WhereTheFirst(5).Have(x => x.DonorType = Builder<DonorType>.CreateNew().With(y => y.DonorTypeDesc = "Business").Build())
+                .AndTheNext(5).Have(x => x.DonorType = Builder<DonorType>.CreateNew().With(y => y.DonorTypeDesc = "Parent").Build())
+                .Build();
+            DonorReportViewModel.CreateDestinationMaps();
+            repo.GetDonors(donationYear).Returns(donors);
+        };
+
+        Because of = () =>
+        {
+            result = controller.GenerateDonorReport(reportSetup);
+            content = (result as ContentResult).Content;
+        };
+
+        It should_not_get_donors_for_a_specific_donoration_year = () =>
+            repo.DidNotReceive().GetDonors(donationYear);
+
+        It should_get_all_donors = () =>
+            repo.Received().GetDonors();
     }
 }
