@@ -79,7 +79,6 @@ namespace BidsForKids.Data.Models
 
 
 
-
         public List<SerializableDonor> GetSerializableBusinesses(jqGridLoadOptions loadOptions)
         {
             var donorType = GetDonorTypeByName("Business");
@@ -546,6 +545,23 @@ namespace BidsForKids.Data.Models
         public List<Donor> GetDonors()
         {
             return dc.Donors.ToList();
+        }
+
+
+        /// <summary>
+        /// Returns a list of Donors for the donation year
+        /// </summary>
+        /// <param name="donationYear"></param>
+        /// <returns></returns>
+        public IEnumerable<Donor> GetDonors(int donationYear)
+        {
+            var donorsByYear = dc.Procurements
+                                    .Where(x => x.ContactProcurement.Auction.Year == donationYear)
+                                    .Select(x => x.ContactProcurement.Donor_ID)
+                                    .Distinct()
+                                    .ToList();
+
+            return dc.Donors.Where(x => donorsByYear.Contains(x.Donor_ID));
         }
 
 

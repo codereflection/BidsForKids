@@ -110,6 +110,7 @@
     <Compile Include="Controllers\ProcurementController.cs" />
     <Compile Include="Controllers\ProcurerController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
+    <Compile Include="Controllers\ReportGenController.cs" />
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -119,6 +120,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\AuctionViewModel.cs" />
+    <Compile Include="ViewModels\DonorReportViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\images\arrows-ffffff.png" />
@@ -129,6 +131,7 @@
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\datejs\date.js" />
+    <Content Include="Scripts\ReportGen.js" />
     <Content Include="Scripts\superfish\hoverIntent.js" />
     <Content Include="Scripts\superfish\jquery.bgiframe.min.js" />
     <Content Include="Scripts\superfish\superfish.js" />
@@ -143,6 +146,8 @@
     <Content Include="Views\Parent\Details.aspx" />
     <Content Include="Views\Parent\Edit.aspx" />
     <Content Include="Views\Parent\Index.aspx" />
+    <Content Include="Views\ReportGen\Donor.aspx" />
+    <Content Include="Views\ReportGen\Index.aspx" />
     <Content Include="Views\Report\AuctionItem.aspx" />
     <Content Include="Views\Report\AuctionItemReportDataCatalogLayout.ascx" />
     <Content Include="Views\Report\AuctionItemReportData.ascx" />

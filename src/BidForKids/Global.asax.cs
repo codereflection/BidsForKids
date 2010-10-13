@@ -36,7 +36,7 @@ namespace BidsForKids
         {
             UnitOfWork = ObjectFactory.GetInstance<IUnitOfWork>();
         }
-        
+
         protected void Application_EndRequest(object sender, EventArgs e)
         {
             if (UnitOfWork == null) return;

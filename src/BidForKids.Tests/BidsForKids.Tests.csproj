@@ -66,6 +66,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutoMapper, Version=2.0.9999.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL" />
+    <Reference Include="FizzWare.NBuilder">
+      <HintPath>..\..\lib\NBuilder\FizzWare.NBuilder.dll</HintPath>
+    </Reference>
     <Reference Include="Machine.Specifications">
       <HintPath>..\..\lib\mspec\Machine.Specifications.dll</HintPath>
     </Reference>
@@ -105,6 +108,7 @@
     <Compile Include="Controllers\HomeControllerFacts.cs" />
     <Compile Include="Controllers\ProcurementControllerFacts.cs" />
     <Compile Include="Controllers\ProcurementFactoryHelper.cs" />
+    <Compile Include="Controllers\ReportGenCotrollerSpecs.cs" />
     <Compile Include="Data\AuctionRepositorySpecs.cs" />
     <Compile Include="Data\InMemoryDataSource.cs" />
     <Compile Include="Data\InMemorySpecificationBase.cs" />
@@ -115,6 +119,7 @@
     <Compile Include="TestDoubles\StubContext.cs" />
     <Compile Include="TestDoubles\StubRequest.cs" />
     <Compile Include="ViewModelMappings\AuctionViewModelSpecs.cs" />
+    <Compile Include="ViewModelMappings\DonorReportViewModelSpecs.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
