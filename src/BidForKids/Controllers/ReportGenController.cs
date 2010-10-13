@@ -70,17 +70,17 @@ namespace BidsForKids.Controllers
         private List<DonorReportViewModel> ApplyDonorFilters(List<DonorReportViewModel> donors, DonorReportSetupVideModel reportSetup)
         {
             if (!string.IsNullOrEmpty(reportSetup.GeoLocationFilter))
-                donors.Where(x => !x.GeoLocation.Contains(reportSetup.GeoLocationFilter))
+                donors.Where(x => x.GeoLocation == null || !x.GeoLocation.ToLower().Contains(reportSetup.GeoLocationFilter.ToLower()))
                       .ToList()
                       .ForEach(x => donors.Remove(x));
 
             if (!string.IsNullOrEmpty(reportSetup.ProcurerFilter))
-                donors.Where(x => !x.Procurer.Contains(reportSetup.ProcurerFilter))
+                donors.Where(x => x.Procurer == null || !x.Procurer.ToLower().Contains(reportSetup.ProcurerFilter.ToLower()))
                       .ToList()
                       .ForEach(x => donors.Remove(x));
 
             if (!string.IsNullOrEmpty(reportSetup.DonatesFilter))
-                donors.Where(x => !x.Donates.Contains(reportSetup.DonatesFilter))
+                donors.Where(x => x.Donates == null || !x.Donates.ToLower().Contains(reportSetup.DonatesFilter.ToLower()))
                       .ToList()
                       .ForEach(x => donors.Remove(x));
 
