@@ -84,7 +84,7 @@
                         <label for="AuctionYearFilter">
                             Auction Year</label>
                         <%= Html.TextBox("AuctionYearFilter")%><br />
-                        <label for="BusinessNameFilter">
+<%--                        <label for="BusinessNameFilter">
                             Business Name
                         </label>
                         <%= Html.TextBox("BusinessNameFilter") %><br />
@@ -95,7 +95,7 @@
                         <label for="LastNameFilter">
                             Last Name
                         </label>
-                        <%= Html.TextBox("LastNameFilter") %><br />
+                        <%= Html.TextBox("LastNameFilter") %><br />--%>
                     </td>
                 </tr>
             </table>
