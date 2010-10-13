@@ -10,6 +10,14 @@
     <script src="<%= Url.Content("~/Scripts/jqGrid/jquery.jqGrid.min.js") %>" type="text/javascript"></script>
     <script type="text/javascript">
         var lastsel;
+
+        // http://maps.google.com/maps?q=REI%20loc:98106
+
+        mapFormatter = function (cellval, opts, rowObject) {    		
+            return "<a target='_blank' href='http://maps.google.com/maps?q=" + escape(rowObject.BusinessName) + "%20loc:" + rowObject.ZipCode + "'>Map</a>";
+    	};
+
+
         $(document).ready(function() {
             var donorGrid = $("#donorGrid").jqGrid({
                 datatype: 'json',
@@ -24,7 +32,7 @@
                 },
                 colModel: [
                     { name: 'act', index: 'act', width: 20, sortable: false, search: false, label: ' ', align: 'center' },
-                    { name: 'BusinessName', index: 'BusinessName', label: 'Business Name' },
+                    { name: 'BusinessName', index: 'BusinessName', label: 'Business Name', width: 200 },
                     { name: 'FirstName', index: 'FirstName', label: 'First Name', editable: true },
                     { name: 'LastName', index: 'LastName', label: 'Last Name', editable: true },
                     { name: 'Address', index: 'Address', label: 'Address', editable: true },
@@ -32,13 +40,14 @@
                     { name: 'State', index: 'State', label: 'State', editable: true },
                     { name: 'ZipCode', index: 'ZipCode', label: 'Zip', editable: true },
                     { name: 'Email', index: 'Email', label: 'Email', editable: true },
-                    { name: 'Phone1', index: 'Phone1', label: 'Phone 1', editable: true },
-                    { name: 'Phone1Desc', index: 'Phone1Desc', label: 'Phone 1 Desc', editable: true },
+                    { name: 'Phone1', index: 'Phone1', label: 'Ph 1', editable: true },
+                    { name: 'Phone1Desc', index: 'Phone1Desc', label: 'Ph 1 Des', editable: true },
                     { name: 'GeoLocationName', index: 'GeoLocationName', label: 'GeoLocationName', hidden: true },
-                    { name: 'GeoLocation_ID', index: 'GeoLocation_ID', label: 'Geo Location', editable: true, edittype: 'select', editoptions: { value: <%= ViewData["GeoLocationJsonString"] %> }, formatter: 'select' },
-                    { name: 'Procurer_ID', index: 'Procurer_ID', label: 'Default Procurer', editable: true, edittype: 'select', editoptions: { value: <%= ViewData["ProcurerJsonString"] %> }, formatter: 'select' },
+                    { name: 'GeoLocation_ID', index: 'GeoLocation_ID', label: 'Geo Loc', editable: true, edittype: 'select', editoptions: { value: <%= ViewData["GeoLocationJsonString"] %> }, formatter: 'select' },
+                    { name: 'Procurer_ID', index: 'Procurer_ID', label: 'Default<br />Procurer', editable: true, edittype: 'select', editoptions: { value: <%= ViewData["ProcurerJsonString"] %> }, formatter: 'select' },
                     { name: 'Donates', index: 'Donates', label: 'Donates', formatter: 'select', editable: true, edittype: 'select', editoptions: { value: { 0: "No", 1: "Yes", 2: "Unknown" } } },
-                    { name: 'MailedPacket', index: 'MailedPacket', label: 'MailedPacket', formatter: 'checkbox', editable: true, edittype: 'checkbox', editoptions: { value: "true:false" } },
+                    { name: 'MailedPacket', index: 'MailedPacket', label: 'Mailed<br />Packet', formatter: 'checkbox', editable: true, edittype: 'checkbox', editoptions: { value: "true:false" } },
+                    { name: 'MapLink', index: 'MapLink', label: 'Map', formatter: mapFormatter, editable: false, sortable: false,  },
                     { name: 'Donor_ID', index: 'Donor_ID', width: 30, hidden: true, key: true }
                 ],
                 pager: '#pager',
