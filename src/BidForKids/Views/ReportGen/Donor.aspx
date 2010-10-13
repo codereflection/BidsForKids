@@ -13,7 +13,7 @@
         <% using (Html.BeginForm("GenerateDonorReport", "ReportGen", FormMethod.Post, new { id = "CreateReportForm" }))
            { %>
         <fieldset id="ReportOptions">
-            <legend>Procurement Options and Types</legend>
+            <legend>Report Options and Types</legend>
             <table style="width: 100%">
                 <tr>
                     <td>
