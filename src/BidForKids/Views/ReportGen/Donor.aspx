@@ -72,6 +72,8 @@
                             Procurer</label><%= Html.CheckBox("ProcurerColumn", true)%><br />
                         <label for="NotesColumn">
                             Notes</label><%= Html.CheckBox("NotesColumn", true)%><br />
+                        <label for="DonatesColumn">
+                            Donates</label><%= Html.CheckBox("DonatesColumn", true)%><br />
                     </td>
                 </tr>
             </table>
@@ -84,18 +86,18 @@
                         <label for="AuctionYearFilter">
                             Donated in Auction Year (leave blank for all donors)</label>
                         <%= Html.TextBox("AuctionYearFilter")%><br />
-<%--                        <label for="BusinessNameFilter">
-                            Business Name
+                        <label for="GeoLocationFilter">
+                            Geo Location
                         </label>
-                        <%= Html.TextBox("BusinessNameFilter") %><br />
-                        <label for="FirstNameFilter">
-                            First Name
+                        <%= Html.TextBox("GeoLocationFilter") %><br />
+                        <label for="ProcurerFilter">
+                            Procurer
                         </label>
-                        <%= Html.TextBox("FirstNameFilter")%><br />
-                        <label for="LastNameFilter">
-                            Last Name
+                        <%= Html.TextBox("ProcurerFilter")%><br />
+                        <label for="DonatesFilter">
+                            Donates
                         </label>
-                        <%= Html.TextBox("LastNameFilter") %><br />--%>
+                        <%= Html.TextBox("DonatesFilter")%><br />
                     </td>
                 </tr>
             </table>

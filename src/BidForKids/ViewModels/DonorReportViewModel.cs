@@ -25,6 +25,7 @@ namespace BidsForKids.ViewModels
         public string DonorType { get; set; }
         public int ProcurerId { get; set; }
         public string Procurer { get; set; }
+        public string Donates { get; set; }
 
         public static IMappingExpression<Donor, DonorReportViewModel> CreateDestinationMaps()
         {
@@ -32,7 +33,8 @@ namespace BidsForKids.ViewModels
                                         .ForMember(dest => dest.Id, opt => opt.MapFrom(a => a.Donor_ID))
                                         .ForMember(dest => dest.GeoLocation, opt => opt.MapFrom(a => a.GeoLocation.GeoLocationName))
                                         .ForMember(dest => dest.DonorType, opt => opt.MapFrom(a => a.DonorType.DonorTypeDesc))
-                                        .ForMember(dest => dest.Procurer, opt => opt.MapFrom(a => string.Format("{0} {1}", a.Procurer.FirstName, a.Procurer.LastName)));
+                                        .ForMember(dest => dest.Procurer, opt => opt.MapFrom(a => string.Format("{0} {1}", a.Procurer.FirstName, a.Procurer.LastName)))
+                                        .ForMember(dest => dest.Donates, opt => opt.ResolveUsing(new DonatesValueResolver()));
         }
 
         public static IMappingExpression<DonorReportViewModel, Donor> CreateSourceMaps()
@@ -41,6 +43,24 @@ namespace BidsForKids.ViewModels
                                         .ForMember(dest => dest.Donor_ID, opt => opt.MapFrom(a => a.Id));
         }
     }
+
+    public class DonatesValueResolver : ValueResolver<Donor, string>
+    {
+        protected override string ResolveCore(Donor source)
+        {
+            var donor = source;
+            var result = string.Empty;
+
+            if (donor.Donates == 1)
+                result = "Yes";
+            else if (donor.Donates == 2)
+                result = "Unknown";
+            else if (donor.Donates == 0)
+                result = "No";
+            return result;
+        }
+    }
+
 
     public interface IReportSetupViewModel
     {
@@ -68,10 +88,11 @@ namespace BidsForKids.ViewModels
         public bool GeoLocationColumn { get; set; }
         public bool DonorTypeColumn { get; set; }
         public bool ProcurerColumn { get; set; }
+        public bool DonatesColumn { get; set; }
 
         public int AuctionYearFilter { get; set; }
-        public string BusinessNameFilter { get; set; }
-        public string FirstNameFilter { get; set; }
-        public string LastNameFilter { get; set; }
+        public string GeoLocationFilter { get; set; }
+        public string ProcurerFilter { get; set; }
+        public string DonatesFilter { get; set; }
     }
 }

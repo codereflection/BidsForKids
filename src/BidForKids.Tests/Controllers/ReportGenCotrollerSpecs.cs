@@ -207,4 +207,150 @@ namespace BidsForKids.Tests.Controllers
         It should_get_all_donors = () =>
             repo.Received().GetDonors();
     }
+
+    public class when_generating_a_report_filtered_by_geo_location : with_a_report_gen_controller
+    {
+        private static DonorReportSetupVideModel reportSetup;
+        private static ActionResult result;
+        private static IEnumerable<Donor> donors;
+        private static int donationYear;
+        private static string content;
+        private static string goodLocation;
+        private static string nonMatchingLocation;
+
+        Establish context = () =>
+        {
+            donationYear = 0;
+            goodLocation = "Seattle";
+            nonMatchingLocation = "Tacoma";
+            reportSetup = new DonorReportSetupVideModel
+            {
+                ReportTitle = "If I only where a goth",
+                AuctionYearFilter = donationYear,
+                GeoLocationFilter = goodLocation,
+                BusinessNameColumn = true,
+                GeoLocationColumn = true,
+                BusinessType = true,
+            };
+            donors = Builder<Donor>.CreateListOfSize(10)
+                .WhereTheFirst(5).Have(x => x.GeoLocation = Builder<GeoLocation>.CreateNew().With(y => y.GeoLocationName = goodLocation).Build())
+                .AndTheNext(5).Have(x => x.GeoLocation = Builder<GeoLocation>.CreateNew().With(y => y.GeoLocationName = nonMatchingLocation).Build())
+                .Build();
+            DonorReportViewModel.CreateDestinationMaps();
+            repo.GetDonors().Returns(donors);
+        };
+
+        Because of = () =>
+        {
+            result = controller.GenerateDonorReport(reportSetup);
+            content = (result as ContentResult).Content;
+        };
+
+        It should_have_the_geo_location_column = () =>
+            content.Contains("<th>GeoLocation</th>").ShouldBeTrue();
+
+        It should_have_the_correct_locations = () =>
+            content.Contains(string.Format("<td>{0}</td>", goodLocation)).ShouldBeTrue();
+
+        It should_not_have_the_non_matching_locations = () =>
+            content.Contains(string.Format("<td>{0}</td>", nonMatchingLocation)).ShouldBeFalse();
+
+    }
+
+    public class when_generating_a_report_filtered_by_procurer : with_a_report_gen_controller
+    {
+        private static DonorReportSetupVideModel reportSetup;
+        private static ActionResult result;
+        private static IEnumerable<Donor> donors;
+        private static int donationYear;
+        private static string content;
+        private static string goodProcurer;
+        private static string nonMatchingProcurer;
+
+        Establish context = () =>
+        {
+            donationYear = 0;
+            goodProcurer = "Fred";
+            nonMatchingProcurer = "Bob";
+            reportSetup = new DonorReportSetupVideModel
+            {
+                ReportTitle = "If I only where a goth",
+                AuctionYearFilter = donationYear,
+                ProcurerFilter = goodProcurer,
+                BusinessNameColumn = true,
+                ProcurerColumn = true,
+                BusinessType = true,
+            };
+            donors = Builder<Donor>.CreateListOfSize(10)
+                .WhereTheFirst(5).Have(x => x.Procurer = Builder<Procurer>.CreateNew().With(y => y.FirstName = goodProcurer).Build())
+                .AndTheNext(5).Have(x => x.Procurer = Builder<Procurer>.CreateNew().With(y => y.FirstName = nonMatchingProcurer).Build())
+                .Build();
+            DonorReportViewModel.CreateDestinationMaps();
+            repo.GetDonors().Returns(donors);
+        };
+
+        Because of = () =>
+        {
+            result = controller.GenerateDonorReport(reportSetup);
+            content = (result as ContentResult).Content;
+        };
+
+        It should_have_the_procurer_column = () =>
+            content.Contains("<th>Procurer</th>").ShouldBeTrue();
+
+        It should_have_the_correct_procurer = () =>
+            content.Contains(string.Format("<td>{0}", goodProcurer)).ShouldBeTrue();
+
+        It should_not_have_the_non_matching_procurer = () =>
+            content.Contains(string.Format("<td>{0}", nonMatchingProcurer)).ShouldBeFalse();
+
+    }
+
+    public class when_generating_a_report_filtered_by_donates : with_a_report_gen_controller
+    {
+        private static DonorReportSetupVideModel reportSetup;
+        private static ActionResult result;
+        private static IEnumerable<Donor> donors;
+        private static int donationYear;
+        private static string content;
+
+        Establish context = () =>
+        {
+            donationYear = 0;
+            reportSetup = new DonorReportSetupVideModel
+            {
+                ReportTitle = "If I only where a goth",
+                AuctionYearFilter = donationYear,
+                DonatesFilter = "Yes",
+                BusinessNameColumn = true,
+                DonatesColumn = true,
+                BusinessType = true,
+            };
+            donors = Builder<Donor>.CreateListOfSize(10)
+                .WhereTheFirst(5).Have(x => x.Donates = 0)
+                .AndTheNext(5).Have(x => x.Donates = 1)
+                .Build();
+            DonorReportViewModel.CreateDestinationMaps();
+            repo.GetDonors().Returns(donors);
+        };
+
+        Because of = () =>
+        {
+            result = controller.GenerateDonorReport(reportSetup);
+            content = (result as ContentResult).Content;
+        };
+
+        It should_have_the_donates_column = () =>
+            content.Contains("<th>Donates</th>").ShouldBeTrue();
+
+        It should_have_the_donors_that_donate = () =>
+            content.Contains(string.Format("<td>{0}", "Yes")).ShouldBeTrue();
+
+        It should_not_have_non_donating_donors = () =>
+            content.Contains(string.Format("<td>{0}", "No")).ShouldBeFalse();
+
+        It should_not_have_the_unknown_donating_donors = () =>
+            content.Contains(string.Format("<td>{0}", "Unknown")).ShouldBeFalse();
+
+    }
 }

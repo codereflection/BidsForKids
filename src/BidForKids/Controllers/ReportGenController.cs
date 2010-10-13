@@ -39,6 +39,8 @@ namespace BidsForKids.Controllers
                 :
                 Mapper.Map<IEnumerable<Donor>, IEnumerable<DonorReportViewModel>>(_repo.GetDonors(reportSetup.AuctionYearFilter)).ToList();
 
+            donors = ApplyDonorFilters(donors, reportSetup);
+
             if (reportSetup.BusinessType == false)
                 donors.Where(x => x.DonorType == "Business").ToList().ForEach(x => donors.Remove(x));
 
@@ -64,6 +66,28 @@ namespace BidsForKids.Controllers
 
             return result;
         }
+
+        private List<DonorReportViewModel> ApplyDonorFilters(List<DonorReportViewModel> donors, DonorReportSetupVideModel reportSetup)
+        {
+            if (!string.IsNullOrEmpty(reportSetup.GeoLocationFilter))
+                donors.Where(x => !x.GeoLocation.Contains(reportSetup.GeoLocationFilter))
+                      .ToList()
+                      .ForEach(x => donors.Remove(x));
+
+            if (!string.IsNullOrEmpty(reportSetup.ProcurerFilter))
+                donors.Where(x => !x.Procurer.Contains(reportSetup.ProcurerFilter))
+                      .ToList()
+                      .ForEach(x => donors.Remove(x));
+
+            if (!string.IsNullOrEmpty(reportSetup.DonatesFilter))
+                donors.Where(x => !x.Donates.Contains(reportSetup.DonatesFilter))
+                      .ToList()
+                      .ForEach(x => donors.Remove(x));
+
+
+            return donors;
+        }
+
 
         private void BuildReportBody(IDictionary<string, PropertyInfo> selectedColumns, IEnumerable<DonorReportViewModel> donors, StringBuilder reportHtml, bool includeRowNumbers)
         {
