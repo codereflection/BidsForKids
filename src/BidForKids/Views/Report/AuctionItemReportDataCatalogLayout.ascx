@@ -77,7 +77,7 @@
     <div class='Value'>
         Value:
         <%
-            var EstimatedValue = BidsForKids.Models.AuctionItem.GetAuctionItemTotal(item);
+            var EstimatedValue = BidsForKids.Data.Models.AuctionItem.GetAuctionItemTotal(item);
         %>
         <%= String.Format("{0:C}", EstimatedValue) %>
     </div>
