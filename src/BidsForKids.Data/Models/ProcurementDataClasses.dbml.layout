@@ -72,7 +72,7 @@
         <classShapeMoniker Id="8c5d4790-19c1-45b8-8bb4-05a250b2ab6e" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(6.375 : 6.01044840494792); (5.70833333333333 : 6.01044840494792 : JumpStart); (5.54166666666667 : 6.01044840494792 : JumpEnd); (5.375 : 6.01044840494792)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(6.375 : 6.01044840494792); (5.375 : 6.01044840494792)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/ProcurementDataClassesDataContext/Donor/Donor_ContactProcurement" />
       <nodes>
         <classShapeMoniker Id="aa754a3b-0a83-4b61-8047-f81b0dcd2fa8" />
@@ -132,7 +132,7 @@
         <classShapeMoniker Id="957d31e8-cf76-4cf2-93bf-7360d612595a" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(7.375 : 8.375); (7.375 : 8.125); (5.625 : 8.125); (5.625 : 4.875); (2.875 : 4.875); (2.875 : 3.69314697265625); (2.5 : 3.69314697265625)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(7.375 : 8.375); (7.375 : 8.125); (5.625 : 8.125); (5.625 : 4.875); (4.45833333333333 : 4.875 : JumpStart); (4.29166666666667 : 4.875 : JumpEnd); (2.875 : 4.875); (2.875 : 3.69314697265625); (2.5 : 3.69314697265625)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/ProcurementDataClassesDataContext/DonorType/DonorType_ProcurementType" />
       <nodes>
         <classShapeMoniker Id="e75f7a7d-b2f3-4f7b-ae2d-ded1e8009792" />

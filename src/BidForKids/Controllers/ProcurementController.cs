@@ -290,41 +290,44 @@ namespace BidsForKids.Controllers
 
         private SelectList GetDonorsSelectList(int? selectedValue, int? donorTypeID)
         {
-            IEnumerable<Donor> lDonors = factory.GetDonors();
+            var donors = factory.GetDonors();
 
             if (donorTypeID != null && donorTypeID != 0)
             {
-                DonorType donorType = factory.GetDonorTypeByID(donorTypeID.Value);
+                var donorType = factory.GetDonorTypeByID(donorTypeID.Value);
 
                 // TODO: Refactor the logic to build a Business / Parent select list
-                if (donorType.DonorTypeDesc == "Business")
+                switch (donorType.DonorTypeDesc)
                 {
-                    var lBusinesses = from D in lDonors
-                                      where D.DonorType_ID == donorType.DonorType_ID
-                                      orderby D.BusinessName
-                                      select new
-                                      {
-                                          BusinessName = D.BusinessName,
-                                          Donor_ID = D.Donor_ID
-                                      };
-                    return new SelectList(lBusinesses, "Donor_ID", "BusinessName", selectedValue);
-                }
-                else if (donorType.DonorTypeDesc == "Parent")
-                {
-                    var lParents = from D in lDonors
-                                   where D.DonorType_ID == donorType.DonorType_ID
-                                   orderby D.FirstName, D.LastName
-                                   select new
-                                   {
-                                       FirstName = D.FirstName,
-                                       LastName = D.LastName,
-                                       Donor_ID = D.Donor_ID,
-                                       FullName = D.FirstName + " " + D.LastName
-                                   };
-                    return new SelectList(lParents, "Donor_ID", "FullName", selectedValue);
+                    case "Business":
+                        {
+                            var businesses = from D in donors
+                                             where D.DonorType_ID == donorType.DonorType_ID
+                                             orderby D.BusinessName
+                                             select new
+                                                        {
+                                                            D.BusinessName, 
+                                                            D.Donor_ID
+                                                        };
+                            return new SelectList(businesses, "Donor_ID", "BusinessName", selectedValue);
+                        }
+                    case "Parent":
+                        {
+                            var parents = from D in donors
+                                          where D.DonorType_ID == donorType.DonorType_ID
+                                          orderby D.FirstName, D.LastName
+                                          select new
+                                                     {
+                                                         D.FirstName,
+                                                         D.LastName,
+                                                         D.Donor_ID,
+                                                         FullName = D.FirstName + " " + D.LastName
+                                                     };
+                            return new SelectList(parents, "Donor_ID", "FullName", selectedValue);
+                        }
                 }
             }
-            return new SelectList(lDonors.OrderBy(x => x.BusinessName), "Donor_ID", "BusinessName", selectedValue);
+            return new SelectList(donors.OrderBy(x => x.BusinessName), "Donor_ID", "BusinessName", selectedValue);
         }
 
 
@@ -491,7 +494,7 @@ namespace BidsForKids.Controllers
 
             if (procurement.Procurement_ID != id)
             {
-                throw new ApplicationException("Unable to load procurement from database for editing by id " + id.ToString());
+                throw new ApplicationException("Unable to load procurement from database for editing by id " + id);
             }
 
             SetupEditViewData(procurement.ContactProcurement);
@@ -502,6 +505,8 @@ namespace BidsForKids.Controllers
             UpdateModel(procurement.ContactProcurement,
                 ContactProcurementColumns());
 
+            UpdateProcurementDonors(procurement, collection);
+
             if (factory.SaveProcurement(procurement) == false)
             {
                 throw new ApplicationException("Unable to save procurement");
@@ -510,6 +515,26 @@ namespace BidsForKids.Controllers
             var actionToRedirectTo = procurement.ProcurementType.ProcurementTypeDesc;
 
             return RedirectToAction(actionToRedirectTo + "Index");
+        }
+
+
+        private void UpdateProcurementDonors(Procurement procurement, FormCollection collection)
+        {
+            var donors = string.IsNullOrEmpty(collection["DonorId"]) ? null : collection["DonorId"].Split(',').ToList();
+
+            if (donors == null) return;
+
+            var newDonors = donors.Where(x => procurement.ProcurementDonors.Count(y => y.Donor_ID.ToString() == x ) == 0).ToList();
+
+            var removedDonors = procurement.ProcurementDonors.Where(x => !donors.Contains(x.Donor_ID.ToString())).ToList();
+
+            newDonors.ForEach(id => procurement.ProcurementDonors.Add(new ProcurementDonor
+                                                                          {
+                                                                              Donor       = factory.GetDonor(int.Parse(id)),
+                                                                              Procurement = procurement
+                                                                          }));
+
+            removedDonors.ForEach(donor => procurement.ProcurementDonors.Remove(donor));
         }
 
 

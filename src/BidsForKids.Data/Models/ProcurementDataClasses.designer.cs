@@ -3036,7 +3036,7 @@ namespace BidsForKids.Data.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Procurement_ProcurementDonor", Storage="_Procurement", ThisKey="Procurement_ID", OtherKey="Procurement_ID", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Procurement_ProcurementDonor", Storage="_Procurement", ThisKey="Procurement_ID", OtherKey="Procurement_ID", IsForeignKey=true, DeleteOnNull=true)]
 		public Procurement Procurement
 		{
 			get
@@ -3070,7 +3070,7 @@ namespace BidsForKids.Data.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Donor_ProcurementDonor", Storage="_Donor", ThisKey="Donor_ID", OtherKey="Donor_ID", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Donor_ProcurementDonor", Storage="_Donor", ThisKey="Donor_ID", OtherKey="Donor_ID", IsForeignKey=true, DeleteOnNull=true)]
 		public Donor Donor
 		{
 			get

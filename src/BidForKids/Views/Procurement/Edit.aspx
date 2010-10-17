@@ -53,10 +53,24 @@
             $('#ViewDonor').attr('href', '<%= Url.Action("Edit", "Donor") %>' + '/' + $("#Donor_ID").val());
         };
 
+        RemoveDonor = function () {
+            var id = $(this).attr("tag");
+            var liId = "#donor_" + id;
+            var numberOfDonors = $("#donors li[id^='donor_']").length;
+
+            if (numberOfDonors == 1) 
+                $(liId + " #DonorId").val("");
+            else if (numberOfDonors > 1)
+                $(liId).remove();
+
+        }
+
         $(document).ready(function () {
             $('#ItemNumber').blur(checkItemNumber).keyup(getLastItemNumber);
 
             $('#Donor_ID').change(ChangeViewDonorLink);
+
+            $('#removeDonor').live('click', RemoveDonor);
         });
 
         function deleteRecord(id) {
@@ -111,7 +125,7 @@
             <%--            <%= Html.DropDownList("Donor_ID", "")%>&nbsp;<%= Html.ActionLink("view", "Edit", "Donor",
                                                               new { id = Model.ContactProcurement.Donor_ID }, new { id = "ViewDonor", target = "_blank", title = "View donor in a new window" })%>--%>
         </p>
-        <div>
+        <div id="donors">
             <ul>
                 <% foreach (var item in Model.Donors)
                    { %>

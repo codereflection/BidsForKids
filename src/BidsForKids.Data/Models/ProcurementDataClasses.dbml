@@ -138,8 +138,8 @@
       <Column Name="ProcurementDonor_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Donor_ID" Storage="_Contact_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Procurement_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="Procurement_ProcurementDonor" Member="Procurement" ThisKey="Procurement_ID" OtherKey="Procurement_ID" Type="Procurement" IsForeignKey="true" />
-      <Association Name="Donor_ProcurementDonor" Member="Donor" ThisKey="Donor_ID" OtherKey="Donor_ID" Type="Donor" IsForeignKey="true" />
+      <Association Name="Procurement_ProcurementDonor" Member="Procurement" ThisKey="Procurement_ID" OtherKey="Procurement_ID" Type="Procurement" IsForeignKey="true" DeleteOnNull="true" />
+      <Association Name="Donor_ProcurementDonor" Member="Donor" ThisKey="Donor_ID" OtherKey="Donor_ID" Type="Donor" IsForeignKey="true" DeleteOnNull="true" />
     </Type>
   </Table>
   <Function Name="dbo.BackupDatabase" Method="BackupDatabase">
