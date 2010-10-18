@@ -58,11 +58,19 @@
             var liId = "#donor_" + id;
             var numberOfDonors = $("#donors li[id^='donor_']").length;
 
-            if (numberOfDonors == 1) 
+            if (numberOfDonors == 1)
                 $(liId + " #DonorId").val("");
             else if (numberOfDonors > 1)
                 $(liId).remove();
 
+        }
+
+        AddDonor = function () {
+            var templateText = $("#donors li")[0];
+            console.log(templateText);
+            var template = $(templateText).clone();
+            $("select", template).val("");
+            template.appendTo("#donorList");
         }
 
         $(document).ready(function () {
@@ -71,6 +79,8 @@
             $('#Donor_ID').change(ChangeViewDonorLink);
 
             $('#removeDonor').live('click', RemoveDonor);
+
+            $("#addDonor").click(AddDonor);
         });
 
         function deleteRecord(id) {
@@ -118,20 +128,27 @@
                 Thank You Letter Sent</label>
             <%= Html.CheckBox("ThankYouLetterSent") %>
         </p>
-        <p>
-            <label for="Donor_ID">
-                Donor
+        <div>
+            <label for="donors">
+                Donors
             </label>
-            <%--            <%= Html.DropDownList("Donor_ID", "")%>&nbsp;<%= Html.ActionLink("view", "Edit", "Donor",
-                                                              new { id = Model.ContactProcurement.Donor_ID }, new { id = "ViewDonor", target = "_blank", title = "View donor in a new window" })%>--%>
-        </p>
-        <div id="donors">
-            <ul>
-                <% foreach (var item in Model.Donors)
-                   { %>
-                <% Html.RenderPartial("ProcurementDonor", item); %>
-                <% } %>
-            </ul>
+            <table cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <td id="donors">
+                        <ul id="donorList" style="list-style: none">
+                            <% foreach (var item in Model.Donors)
+                               { %>
+                            <% Html.RenderPartial("ProcurementDonor", item); %>
+                            <% } %>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="#" id="addDonor">Add another</a>
+                    </td>
+                </tr>
+            </table>
         </div>
         <p>
             <label for="Auction_ID">

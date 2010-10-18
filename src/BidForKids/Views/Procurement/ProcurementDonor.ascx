@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<BidsForKids.ViewModels.ProcurementDonorViewModel>" %>
-<%@ Import Namespace="BidsForKids.ViewModels" %>
+
 <li id="donor_<%= Model.Id %>">
     <%= Html.DropDownList("DonorId", (IEnumerable<SelectListItem>)ViewData["Donor-" + Model.Id], string.Empty)%>
     &nbsp;<%= Html.ActionLink("view", "Edit", "Donor", new

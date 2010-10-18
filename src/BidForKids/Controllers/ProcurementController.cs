@@ -520,7 +520,12 @@ namespace BidsForKids.Controllers
 
         private void UpdateProcurementDonors(Procurement procurement, FormCollection collection)
         {
-            var donors = string.IsNullOrEmpty(collection["DonorId"]) ? null : collection["DonorId"].Split(',').ToList();
+            var donors = string.IsNullOrEmpty(collection["DonorId"]) ? 
+                                                                        null : 
+                                                                        collection["DonorId"]
+                                                                            .Split(',')
+                                                                            .Where(x => !string.IsNullOrEmpty(x))
+                                                                            .ToList();
 
             if (donors == null) return;
 
