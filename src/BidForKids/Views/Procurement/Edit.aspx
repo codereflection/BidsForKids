@@ -67,7 +67,6 @@
 
         AddDonor = function () {
             var templateText = $("#donors li")[0];
-            console.log(templateText);
             var template = $(templateText).clone();
             $("select", template).val("");
             template.appendTo("#donorList");

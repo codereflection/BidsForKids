@@ -388,6 +388,8 @@ namespace BidsForKids.Controllers
                 UpdateModel(newProcurement.ContactProcurement,
                     ContactProcurementColumns());
 
+                SetupProcurementDonors(newProcurement, collection);
+
                 var actionToRedirectTo = "";
 
                 if (collection["procurementType"] != null)
@@ -408,6 +410,7 @@ namespace BidsForKids.Controllers
                 return View();
             }
         }
+
 
         public ActionResult Edit(int? id)
         {
@@ -522,12 +525,7 @@ namespace BidsForKids.Controllers
 
         private void UpdateProcurementDonors(Procurement procurement, FormCollection collection)
         {
-            var donors = string.IsNullOrEmpty(collection["DonorId"]) ? 
-                                                                        null : 
-                                                                        collection["DonorId"]
-                                                                            .Split(',')
-                                                                            .Where(x => !string.IsNullOrEmpty(x))
-                                                                            .ToList();
+            var donors = GetDonorsFromFormCollection(collection, "DonorId");
 
             if (donors == null) return;
 
@@ -542,6 +540,29 @@ namespace BidsForKids.Controllers
                                                                           }));
 
             removedDonors.ForEach(donor => procurement.ProcurementDonors.Remove(donor));
+        }
+
+        private List<string> GetDonorsFromFormCollection(FormCollection collection, string DonorSelectFieldId)
+        {
+            return string.IsNullOrEmpty(collection[DonorSelectFieldId]) ? 
+                                                                   null : 
+                                                                            collection[DonorSelectFieldId]
+                                                                                .Split(',')
+                                                                                .Where(x => !string.IsNullOrEmpty(x))
+                                                                                .ToList();
+        }
+
+        private void SetupProcurementDonors(Procurement procurement, FormCollection collection)
+        {
+            var donors = GetDonorsFromFormCollection(collection, "Donor_ID");
+
+            if (donors == null) return;
+
+            donors.ForEach(id => procurement.ProcurementDonors.Add(new ProcurementDonor
+                                                                        {
+                                                                            Donor = factory.GetDonor(int.Parse(id)),
+                                                                            Procurement = procurement
+                                                                        }));
         }
 
 
