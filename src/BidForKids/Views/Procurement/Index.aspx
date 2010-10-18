@@ -103,7 +103,7 @@
                     { name: 'ItemNumber', index: 'ItemNumber', width: 40, label: 'Itm #' },
                     { name: 'Donation', index: 'Donation' },
                     { name: 'EstimatedValue', index: 'EstimatedValue', width: 40, formatter: pricelessCurrencyFormatter, align: 'right', label: 'Value', editable: true },
-                    { name: 'BusinessName', index: 'BusinessName', label: 'Donor' },
+                    { name: '<%= ViewData["DonorDisplayField"] %>', index: '<%= ViewData["DonorDisplayField"] %>', label: 'Donor', sortable: false },
                     { name: 'GeoLocationName', index: 'GeoLocationName', width: 100, label: 'Geo Location', sortable: false },
                     { name: 'CategoryName', index: 'CategoryName', label: 'Category', hidden: true, sortable: false, editable: false },
                     { name: 'Category_ID', index: 'Category_ID', label: 'Category', width: 100, sortable: true, editable: true, edittype: 'select', editoptions: { value: <%= ViewData["CategoryJsonString"] %> }, formatter: 'select' },

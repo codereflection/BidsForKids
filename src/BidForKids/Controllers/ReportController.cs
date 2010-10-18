@@ -172,9 +172,9 @@ namespace BidsForKids.Controllers
                                 // TODO: Fix ugly special case
                                 if (filter.Key == "Donor")
                                 {
-                                    if ((item.BusinessName == null || item.PersonName == null) ||
+                                    if ((item.BusinessName == null || item.Donors == null) ||
                                         (item.BusinessName.IndexOf(filter.Value, StringComparison.CurrentCultureIgnoreCase) == -1 &&
-                                        item.PersonName.IndexOf(filter.Value, StringComparison.CurrentCultureIgnoreCase) == -1))
+                                        item.Donors.IndexOf(filter.Value, StringComparison.CurrentCultureIgnoreCase) == -1))
 
                                         procurements.Remove(item);
 
@@ -257,14 +257,14 @@ namespace BidsForKids.Controllers
                         reportHtml.AppendLine("<td>");
                         if (string.IsNullOrEmpty(row.BusinessName) == false)
                             reportHtml.Append(row.BusinessName);
-                        if (row.PersonName != null && string.IsNullOrEmpty(row.PersonName.Trim()) == false)
+                        if (row.Donors != null && string.IsNullOrEmpty(row.Donors.Trim()) == false)
                         {
                             if (string.IsNullOrEmpty(row.BusinessName) == false)
-                                reportHtml.Append(": " + row.PersonName);
+                                reportHtml.Append(": " + row.Donors);
                             else
-                                reportHtml.Append(row.PersonName);
+                                reportHtml.Append(row.Donors);
                         }
-                        if (string.IsNullOrEmpty(row.BusinessName) == true && string.IsNullOrEmpty(row.PersonName) == true)
+                        if (string.IsNullOrEmpty(row.BusinessName) == true && string.IsNullOrEmpty(row.Donors) == true)
                         {
                             reportHtml.AppendLine("&nbsp;");
                         }

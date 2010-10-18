@@ -71,12 +71,14 @@ namespace BidsForKids.Controllers
         public ActionResult BusinessIndex()
         {
             SetupIndex("Business");
+            ViewData["DonorDisplayField"] = "BusinessName";
             return View("Index");
         }
 
         public ActionResult ParentIndex()
         {
             SetupIndex("Parent");
+            ViewData["DonorDisplayField"] = "Donors";
             return View("Index");
         }
 
