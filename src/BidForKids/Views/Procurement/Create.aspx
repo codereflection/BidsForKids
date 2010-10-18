@@ -1,59 +1,77 @@
 <%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<BidsForKids.Data.Models.Procurement>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
-    Create <%= ViewData["CreateType"] %> Procurement
+    Create
+    <%= ViewData["CreateType"] %>
+    Procurement
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <h2>
-        Create <%= ViewData["CreateType"] %> Procurement</h2>
-        <script type="text/javascript">
-            checkItemNumber = function () {
-                var itemValue = $("#ItemNumber").val();
-                var itemId = -1;
-                $.ajax({
-                    url: '<%= Url.Action("CheckItemNumber") %>',
-                    data: { id: itemId, itemNumber: itemValue },
-                    type: 'POST',
-                    dataType: 'text',
-                    success: function (data, textStatus, XMLHttpRequest) {
-                        if (data != 'false') {
-                            alert(data);
-                        }
-                    },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        alert('Error: ' + textStatus);
+        Create
+        <%= ViewData["CreateType"] %>
+        Procurement</h2>
+    <script type="text/javascript">
+        GetItemNumber = function () {
+            if ($("#ItemNumberPrefix").val().length === 0)
+                return "";
+
+            return $("#ItemNumberPrefix").val() + " - " + $.trim($("#ItemNumber").val());
+        }
+
+        checkItemNumber = function () {
+            var itemValue = GetItemNumber();
+            var itemId = -1;
+            $.ajax({
+                url: '<%= Url.Action("CheckItemNumber") %>',
+                data: { id: itemId, itemNumber: itemValue },
+                type: 'POST',
+                dataType: 'text',
+                success: function (data, textStatus, XMLHttpRequest) {
+                    if (data != 'false') {
+                        alert(data);
                     }
-                });
-            }
-
-            getLastItemNumber = function () {
-                var itemValue = $("#ItemNumber").val();
-
-                if (itemValue.indexOf(" -") === -1) {
-                    return;
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert('Error: ' + textStatus);
                 }
+            });
+        }
 
-                var itemId = -1;
-                $.ajax({
-                    url: '<%= Url.Action("GetLastItemNumber") %>',
-                    data: { id: itemId, itemNumber: itemValue },
-                    type: 'POST',
-                    dataType: 'text',
-                    success: function (data, textStatus, XMLHttpRequest) {
-                        if ($.trim(data).length > 0) {
-                            $("#LastItemNumber").text('Last similar item number: "' + data + '"');
-                        }
-                    },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        alert('Error: ' + textStatus);
-                    }
-                });
+        getLastItemNumber = function () {
+            var itemNumberPrefix = $("#ItemNumberPrefix").val();
+
+            if (itemNumberPrefix.length === 0) {
+                return;
             }
 
-            $(document).ready(function () {
-                $("#ItemNumber").blur(checkItemNumber).keyup(getLastItemNumber);
+            var auctionId = $("#Auction_ID").val();
+
+            var itemId = -1;
+            $.ajax({
+                url: '<%= Url.Action("GetLastItemNumber") %>',
+                data: { id: itemId, itemNumberPrefix: itemNumberPrefix, auctionId: auctionId },
+                type: 'POST',
+                dataType: 'text',
+                success: function (data, textStatus, XMLHttpRequest) {
+                    if ($.trim(data).length > 0)
+                        $("#LastItemNumber").text('Last similar item number: "' + data + '"');
+                    else
+                        $("#LastItemNumber").text('No procurements have been assigned this item number prefix for the selected auction year');
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert('Error: ' + textStatus);
+                }
             });
-        </script>
+        }
+
+        $(document).ready(function () {
+            $("#ItemNumber").setMask({
+                mask: '99999'
+            });
+            $("#ItemNumberPrefix").change(getLastItemNumber);
+            $("#ItemNumber").blur(checkItemNumber).keyup(getLastItemNumber);
+        });
+    </script>
     <%= Html.ValidationSummary("Create was unsuccessful. Please correct the errors and try again.") %>
     <% using (Html.BeginForm())
        {%>
@@ -97,8 +115,9 @@
         <p>
             <label for="ItemNumber">
                 Item #:</label>
-            <%= Html.TextBox("ItemNumber", null, new { maxlength = 20 })%>&nbsp;
-            <span id="LastItemNumber"></span>
+            <%= Html.DropDownList("ItemNumberPrefix", (List<SelectListItem>)ViewData["ItemNumberPrefixes"], string.Empty)%>&nbsp;-&nbsp;
+            <%= Html.TextBox("ItemNumber", null, new { maxlength = 20 })%>&nbsp; <span id="LastItemNumber">
+            </span>
             <%= Html.ValidationMessage("ItemNumber", "*")%>
         </p>
         <p>

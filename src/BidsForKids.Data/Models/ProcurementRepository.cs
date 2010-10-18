@@ -681,7 +681,7 @@ namespace BidsForKids.Data.Models
         }
 
 
-        public bool CheckForExistingItemNumber(int id, string itemNumber)
+        public bool ItemNumberExists(int id, string itemNumber)
         {
             var query = from P in dc.Procurements
                          where P.ItemNumber == itemNumber
@@ -691,12 +691,13 @@ namespace BidsForKids.Data.Models
             return query.Count() != 0;
         }
 
-        public string CheckForLastSimilarItemNumber(int id, string itemNumber)
+        public string CheckForLastSimilarItemNumber(int id, string itemNumberPrefix, int auctionId)
         {
-            var query = from P in dc.Procurements
-                         where P.ItemNumber.StartsWith(itemNumber) && P.Procurement_ID != id
-                         orderby P.ItemNumber descending
-                         select P.ItemNumber;
+            var query =
+                dc.Procurements.Where(P => P.ItemNumber.StartsWith(itemNumberPrefix) 
+                                            && P.Procurement_ID != id
+                                            && P.ContactProcurement.Auction_ID == auctionId)
+                    .OrderByDescending(P => P.ItemNumber).Select(P => P.ItemNumber);
 
             return query.Count() == 0 ? "" : query.First();
         }

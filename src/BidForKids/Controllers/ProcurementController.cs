@@ -226,6 +226,7 @@ namespace BidsForKids.Controllers
             ViewData["Procurer_ID"] = GetProcurerSelectList(null);
             ViewData["CertificateOptions"] = GetCertificateSelectListItems();
             ViewData["CreateType"] = createType ?? "";
+            ViewData["ItemNumberPrefixes"] = SetupItemNumberPrefixSelectListItems();
             if (string.IsNullOrEmpty(createType) == false)
             {
                 ViewData["ReturnToUrl"] = Server.UrlEncode(Url.Action("CreateByType", new { id = createType }));
@@ -254,6 +255,25 @@ namespace BidsForKids.Controllers
                                       new SelectListItem() {Text = "Provided", Value = "Provided"}
                                   };
             return certOptions;
+        }
+
+        private static List<SelectListItem> SetupItemNumberPrefixSelectListItems()
+        {
+            var result = new List<SelectListItem>
+                                  {
+                                        new SelectListItem() {Text = "des", Value = "des"},
+                                        new SelectListItem() {Text = "din", Value = "din"},
+                                        new SelectListItem() {Text = "ent", Value = "ent"},
+                                        new SelectListItem() {Text = "fam", Value = "fam"},
+                                        new SelectListItem() {Text = "hbb", Value = "hbb"},
+                                        new SelectListItem() {Text = "hng", Value = "hng"},
+                                        new SelectListItem() {Text = "mis", Value = "mis"},
+                                        new SelectListItem() {Text = "prt", Value = "prt"},
+                                        new SelectListItem() {Text = "spr", Value = "spr"},
+                                        new SelectListItem() {Text = "srv", Value = "srv"},
+                                        new SelectListItem() {Text = "vac", Value = "vac"}
+                                  };
+            return result;
         }
 
         private void SetupEditViewData(ContactProcurement contactProcurement)
@@ -388,6 +408,8 @@ namespace BidsForKids.Controllers
                 UpdateModel(newProcurement.ContactProcurement,
                     ContactProcurementColumns());
 
+                newProcurement.ItemNumber = collection["ItemNumberPrefix"] + " - " + collection["ItemNumber"];
+
                 SetupProcurementDonors(newProcurement, collection);
 
                 var actionToRedirectTo = "";
@@ -407,7 +429,7 @@ namespace BidsForKids.Controllers
             {
                 Elmah.ErrorSignal.FromCurrentContext().Raise(ex);
 
-                return View();
+                return View("CreateByType", new { id = collection["ProcurementType"] });
             }
         }
 
@@ -567,17 +589,16 @@ namespace BidsForKids.Controllers
 
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult CheckItemNumber(int id, FormCollection collection)
+        public ActionResult CheckItemNumber(int id, string itemNumber)
         {
             try
             {
-                var result = new ContentResult();
-
-                var itemNumber = collection["itemNumber"];
-
-                result.Content = factory.CheckForExistingItemNumber(id, itemNumber) == true
-                                     ? itemNumber + " already exists in the database"
-                                     : "false";
+                var result = new ContentResult
+                                 {
+                                     Content = factory.ItemNumberExists(id, itemNumber)
+                                                   ? itemNumber + " already exists in the database"
+                                                   : "false"
+                                 };
 
                 return result;
             }
@@ -593,17 +614,16 @@ namespace BidsForKids.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult GetLastItemNumber(int id, FormCollection collection)
+        public ActionResult GetLastItemNumber(int id, string itemNumberPrefix, int auctionId)
         {
-            var result = new ContentResult();
+            var lastSimilar = factory.CheckForLastSimilarItemNumber(id, itemNumberPrefix, auctionId);
 
-            var itemNumber = collection["itemNumber"];
-
-            var lastSimilar = factory.CheckForLastSimilarItemNumber(id, itemNumber);
-
-            result.Content =
-                string.IsNullOrEmpty(lastSimilar) == false ?
-                lastSimilar : string.Empty;
+            var result = new ContentResult
+                             {
+                                 Content = string.IsNullOrEmpty(lastSimilar) == false
+                                               ? lastSimilar
+                                               : string.Empty
+                             };
 
             return result;
         }
