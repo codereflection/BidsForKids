@@ -15,7 +15,7 @@
             if ($("#ItemNumberPrefix").val().length === 0)
                 return "";
 
-            return $("#ItemNumberPrefix").val() + " - " + $.trim($("#ItemNumber").val());
+            return $("#ItemNumberPrefix").val() + " - " + $.trim($("#ItemNumberSuffix").val());
         }
 
         checkItemNumber = function () {
@@ -65,11 +65,11 @@
         }
 
         $(document).ready(function () {
-            $("#ItemNumber").setMask({
+            $("#ItemNumberSuffix").setMask({
                 mask: '99999'
             });
             $("#ItemNumberPrefix").change(getLastItemNumber);
-            $("#ItemNumber").blur(checkItemNumber).keyup(getLastItemNumber);
+            $("#ItemNumberSuffix").blur(checkItemNumber).keyup(getLastItemNumber);
         });
     </script>
     <%= Html.ValidationSummary("Create was unsuccessful. Please correct the errors and try again.") %>
@@ -113,12 +113,12 @@
             <%= Html.ValidationMessage("AuctionNumber", "*")%>
         </p>
         <p>
-            <label for="ItemNumber">
+            <label for="ItemNumberSuffix">
                 Item #:</label>
             <%= Html.DropDownList("ItemNumberPrefix", (List<SelectListItem>)ViewData["ItemNumberPrefixes"], string.Empty)%>&nbsp;-&nbsp;
-            <%= Html.TextBox("ItemNumber", null, new { maxlength = 20 })%>&nbsp; <span id="LastItemNumber">
-            </span>
-            <%= Html.ValidationMessage("ItemNumber", "*")%>
+            <%= Html.TextBox("ItemNumberSuffix", null, new { maxlength = 20 })%>&nbsp;
+            <span id="LastItemNumber"></span>
+            <%= Html.ValidationMessage("ItemNumberSuffix", "*")%>
         </p>
         <p>
             <label for="Donation">
@@ -169,6 +169,6 @@
     </fieldset>
     <% } %>
     <div>
-        <%=Html.ActionLink("Back to List", "Index") %>
+        <%=Html.ActionLink("Back to List", ViewData["CreateType"] + "Index") %>
     </div>
 </asp:Content>

@@ -6,8 +6,15 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <script type="text/javascript" src="../../Scripts/MicrosoftAjax.js"></script>
     <script type="text/javascript">
+        GetItemNumber = function () {
+            if ($("#ItemNumberPrefix").val().length === 0)
+                return "";
+
+            return $("#ItemNumberPrefix").val() + " - " + $.trim($("#ItemNumberSuffix").val());
+        }
+
         checkItemNumber = function () {
-            var itemValue = $("#ItemNumber").val();
+            var itemValue = GetItemNumber();
             var itemId = $("#Procurement_ID").val();
             $.ajax({
                 url: '<%= Url.Action("CheckItemNumber") %>',
@@ -26,22 +33,25 @@
         }
 
         getLastItemNumber = function () {
-            var itemValue = $("#ItemNumber").val();
+            var itemNumberPrefix = $("#ItemNumberPrefix").val();
 
-            if (itemValue.indexOf(" -") === -1) {
+            if (itemNumberPrefix.length === 0) {
                 return;
             }
 
-            var itemId = $("#Procurement_ID").val();
+            var auctionId = $("#Auction_ID").val();
+
+            var itemId = -1;
             $.ajax({
                 url: '<%= Url.Action("GetLastItemNumber") %>',
-                data: { id: itemId, itemNumber: itemValue },
+                data: { id: itemId, itemNumberPrefix: itemNumberPrefix, auctionId: auctionId },
                 type: 'POST',
                 dataType: 'text',
                 success: function (data, textStatus, XMLHttpRequest) {
-                    if ($.trim(data).length > 0) {
+                    if ($.trim(data).length > 0)
                         $("#LastItemNumber").text('Last similar item number: "' + data + '"');
-                    }
+                    else
+                        $("#LastItemNumber").text('No procurements have been assigned this item number prefix for the selected auction year');
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     alert('Error: ' + textStatus);
@@ -73,7 +83,12 @@
         }
 
         $(document).ready(function () {
-            $('#ItemNumber').blur(checkItemNumber).keyup(getLastItemNumber);
+            $("#ItemNumberSuffix").setMask({
+                mask: '99999'
+            });
+
+            $("#ItemNumberPrefix").change(getLastItemNumber);
+            $('#ItemNumberSuffix').blur(checkItemNumber).keyup(getLastItemNumber);
 
             $('#Donor_ID').change(ChangeViewDonorLink);
 
@@ -173,11 +188,12 @@
             <%= Html.ValidationMessage("AuctionNumber", "*")%>
         </p>
         <p>
-            <label for="ItemNumber">
+            <label for="ItemNumberSuffix">
                 Item #:</label>
-            <%= Html.TextBox("ItemNumber", Model.ItemNumber, new { maxlength = 20 })%>&nbsp;
+            <%= Html.DropDownList("ItemNumberPrefix", (List<SelectListItem>)ViewData["ItemNumberPrefixes"], string.Empty)%>&nbsp;-&nbsp;
+            <%= Html.TextBox("ItemNumberSuffix", Model.ItemNumberSuffix, new { maxlength = 20 })%>&nbsp;
             <span id="LastItemNumber"></span>
-            <%= Html.ValidationMessage("ItemNumber", "*")%>
+            <%= Html.ValidationMessage("ItemNumberSuffix", "*")%>
         </p>
         <p>
             <label for="Donation">

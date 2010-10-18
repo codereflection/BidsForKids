@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Data.Linq;
 using System.Linq;
 using AutoMapper;
 using BidsForKids.Data.Models;
@@ -15,6 +14,8 @@ namespace BidsForKids.ViewModels
         public int Quantity { get; set; }
         public string AuctionNumber { get; set; }
         public string ItemNumber { get; set; }
+        public string ItemNumberSuffix { get; set; }
+        public string ItemNumberPrefix { get; set; }
         public double EstimatedValue { get; set; }
         public int CategoryId { get; set; }
         public DateTime ModifiedOn { get; set; }
@@ -38,7 +39,9 @@ namespace BidsForKids.ViewModels
         {
             return Mapper.CreateMap<Procurement, ProcurementViewModel>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(p => p.Procurement_ID))
-                .ForMember(dest => dest.Donors, 
+                .ForMember(dest => dest.ItemNumberPrefix, opt => opt.MapFrom(p => string.IsNullOrEmpty(p.ItemNumber) ? string.Empty : p.ItemNumber.Split(new[] { " - " }, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault()))
+                .ForMember(dest => dest.ItemNumberSuffix, opt => opt.MapFrom(p => string.IsNullOrEmpty(p.ItemNumber) ? string.Empty : p.ItemNumber.Split(new[] { " - " }, StringSplitOptions.RemoveEmptyEntries).LastOrDefault()))
+                .ForMember(dest => dest.Donors,
                            opt => opt.MapFrom(p =>
                                                 Mapper.Map<IEnumerable<Donor>, IEnumerable<ProcurementDonorViewModel>>(p.ProcurementDonors.Select(x => x.Donor))
                                               ));

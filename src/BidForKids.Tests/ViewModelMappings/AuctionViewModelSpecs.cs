@@ -75,6 +75,7 @@ namespace BidsForKids.Tests.ViewModelMappings
 								{
 									procurement = Builder<Procurement>
 												  .CreateNew()
+												  .With(x => x.ItemNumber = "mis - 100")
 												  .Build();
 									procurement.ProcurementDonors.Add(Builder<ProcurementDonor>.CreateNew().Build());
 									procurement.ProcurementDonors.First().Donor = Builder<Donor>.CreateNew().Build();
@@ -99,6 +100,12 @@ namespace BidsForKids.Tests.ViewModelMappings
 
 		It should_have_the_correct_number_of_donors = () =>
 			result.Donors.Count().ShouldEqual(procurement.ProcurementDonors.Count);
+
+        It should_have_the_correct_item_number_prefix = () =>
+            result.ItemNumberPrefix.ShouldEqual("mis");
+
+        It should_have_the_correct_item_number_suffix = () =>
+            result.ItemNumberSuffix.ShouldEqual("100");
 	}
 
 	public class when_mapping_a_donor_to_a_procurement_donor_view_model

@@ -286,11 +286,8 @@ namespace BidsForKids.Controllers
             if (contactProcurement != null)
             {
                 auctionId = contactProcurement.Auction_ID;
-                //ContactId = contactProcurement.Donor_ID;
                 categoryId = contactProcurement.Procurement.Category_ID;
                 procurerId = contactProcurement.Procurer_ID;
-                //ViewData["Donor_ID"] = GetDonorsSelectList(ContactId, contactProcurement.Procurement.ProcurementType.DonorType_ID);
-                //ViewData["Donors"] = GetDonorsSelectList(null, contactProcurement.Procurement.ProcurementType.DonorType_ID);
             }
             else
                 ViewData["Donors"] = GetDonorsSelectList(contactId, null);
@@ -299,6 +296,7 @@ namespace BidsForKids.Controllers
             ViewData["Category_ID"] = GetCategoriesSelectList(categoryId);
             ViewData["Procurer_ID"] = GetProcurerSelectList(procurerId);
             ViewData["CertificateOptions"] = GetCertificateSelectListItems();
+            ViewData["ItemNumberPrefixes"] = SetupItemNumberPrefixSelectListItems();
         }
 
 
