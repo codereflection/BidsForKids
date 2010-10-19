@@ -27,6 +27,7 @@ namespace BidsForKids
 
         protected void Application_Start()
         {
+            AreaRegistration.RegisterAllAreas();
             RegisterRoutes(RouteTable.Routes);
             Bootstrapper.ConfigureStructureMap();
             ControllerBuilder.Current.SetControllerFactory(new StructureMapControllerFactory());
