@@ -9,7 +9,7 @@ using BidsForKids.ViewModels;
 
 namespace BidsForKids.Controllers
 {
-
+    [Authorize(Roles = "Administrator, Procurements")]
     public class ProcurementController : BidsForKidsControllerBase
     {
         public ProcurementController()

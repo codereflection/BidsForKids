@@ -3,6 +3,7 @@ using BidsForKids.Data.Models;
 
 namespace BidsForKids.Controllers
 {
+    [Authorize(Roles = "Administrator, Procurements")]
     public class ProcurerController : Controller
     {
         private IProcurementRepository factory;

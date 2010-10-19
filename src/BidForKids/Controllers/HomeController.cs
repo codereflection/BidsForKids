@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using BidsForKids.Data.Models;
 
 namespace BidsForKids.Controllers
@@ -27,7 +23,7 @@ namespace BidsForKids.Controllers
 
         public ActionResult Index()
         {
-            ViewData["Message"] = "Welcome to the Gatewood Elementary 'Bid For Kids' Auction Procurement Database!";
+            ViewData["Message"] = "Welcome to the Gatewood Elementary 'Bids For Kids' Auction Procurement Database!";
 
             return View();
         }

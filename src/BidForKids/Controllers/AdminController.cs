@@ -6,6 +6,7 @@ using BidsForKids.Data.Models;
 namespace BidsForKids.Controllers
 {
     [HandleError]
+    [Authorize(Roles = "Administrator, Procurements")]
     public class AdminController : Controller
     {
         public ActionResult Menu()

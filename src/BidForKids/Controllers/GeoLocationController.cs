@@ -4,6 +4,7 @@ using BidsForKids.Data.Models;
 
 namespace BidsForKids.Controllers
 {
+    [Authorize(Roles = "Administrator, Procurements")]
     public class GeoLocationController : Controller
     {
         private IProcurementRepository factory;

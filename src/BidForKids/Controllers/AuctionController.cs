@@ -9,6 +9,7 @@ using BidsForKids.ViewModels;
 
 namespace BidsForKids.Controllers
 {
+    [Authorize(Roles = "Administrator, Procurements")]
     public class AuctionController : Controller
     {
         private readonly IAuctionRepository _repo;

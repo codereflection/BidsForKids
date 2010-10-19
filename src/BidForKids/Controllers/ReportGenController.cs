@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -10,6 +9,7 @@ using BidsForKids.ViewModels;
 
 namespace BidsForKids.Controllers
 {
+    [Authorize(Roles = "Administrator, Procurements")]
     public class ReportGenController : BidsForKidsControllerBase
     {
         private readonly IProcurementRepository _repo;

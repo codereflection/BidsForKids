@@ -12,6 +12,7 @@ using BidsForKids.Data.Models.SerializableObjects;
 
 namespace BidsForKids.Controllers
 {
+    [Authorize(Roles = "Administrator, Procurements")]
     public class ReportController : Controller
     {
         private IProcurementRepository factory;
