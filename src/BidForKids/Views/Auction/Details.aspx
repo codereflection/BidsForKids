@@ -12,19 +12,19 @@
         <legend>Fields</legend>
         
         <div class="display-label">Auction_ID</div>
-        <div class="display-field"><%: Model.Id %></div>
+        <div class="display-field"><%= Model.Id %></div>
         
         <div class="display-label">Year</div>
-        <div class="display-field"><%: Model.Year %></div>
+        <div class="display-field"><%= Model.Year %></div>
         
         <div class="display-label">Name</div>
-        <div class="display-field"><%: Model.Name %></div>
+        <div class="display-field"><%= Model.Name %></div>
         
     </fieldset>
     <p>
 
-        <%: Html.ActionLink("Edit", "Edit", new { id=Model.Id }) %> |
-        <%: Html.ActionLink("Back to List", "Index") %>
+        <%= Html.ActionLink("Edit", "Edit", new { id=Model.Id }) %> |
+        <%= Html.ActionLink("Back to List", "Index") %>
     </p>
 
 </asp:Content>

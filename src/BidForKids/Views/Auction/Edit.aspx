@@ -9,33 +9,33 @@
 	<h2>Edit</h2>
 
 	<% using (Html.BeginForm()) {%>
-		<%: Html.ValidationSummary(true) %>
+		<%= Html.ValidationSummary(true) %>
 		
 		<fieldset>
 			<legend>Fields</legend>
 			
 			<div class="editor-label">
-				<%: Html.LabelFor(model => model.Id) %>
+				<%= Html.LabelFor(model => model.Id) %>
 			</div>
 			<div class="editor-field">
-				<%: Html.TextBoxFor(model => model.Id) %>
-				<%: Html.ValidationMessageFor(model => model.Id) %>
+				<%= Html.TextBoxFor(model => model.Id) %>
+				<%= Html.ValidationMessageFor(model => model.Id) %>
 			</div>
 			
 			<div class="editor-label">
-				<%: Html.LabelFor(model => model.Year) %>
+				<%= Html.LabelFor(model => model.Year) %>
 			</div>
 			<div class="editor-field">
-				<%: Html.TextBoxFor(model => model.Year) %>
-				<%: Html.ValidationMessageFor(model => model.Year) %>
+				<%= Html.TextBoxFor(model => model.Year) %>
+				<%= Html.ValidationMessageFor(model => model.Year) %>
 			</div>
 			
 			<div class="editor-label">
-				<%: Html.LabelFor(model => model.Name) %>
+				<%= Html.LabelFor(model => model.Name) %>
 			</div>
 			<div class="editor-field">
-				<%: Html.TextBoxFor(model => model.Name) %>
-				<%: Html.ValidationMessageFor(model => model.Name) %>
+				<%= Html.TextBoxFor(model => model.Name) %>
+				<%= Html.ValidationMessageFor(model => model.Name) %>
 			</div>
 			
 			<p>
@@ -46,7 +46,7 @@
 	<% } %>
 
 	<div>
-		<%: Html.ActionLink("Back to List", "Index") %>
+		<%= Html.ActionLink("Back to List", "Index") %>
 	</div>
 
 </asp:Content>

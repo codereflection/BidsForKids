@@ -26,18 +26,18 @@
 	
 		<tr>
 			<td>
-				<%: Html.ActionLink("Edit", "Edit", new { id=item.Id }) %> |
-				<%: Html.ActionLink("Details", "Details", new { id=item.Id })%> |
-				<%: Html.ActionLink("Delete", "Delete", new { id=item.Id })%>
+				<%= Html.ActionLink("Edit", "Edit", new { id=item.Id }) %> |
+				<%= Html.ActionLink("Details", "Details", new { id=item.Id })%> |
+				<%= Html.ActionLink("Delete", "Delete", new { id=item.Id })%>
 			</td>
 			<td>
-				<%: item.Id %>
+				<%= item.Id %>
 			</td>
 			<td>
-				<%: item.Year %>
+				<%= item.Year %>
 			</td>
 			<td>
-				<%: item.Name %>
+				<%= item.Name %>
 			</td>
 		</tr>
 	
@@ -46,7 +46,7 @@
 	</table>
 
 	<p>
-		<%: Html.ActionLink("Create New", "Create") %>
+		<%= Html.ActionLink("Create New", "Create") %>
 	</p>
 
 </asp:Content>
