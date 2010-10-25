@@ -219,7 +219,10 @@ namespace BidsForKids.Data.Models
                           LEFT JOIN Procurer ON CP.Procurer_ID = Procurer.Procurer_ID
                           where ";
             var paramCount = 0;
-            foreach (var item in searchParams.Keys.ToList())
+
+            var SpecialKeys = new[] {"Donors"};
+
+            foreach (var item in searchParams.Keys.Where(x => !SpecialKeys.Contains(x)).ToList())
             {
                 var field = item;
                 if (paramCount > 0)
@@ -255,7 +258,6 @@ namespace BidsForKids.Data.Models
                     field = "Category.CategoryName";
                 }
 
-
                 if (field.IndexOf("_ID") > 0)
                 {
                     sql += field + " = {" + paramCount + "} ";
@@ -272,6 +274,19 @@ namespace BidsForKids.Data.Models
 
                 paramCount += 1;
             }
+
+            if (searchParams.Count(x => x.Key.Equals("donors", StringComparison.CurrentCultureIgnoreCase)) > 0)
+            {
+                var key = searchParams.Where(x => x.Key.Equals("donors", StringComparison.CurrentCultureIgnoreCase)).First();
+                if (paramCount > 0)
+                    sql += " AND ";
+                sql += " (";
+                sql += " Donor.BusinessName LIKE '" + key.Value + "' OR ";
+                sql += " Donor.FirstName LIKE '" + key.Value + "' OR ";
+                sql += " Donor.LastName LIKE '" + key.Value + "'";
+                sql += " )";
+            }
+            
             sql += " order by " + sortIndex + " " + sortOrder;
             return sql;
         }

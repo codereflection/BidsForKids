@@ -115,43 +115,48 @@ namespace BidsForKids.Controllers
             return Json(lProcurement, JsonRequestBehavior.AllowGet);
         }
 
-        //public ActionResult GetProcurements(string _search, string nd, int page, int rows, string sidx, string sord)
+
         public ActionResult GetProcurements(string id)
         {
             var loadOptions = jqGridLoadOptions.GetLoadOptions(Request.QueryString);
 
-            var lResult = new JsonResult() { JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+            var result = new JsonResult() { JsonRequestBehavior = JsonRequestBehavior.AllowGet };
 
             // TODO: Should not have to fetch all of the rows here, need to refactor
-            List<SerializableProcurement> lRows = repository.GetSerializableProcurements(loadOptions);
+            var rows = repository.GetSerializableProcurements(loadOptions);
 
             if (loadOptions.sortIndex == null)
-                lRows = lRows.OrderByDescending(x => x.CreatedOn).ToList<SerializableProcurement>();
+                rows = rows.OrderByDescending(x => x.CreatedOn).ToList();
 
             if (string.IsNullOrEmpty(id) == false)
             {
-                ProcurementType procurementType = repository.GetProcurementTypeByName(id);
-                lRows = lRows.Where(x => x.ProcurementType_ID == procurementType.ProcurementType_ID).ToList<SerializableProcurement>();
+                var procurementType = repository.GetProcurementTypeByName(id);
+                rows = rows.Where(x => x.ProcurementType_ID == procurementType.ProcurementType_ID).ToList();
             }
 
-            var lTotalRows = lRows.Count;
+            var totalRows = rows.Count;
 
-            lRows = lRows.Skip((loadOptions.page - 1) * loadOptions.rows).Take(loadOptions.rows).ToList();
+            rows = rows.Skip((loadOptions.page - 1) * loadOptions.rows).Take(loadOptions.rows).ToList();
 
-            var lTotalPages = (int)Math.Ceiling((decimal)lTotalRows / (decimal)loadOptions.rows);
+            var totalPages = (int)Math.Ceiling((decimal)totalRows / (decimal)loadOptions.rows);
 
-            lResult.Data = new { total = lTotalPages, page = loadOptions.page, records = lTotalRows.ToString(), rows = lRows };
+            result.Data = new
+                              {
+                                  total = totalPages, 
+                                  loadOptions.page, 
+                                  records = totalRows.ToString(), 
+                                  rows
+                              };
 
-            return lResult;
+            return result;
         }
+
 
         public ActionResult Deleted()
         {
             return null;
         }
 
-        //
-        // GET: /Procurement/Delete/5
 
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Delete(int? id)
