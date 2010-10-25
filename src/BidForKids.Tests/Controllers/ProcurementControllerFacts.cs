@@ -109,7 +109,7 @@ namespace BidsForKids.Tests.Controllers
                 var viewResult = Assert.IsType<ViewResult>(result);
                 Assert.Empty(viewResult.ViewName);
                 Assert.IsType<SelectList>(viewResult.ViewData["Auction_ID"]);
-                Assert.IsType<SelectList>(viewResult.ViewData["Donor_ID"]);
+                Assert.IsType<SelectList>(viewResult.ViewData["Donors"]);
                 Assert.IsType<SelectList>(viewResult.ViewData["Category_ID"]);
             }
 

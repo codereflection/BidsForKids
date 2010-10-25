@@ -33,7 +33,7 @@ namespace BidsForKids.Tests.Controllers
 
                 // Assert
                 var viewResult = Assert.IsType<ViewResult>(result);
-                Assert.Equal("Welcome to the Gatewood Elementary 'Bid For Kids' Auction Procurement Database!", viewResult.ViewData["Message"]);
+                Assert.Equal("Welcome to the Gatewood Elementary 'Bids For Kids' Auction Procurement Database!", viewResult.ViewData["Message"]);
                 Assert.Null(viewResult.ViewData.Model);
             }
 
