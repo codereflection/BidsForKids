@@ -22,12 +22,12 @@
 	<!-- Internal targets -->
 	<target name="run-unit-tests">
 		<mkdir dir="${build.dir}\test-reports" />
-		<exec program="regsvr32" workingdir="tools\NCover" commandline="/s CoverLib.dll" />
-		<exec program="tools\ncover\NCover.Console.exe" 
+		<exec program="regsvr32" workingdir="lib\NCover" commandline="/s CoverLib.dll" />
+		<exec program="lib\ncover\NCover.Console.exe" 
 			workingdir="${build.dir}\Debug\BidsForKids.Tests">
 			<arg value="//w &quot;.&quot;" />
 			<arg value="//x &quot;..\..\test-reports\Coverage.xml&quot;" />
-			<arg value="&quot;..\..\..\tools\xunit-1.5\xunit.console.x86.exe&quot;" />
+			<arg value="&quot;..\..\..\lib\xunit-1.5\xunit.console.x86.exe&quot;" />
 			<arg value="&quot;BidsForKids.Tests.dll&quot;" />
 			<arg value="/nunit &quot;..\..\test-reports\UnitTests.xml&quot;" />
 		</exec>
