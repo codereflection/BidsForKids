@@ -31,6 +31,10 @@
 			<arg value="&quot;BidsForKids.Tests.dll&quot;" />
 			<arg value="/nunit &quot;..\..\test-reports\UnitTests.xml&quot;" />
 		</exec>
+		
+		<exec program="lib\mspec\mspec.exe" >
+			<arg value="${build.dir}\Debug\BidsForKids.Tests\BidsForKids.Tests.dll" />
+		</exec>
 	</target>
 	
 	<target name="dist">
