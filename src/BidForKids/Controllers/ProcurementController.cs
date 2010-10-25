@@ -18,9 +18,9 @@ namespace BidsForKids.Controllers
             ProcurementViewModel.CreateDestinationMap();
         }
 
-        public ProcurementController(IProcurementRepository factory)
+        public ProcurementController(IProcurementRepository repository)
         {
-            this.factory = factory;
+            this.repository = repository;
             ProcurementDonorViewModel.CreateDestinationMaps();
             ProcurementViewModel.CreateDestinationMap();
         }
@@ -28,7 +28,7 @@ namespace BidsForKids.Controllers
         public ActionResult ProcurementList(int Year)
         {
             ViewData["Year"] = Year.ToString();
-            return View(factory.GetProcurements(Year));
+            return View(repository.GetProcurements(Year));
         }
 
         private void SetupIndex(string procurementType)
@@ -36,7 +36,7 @@ namespace BidsForKids.Controllers
             GetCategoryJSONString();
 
             ViewData["Auction_ID"] = GetAuctionSelectList(null);
-            var lAuctionQuery = factory.GetAuctions();
+            var lAuctionQuery = repository.GetAuctions();
             if (lAuctionQuery != null && lAuctionQuery.Count > 0)
             {
                 Auction lAuction = lAuctionQuery.OrderByDescending(x => x.Year).First();
@@ -91,7 +91,7 @@ namespace BidsForKids.Controllers
 
         private void GetCategoryJSONString()
         {
-            var categoryString = factory.GetCategories()
+            var categoryString = repository.GetCategories()
                                          .Aggregate("{ \"\": \"\",", (current, lCategory) => 
                                                                         current + String.Format("{0}:'{1}',", lCategory.Category_ID, lCategory.CategoryName));
 
@@ -110,7 +110,7 @@ namespace BidsForKids.Controllers
             }
 
             var lProcurement = SerializableProcurement.
-                ConvertProcurementToSerializableProcurement(factory.GetProcurement(id.Value));
+                ConvertProcurementToSerializableProcurement(repository.GetProcurement(id.Value));
 
             return Json(lProcurement, JsonRequestBehavior.AllowGet);
         }
@@ -123,14 +123,14 @@ namespace BidsForKids.Controllers
             var lResult = new JsonResult() { JsonRequestBehavior = JsonRequestBehavior.AllowGet };
 
             // TODO: Should not have to fetch all of the rows here, need to refactor
-            List<SerializableProcurement> lRows = factory.GetSerializableProcurements(loadOptions);
+            List<SerializableProcurement> lRows = repository.GetSerializableProcurements(loadOptions);
 
             if (loadOptions.sortIndex == null)
                 lRows = lRows.OrderByDescending(x => x.CreatedOn).ToList<SerializableProcurement>();
 
             if (string.IsNullOrEmpty(id) == false)
             {
-                ProcurementType procurementType = factory.GetProcurementTypeByName(id);
+                ProcurementType procurementType = repository.GetProcurementTypeByName(id);
                 lRows = lRows.Where(x => x.ProcurementType_ID == procurementType.ProcurementType_ID).ToList<SerializableProcurement>();
             }
 
@@ -163,7 +163,7 @@ namespace BidsForKids.Controllers
                     throw new ArgumentException("id did not have a value", "id");
                 }
 
-                var lResult = factory.DeleteProcurement((int)id);
+                var lResult = repository.DeleteProcurement((int)id);
 
                 var contentResult = new ContentResult {Content = lResult.ToString()};
 
@@ -190,7 +190,7 @@ namespace BidsForKids.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            return View(factory.GetProcurement((int)id));
+            return View(repository.GetProcurement((int)id));
         }
 
         //
@@ -215,7 +215,7 @@ namespace BidsForKids.Controllers
         {
             ViewData["Auction_ID"] = GetAuctionSelectList(null);
 
-            var procurementType = factory.GetProcurementTypeByName(createType);
+            var procurementType = repository.GetProcurementTypeByName(createType);
 
             if (Request != null && string.IsNullOrEmpty(Request.QueryString["Donor_ID"]) == false)
                 ViewData["Donor_ID"] = GetDonorsSelectList(int.Parse(Request.QueryString["Donor_ID"].ToString()), procurementType.DonorType_ID);
@@ -303,18 +303,18 @@ namespace BidsForKids.Controllers
 
         private SelectList GetAuctionSelectList(int? selectedValue)
         {
-            return new SelectList(factory.GetAuctions().OrderByDescending(x => x.Year), "Auction_ID", "Year", selectedValue);
+            return new SelectList(repository.GetAuctions().OrderByDescending(x => x.Year), "Auction_ID", "Year", selectedValue);
         }
 
 
 
         private SelectList GetDonorsSelectList(int? selectedValue, int? donorTypeID)
         {
-            var donors = factory.GetDonors();
+            var donors = repository.GetDonors();
 
             if (donorTypeID != null && donorTypeID != 0)
             {
-                var donorType = factory.GetDonorTypeByID(donorTypeID.Value);
+                var donorType = repository.GetDonorTypeByID(donorTypeID.Value);
 
                 // TODO: Refactor the logic to build a Business / Parent select list
                 switch (donorType.DonorTypeDesc)
@@ -354,13 +354,13 @@ namespace BidsForKids.Controllers
 
         private SelectList GetCategoriesSelectList(int? selectedValue)
         {
-            var categories = factory.GetCategories();
+            var categories = repository.GetCategories();
             return new SelectList(categories.OrderBy(x => x.CategoryName), "Category_ID", "CategoryName", selectedValue);
         }
 
         private SelectList GetProcurerSelectList(int? selectedValue)
         {
-            var lProcurers = factory.GetProcurers();
+            var lProcurers = repository.GetProcurers();
 
             var procurerList = from P in lProcurers
                                 select new
@@ -396,7 +396,7 @@ namespace BidsForKids.Controllers
 
             try
             {
-                var newProcurement = factory.GetNewProcurement();
+                var newProcurement = repository.GetNewProcurement();
                 var newContactProcurement = new ContactProcurement();
                 newProcurement.ContactProcurement = newContactProcurement;
 
@@ -414,12 +414,12 @@ namespace BidsForKids.Controllers
 
                 if (collection["procurementType"] != null)
                 {
-                    var procurementType = factory.GetProcurementTypeByName(collection["procurementType"]);
+                    var procurementType = repository.GetProcurementTypeByName(collection["procurementType"]);
                     newProcurement.ProcurementType_ID = procurementType.ProcurementType_ID;
                     actionToRedirectTo = collection["procurementType"];
                 }
 
-                factory.AddProcurement(newProcurement);
+                repository.AddProcurement(newProcurement);
 
                 return RedirectToAction(actionToRedirectTo + "Index");
             }
@@ -440,7 +440,7 @@ namespace BidsForKids.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            var procurement = factory.GetProcurement((int)id);
+            var procurement = repository.GetProcurement((int)id);
 
             SetupEditViewData(procurement.ContactProcurement);
 
@@ -472,7 +472,7 @@ namespace BidsForKids.Controllers
 
             try
             {
-                var procurement = factory.GetProcurement((int)id);
+                var procurement = repository.GetProcurement((int)id);
 
                 SetupEditViewData(procurement.ContactProcurement);
 
@@ -482,7 +482,7 @@ namespace BidsForKids.Controllers
                 UpdateModel<ContactProcurement>(procurement.ContactProcurement,
                     ContactProcurementColumns());
 
-                if (factory.SaveProcurement(procurement) == false)
+                if (repository.SaveProcurement(procurement) == false)
                 {
                     return this.JavaScript("alert('Error saving.');");
                     throw new ApplicationException("Unable to save procurement");
@@ -494,7 +494,7 @@ namespace BidsForKids.Controllers
             {
                 Elmah.ErrorSignal.FromCurrentContext().Raise(ex);
 
-                var procurement = factory.GetProcurement((int)id);
+                var procurement = repository.GetProcurement((int)id);
 
                 SetupEditViewData(procurement.ContactProcurement);
 
@@ -515,7 +515,7 @@ namespace BidsForKids.Controllers
             }
 
 
-            var procurement = factory.GetProcurement(id.Value);
+            var procurement = repository.GetProcurement(id.Value);
 
             if (procurement.Procurement_ID != id)
             {
@@ -532,7 +532,7 @@ namespace BidsForKids.Controllers
 
             UpdateProcurementDonors(procurement, collection);
 
-            if (factory.SaveProcurement(procurement) == false)
+            if (repository.SaveProcurement(procurement) == false)
             {
                 throw new ApplicationException("Unable to save procurement");
             }
@@ -555,7 +555,7 @@ namespace BidsForKids.Controllers
 
             newDonors.ForEach(id => procurement.ProcurementDonors.Add(new ProcurementDonor
                                                                           {
-                                                                              Donor       = factory.GetDonor(int.Parse(id)),
+                                                                              Donor       = repository.GetDonor(int.Parse(id)),
                                                                               Procurement = procurement
                                                                           }));
 
@@ -580,7 +580,7 @@ namespace BidsForKids.Controllers
 
             donors.ForEach(id => procurement.ProcurementDonors.Add(new ProcurementDonor
                                                                         {
-                                                                            Donor = factory.GetDonor(int.Parse(id)),
+                                                                            Donor = repository.GetDonor(int.Parse(id)),
                                                                             Procurement = procurement
                                                                         }));
         }
@@ -593,7 +593,7 @@ namespace BidsForKids.Controllers
             {
                 var result = new ContentResult
                                  {
-                                     Content = factory.ItemNumberExists(id, itemNumber)
+                                     Content = repository.ItemNumberExists(id, itemNumber)
                                                    ? itemNumber + " already exists in the database"
                                                    : "false"
                                  };
@@ -614,7 +614,7 @@ namespace BidsForKids.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult GetLastItemNumber(int id, string itemNumberPrefix, int auctionId)
         {
-            var lastSimilar = factory.CheckForLastSimilarItemNumber(id, itemNumberPrefix, auctionId);
+            var lastSimilar = repository.CheckForLastSimilarItemNumber(id, itemNumberPrefix, auctionId);
 
             var result = new ContentResult
                              {

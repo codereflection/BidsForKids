@@ -16,9 +16,9 @@ namespace BidsForKids.Controllers
             
         }
 
-        public DonorController(IProcurementRepository factory) 
+        public DonorController(IProcurementRepository repository) 
         {
-            this.factory = factory;
+            this.repository = repository;
         }
 
         //
@@ -33,7 +33,7 @@ namespace BidsForKids.Controllers
                                   JsonRequestBehavior = JsonRequestBehavior.AllowGet
                               };
 
-            List<SerializableDonor> lRows = factory.GetSerializableBusinesses(loadOptions);
+            List<SerializableDonor> lRows = repository.GetSerializableBusinesses(loadOptions);
 
             if (lRows == null)
                 throw new ApplicationException("Unable to load Donors list");
@@ -58,13 +58,13 @@ namespace BidsForKids.Controllers
 
             ViewData["ProcurerJsonString"] = GetProcurerJSONString();
             
-            return View(factory.GetDonors());
+            return View(repository.GetDonors());
         }
 
 
         private string GetGeoLocationJSONString()
         {
-            var lGeoLocations = factory.GetGeoLocations();
+            var lGeoLocations = repository.GetGeoLocations();
 
             var lGeoLocationString = "{ \"\": \"\",";
 
@@ -78,7 +78,7 @@ namespace BidsForKids.Controllers
 
         private string GetProcurerJSONString()
         {
-            var lProcurers = factory.GetProcurers();
+            var lProcurers = repository.GetProcurers();
 
             var lProcurerString = "{ \"\": \"\",";
 
@@ -105,19 +105,19 @@ namespace BidsForKids.Controllers
         {
             if (id.HasValue == true  && id > 0)
             {
-                var lDonors = factory.GetDonors().Where(x => x.GeoLocation_ID == id).OrderBy(x => x.BusinessName);
+                var lDonors = repository.GetDonors().Where(x => x.GeoLocation_ID == id).OrderBy(x => x.BusinessName);
 
                 return View(lDonors);
             }
             else if (id.HasValue == true && id == 0)
             {
-                var lDonors = factory.GetDonors().Where(x => x.GeoLocation_ID == null).OrderBy(x => x.BusinessName);
+                var lDonors = repository.GetDonors().Where(x => x.GeoLocation_ID == null).OrderBy(x => x.BusinessName);
 
                 return View(lDonors);
             }
             else
             {
-                var lDonors = factory.GetDonors().OrderBy(x => x.BusinessName);
+                var lDonors = repository.GetDonors().OrderBy(x => x.BusinessName);
 
                 return View(lDonors);
             }
@@ -128,7 +128,7 @@ namespace BidsForKids.Controllers
 
         public ActionResult Details(int id)
         {
-            return View(factory.GetDonor(id));
+            return View(repository.GetDonor(id));
         }
 
         //
@@ -170,7 +170,7 @@ namespace BidsForKids.Controllers
             {
                 SetupCreateViewData();
 
-                Donor lNewDonor = factory.GetNewDonor();
+                Donor lNewDonor = repository.GetNewDonor();
 
                 UpdateModel<Donor>(lNewDonor, new[] {
                     "Address",
@@ -195,9 +195,9 @@ namespace BidsForKids.Controllers
                     "Procurer_ID"
                 });
 
-                lNewDonor.DonorType_ID = factory.GetDonorTypeByName("Business").DonorType_ID;
+                lNewDonor.DonorType_ID = repository.GetDonorTypeByName("Business").DonorType_ID;
 
-                int lNewDonorID = factory.AddDonor(lNewDonor);
+                int lNewDonorID = repository.AddDonor(lNewDonor);
 
                 return ControllerHelper.ReturnToOrRedirectToIndex(this, lNewDonorID, "Donor_ID");
             }
@@ -209,13 +209,13 @@ namespace BidsForKids.Controllers
 
         private SelectList GetGeoLocationsSelectList(int? selectedValue)
         {
-            IEnumerable<GeoLocation> lGeoLocations = factory.GetGeoLocations();
+            IEnumerable<GeoLocation> lGeoLocations = repository.GetGeoLocations();
             return new SelectList(lGeoLocations.OrderBy(x => x.GeoLocationName), "GeoLocation_ID", "GeoLocationName", selectedValue);
         }
 
         private SelectList GetDonatesSelectList(int? selectedValue)
         {
-            IEnumerable<DonatesReference> lDonatesRef = factory.GetDonatesReferenceList();
+            IEnumerable<DonatesReference> lDonatesRef = repository.GetDonatesReferenceList();
             if (lDonatesRef != null)
                 return new SelectList(lDonatesRef, "Donates_ID", "Description", selectedValue ?? 2); // TODO: Fix hard coded 2 value for unknown Donates value                
             else
@@ -224,7 +224,7 @@ namespace BidsForKids.Controllers
 
         private SelectList GetProcurerSelectList(int? selectedValue)
         {
-            IEnumerable<Procurer> lProcurers = factory.GetProcurers();
+            IEnumerable<Procurer> lProcurers = repository.GetProcurers();
             var lProcurerQuery = from P in lProcurers
                                  select new {
                                      Procurer_ID = P.Procurer_ID,
@@ -239,11 +239,11 @@ namespace BidsForKids.Controllers
 
         public ActionResult Edit(int id)
         {
-            Donor lDonor = factory.GetDonor(id);
+            Donor lDonor = repository.GetDonor(id);
 
             SetupEditViewData(lDonor);
 
-            return View(factory.GetDonor(id));
+            return View(repository.GetDonor(id));
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
@@ -251,7 +251,7 @@ namespace BidsForKids.Controllers
         {
             try
             {
-                Donor lDonor = factory.GetDonor(id);
+                Donor lDonor = repository.GetDonor(id);
 
                 SetupEditViewData(lDonor);
 
@@ -278,7 +278,7 @@ namespace BidsForKids.Controllers
                     "Procurer_ID"
                 });
 
-                if (factory.SaveDonor(lDonor) == false)
+                if (repository.SaveDonor(lDonor) == false)
                 {
                     throw new ApplicationException("Unable to save Donor");
                 }
@@ -299,7 +299,7 @@ namespace BidsForKids.Controllers
         {
             try
             {
-                Donor lDonor = factory.GetDonor(id);
+                Donor lDonor = repository.GetDonor(id);
 
                 SetupEditViewData(lDonor);
 
@@ -326,7 +326,7 @@ namespace BidsForKids.Controllers
                     "Procurer_ID"
                 });
 
-                if (factory.SaveDonor(lDonor) == false)
+                if (repository.SaveDonor(lDonor) == false)
                 {
                     throw new ApplicationException("Unable to save changes to Business");
                 }
@@ -335,7 +335,7 @@ namespace BidsForKids.Controllers
             }
             catch
             {
-                return View(factory.GetDonor(id));
+                return View(repository.GetDonor(id));
             }
         }
     }
