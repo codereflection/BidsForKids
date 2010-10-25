@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using BidsForKids.Controllers;
 using BidsForKids.Data.Repositories;
 using SampleWebsite.Areas.UserAdministration.Controllers;
+using StructureMap;
 using StructureMap.Attributes;
 using StructureMap.Configuration.DSL;
 using BidsForKids.Data.Models;
@@ -14,7 +15,7 @@ namespace BidsForKids.Configuration
     {
         public BidsForKidsRegistry()
         {
-            ForRequestedType<IProcurementRepository>().TheDefault.Is.OfConcreteType<ProcurementRepository>()
+            For<IProcurementRepository>().Use<ProcurementRepository>()
                 .WithCtorArg("connectionString").EqualTo(
                     ConfigurationManager.ConnectionStrings["BidsForKidsConnectionString"].ConnectionString);
 
@@ -24,14 +25,12 @@ namespace BidsForKids.Configuration
                 .WithCtorArg("fileOrServerOrConnection")
                 .EqualTo(ConfigurationManager.ConnectionStrings["BidsForKidsConnectionString"].ConnectionString);
 
-            ForRequestedType<IUnitOfWork>()
-                .CacheBy(InstanceScope.Hybrid)
-                .TheDefault.Is.OfConcreteType<DatabaseUnitOfWork>();
+            For<IUnitOfWork>().HybridHttpOrThreadLocalScoped().Use<DatabaseUnitOfWork>();
 
             SelectConstructor(() => new UserAdministrationController());
-            ForConcreteType<UserAdministrationController>().Configure.WithName("User Administration Controller");
+            ForConcreteType<UserAdministrationController>().Configure.Named("User Administration Controller");
             SelectConstructor(() => new AccountController());
-            ForConcreteType<AccountController>().Configure.WithName("Account Controller");
+            ForConcreteType<AccountController>().Configure.Named("Account Controller");
 
             Scan(assemblyScanner =>
                 {
