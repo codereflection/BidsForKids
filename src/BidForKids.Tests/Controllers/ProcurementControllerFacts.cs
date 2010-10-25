@@ -4,7 +4,6 @@ using Xunit;
 using BidsForKids.Controllers;
 using BidsForKids.Data.Models;
 using Rhino.Mocks;
-using System.Collections.Generic;
 
 namespace BidsForKids.Tests.Controllers
 {
@@ -19,7 +18,7 @@ namespace BidsForKids.Tests.Controllers
                 var controller = new ProcurementController(_ProcurementFactory);
 
 
-                int parameter = (int)1;
+                const int parameter = 1;
                 var result = controller.Details(parameter);
 
 
@@ -34,7 +33,7 @@ namespace BidsForKids.Tests.Controllers
                 var controller = new ProcurementController(_ProcurementFactory);
 
 
-                int parameter = (int)1;
+                const int parameter = 1;
                 var result = controller.Details(parameter);
 
 
@@ -117,7 +116,7 @@ namespace BidsForKids.Tests.Controllers
             [Fact(Skip="Method too complicated, needs to be refactored")]
             public void ReturnsIndexViewAfterSave()
             {
-                IProcurementRepository factory = MockRepository.GenerateMock<IProcurementRepository>();
+                var factory = MockRepository.GenerateMock<IProcurementRepository>();
                 
                 factory.Stub(x => x.GetProcurement(1)).IgnoreArguments().Return(new Procurement { Procurement_ID = 1 });
                 var controller = SetupNewControllerWithMockContext<ProcurementController>(factory);

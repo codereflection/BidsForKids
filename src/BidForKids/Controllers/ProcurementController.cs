@@ -406,7 +406,7 @@ namespace BidsForKids.Controllers
                 UpdateModel(newProcurement.ContactProcurement,
                     ContactProcurementColumns());
 
-                newProcurement.ItemNumber = collection["ItemNumberPrefix"] + " - " + collection["ItemNumber"];
+                newProcurement.ItemNumber = collection["ItemNumberPrefix"] + " - " + collection["ItemNumberSuffix"];
 
                 SetupProcurementDonors(newProcurement, collection);
 
@@ -531,6 +531,8 @@ namespace BidsForKids.Controllers
                 ContactProcurementColumns());
 
             UpdateProcurementDonors(procurement, collection);
+
+            procurement.ItemNumber = collection["ItemNumberPrefix"] + " - " + collection["ItemNumberSuffix"];
 
             if (repository.SaveProcurement(procurement) == false)
             {

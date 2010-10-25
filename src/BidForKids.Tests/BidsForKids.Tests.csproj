@@ -109,6 +109,7 @@
     <Compile Include="Controllers\GeoLocationControllerFacts.cs" />
     <Compile Include="Controllers\HomeControllerFacts.cs" />
     <Compile Include="Controllers\ProcurementControllerFacts.cs" />
+    <Compile Include="Controllers\ProcurementControllerSpecs.cs" />
     <Compile Include="Controllers\ProcurementFactoryHelper.cs" />
     <Compile Include="Controllers\ReportGenCotrollerSpecs.cs" />
     <Compile Include="Data\AuctionRepositorySpecs.cs" />
