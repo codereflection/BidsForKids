@@ -1,6 +1,7 @@
 #rakefile.rb
 
 require 'rake'
+gem 'albacore', '=0.2.0.preview2'
 require 'albacore'
 
 task :default => [:full]
@@ -15,13 +16,12 @@ end
 
 msbuild :build do |msb|
 	msb.properties :configuration => :AutomatedRelease
-	msb.targets :Build
 	msb.solution = "src/BidsForKids.sln"
 end
 
 
 xunit :test do |xunit|
-	xunit.path_to_command = "lib/xunit-1.6.1/xunit.console.x86.exe"
+	xunit.command = "lib/xunit-1.6.1/xunit.console.x86.exe"
 	xunit.assembly = "build/BidsForKids.Tests.dll"
-	xunit.html_output = "../report/testReport.html"
+	xunit.html_output = "report"
 end
