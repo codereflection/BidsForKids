@@ -84,7 +84,7 @@
 
         $(document).ready(function () {
             $("#ItemNumberSuffix").setMask({
-                mask: '99999'
+                mask: '9****'
             });
 
             $("#ItemNumberPrefix").change(getLastItemNumber);
