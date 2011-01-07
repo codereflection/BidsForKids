@@ -12,3 +12,4 @@ logs/
 UpgradeLog*
 _UpgradeReport_Files/
 deploy/
+report/*
