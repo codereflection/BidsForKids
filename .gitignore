@@ -13,3 +13,4 @@ UpgradeLog*
 _UpgradeReport_Files/
 deploy/
 report/*
+*.Publish.xml
