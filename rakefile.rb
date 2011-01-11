@@ -1,16 +1,17 @@
 #rakefile.rb
 
 require 'rake'
-gem 'albacore', '=0.2.0.preview2'
+#gem 'albacore', '=0.2.0.preview2'
 require 'albacore'
 
 task :default => [:full]
 
 
-task :full => [:clean,:assemblyInfo,:build,:test]
+task :full => [:clean,:assemblyInfo,:build,:test,:publish]
 
 task :clean do
 	FileUtils.rm_rf 'build'
+	FileUtils.rm_rf 'publish'
 end
 
 
@@ -36,4 +37,14 @@ assemblyinfo :assemblyInfo do |asm|
 	asm.version = "1.2.1.2"
 	asm.file_version = "1.2.1.2"
 	asm.copyright = "Copyright (c)2010-2011 Gatewood Elementary PTA"
+end
+
+msbuild :publish do |msb|
+	msb.targets :ResolveReferences, :_CopyWebApplication
+	msb.properties(
+		:configuration => :AutomatedRelease,
+		:webprojectoutputdir => "../../publish/",
+		:outdir => "../../publish/bin/"
+	)
+	msb.solution = "src/BidForKids/BidsForKids.csproj"
 end
