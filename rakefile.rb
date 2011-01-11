@@ -7,7 +7,7 @@ require 'albacore'
 task :default => [:full]
 
 
-task :full => [:clean,:build,:test]
+task :full => [:clean,:assemblyInfo,:build,:test]
 
 task :clean do
 	FileUtils.rm_rf 'build'
@@ -24,4 +24,16 @@ xunit :test do |xunit|
 	xunit.command = "lib/xunit-1.6.1/xunit.console.x86.exe"
 	xunit.assembly = "build/BidsForKids.Tests.dll"
 	xunit.html_output = "report"
+end
+
+
+desc "Assembly Version Info Generator"
+assemblyinfo :assemblyInfo do |asm|
+	asm.output_file ="src/ProjectVersion.cs"
+	asm.title = "Bids For Kids Auction Management System"
+	asm.company_name = "Gatewood Elementary PTA"
+	asm.product_name = "Bids For Kids Auction Management System"
+	asm.version = "1.2.1.2"
+	asm.file_version = "1.2.1.2"
+	asm.copyright = "Copyright (c)2010-2011 Gatewood Elementary PTA"
 end
