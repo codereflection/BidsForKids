@@ -1,7 +1,6 @@
 #rakefile.rb
 
 require 'rake'
-#gem 'albacore', '=0.2.0.preview2'
 require 'albacore'
 
 task :default => [:full]
