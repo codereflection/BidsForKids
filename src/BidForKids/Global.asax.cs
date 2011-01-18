@@ -9,7 +9,7 @@ using StructureMap;
 
 namespace BidsForKids
 {
-    public class MvcApplication : HttpApplication
+    public class WebApplication : HttpApplication
     {
         public IUnitOfWork UnitOfWork { get; private set; }
 

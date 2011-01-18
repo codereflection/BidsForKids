@@ -1,7 +1,5 @@
-﻿using System.Web;
-using System.Web.Routing;
+﻿using System.Web.Routing;
 using Xunit;
-using BidsForKids;
 
 namespace BidsForKids.Tests.Routes
 {
@@ -11,12 +9,12 @@ namespace BidsForKids.Tests.Routes
         public void RouteWithControllerNoActionNoId()
         {
             // Arrange
-            StubContext context = new StubContext("~/controller1");
-            RouteCollection routes = new RouteCollection();
-            MvcApplication.RegisterRoutes(routes);
+            var context = new StubContext("~/controller1");
+            var routes = new RouteCollection();
+            WebApplication.RegisterRoutes(routes);
 
             // Act
-            RouteData routeData = routes.GetRouteData(context);
+            var routeData = routes.GetRouteData(context);
 
             // Assert
             Assert.NotNull(routeData);
@@ -29,12 +27,12 @@ namespace BidsForKids.Tests.Routes
         public void RouteWithControllerWithActionNoId()
         {
             // Arrange
-            StubContext context = new StubContext("~/controller1/action2");
-            RouteCollection routes = new RouteCollection();
-            MvcApplication.RegisterRoutes(routes);
+            var context = new StubContext("~/controller1/action2");
+            var routes = new RouteCollection();
+            WebApplication.RegisterRoutes(routes);
 
             // Act
-            RouteData routeData = routes.GetRouteData(context);
+            var routeData = routes.GetRouteData(context);
 
             // Assert
             Assert.NotNull(routeData);
@@ -47,9 +45,9 @@ namespace BidsForKids.Tests.Routes
         public void RouteWithControllerWithActionWithId()
         {
             // Arrange
-            StubContext context = new StubContext("~/controller1/action2/id3");
-            RouteCollection routes = new RouteCollection();
-            MvcApplication.RegisterRoutes(routes);
+            var context = new StubContext("~/controller1/action2/id3");
+            var routes = new RouteCollection();
+            WebApplication.RegisterRoutes(routes);
 
             // Act
             RouteData routeData = routes.GetRouteData(context);
@@ -65,12 +63,12 @@ namespace BidsForKids.Tests.Routes
         public void RouteWithTooManySegments()
         {
             // Arrange
-            StubContext context = new StubContext("~/a/b/c/d");
-            RouteCollection routes = new RouteCollection();
-            MvcApplication.RegisterRoutes(routes);
+            var context = new StubContext("~/a/b/c/d");
+            var routes = new RouteCollection();
+            WebApplication.RegisterRoutes(routes);
 
             // Act
-            RouteData routeData = routes.GetRouteData(context);
+            var routeData = routes.GetRouteData(context);
 
             // Assert
             Assert.Null(routeData);
@@ -80,12 +78,12 @@ namespace BidsForKids.Tests.Routes
         public void RouteForEmbeddedResource()
         {
             // Arrange
-            StubContext context = new StubContext("~/foo.axd/bar/baz/biff");
-            RouteCollection routes = new RouteCollection();
-            MvcApplication.RegisterRoutes(routes);
+            var context = new StubContext("~/foo.axd/bar/baz/biff");
+            var routes = new RouteCollection();
+            WebApplication.RegisterRoutes(routes);
 
             // Act
-            RouteData routeData = routes.GetRouteData(context);
+            var routeData = routes.GetRouteData(context);
 
             // Assert
             Assert.NotNull(routeData);

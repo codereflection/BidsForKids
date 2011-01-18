@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using BidsForKids.Data.Models;
 
 namespace BidsForKids.Controllers
@@ -57,6 +58,11 @@ namespace BidsForKids.Controllers
         public ActionResult GeoLocationReports()
         {
             return View(factory.GetGeoLocations());
+        }
+
+        public ActionResult WhatChanged()
+        {
+            return View();
         }
     }
 }

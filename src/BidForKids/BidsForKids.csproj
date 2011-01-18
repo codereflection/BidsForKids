@@ -185,6 +185,7 @@
     <Content Include="Views\Auction\Edit.aspx" />
     <Content Include="Views\Auction\Index.aspx" />
     <Content Include="Views\Home\Procurement.aspx" />
+    <Content Include="Views\Home\WhatChanged.aspx" />
     <Content Include="Views\Parent\Create.aspx" />
     <Content Include="Views\Parent\Details.aspx" />
     <Content Include="Views\Parent\Edit.aspx" />
