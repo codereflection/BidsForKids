@@ -12,17 +12,22 @@ namespace BidsForKids.Controllers
     [Authorize(Roles = "Administrator, Procurements")]
     public class ProcurementController : BidsForKidsControllerBase
     {
-        public ProcurementController()
+        private static void SetupMaps()
         {
             ProcurementDonorViewModel.CreateDestinationMaps();
+            ProcurementDetailsViewModel.CreateDestinationMap();
             EditableProcurementViewModel.CreateDestinationMap();
+        }
+        
+        public ProcurementController()
+        {
+            SetupMaps();
         }
 
         public ProcurementController(IProcurementRepository repository)
         {
             this.repository = repository;
-            ProcurementDonorViewModel.CreateDestinationMaps();
-            EditableProcurementViewModel.CreateDestinationMap();
+            SetupMaps();
         }
 
         public ActionResult ProcurementList(int Year)
@@ -79,7 +84,7 @@ namespace BidsForKids.Controllers
         public ActionResult ParentIndex()
         {
             SetupIndex("Parent");
-            SetViewDataDonorDisplayField("Parent");
+            SetViewDataDonorDisplayField("Parents");
             return View("Index");
         }
 
@@ -111,12 +116,9 @@ namespace BidsForKids.Controllers
                 throw new ArgumentNullException("id", "id cannot be null");
             }
 
-            var procurement = SerializableProcurement.
-                ConvertProcurementToSerializableProcurement(repository.GetProcurement(id.Value));
+            var result = Mapper.Map<Procurement, ProcurementDetailsViewModel>(repository.GetProcurement(id.Value));
 
-            SetViewDataDonorDisplayField(procurement.ProcurementType);
-
-            return Json(procurement, JsonRequestBehavior.AllowGet);
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         private void SetViewDataDonorDisplayField(string procurementType)

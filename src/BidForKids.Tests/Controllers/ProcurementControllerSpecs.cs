@@ -2,18 +2,19 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using BidsForKids.Controllers;
 using BidsForKids.Data.Models;
+using BidsForKids.ViewModels;
+using FizzWare.NBuilder;
 using Machine.Specifications;
 using NSubstitute;
 
 namespace BidsForKids.Tests.Controllers
 {
-    [Ignore]
     public abstract class with_a_procurement_controller
     {
         protected static ProcurementController controller;
         protected static IProcurementRepository repo;
         protected static FormCollection collection;
-        protected static int procurementId;
+        protected static int procurementId = 1;
 
         Establish context = () =>
                                 {
@@ -22,8 +23,41 @@ namespace BidsForKids.Tests.Controllers
                                     repo.GetAuctions().Returns(new List<Auction> { new Auction { Auction_ID = 1, Year = 2011 } });
                                     repo.GetCategories().Returns(new List<Category> { new Category { Category_ID = 1, CategoryName = "Donations" } });
                                     repo.GetProcurers().Returns(new List<Procurer> { new Procurer { Procurer_ID = 1, FirstName = "Robert", LastName = "Brown" } });
+                                    procurement = Builder<Procurement>.CreateNew().Build();
+                                    repo.GetProcurement(procurementId).Returns(procurement);
                                     controller = new ProcurementController(repo);
+                                    ProcurementDetailsViewModel.CreateDestinationMap();
                                 };
+
+        protected static Procurement procurement;
+    }
+
+    public class when_getting_a_procurement_for_details_display : with_a_procurement_controller
+    {
+        private static ActionResult result;
+
+        Because of = () =>
+            result = controller.GetProcurement(procurementId);
+
+        It should_have_a_result = () =>
+            result.ShouldNotBeNull();
+
+        It should_have_a_json_result = () =>
+            result.ShouldBeOfType<JsonResult>();
+
+        It should_have_the_procurement = () =>
+            (result as JsonResult).Data.ShouldNotBeNull();
+
+        It should_have_the_procurement_id = () =>
+            GetViewModel().Id.ShouldEqual(procurementId);
+
+        It should_have_the_donation = () =>
+            GetViewModel().Donation.ShouldEqual(procurement.Donation);
+
+        private static ProcurementDetailsViewModel GetViewModel()
+        {
+            return ((result as JsonResult).Data as ProcurementDetailsViewModel);
+        }
     }
 
     [Ignore]
