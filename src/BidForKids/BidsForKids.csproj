@@ -155,7 +155,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\AuctionViewModel.cs" />
     <Compile Include="ViewModels\DonorReportViewModel.cs" />
-    <Compile Include="ViewModels\ProcurementViewModel.cs" />
+    <Compile Include="ViewModels\EditableProcurementViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\UserAdministration\Views\UserAdministration\Details.aspx" />

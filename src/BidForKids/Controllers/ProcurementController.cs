@@ -15,14 +15,14 @@ namespace BidsForKids.Controllers
         public ProcurementController()
         {
             ProcurementDonorViewModel.CreateDestinationMaps();
-            ProcurementViewModel.CreateDestinationMap();
+            EditableProcurementViewModel.CreateDestinationMap();
         }
 
         public ProcurementController(IProcurementRepository repository)
         {
             this.repository = repository;
             ProcurementDonorViewModel.CreateDestinationMaps();
-            ProcurementViewModel.CreateDestinationMap();
+            EditableProcurementViewModel.CreateDestinationMap();
         }
 
         public ActionResult ProcurementList(int Year)
@@ -72,21 +72,21 @@ namespace BidsForKids.Controllers
         public ActionResult BusinessIndex()
         {
             SetupIndex("Business");
-            ViewData["DonorDisplayField"] = "BusinessName";
+            SetViewDataDonorDisplayField("Business");
             return View("Index");
         }
 
         public ActionResult ParentIndex()
         {
             SetupIndex("Parent");
-            ViewData["DonorDisplayField"] = "Donors";
+            SetViewDataDonorDisplayField("Parent");
             return View("Index");
         }
 
         public ActionResult AdventureIndex()
         {
             SetupIndex("Adventure");
-            ViewData["DonorDisplayField"] = "Donors";
+            SetViewDataDonorDisplayField("Adventure");
             return View("Index");
         }
 
@@ -111,10 +111,33 @@ namespace BidsForKids.Controllers
                 throw new ArgumentNullException("id", "id cannot be null");
             }
 
-            var lProcurement = SerializableProcurement.
+            var procurement = SerializableProcurement.
                 ConvertProcurementToSerializableProcurement(repository.GetProcurement(id.Value));
 
-            return Json(lProcurement, JsonRequestBehavior.AllowGet);
+            SetViewDataDonorDisplayField(procurement.ProcurementType);
+
+            return Json(procurement, JsonRequestBehavior.AllowGet);
+        }
+
+        private void SetViewDataDonorDisplayField(string procurementType)
+        {
+            string field;
+            switch (procurementType)
+            {
+                case "Adventure":
+                    field = "Donors";
+                    break;
+                case "Parents":
+                    field = "Donors";
+                    break;
+                case "Business":
+                    field = "BusinessName";
+                    break;
+                default:
+                    field = string.Empty;
+                    break;
+            }
+            ViewData["DonorDisplayField"] = field;
         }
 
 
@@ -451,7 +474,7 @@ namespace BidsForKids.Controllers
 
             SetupEditViewData(procurement.ContactProcurement);
 
-            var result = Mapper.Map<Procurement, ProcurementViewModel>(procurement);
+            var result = Mapper.Map<Procurement, EditableProcurementViewModel>(procurement);
 
             foreach (var donor in result.Donors)
             {

@@ -6,7 +6,7 @@ using BidsForKids.Data.Models;
 
 namespace BidsForKids.ViewModels
 {
-    public class ProcurementViewModel
+    public class ProcurementDetailsViewModel
     {
         public int Id { get; set; }
         public string Description { get; set; }
@@ -14,43 +14,59 @@ namespace BidsForKids.ViewModels
         public int Quantity { get; set; }
         public string AuctionNumber { get; set; }
         public string ItemNumber { get; set; }
-        public string ItemNumberSuffix { get; set; }
-        public string ItemNumberPrefix { get; set; }
         public double EstimatedValue { get; set; }
-        public int CategoryId { get; set; }
         public DateTime ModifiedOn { get; set; }
         public DateTime CreatedOn { get; set; }
         public bool ThankYouLetterSent { get; set; }
+        public string Certificate { get; set; }
+        public string Notes { get; set; }
+        public string Year { get; set; }
+        public IEnumerable<ProcurementDonorViewModel> Donors { get; set; }
+
+        public static IMappingExpression<Procurement, ProcurementDetailsViewModel> CreateDestinationMap()
+        {
+            return Mapper.CreateMap<Procurement, ProcurementDetailsViewModel>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(p => p.Procurement_ID))
+                .ForMember(dest => dest.Year, opt => opt.MapFrom(p => p.ContactProcurement.Auction.Year))
+                .ForMember(dest => dest.Donors,
+                           opt => opt.MapFrom(p =>
+                                              Mapper.Map<IEnumerable<Donor>, IEnumerable<ProcurementDonorViewModel>>(p.ProcurementDonors.Select(x => x.Donor))
+                                      ));
+        }
+
+        public static IMappingExpression<EditableProcurementViewModel, Procurement> CreateSourceMap()
+        {
+            return Mapper.CreateMap<EditableProcurementViewModel, Procurement>();
+        }
+    }
+
+    public class EditableProcurementViewModel : ProcurementDetailsViewModel
+    {
+        public string ItemNumberSuffix { get; set; }
+        public string ItemNumberPrefix { get; set; }
+        public int CategoryId { get; set; }
         public int YearId { get; set; }
         public int ProcurerId { get; set; }
         public int ProcurementTypeId { get; set; }
-        public string Certificate { get; set; }
-        public string Notes { get; set; }
 
-        public IEnumerable<ProcurementDonorViewModel> Donors { get; set; }
-
-
-        public ProcurementViewModel()
+        public EditableProcurementViewModel()
         {
             Donors = new List<ProcurementDonorViewModel>();
         }
 
-        public static IMappingExpression<Procurement, ProcurementViewModel> CreateDestinationMap()
+        public static IMappingExpression<Procurement, EditableProcurementViewModel> CreateDestinationMap()
         {
-            return Mapper.CreateMap<Procurement, ProcurementViewModel>()
+            return Mapper.CreateMap<Procurement, EditableProcurementViewModel>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(p => p.Procurement_ID))
                 .ForMember(dest => dest.ItemNumberPrefix, opt => opt.MapFrom(p => string.IsNullOrEmpty(p.ItemNumber) ? string.Empty : p.ItemNumber.Split(new[] { " - " }, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault()))
                 .ForMember(dest => dest.ItemNumberSuffix, opt => opt.MapFrom(p => string.IsNullOrEmpty(p.ItemNumber) ? string.Empty : p.ItemNumber.Split(new[] { " - " }, StringSplitOptions.RemoveEmptyEntries).LastOrDefault()))
+                .ForMember(dest => dest.Year, opt => opt.MapFrom(p => p.ContactProcurement.Auction.Year))
                 .ForMember(dest => dest.Donors,
                            opt => opt.MapFrom(p =>
-                                                Mapper.Map<IEnumerable<Donor>, IEnumerable<ProcurementDonorViewModel>>(p.ProcurementDonors.Select(x => x.Donor))
-                                              ));
+                                              Mapper.Map<IEnumerable<Donor>, IEnumerable<ProcurementDonorViewModel>>(p.ProcurementDonors.Select(x => x.Donor))
+                                      ));
         }
 
-        public static IMappingExpression<ProcurementViewModel, Procurement> CreateSourceMap()
-        {
-            return Mapper.CreateMap<ProcurementViewModel, Procurement>();
-        }
     }
 
     public class ProcurementDonorViewModel
