@@ -23,8 +23,6 @@ namespace BidsForKids.Tests.ViewModelMappings
             procurement.ProcurementDonors.Add(Builder<ProcurementDonor>.CreateNew().Build());
             procurement.ProcurementDonors.First().Donor = Builder<Donor>.CreateNew().Build();
             ProcurementDonorViewModel.CreateDestinationMaps();
-            ProcurementDetailsViewModel.CreateDestinationMap();
-            EditableProcurementViewModel.CreateDestinationMap();
         };
 
     }
@@ -33,6 +31,9 @@ namespace BidsForKids.Tests.ViewModelMappings
     {
         private static ProcurementDetailsViewModel result;
 
+        Establish context = () =>
+            ProcurementDetailsViewModel.CreateDestinationMap();
+			
         Because of = () =>
             result = Mapper.Map<Procurement, ProcurementDetailsViewModel>(procurement);
 
@@ -55,6 +56,9 @@ namespace BidsForKids.Tests.ViewModelMappings
     public class when_mapping_a_procurement_to_an_editable_procurement_view_model : with_a_procurement
     {
         private static EditableProcurementViewModel result;
+
+        Establish context = () =>
+                EditableProcurementViewModel.CreateDestinationMap();
 
         Because of = () =>
             result = Mapper.Map<Procurement, EditableProcurementViewModel>(procurement);
