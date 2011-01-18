@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using BidsForKids.Configuration;
 using BidsForKids.Data.Repositories;
+using Spark.Web.Mvc;
 using StructureMap;
 
 namespace BidsForKids
@@ -27,6 +28,7 @@ namespace BidsForKids
 
         protected void Application_Start()
         {
+            ViewEngines.Engines.Add(new SparkViewFactory());
             AreaRegistration.RegisterAllAreas();
             RegisterRoutes(RouteTable.Routes);
             Bootstrapper.ConfigureStructureMap();
