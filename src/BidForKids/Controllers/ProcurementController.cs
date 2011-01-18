@@ -33,14 +33,14 @@ namespace BidsForKids.Controllers
 
         private void SetupIndex(string procurementType)
         {
-            GetCategoryJSONString();
+            SetCategoryViewData();
 
             ViewData["Auction_ID"] = GetAuctionSelectList(null);
-            var lAuctionQuery = repository.GetAuctions();
-            if (lAuctionQuery != null && lAuctionQuery.Count > 0)
+            var auctions = repository.GetAuctions();
+            if (auctions != null && auctions.Count > 0)
             {
-                Auction lAuction = lAuctionQuery.OrderByDescending(x => x.Year).First();
-                ViewData["DefaultSearchYear"] = lAuction.Year.ToString();
+                var auction = auctions.OrderByDescending(x => x.Year).First();
+                ViewData["DefaultSearchYear"] = auction.Year.ToString();
             }
             else
             {
@@ -50,7 +50,8 @@ namespace BidsForKids.Controllers
 
             if (string.IsNullOrEmpty(procurementType) == false)
             {
-                ViewData["ProcurementCreateLink"] = Url.Action("CreateByType", new { id = procurementType });
+                ViewData["ProcurementCreateLink"] = Url.Action("CreateByType", 
+                                                               new { id = procurementType });
             }
             else
             {
@@ -85,11 +86,12 @@ namespace BidsForKids.Controllers
         public ActionResult AdventureIndex()
         {
             SetupIndex("Adventure");
+            ViewData["DonorDisplayField"] = "Donors";
             return View("Index");
         }
 
 
-        private void GetCategoryJSONString()
+        private void SetCategoryViewData()
         {
             var categoryString = repository.GetCategories()
                                          .Aggregate("{ \"\": \"\",", (current, lCategory) => 
@@ -120,7 +122,7 @@ namespace BidsForKids.Controllers
         {
             var loadOptions = jqGridLoadOptions.GetLoadOptions(Request.QueryString);
 
-            var result = new JsonResult() { JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+            var result = new JsonResult { JsonRequestBehavior = JsonRequestBehavior.AllowGet };
 
             // TODO: Should not have to fetch all of the rows here, need to refactor
             var rows = repository.GetSerializableProcurements(loadOptions);
