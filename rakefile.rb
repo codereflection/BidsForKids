@@ -6,7 +6,7 @@ require 'albacore'
 task :default => [:full]
 
 
-task :full => [:clean,:assemblyInfo,:build,:test,:publish]
+task :full => [:clean,:assemblyInfo,:build,:xunitTests,:specifications,:publish]
 
 task :clean do
 	FileUtils.rm_rf 'build'
@@ -20,10 +20,16 @@ msbuild :build do |msb|
 end
 
 
-xunit :test do |xunit|
+xunit :xunitTests do |xunit|
 	xunit.command = "lib/xunit-1.6.1/xunit.console.x86.exe"
 	xunit.assembly = "build/BidsForKids.Tests.dll"
-	xunit.html_output = "report"
+	xunit.html_output = "report/Tests"
+end
+
+mspec :specifications do |mspec|
+	mspec.command = "lib/mspec/mspec.exe"
+	mspec.assemblies = "build/BidsForKids.Tests.dll"
+	mspec.html_output = "report/Specs"
 end
 
 
