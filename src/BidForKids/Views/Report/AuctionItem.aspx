@@ -7,14 +7,26 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <h2>
         Report - Auction Items</h2>
+        <h3>Procurements must have an auction item number assigned for them to show up in this report.</h3>
     <script type="text/javascript">
 
         $(document).ready(function () {
             $("#ResultContainer").hide();
-
             var theForm = $("#CreateReportForm");
 
+//            theForm.validate({
+//                errorPlacement: function (error, element) {
+//                    error.appendTo(element.parent("div"));
+//                },
+//                errorElement: "em"
+//            });
+
+
             theForm.submit(function () {
+
+                if (theForm.valid() == false)
+                    return false;
+
                 var action = theForm.attr("action");
                 var serializedForm = theForm.serialize();
 
@@ -50,8 +62,8 @@
             <br />
             <label for="CategoryNameFilter">
                 Category</label><%= Html.DropDownList("CategoryNameFilter",(IEnumerable<SelectListItem>)ViewData["CategoryList"],"")%><br />
-            <label for="YearFilter">
-                Year</label><%= Html.TextBox("YearFilter")%><br />
+            <div><label for="YearFilter">
+                Year</label><%= Html.TextBox("YearFilter", "", new Dictionary<string, object> { {"class", "required"} })%></div>
             <label for="CatalogLayout">
                 Catalog Layout</label>
             <%= Html.CheckBox("CatalogLayout", false) %>
