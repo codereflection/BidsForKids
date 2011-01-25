@@ -33,6 +33,7 @@ namespace BidsForKids.Data.Models.SerializableObjects
         public DateTime? CreatedOn { get; set; }
         public int? ProcurementType_ID { get; set; }
         public string ProcurementType { get; set; }
+        public string Title { get; set; }
         public static SerializableProcurement ConvertProcurementToSerializableProcurement(Procurement procurement)
         {
             return new SerializableProcurement()
@@ -62,9 +63,11 @@ namespace BidsForKids.Data.Models.SerializableObjects
                 Limitations        = procurement.Limitations,
                 CreatedOn          = procurement.CreatedOn,
                 ProcurementType_ID = procurement.ProcurementType_ID,
-                ProcurementType    = procurement.ProcurementType == null ? "" : procurement.ProcurementType.ProcurementTypeDesc
+                ProcurementType    = procurement.ProcurementType == null ? "" : procurement.ProcurementType.ProcurementTypeDesc,
+                Title              = procurement.Title
             };
         }
+
 
         private static string GetBusinessName(Procurement procurement)
         {

@@ -690,6 +690,8 @@ namespace BidsForKids.Data.Models
 		
 		private System.Nullable<int> _ProcurementType_ID;
 		
+		private string _Title;
+		
 		private EntityRef<ContactProcurement> _ContactProcurements;
 		
 		private EntitySet<ProcurementDonor> _ProcurementDonors;
@@ -738,6 +740,8 @@ namespace BidsForKids.Data.Models
     partial void OnCertificateChanged();
     partial void OnProcurementType_IDChanging(System.Nullable<int> value);
     partial void OnProcurementType_IDChanged();
+    partial void OnTitleChanging(string value);
+    partial void OnTitleChanged();
     #endregion
 		
 		public Procurement()
@@ -1113,6 +1117,26 @@ namespace BidsForKids.Data.Models
 					this._ProcurementType_ID = value;
 					this.SendPropertyChanged("ProcurementType_ID");
 					this.OnProcurementType_IDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Title", DbType="VarChar(2000) NOT NULL")]
+		public string Title
+		{
+			get
+			{
+				return this._Title;
+			}
+			set
+			{
+				if ((this._Title != value))
+				{
+					this.OnTitleChanging(value);
+					this.SendPropertyChanging();
+					this._Title = value;
+					this.SendPropertyChanged("Title");
+					this.OnTitleChanged();
 				}
 			}
 		}

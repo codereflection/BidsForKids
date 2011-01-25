@@ -41,6 +41,7 @@
       <Column Name="Limitations" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
       <Column Name="Certificate" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
       <Column Name="ProcurementType_ID" Type="System.Int32" DbType="int" CanBeNull="true" />
+      <Column Name="Title" Type="System.String" DbType="VarChar(2000) NOT NULL" CanBeNull="true" />
       <Association Name="Procurement_ContactProcurement" Member="ContactProcurement" Storage="_ContactProcurements" ThisKey="Procurement_ID" OtherKey="Procurement_ID" Type="ContactProcurement" Cardinality="One" />
       <Association Name="Procurement_ProcurementDonor" Member="ProcurementDonors" ThisKey="Procurement_ID" OtherKey="Procurement_ID" Type="ProcurementDonor" />
       <Association Name="Category_Procurement" Member="Category" ThisKey="Category_ID" OtherKey="Category_ID" Type="Category" IsForeignKey="true" />

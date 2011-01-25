@@ -36,6 +36,7 @@
                 $('#GeoLocation', context).html(result.GeoLocation);
                 $('#Notes', context).html(result.Notes);
                 $('#Description', context).html(result.Description);
+                $('#Title', context).html(result.Title);
                 $('#Donation', context).html(result.Donation);
                 $('#ThankYouLetterSent', context).html(convertBoolToString(result.ThankYouLetterSent));
                 $('#Certificate', context).html(result.Certificate);
@@ -225,6 +226,14 @@
                         </td>
                         <td class="dataCell" colspan="7">
                             <span id="Description"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="labelCell">
+                            Title
+                        </td>
+                        <td class="dataCell" colspan="7">
+                            <span id="Title"></span>
                         </td>
                     </tr>
                     <tr>

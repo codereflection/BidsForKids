@@ -59,13 +59,13 @@ namespace BidsForKids.Controllers
 
                 reportHtml.AppendLine("<table class=\"customReport\">");
 
-                bool includeRowNumbers = false;
+                var includeRowNumbers = false;
                 if (collection["IncludeRowNumbers"].Contains("true"))
                     includeRowNumbers = true;
 
                 BuildReportHeader(reportHtml, columns, includeRowNumbers);
 
-                ProcurementReport report = GetReportData(collection);
+                var report = GetReportData(collection);
 
 
                 BuildReportBody(reportHtml, columns, report, includeRowNumbers);
@@ -163,7 +163,7 @@ namespace BidsForKids.Controllers
             {
                 foreach (var filter in filters)
                 {
-                    PropertyInfo propInfo = new SerializableProcurement().GetType().GetProperty(filter.Key);
+                    var propInfo = new SerializableProcurement().GetType().GetProperty(filter.Key);
                     if (propInfo != null || filter.Key == "Donor")
                     {
                         try

@@ -98,6 +98,9 @@ namespace BidsForKids.Tests.ViewModelMappings
         It should_have_the_first_and_last_names_as_the_display_donor = () =>
             result.DisplayDonor.ShouldEqual(procurement.ProcurementDonors.First().Donor.FirstName + " " +
                                             procurement.ProcurementDonors.First().Donor.LastName);
+
+        It should_have_the_correct_title = () =>
+            result.Title.ShouldEqual(procurement.Title);
     }
 
     public class when_mapping_a_procurement_to_an_editable_procurement_view_model : with_a_parent_procurement

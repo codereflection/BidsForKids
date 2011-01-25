@@ -208,6 +208,12 @@
             <%= Html.ValidationMessage("Description", "*") %>
         </p>
         <p>
+            <label for="Title">
+                Title:</label>
+            <%= Html.TextArea("Title", Model.Title, 3, 50, null)%>
+            <%= Html.ValidationMessage("Title", "*")%>
+        </p>
+        <p>
             <label for="Certificate">
                 Certificate
             </label>

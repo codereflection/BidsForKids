@@ -25,6 +25,7 @@ namespace BidsForKids.ViewModels
         public string Category { get; set; }
         public string GeoLocation { get; set; }
         public string DisplayDonor { get; set; }
+        public string Title { get; set; }
         public IEnumerable<ProcurementDonorViewModel> Donors { get; set; }
 
 

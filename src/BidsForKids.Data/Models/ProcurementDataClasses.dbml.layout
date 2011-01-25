@@ -21,13 +21,13 @@
         <classShapeMoniker Id="8c5d4790-19c1-45b8-8bb4-05a250b2ab6e" />
       </nodes>
     </associationConnector>
-    <classShape Id="957d31e8-cf76-4cf2-93bf-7360d612595a" absoluteBounds="3.375, 0.5, 2, 4.2708154296875">
+    <classShape Id="957d31e8-cf76-4cf2-93bf-7360d612595a" absoluteBounds="3.375, 0.5, 2, 4.4631168619791666">
       <DataClassMoniker Name="/ProcurementDataClassesDataContext/Procurement" />
       <nestedChildShapes>
-        <elementListCompartment Id="422256b3-2aee-4525-8ebb-74a1007b3399" absoluteBounds="3.39, 0.96, 1.9700000000000002, 3.7108154296875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="422256b3-2aee-4525-8ebb-74a1007b3399" absoluteBounds="3.39, 0.96, 1.9700000000000002, 3.9031168619791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(4.375 : 4.7708154296875); (4.375 : 5.125)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(4.375 : 4.96311686197917); (4.375 : 5.125)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/ProcurementDataClassesDataContext/Procurement/Procurement_ContactProcurement" />
       <nodes>
         <classShapeMoniker Id="957d31e8-cf76-4cf2-93bf-7360d612595a" />
@@ -132,7 +132,7 @@
         <classShapeMoniker Id="957d31e8-cf76-4cf2-93bf-7360d612595a" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(7.375 : 8.375); (7.375 : 8.125); (5.625 : 8.125); (5.625 : 4.875); (4.45833333333333 : 4.875 : JumpStart); (4.29166666666667 : 4.875 : JumpEnd); (2.875 : 4.875); (2.875 : 3.69314697265625); (2.5 : 3.69314697265625)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(6.375 : 8.97199625651042); (5.4375 : 8.97199625651042); (5.4375 : 7.1875); (0.4375 : 7.1875); (0.4375 : 4.4800439453125); (1.5 : 4.4800439453125); (1.5 : 4.3862939453125)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/ProcurementDataClassesDataContext/DonorType/DonorType_ProcurementType" />
       <nodes>
         <classShapeMoniker Id="e75f7a7d-b2f3-4f7b-ae2d-ded1e8009792" />

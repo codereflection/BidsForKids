@@ -91,7 +91,8 @@ namespace BidsForKids.Tests.Controllers
                            {"Donation", "Test"}, 
                            {"ThankYouLetterSent", "False"}, 
                            {"Limitations", ""}, 
-                           {"Certificate", ""}
+                           {"Certificate", ""},
+                           {"Title", "My Title"}
                        };
         }
 

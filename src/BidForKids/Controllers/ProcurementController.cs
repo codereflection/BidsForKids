@@ -676,7 +676,8 @@ namespace BidsForKids.Controllers
                         "Donation",
                         "ThankYouLetterSent",
                         "Limitations",
-                        "Certificate"
+                        "Certificate",
+                        "Title"
                     };
         }
 

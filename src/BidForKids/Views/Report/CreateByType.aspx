@@ -110,6 +110,8 @@
                             Certificate</label><%= Html.CheckBox("CertificateColumn", true)%><br />
                         <label for="NotesColumn">
                             Notes</label><%= Html.CheckBox("NotesColumn", true)%><br />
+                        <label for="TitleColumn">
+                            Title</label><%= Html.CheckBox("TitleColumn", true)%><br />
                     </td>
                 </tr>
             </table>

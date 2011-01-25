@@ -25,6 +25,17 @@
         <tbody>
             <tr>
                 <td>
+                    v1.2.1.3
+                </td>
+                <td>
+                    Jan 24th, 2011
+                </td>
+                <td>
+                    Added 'Title' field to the Procurement
+                </td>
+            </tr>
+            <tr>
+                <td>
                     v1.2.1.2
                 </td>
                 <td>
