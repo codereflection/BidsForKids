@@ -31,9 +31,9 @@ namespace BidsForKids.ViewModels
         {
             return Mapper.CreateMap<Donor, DonorReportViewModel>()
                                         .ForMember(dest => dest.Id, opt => opt.MapFrom(a => a.Donor_ID))
-                                        .ForMember(dest => dest.GeoLocation, opt => opt.MapFrom(a => a.GeoLocation.GeoLocationName))
+                                        .ForMember(dest => dest.GeoLocation, opt => opt.MapFrom(a => a.GeoLocation == null ? string.Empty : a.GeoLocation.GeoLocationName))
                                         .ForMember(dest => dest.DonorType, opt => opt.MapFrom(a => a.DonorType.DonorTypeDesc))
-                                        .ForMember(dest => dest.Procurer, opt => opt.MapFrom(a => string.Format("{0} {1}", a.Procurer.FirstName, a.Procurer.LastName)))
+                                        .ForMember(dest => dest.Procurer, opt => opt.MapFrom(a => a.Procurer == null ? string.Empty : string.Format("{0} {1}", a.Procurer.FirstName, a.Procurer.LastName)))
                                         .ForMember(dest => dest.Donates, opt => opt.ResolveUsing(new DonatesValueResolver()));
         }
 
