@@ -13,9 +13,13 @@ logs/
 UpgradeLog*
 _UpgradeReport_Files/
 deploy/
-report/*
+[Rr]eport/*
 *.Publish.xml
 publish/*
+
+#Make sure report dir is created
+![Rr]eport/Specs/.gitignore
+![Rr]eport/Tests/.gitignore
 
 # don't exclude the Ruby bin!
 ![Tt]ools/Rake/lib/ruby/gems/1.8/gems/rake-0.8.7/bin/
