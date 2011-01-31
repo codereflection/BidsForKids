@@ -25,6 +25,19 @@
         <tbody>
             <tr>
                 <td>
+                    v1.2.1.4
+                </td>
+                <td>
+                    Jan 30th, 2011
+                </td>
+                <td>
+                    Added Title field to the Auction Item Report<br />
+                    Replaced Donation field with Title field in the Auction Item Report - Catalog View<br />
+                    Changed "Year" to be a required filter on the Auction Item Report
+                </td>
+            </tr>
+            <tr>
+                <td>
                     v1.2.1.3
                 </td>
                 <td>

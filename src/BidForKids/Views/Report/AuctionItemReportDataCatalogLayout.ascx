@@ -15,7 +15,7 @@
         font-weight: bold;
         margin-bottom: 5px;
     }
-    .Donation
+    .Title
     {
         text-align: center;
         font-weight: bold;
@@ -40,12 +40,12 @@
     <div class='AuctionNumber'>
         <%= item.AuctionNumber %>
     </div>
-    <div class='Donation'>
+    <div class='Title'>
         <%
-            var Donation = item.Items.Aggregate("", (current, procItem) => current + ("<span class=\"groupedItemPart\">" + procItem.Donation + "</span> & "));
-            Donation = Donation.Substring(0, Donation.Length - 3);
+            var Title = item.Items.Aggregate("", (current, procItem) => current + ("<span class=\"groupedItemPart\">" + procItem.Title + "</span> & "));
+            Title = Title.Substring(0, Title.Length - 3);
         %>
-        <%= Donation %>
+        <%= Title %>
     </div>
     <div class='Description'>
         <%

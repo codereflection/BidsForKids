@@ -9,6 +9,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{361248CD
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BidsForKids.Data", "BidsForKids.Data\BidsForKids.Data.csproj", "{7BF4666B-8841-4B18-B3AD-457DF2F93E7A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A3A8C507-BFA6-4AF4-B9ED-EC1C84C26FEE}"
+	ProjectSection(SolutionItems) = preProject
+		ProjectVersion.cs = ProjectVersion.cs
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		AutomatedDebug|Any CPU = AutomatedDebug|Any CPU

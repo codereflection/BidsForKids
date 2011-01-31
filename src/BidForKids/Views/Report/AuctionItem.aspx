@@ -7,19 +7,19 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <h2>
         Report - Auction Items</h2>
-        <h3>Procurements must have an auction item number assigned for them to show up in this report.</h3>
+        <h3 style="color:Red">Procurements must have an auction item number assigned for them to show up in this report.</h3>
     <script type="text/javascript">
 
         $(document).ready(function () {
             $("#ResultContainer").hide();
             var theForm = $("#CreateReportForm");
 
-//            theForm.validate({
-//                errorPlacement: function (error, element) {
-//                    error.appendTo(element.parent("div"));
-//                },
-//                errorElement: "em"
-//            });
+            theForm.validate({
+                errorPlacement: function (error, element) {
+                    error.appendTo(element.parent("div"));
+                },
+                errorElement: "em"
+            });
 
 
             theForm.submit(function () {

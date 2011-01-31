@@ -10,6 +10,9 @@
                     Donation
                 </th>
                 <th>
+                    Title
+                </th>
+                <th>
                     Description
                 </th>
                 <th>
@@ -39,10 +42,17 @@
                 </td>
                 <td>
                     <%
+                        var Title = item.Items.Aggregate("", (current, procItem) => current + ("<span class=\"groupedItemPart\">" + procItem.Title + "</span> & "));
+                        Title = Title.Substring(0, Title.Length - 3);
+                    %>
+                    <%= Title %>
+                </td>
+                <td>
+                    <%
                         var Description = item.Items.Aggregate("", (current, procItem) => current + ("<span class=\"groupedItemPart\">" + procItem.Description + "</span> "));
                         Description = Description.Substring(0, Description.Length - 1);
                     %>
-                    <%= Description%>
+                    <%= Description %>
                 </td>
                 <td>
                     <%
