@@ -82,7 +82,7 @@ namespace BidsForKids.Tests.ViewModelMappings
         {
             donor = Builder<Donor>.CreateNew()
                 .With(x => x.DonorType = Builder<DonorType>.CreateNew().Build())
-                .With(x => x.GeoLocation = Builder<GeoLocation>.CreateNew().Build())
+                .With(x => x.GeoLocation = null)
                 .With(x => x.Procurer = Builder<Procurer>.CreateNew().Build())
                 .With(x => x.Donates = 1)
                 .Build();
