@@ -16,4 +16,4 @@ report/*
 *.Publish.xml
 publish/*
 # don't exclude the Ruby bin!
-!Tools/Rake/bin
+![Tt]ools/Rake/bin
