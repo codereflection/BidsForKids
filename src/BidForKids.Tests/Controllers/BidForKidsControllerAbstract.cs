@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using BidsForKids.Data.Models;
 using System.Web.Mvc;
 using BidsForKids.Controllers;
@@ -10,10 +11,10 @@ namespace BidsForKids.Tests.Controllers
 {
     public class BidsForKidsControllerTestBase
     {
-        static public IProcurementRepository _ProcurementFactory;
+        static public IProcurementRepository ProcurementFactory;
         public BidsForKidsControllerTestBase()
         {
-            _ProcurementFactory = ProcurementFactoryHelper.GenerateMockProcurementFactory();
+            ProcurementFactory = ProcurementFactoryHelper.GenerateMockProcurementFactory();
         }
 
         public static T SetupNewControllerWithMockContext<T>(IProcurementRepository factory)
@@ -41,12 +42,11 @@ namespace BidsForKids.Tests.Controllers
             }
             var parameters = new NameValueCollection();
 
-                string[] parts = queryString.Split("?".ToCharArray());
-                string[] keys = parts[1].Split("&".ToCharArray());
+                var parts = queryString.Split("?".ToCharArray());
+                var keys = parts[1].Split("&".ToCharArray());
 
-                foreach (string key in keys)
+                foreach (var part in keys.Select(key => key.Split("=".ToCharArray())))
                 {
-                    string[] part = key.Split("=".ToCharArray());
                     parameters.Add(part[0], part[1]);
                 }
 

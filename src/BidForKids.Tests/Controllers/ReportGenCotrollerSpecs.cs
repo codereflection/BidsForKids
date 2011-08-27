@@ -17,10 +17,10 @@ namespace BidsForKids.Tests.Controllers
         protected static ReportGenController controller;
 
         Establish context = () =>
-                                {
-                                    repo = Substitute.For<IProcurementRepository>();
-                                    controller = new ReportGenController(repo);
-                                };
+        {
+            repo = Substitute.For<IProcurementRepository>();
+            controller = new ReportGenController(repo);
+        };
     }
 
     public class when_setting_up_the_controller : with_a_report_gen_controller
@@ -39,25 +39,25 @@ namespace BidsForKids.Tests.Controllers
         private static string content;
 
         Establish context = () =>
+        {
+            donationYear = 2010;
+            reportSetup = new DonorReportSetupVideModel
                                 {
-                                    donationYear = 2010;
-                                    reportSetup = new DonorReportSetupVideModel
-                                                      {
-                                                          ReportTitle = "If I only where a goth",
-                                                          AuctionYearFilter = donationYear,
-                                                          BusinessNameColumn = true,
-                                                          BusinessType = true
-                                                      };
-                                    donors = Builder<Donor>.CreateListOfSize(10).Build();
-                                    DonorReportViewModel.CreateDestinationMaps();
-                                    repo.GetDonors(donationYear).Returns(donors);
+                                    ReportTitle = "If I only where a goth",
+                                    AuctionYearFilter = donationYear,
+                                    BusinessNameColumn = true,
+                                    BusinessType = true
                                 };
+            donors = Builder<Donor>.CreateListOfSize(10).Build();
+            DonorReportViewModel.CreateDestinationMaps();
+            repo.GetDonors(donationYear).Returns(donors);
+        };
 
         Because of = () =>
-                         {
-                             result = controller.GenerateDonorReport(reportSetup);
-                             content = (result as ContentResult).Content;
-                         };
+        {
+            result = controller.GenerateDonorReport(reportSetup);
+            content = (result as ContentResult).Content;
+        };
 
         It should_have_a_result = () =>
             result.ShouldNotBeNull();

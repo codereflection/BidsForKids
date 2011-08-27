@@ -1,6 +1,3 @@
-using System.Web.Mvc;
-using Xunit;
-using BidsForKids.Controllers;
 using BidsForKids.Data.Models;
 using Rhino.Mocks;
 using System.Collections.Generic;
@@ -11,7 +8,7 @@ namespace BidsForKids.Tests.Controllers
     {
         public static IProcurementRepository GenerateMockProcurementFactory()
         {
-            IProcurementRepository factory = MockRepository.GenerateStub<IProcurementRepository>();
+            var factory = MockRepository.GenerateStub<IProcurementRepository>();
             factory.Stub(x => x.GetProcurements()).Return(new List<Procurement>());
             factory.Stub(x => x.GetProcurement(0)).IgnoreArguments().Return(new Procurement());
             

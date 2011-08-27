@@ -15,8 +15,7 @@ namespace BidsForKids.Tests.Controllers
             public void ReturnsViewResultWithDefaultViewName()
             {
 
-                var controller = new ProcurementController(_ProcurementFactory);
-
+                var controller = new ProcurementController(ProcurementFactory);
 
                 const int parameter = 1;
                 var result = controller.Details(parameter);
@@ -29,14 +28,10 @@ namespace BidsForKids.Tests.Controllers
             [Fact]
             public void SetsViewDataWithProcurementModel()
             {
-
-                var controller = new ProcurementController(_ProcurementFactory);
-
+                var controller = new ProcurementController(ProcurementFactory);
 
                 const int parameter = 1;
                 var result = controller.Details(parameter);
-
-
                 var viewResult = Assert.IsType<ViewResult>(result);
                 Assert.IsType<Procurement>(viewResult.ViewData.Model);
             }
@@ -44,13 +39,10 @@ namespace BidsForKids.Tests.Controllers
             [Fact]
             public void RedirectsToHomeWhenNoIdIsPassed()
             {
-
-                var controller = new ProcurementController(_ProcurementFactory);
-
+                var controller = new ProcurementController(ProcurementFactory);
 
                 int? parameter = null;
                 var result = controller.Details(parameter);
-
 
                 var viewResult = Assert.IsType<RedirectToRouteResult>(result);
                 Assert.Equal("Home", viewResult.RouteValues["controller"]);
@@ -63,7 +55,7 @@ namespace BidsForKids.Tests.Controllers
             [Fact]
             public void ThrowsExceptionWhenCreateForProcurementIsCalledWithoutAType()
             {
-                var controller = SetupNewControllerWithMockContext<ProcurementController>(_ProcurementFactory);
+                var controller = SetupNewControllerWithMockContext<ProcurementController>(ProcurementFactory);
 
                 Assert.Throws<NotSupportedException>(() => controller.Create());
             }
@@ -74,7 +66,7 @@ namespace BidsForKids.Tests.Controllers
             [Fact(Skip="Not testing the right stuff")]
             public void SetsViewDataWithSelectLists()
             {
-                var controller = SetupNewControllerWithMockContext<ProcurementController>(_ProcurementFactory);
+                var controller = SetupNewControllerWithMockContext<ProcurementController>(ProcurementFactory);
 
                 var result = controller.CreateByType("Business");
 
@@ -91,7 +83,7 @@ namespace BidsForKids.Tests.Controllers
             [Fact]
             public void ReturnsViewResultWithDefaultViewName()
             {
-                var controller = SetupNewControllerWithMockContext<ProcurementController>(_ProcurementFactory);
+                var controller = SetupNewControllerWithMockContext<ProcurementController>(ProcurementFactory);
 
                 var result = controller.Edit((int?)0);
 
@@ -102,7 +94,7 @@ namespace BidsForKids.Tests.Controllers
             [Fact]
             public void SetsViewDataWithSelectLists()
             {
-                var controller = SetupNewControllerWithMockContext<ProcurementController>(_ProcurementFactory);
+                var controller = SetupNewControllerWithMockContext<ProcurementController>(ProcurementFactory);
 
                 var result = controller.Edit(0);
 
@@ -130,7 +122,7 @@ namespace BidsForKids.Tests.Controllers
             [Fact]
             public void Throws_when_cannot_find_procurement_in_database_to_edit()
             {
-                var controller = SetupNewControllerWithMockContext<ProcurementController>(_ProcurementFactory);
+                var controller = SetupNewControllerWithMockContext<ProcurementController>(ProcurementFactory);
                 var collection = new FormCollection();
 
                 Assert.Throws<ApplicationException>(() => controller.Edit(1, collection));

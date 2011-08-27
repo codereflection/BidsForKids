@@ -14,14 +14,14 @@ namespace BidsForKids.Tests.ViewModelMappings
 		private static IEnumerable<AuctionViewModel> result;
 
 		Establish context = () =>
-								{
-									auctions = new[]
-												   {
-													   new Auction { Auction_ID = 1, Year = 2009, Name = "Test1" },
-													   new Auction { Auction_ID = 2, Year = 2010, Name = "Test2" }
-												   };
-									AuctionViewModel.CreateDestinationMap();
-								};
+		{
+			auctions = new[]
+							{
+								new Auction { Auction_ID = 1, Year = 2009, Name = "Test1" },
+								new Auction { Auction_ID = 2, Year = 2010, Name = "Test2" }
+							};
+			AuctionViewModel.CreateDestinationMap();
+		};
 
 		Because of = () =>
 			result = Mapper.Map<IEnumerable<Auction>, IEnumerable<AuctionViewModel>>(auctions);

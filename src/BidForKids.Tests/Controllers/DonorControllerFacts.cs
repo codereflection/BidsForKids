@@ -1,6 +1,4 @@
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Routing;
 using BidsForKids.Data.Models.SerializableObjects;
 using Xunit;
 using BidsForKids.Controllers;
@@ -18,13 +16,10 @@ namespace BidsForKids.Tests.Controllers
             [Fact]
             public void ReturnsViewResultWithDefaultViewName()
             {
-                // Arrange
-                var controller = new DonorController(_ProcurementFactory);
+                var controller = new DonorController(ProcurementFactory);
 
-                // Act
                 var result = controller.Index();
 
-                // Assert
                 var viewResult = Assert.IsType<ViewResult>(result);
                 Assert.Empty(viewResult.ViewName);
             }
@@ -32,13 +27,10 @@ namespace BidsForKids.Tests.Controllers
             [Fact]
             public void SetsViewDataWithContactModel()
             {
-                // Arrange
-                var controller = new DonorController(_ProcurementFactory);
+                var controller = new DonorController(ProcurementFactory);
 
-                // Act
                 var result = controller.Index();
 
-                // Assert
                 var viewResult = Assert.IsType<ViewResult>(result);
                 Assert.Empty(viewResult.ViewName);
                 Assert.IsType<List<Donor>>(viewResult.ViewData.Model);
@@ -50,16 +42,13 @@ namespace BidsForKids.Tests.Controllers
             [Fact]
             public void ReturnsViewResultWithDefaultViewName()
             {
-                // Arrange
-                var controller = SetupNewControllerWithMockContext<DonorController>(_ProcurementFactory);
+                var controller = SetupNewControllerWithMockContext<DonorController>(ProcurementFactory);
 
                 controller.ControllerContext.HttpContext
                     .Request.Expect(x => x.QueryString["GeoLocation_ID"]).Return("");
 
-                // Act
                 var result = controller.Create();
 
-                // Assert
                 controller.ControllerContext.HttpContext
                     .VerifyAllExpectations();
                 var viewResult = Assert.IsType<ViewResult>(result);
@@ -74,13 +63,10 @@ namespace BidsForKids.Tests.Controllers
             [Fact]
             public void ReturnsViewResultWithDefaultViewName()
             {
-                // Arrange
-                var controller = new DonorController(_ProcurementFactory);
+                var controller = new DonorController(ProcurementFactory);
 
-                // Act
                 var result = controller.Edit(0);
 
-                // Assert
                 var viewResult = Assert.IsType<ViewResult>(result);
                 Assert.Empty(viewResult.ViewName);
             }
@@ -88,13 +74,10 @@ namespace BidsForKids.Tests.Controllers
             [Fact]
             public void SetsViewDataWithContactModel()
             {
-                // Arrange
-                var controller = new DonorController(_ProcurementFactory);
+                var controller = new DonorController(ProcurementFactory);
 
-                // Act
                 var result = controller.Edit(0);
 
-                // Assert
                 var viewResult = Assert.IsType<ViewResult>(result);
                 Assert.IsType<SelectList>(viewResult.ViewData["GeoLocation_ID"]);
                 Assert.IsType<Donor>(viewResult.ViewData.Model);
@@ -106,13 +89,10 @@ namespace BidsForKids.Tests.Controllers
             [Fact]
             public void ReturnsViewResultWithDefaultViewName()
             {
-                // Arrange
-                var controller = new DonorController(_ProcurementFactory);
+                var controller = new DonorController(ProcurementFactory);
 
-                // Act
                 var result = controller.Details(0);
 
-                // Assert
                 var viewResult = Assert.IsType<ViewResult>(result);
                 Assert.Empty(viewResult.ViewName);
             }
@@ -120,13 +100,10 @@ namespace BidsForKids.Tests.Controllers
             [Fact]
             public void SetsViewDataWithContactModel()
             {
-                // Arrange
-                var controller = new DonorController(_ProcurementFactory);
+                var controller = new DonorController(ProcurementFactory);
 
-                // Act
                 var result = controller.Details(0);
 
-                // Assert
                 var viewResult = Assert.IsType<ViewResult>(result);
                 Assert.Empty(viewResult.ViewName);
                 Assert.IsType<Donor>(viewResult.ViewData.Model);
@@ -139,7 +116,7 @@ namespace BidsForKids.Tests.Controllers
             public void Throws_exception_when_QueryString_parameters_are_not_present()
             {
                 var controller =
-                    SetupNewControllerWithMockContext<DonorController>(_ProcurementFactory);
+                    SetupNewControllerWithMockContext<DonorController>(ProcurementFactory);
 
                 ActionResult result = null;
 
@@ -150,16 +127,13 @@ namespace BidsForKids.Tests.Controllers
             [Fact]
             public void Returns_an_empty_Json_object_array_of_Donors()
             {
-                // Arrange
                 var controller =
-                    SetupNewControllerWithMockContext<DonorController>(_ProcurementFactory);
+                    SetupNewControllerWithMockContext<DonorController>(ProcurementFactory);
                 controller = SetupQueryStringParameters<DonorController>(controller, "_search=true&sidx=&sord=&page=&rows=");
-                _ProcurementFactory.Stub(x => x.GetSerializableBusinesses(new jqGridLoadOptions())).IgnoreArguments().Return(new List<SerializableDonor>());
-                
-                // Act
+                ProcurementFactory.Stub(x => x.GetSerializableBusinesses(new jqGridLoadOptions())).IgnoreArguments().Return(new List<SerializableDonor>());
+
                 var result = controller.GetDonors();
 
-                // Assert
                 controller.HttpContext.Request.VerifyAllExpectations();
                 var viewResult = Assert.IsType<JsonResult>(result);
                 Assert.True(viewResult.Data.ToString().Contains("records = 0"));
@@ -168,21 +142,17 @@ namespace BidsForKids.Tests.Controllers
             [Fact]
             public void Returns_a_json_object_with_one_record()
             {
-                // Arrange
                 var controller =
-                    SetupNewControllerWithMockContext<DonorController>(_ProcurementFactory);
+                    SetupNewControllerWithMockContext<DonorController>(ProcurementFactory);
                 controller = SetupQueryStringParameters<DonorController>(controller, "_search=false&sidx=&sord=&page1=&rows=25");
 
 
-                var objToReturn = new List<SerializableDonor>();
-                objToReturn.Add(new SerializableDonor());
-                _ProcurementFactory.Expect(x => x.GetSerializableBusinesses(new jqGridLoadOptions())).IgnoreArguments().
+                var objToReturn = new List<SerializableDonor> { new SerializableDonor() };
+                ProcurementFactory.Expect(x => x.GetSerializableBusinesses(new jqGridLoadOptions())).IgnoreArguments().
                     Return(objToReturn);
-                    
-                // Act
+
                 var result = controller.GetDonors();
 
-                // Assert
                 controller.HttpContext.Request.VerifyAllExpectations();
                 var viewResult = Assert.IsType<JsonResult>(result);
                 Assert.True(viewResult.Data.ToString().Contains("records = 1"));

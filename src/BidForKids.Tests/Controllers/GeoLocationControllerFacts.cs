@@ -2,9 +2,7 @@ using System.Web.Mvc;
 using Xunit;
 using BidsForKids.Controllers;
 using BidsForKids.Data.Models;
-using Rhino.Mocks;
 using System.Collections.Generic;
-using System;
 
 namespace BidsForKids.Tests.Controllers
 {
@@ -15,13 +13,10 @@ namespace BidsForKids.Tests.Controllers
             [Fact]
             public void ReturnsViewResultWithDefaultViewName()
             {
-                // Arrange
-                var controller = new GeoLocationController(_ProcurementFactory);
+                var controller = new GeoLocationController(ProcurementFactory);
 
-                // Act
                 var result = controller.Index();
 
-                // Assert
                 var viewResult = Assert.IsType<ViewResult>(result);
                 Assert.Empty(viewResult.ViewName);
             }
@@ -29,13 +24,10 @@ namespace BidsForKids.Tests.Controllers
             [Fact]
             public void SetsViewDataWithGeoLocationModel()
             {
-                // Arrange
-                var controller = new GeoLocationController(_ProcurementFactory);
+                var controller = new GeoLocationController(ProcurementFactory);
 
-                // Act
                 var result = controller.Index();
 
-                // Assert
                 var viewResult = Assert.IsType<ViewResult>(result);
                 Assert.IsType<List<GeoLocation>>(viewResult.ViewData.Model);
             }
@@ -46,13 +38,10 @@ namespace BidsForKids.Tests.Controllers
             [Fact]
             public void ReturnsViewResultWithDefaultViewName()
             {
-                // Arrange
-                var controller = new GeoLocationController(_ProcurementFactory);
+                var controller = new GeoLocationController(ProcurementFactory);
 
-                // Act
                 var result = controller.Create();
 
-                // Assert
                 var viewResult = Assert.IsType<ViewResult>(result);
                 Assert.Empty(viewResult.ViewName);
             }
@@ -63,13 +52,10 @@ namespace BidsForKids.Tests.Controllers
             [Fact]
             public void ReturnsViewResultWithDefaultViewName()
             {
-                // Arrange
-                var controller = new GeoLocationController(_ProcurementFactory);
+                var controller = new GeoLocationController(ProcurementFactory);
 
-                // Act
                 var result = controller.Edit(0);
 
-                // Assert
                 var viewResult = Assert.IsType<ViewResult>(result);
                 Assert.Empty(viewResult.ViewName);
             }
@@ -77,13 +63,10 @@ namespace BidsForKids.Tests.Controllers
             [Fact]
             public void SetsViewDataWithGeoLocationModel()
             {
-                // Arrange
-                var controller = new GeoLocationController(_ProcurementFactory);
+                var controller = new GeoLocationController(ProcurementFactory);
 
-                // Act
                 var result = controller.Edit(0);
 
-                // Assert
                 var viewResult = Assert.IsType<ViewResult>(result);
                 Assert.IsType<GeoLocation>(viewResult.ViewData.Model);
             }
@@ -94,13 +77,10 @@ namespace BidsForKids.Tests.Controllers
             [Fact]
             public void ReturnsViewResultWithDefaultViewName()
             {
-                // Arrage
-                var controller = new GeoLocationController(_ProcurementFactory);
+                var controller = new GeoLocationController(ProcurementFactory);
 
-                // Act
                 var result = controller.Details(0);
 
-                // Assert
                 var viewResult = Assert.IsType<ViewResult>(result);
                 Assert.Empty(viewResult.ViewName);
             }
@@ -108,13 +88,10 @@ namespace BidsForKids.Tests.Controllers
             [Fact]
             public void SetsViewDataWithGeoLocationModel()
             {
-                // Arrange
-                var controller = new GeoLocationController(_ProcurementFactory);
+                var controller = new GeoLocationController(ProcurementFactory);
 
-                // Act
                 var result = controller.Details(0);
 
-                // Assert
                 var viewResult = Assert.IsType<ViewResult>(result);
                 Assert.IsType<GeoLocation>(viewResult.ViewData.Model);
             }

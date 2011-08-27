@@ -12,15 +12,15 @@ namespace BidsForKids.Tests.ViewModelMappings
 		private static DonorReportViewModel result;
 
 		Establish context = () =>
-								{
-									donor = Builder<Donor>.CreateNew()
-										.With(x => x.DonorType = Builder<DonorType>.CreateNew().Build())
-										.With(x => x.GeoLocation = Builder<GeoLocation>.CreateNew().Build())
-										.With(x => x.Procurer = Builder<Procurer>.CreateNew().Build())
-                                        .With(x => x.Donates = 1)
-										.Build();
-									DonorReportViewModel.CreateDestinationMaps();
-								};
+		{
+			donor = Builder<Donor>.CreateNew()
+				.With(x => x.DonorType = Builder<DonorType>.CreateNew().Build())
+				.With(x => x.GeoLocation = Builder<GeoLocation>.CreateNew().Build())
+				.With(x => x.Procurer = Builder<Procurer>.CreateNew().Build())
+                .With(x => x.Donates = 1)
+				.Build();
+			DonorReportViewModel.CreateDestinationMaps();
+		};
 
 		Because of = () =>
 			result = Mapper.Map<Donor, DonorReportViewModel>(donor);

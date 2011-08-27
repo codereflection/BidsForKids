@@ -11,13 +11,10 @@ namespace BidsForKids.Tests.Controllers
             [Fact]
             public void ReturnsViewResultWithDefaultViewName()
             {
-                // Arrange
-                var controller = new HomeController(_ProcurementFactory);
+                var controller = new HomeController(ProcurementFactory);
 
-                // Act
                 var result = controller.Index();
 
-                // Assert
                 var viewResult = Assert.IsType<ViewResult>(result);
                 Assert.Empty(viewResult.ViewName);
             }
@@ -25,13 +22,10 @@ namespace BidsForKids.Tests.Controllers
             [Fact]
             public void SetsViewDataWithNoModel()
             {
-                // Arrange
-                var controller = new HomeController(_ProcurementFactory);
+                var controller = new HomeController(ProcurementFactory);
 
-                // Act
                 var result = controller.Index();
 
-                // Assert
                 var viewResult = Assert.IsType<ViewResult>(result);
                 Assert.Equal("Welcome to the Gatewood Elementary 'Bids For Kids' Auction Procurement Database!", viewResult.ViewData["Message"]);
                 Assert.Null(viewResult.ViewData.Model);
@@ -40,13 +34,10 @@ namespace BidsForKids.Tests.Controllers
             [Fact]
             public void ReturnsProcurementViewResultWithDefaultViewName()
             {
-                // Arrange
-                var controller = new HomeController(_ProcurementFactory);
+                var controller = new HomeController(ProcurementFactory);
 
-                // Assert
                 var result = controller.Procurement();
 
-                // Act
                 var viewResult = Assert.IsType<ViewResult>(result);
                 Assert.Empty(viewResult.ViewName);
             }
@@ -54,13 +45,10 @@ namespace BidsForKids.Tests.Controllers
             [Fact]
             public void ReturnsReportsViewResultwithDefaultViewName()
             {
-                // Arrange
-                var controller = new HomeController(_ProcurementFactory);
+                var controller = new HomeController(ProcurementFactory);
 
-                // Act
                 var result = controller.Reports();
 
-                // Assert
                 var viewResult = Assert.IsType<ViewResult>(result);
                 Assert.Empty(viewResult.ViewName);
             }
@@ -71,13 +59,10 @@ namespace BidsForKids.Tests.Controllers
             [Fact]
             public void ReturnsViewResultWithDefaultViewName()
             {
-                // Arrange
-                var controller = new HomeController(_ProcurementFactory);
+                var controller = new HomeController(ProcurementFactory);
 
-                // Act
                 var result = controller.About();
 
-                // Assert
                 var viewResult = Assert.IsType<ViewResult>(result);
                 Assert.Empty(viewResult.ViewName);
             }
@@ -85,13 +70,10 @@ namespace BidsForKids.Tests.Controllers
             [Fact]
             public void SetsViewDataWithNoModel()
             {
-                // Arrange
-                var controller = new HomeController(_ProcurementFactory);
+                var controller = new HomeController(ProcurementFactory);
 
-                // Act
                 var result = controller.About();
 
-                // Assert
                 var viewResult = Assert.IsType<ViewResult>(result);
                 Assert.Null(viewResult.ViewData.Model);
             }
