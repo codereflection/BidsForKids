@@ -13,78 +13,78 @@ namespace BidsForKids.Data.Repositories
 
     public class RepositoryBase<T> : IRepository<T> where T : class, new()
     {
-        protected readonly IDataSource<T> _source;
-        private readonly IUnitOfWork _unitOfWork;
+        protected readonly IDataSource<T> Source;
+        private readonly IUnitOfWork unitOfWork;
 
         public RepositoryBase(IUnitOfWork unitOfWork)
         {
-            _unitOfWork = unitOfWork;
-            _source = _unitOfWork.GetDataSource<T>();
+            this.unitOfWork = unitOfWork;
+            Source = this.unitOfWork.GetDataSource<T>();
         }
 
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
         {
-            return _source.GetEnumerator();
+            return Source.GetEnumerator();
         }
 
         public IEnumerator GetEnumerator()
         {
-            return _source.GetEnumerator();
+            return Source.GetEnumerator();
         }
 
         public Expression Expression
         {
-            get { return _source.Expression; }
+            get { return Source.Expression; }
         }
 
         public Type ElementType
         {
-            get { return _source.ElementType; }
+            get { return Source.ElementType; }
         }
 
         public IQueryProvider Provider
         {
-            get { return _source.Provider; }
+            get { return Source.Provider; }
         }
 
         public T GetById(int id)
         {
-            return _source.GetById(id);
+            return Source.GetById(id);
         }
 
         public IEnumerable<T> GetAll()
         {
-            return _source.GetAll();
+            return Source.GetAll();
         }
 
         public void Add(T entity)
         {
-            _source.Add(entity);
+            Source.Add(entity);
         }
 
         public void Delete(T entity)
         {
-            _source.Delete(entity);
+            Source.Delete(entity);
         }
 
         public void Dispose()
         {
-            _unitOfWork.Dispose();
+            unitOfWork.Dispose();
         }
 
         public IDataSource<T1> GetDataSource<T1>() where T1 : class, new()
         {
-            return _source as IDataSource<T1>;
+            return Source as IDataSource<T1>;
         }
 
         public void SubmitChanges()
         {
-            _unitOfWork.SubmitChanges();
+            unitOfWork.SubmitChanges();
         }
 
         public void SubmitChanges(ConflictMode conflictMode)
         {
-            _unitOfWork.SubmitChanges(conflictMode);
+            unitOfWork.SubmitChanges(conflictMode);
         }
     }
 }

@@ -21,19 +21,15 @@ namespace BidsForKids.Data.Models
         }
 
 
-        /// <summary>
-        /// Returns a list of all Procurements
-        /// </summary>
-        /// <returns></returns>
         public List<Procurement> GetProcurements()
         {
             return dc.Procurements.ToList();
         }
 
-        public List<Procurement> GetProcurements(int Year)
+        public List<Procurement> GetProcurements(int year)
         {
-            var lProcurements = dc.Procurements.Where(x => x.ContactProcurement.Auction.Year == Year).ToList();
-            return lProcurements;
+            var procurements = dc.Procurements.Where(x => x.ContactProcurement.Auction.Year == year).ToList();
+            return procurements;
         }
 
 

@@ -1,5 +1,4 @@
 using System.Linq;
-using System.Collections.Generic;
 
 namespace BidsForKids.Data.Models
 {
@@ -20,7 +19,7 @@ namespace BidsForKids.Data.Models
                     hasPriceless = true;
                     continue;
                 }
-                subTotal = subTotal + item.EstimatedValue.Value;
+                if (item.EstimatedValue != null) subTotal = subTotal + item.EstimatedValue.Value;
             }
 
             if (hasPriceless && subTotal > 0)

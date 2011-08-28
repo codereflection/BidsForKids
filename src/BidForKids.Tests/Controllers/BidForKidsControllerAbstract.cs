@@ -20,7 +20,7 @@ namespace BidsForKids.Tests.Controllers
         public static T SetupNewControllerWithMockContext<T>(IProcurementRepository factory)
             where T : BidsForKidsControllerBase, new()
         {
-            var controller = new T() { repository = factory };
+            var controller = new T() { Repository = factory };
             controller.ControllerContext =
                 new ControllerContext(StubContext.FakeHttpContext(), new RouteData(), controller);
             controller.Url = new UrlHelper(new RequestContext(controller.HttpContext, new RouteData()));

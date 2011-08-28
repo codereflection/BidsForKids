@@ -12,11 +12,11 @@ namespace BidsForKids.Controllers
     [Authorize(Roles = "Administrator, Procurements")]
     public class ReportGenController : BidsForKidsControllerBase
     {
-        private readonly IProcurementRepository _repo;
+        private readonly IProcurementRepository repo;
 
         public ReportGenController(IProcurementRepository repo)
         {
-            _repo = repo;
+            this.repo = repo;
             DonorReportViewModel.CreateDestinationMaps();
         }
 
@@ -35,9 +35,9 @@ namespace BidsForKids.Controllers
         {
 
             var donors = reportSetup.AuctionYearFilter == 0 ? 
-                Mapper.Map<IEnumerable<Donor>, IEnumerable<DonorReportViewModel>>(_repo.GetDonors()).ToList()
+                Mapper.Map<IEnumerable<Donor>, IEnumerable<DonorReportViewModel>>(repo.GetDonors()).ToList()
                 :
-                Mapper.Map<IEnumerable<Donor>, IEnumerable<DonorReportViewModel>>(_repo.GetDonors(reportSetup.AuctionYearFilter)).ToList();
+                Mapper.Map<IEnumerable<Donor>, IEnumerable<DonorReportViewModel>>(repo.GetDonors(reportSetup.AuctionYearFilter)).ToList();
 
             donors = ApplyDonorFilters(donors, reportSetup);
 
@@ -67,7 +67,7 @@ namespace BidsForKids.Controllers
             return result;
         }
 
-        private List<DonorReportViewModel> ApplyDonorFilters(List<DonorReportViewModel> donors, DonorReportSetupVideModel reportSetup)
+        private static List<DonorReportViewModel> ApplyDonorFilters(List<DonorReportViewModel> donors, DonorReportSetupVideModel reportSetup)
         {
             if (!string.IsNullOrEmpty(reportSetup.GeoLocationFilter))
                 donors.Where(x => x.GeoLocation == null || !x.GeoLocation.ToLower().Contains(reportSetup.GeoLocationFilter.ToLower()))
@@ -89,7 +89,7 @@ namespace BidsForKids.Controllers
         }
 
 
-        private void BuildReportBody(IDictionary<string, PropertyInfo> selectedColumns, IEnumerable<DonorReportViewModel> donors, StringBuilder reportHtml, bool includeRowNumbers)
+        private static void BuildReportBody(IEnumerable<KeyValuePair<string, PropertyInfo>> selectedColumns, IEnumerable<DonorReportViewModel> donors, StringBuilder reportHtml, bool includeRowNumbers)
         {
             var donorList = donors.ToList();
             for (var index = 0; index < donorList.Count; index++)
@@ -109,7 +109,7 @@ namespace BidsForKids.Controllers
             }
         }
 
-        private void BuildHeaders(IDictionary<string, PropertyInfo> selectedColumns, StringBuilder reportHtml, bool includeRowNumbers)
+        private static void BuildHeaders(IEnumerable<KeyValuePair<string, PropertyInfo>> selectedColumns, StringBuilder reportHtml, bool includeRowNumbers)
         {
             reportHtml.AppendLine("<thead><tr>");
             if (includeRowNumbers == true)
@@ -121,7 +121,7 @@ namespace BidsForKids.Controllers
             reportHtml.AppendLine("</tr></thead>");
         }
 
-        private IDictionary<string, PropertyInfo> GetSelectedColumns(IReportSetupViewModel reportSetup)
+        private static IEnumerable<KeyValuePair<string, PropertyInfo>> GetSelectedColumns(IReportSetupViewModel reportSetup)
         {
             var result = new Dictionary<string, PropertyInfo>();
 

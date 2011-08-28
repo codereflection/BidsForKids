@@ -20,7 +20,7 @@ namespace BidsForKids.Data.Repositories
 
         public Auction GetBy(int year)
         {
-            return _source.Where(x => x.Year == year).FirstOrDefault();
+            return Source.Where(x => x.Year == year).FirstOrDefault();
         }
     }
 }

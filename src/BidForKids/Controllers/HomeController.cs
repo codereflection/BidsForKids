@@ -1,5 +1,4 @@
-﻿using System;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using BidsForKids.Data.Models;
 
 namespace BidsForKids.Controllers
@@ -7,16 +6,13 @@ namespace BidsForKids.Controllers
     [HandleError]
     public class HomeController : Controller
     {
-        private IProcurementRepository factory;
+        private readonly IProcurementRepository factory;
 
         public HomeController(IProcurementRepository factory)
         {
             this.factory = factory;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the HomeController class.
-        /// </summary>
         public HomeController()
         {
             

@@ -8,18 +8,12 @@ namespace BidsForKids.Data.Models.ReportModels
         public string ReportTitle { get; set; }
     }
 
-
-    // Procurement Report
-
     public class ProcurementReport : BaseReport
     {
         public string ReportProcurementType { get; set; }
         public List<SerializableObjects.SerializableProcurement> rows { get; set; }
     }
     
-    
-    // Donor Report
-
     public class DonorReport : BaseReport
     {
         public string ReportDonorType { get; set; }

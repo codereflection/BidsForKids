@@ -9,53 +9,53 @@ namespace BidsForKids.Data.Repositories
 {
     public class DatabaseDataSource<T> : DataSource<T> where T : class, new()
     {
-        private readonly DataContext _dataContext;
+        private readonly DataContext dataContext;
 
         public DatabaseDataSource(DataContext dataContext)
         {
-            _dataContext = dataContext;
+            this.dataContext = dataContext;
 
             if (dataContext == null)
-                throw new ArgumentNullException("dataContext cannot be null");
+                throw new ArgumentNullException("dataContext", "dataContext cannot be null");
 
-            _source = _dataContext.GetTable<T>();
+            Source = this.dataContext.GetTable<T>();
         }
 
         public override IEnumerator<T> GetEnumerator()
         {
-            return _source.GetEnumerator();
+            return Source.GetEnumerator();
         }
 
         public override Expression Expression
         {
-            get { return _source.Expression; }
+            get { return Source.Expression; }
         }
 
         public override Type ElementType
         {
-            get { return _source.ElementType; }
+            get { return Source.ElementType; }
         }
 
         public override IQueryProvider Provider
         {
-            get { return _source.Provider; }
+            get { return Source.Provider; }
         }
 
         public override void Add(T entity)
         {
-            (_source as Table<T>).InsertOnSubmit(entity);
+            ((Table<T>) Source).InsertOnSubmit(entity);
         }
 
         public override void Delete(T entity)
         {
-            (_source as Table<T>).DeleteOnSubmit(entity);
+            ((Table<T>) Source).DeleteOnSubmit(entity);
         }
     }
 
     public abstract class DataSource<T> : IDataSource<T> where T : class, new()
     {
         public abstract IEnumerator<T> GetEnumerator();
-        protected IQueryable<T> _source;
+        protected IQueryable<T> Source;
 
         IEnumerator IEnumerable.GetEnumerator()
         {
@@ -81,7 +81,7 @@ namespace BidsForKids.Data.Repositories
                         Expression.Constant(id)),
                     new[] { itemParameter });
 
-            return _source.Where(whereExpression).Single();
+            return Source.Where(whereExpression).Single();
         }
 
         public abstract void Add(T entity);
@@ -89,7 +89,7 @@ namespace BidsForKids.Data.Repositories
 
         public IEnumerable<T> GetAll()
         {
-            return _source;
+            return Source;
         }
     }
 

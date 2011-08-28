@@ -8,7 +8,7 @@ namespace BidsForKids.Controllers
     [Authorize(Roles = "Administrator, Procurements")]
     public class ParentController : Controller
     {
-        private IProcurementRepository factory;
+        private readonly IProcurementRepository factory;
 
         public ParentController(IProcurementRepository factory)
         {

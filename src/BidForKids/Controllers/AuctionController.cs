@@ -12,11 +12,11 @@ namespace BidsForKids.Controllers
     [Authorize(Roles = "Administrator, Procurements")]
     public class AuctionController : Controller
     {
-        private readonly IAuctionRepository _repo;
+        private readonly IAuctionRepository repo;
 
         public AuctionController(IAuctionRepository repo)
         {
-            _repo = repo;
+            this.repo = repo;
             AuctionViewModel.CreateDestinationMap();
             AuctionViewModel.CreateSourceMap();
         }
@@ -24,19 +24,19 @@ namespace BidsForKids.Controllers
 
         public ActionResult Index()
         {
-            var auctions = _repo.GetAll().ToList();
+            var auctions = repo.GetAll().ToList();
 
             return View(Mapper.Map<IEnumerable<Auction>, IEnumerable<AuctionViewModel>>(auctions));
         }
 
         public ActionResult Edit(int id)
         {
-            return View(Mapper.Map<Auction, AuctionViewModel>(_repo.GetById(id)));
+            return View(Mapper.Map<Auction, AuctionViewModel>(repo.GetById(id)));
         }
 
         public ActionResult Details(int id)
         {
-            return View(Mapper.Map<Auction, AuctionViewModel>(_repo.GetById(id)));
+            return View(Mapper.Map<Auction, AuctionViewModel>(repo.GetById(id)));
         }
 
         public ActionResult Delete()
@@ -47,7 +47,7 @@ namespace BidsForKids.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Edit(AuctionViewModel updatedAuction)
         {
-            var auction = _repo.GetById(updatedAuction.Id);
+            var auction = repo.GetById(updatedAuction.Id);
 
             Mapper.Map(updatedAuction, auction);
 
@@ -59,7 +59,7 @@ namespace BidsForKids.Controllers
         {
             var auction = Mapper.Map<AuctionViewModel, Auction>(newAuction);
 
-            _repo.Add(auction);
+            repo.Add(auction);
 
             return RedirectToAction("Index");
         }

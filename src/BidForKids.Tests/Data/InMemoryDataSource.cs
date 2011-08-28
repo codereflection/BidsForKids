@@ -27,43 +27,43 @@ namespace BidsForKids.Tests.Data
 
     public class InMemoryInMemoryTrackedObject<T> : IInMemoryTrackedObject where T : class, new()
     {
-        private readonly T _inner;
-        private InMemoryTrackedState _state;
+        private readonly T inner;
+        private InMemoryTrackedState state;
 
         public InMemoryInMemoryTrackedObject(T trackedObject)
         {
-            _inner = trackedObject;
+            inner = trackedObject;
         }
 
         public T Inner
         {
-            get { return _inner; }
+            get { return inner; }
         }
 
         public InMemoryTrackedState State
         {
-            get { return _state; }
+            get { return state; }
         }
 
         object IInMemoryTrackedObject.Inner
         {
-            get { return _inner; }
+            get { return inner; }
         }
 
         public void ChangedState(InMemoryTrackedState state)
         {
-            _state = state;
+            this.state = state;
         }
 
         public void AcceptChanges()
         {
-            _state = InMemoryTrackedState.Undefined;
+            state = InMemoryTrackedState.Undefined;
         }
     }
 
     public class InMemoryDataSource<T> : DataSource<T>, IInMemoryTrackingContainer where T : class, new()
     {
-        private readonly IDictionary<T, InMemoryInMemoryTrackedObject<T>> _trackedObjects
+        private readonly IDictionary<T, InMemoryInMemoryTrackedObject<T>> trackedObjects
             = new Dictionary<T, InMemoryInMemoryTrackedObject<T>>();
 
         public InMemoryDataSource()
@@ -77,46 +77,46 @@ namespace BidsForKids.Tests.Data
 
         private void Track(T entity)
         {
-            if (!_trackedObjects.ContainsKey(entity))
-                _trackedObjects.Add(entity, new InMemoryInMemoryTrackedObject<T>(entity));
-            _source = _trackedObjects.Keys.AsQueryable();
+            if (!trackedObjects.ContainsKey(entity))
+                trackedObjects.Add(entity, new InMemoryInMemoryTrackedObject<T>(entity));
+            Source = trackedObjects.Keys.AsQueryable();
         }
 
         public override IEnumerator<T> GetEnumerator()
         {
-            return _source.GetEnumerator();
+            return Source.GetEnumerator();
         }
 
         public override Expression Expression
         {
-            get { return _source.Expression; }
+            get { return Source.Expression; }
         }
 
         public override Type ElementType
         {
-            get { return _source.ElementType; }
+            get { return Source.ElementType; }
         }
 
         public override IQueryProvider Provider
         {
-            get { return _source.Provider; }
+            get { return Source.Provider; }
         }
 
         public override void Add(T entity)
         {
             Track(entity);
-            _trackedObjects[entity].ChangedState(InMemoryTrackedState.Added);
+            trackedObjects[entity].ChangedState(InMemoryTrackedState.Added);
         }
 
         public override void Delete(T entity)
         {
             Track(entity);
-            _trackedObjects[entity].ChangedState(InMemoryTrackedState.Deleted);
+            trackedObjects[entity].ChangedState(InMemoryTrackedState.Deleted);
         }
 
         IDictionary IInMemoryTrackingContainer.Data
         {
-            get { return (IDictionary)_trackedObjects; }
+            get { return (IDictionary)trackedObjects; }
         }
     }
 }

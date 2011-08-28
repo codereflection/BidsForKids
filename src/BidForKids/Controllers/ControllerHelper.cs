@@ -5,28 +5,24 @@ namespace BidsForKids.Controllers
 {
     public class ControllerHelper
     {
-        /// <summary>
-        /// Redirects to ReturnTo query string value, passing RedirectParameter=RedirectId, else redirects to index
-        /// </summary>
-        /// <param name="RedirectId">New ID to pass back to ReturnTo url</param>
-        /// <returns></returns>
         public static ActionResult ReturnToOrRedirectToIndex(Controller controller, int RedirectId, string RedirectParameter)
         {
             if (string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["ReturnTo"]) == false)
             {
-                string lServerUrlDecode = HttpContext.Current.Server.UrlDecode(HttpContext.Current.Request.QueryString["ReturnTo"]);
-                if (lServerUrlDecode.IndexOf("http:") == -1 && lServerUrlDecode.IndexOf("/") != 0)
+                var serverUrlDecode = HttpContext.Current.Server.UrlDecode(HttpContext.Current.Request.QueryString["ReturnTo"]);
+                if (!serverUrlDecode.StartsWith("http:") && serverUrlDecode.IndexOf("/") != 0)
                 {
-                    lServerUrlDecode = "/" + lServerUrlDecode;
+                    serverUrlDecode = "/" + serverUrlDecode;
                 }
 
-                lServerUrlDecode += lServerUrlDecode.IndexOf("?") == -1 ? "?" + RedirectParameter + "=" + RedirectId.ToString() : "&" + RedirectParameter + "=" + RedirectId.ToString();
+                serverUrlDecode += serverUrlDecode.IndexOf("?") == -1 ?
+                    "?" + RedirectParameter + "=" + RedirectId 
+                    : "&" + RedirectParameter + "=" + RedirectId;
 
-                return new RedirectResult(lServerUrlDecode);
+                return new RedirectResult(serverUrlDecode);
             }
             else
             {
-                //controller.RouteData.Values["controller"].ToString()
                 return new RedirectToRouteResult(new RouteValueDictionary(new
                 {
                     controller = controller.RouteData.Values["controller"].ToString(),

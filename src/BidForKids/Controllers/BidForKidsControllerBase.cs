@@ -5,7 +5,7 @@ namespace BidsForKids.Controllers
 {
     public class BidsForKidsControllerBase : Controller
     {
-        public IProcurementRepository repository;
+        public IProcurementRepository Repository;
 
         public BidsForKidsControllerBase()
         {
@@ -13,7 +13,7 @@ namespace BidsForKids.Controllers
         }
         public BidsForKidsControllerBase(IProcurementRepository repository)
         {
-            this.repository = repository;
+            this.Repository = repository;
         }
     }
 }

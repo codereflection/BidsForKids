@@ -4,7 +4,6 @@ using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
 using BidsForKids.Data.Models;
-using BidsForKids.Data.Models.SerializableObjects;
 using BidsForKids.ViewModels;
 
 namespace BidsForKids.Controllers
@@ -26,14 +25,14 @@ namespace BidsForKids.Controllers
 
         public ProcurementController(IProcurementRepository repository)
         {
-            this.repository = repository;
+            this.Repository = repository;
             SetupMaps();
         }
 
-        public ActionResult ProcurementList(int Year)
+        public ActionResult ProcurementList(int year)
         {
-            ViewData["Year"] = Year.ToString();
-            return View(repository.GetProcurements(Year));
+            ViewData["Year"] = year.ToString();
+            return View(Repository.GetProcurements(year));
         }
 
         private void SetupIndex(string procurementType)
@@ -41,7 +40,7 @@ namespace BidsForKids.Controllers
             SetCategoryViewData();
 
             ViewData["Auction_ID"] = GetAuctionSelectList(null);
-            var auctions = repository.GetAuctions();
+            var auctions = Repository.GetAuctions();
             if (auctions != null && auctions.Count > 0)
             {
                 var auction = auctions.OrderByDescending(x => x.Year).First();
@@ -65,40 +64,36 @@ namespace BidsForKids.Controllers
 
         }
 
-        //
-        // GET: /Procurement/
-
         public ActionResult Index()
         {
             SetupIndex(null);
             return View();
         }
 
-        public ActionResult BusinessIndex()
+        public ActionResult Business()
         {
             SetupIndex("Business");
             SetViewDataDonorDisplayField("Business");
             return View("Index");
         }
 
-        public ActionResult ParentIndex()
+        public ActionResult Parent()
         {
             SetupIndex("Parent");
             SetViewDataDonorDisplayField("Parents");
             return View("Index");
         }
 
-        public ActionResult AdventureIndex()
+        public ActionResult Adventure()
         {
             SetupIndex("Adventure");
             SetViewDataDonorDisplayField("Adventure");
             return View("Index");
         }
 
-
         private void SetCategoryViewData()
         {
-            var categoryString = repository.GetCategories()
+            var categoryString = Repository.GetCategories()
                                          .Aggregate("{ \"\": \"\",", (current, lCategory) => 
                                                                         current + String.Format("{0}:'{1}',", lCategory.Category_ID, lCategory.CategoryName));
 
@@ -106,7 +101,6 @@ namespace BidsForKids.Controllers
 
             ViewData["CategoryJsonString"] = categoryString;
         }
-
 
         [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult GetProcurement(int? id)
@@ -116,7 +110,7 @@ namespace BidsForKids.Controllers
                 throw new ArgumentNullException("id", "id cannot be null");
             }
 
-            var result = Mapper.Map<Procurement, ProcurementDetailsViewModel>(repository.GetProcurement(id.Value));
+            var result = Mapper.Map<Procurement, ProcurementDetailsViewModel>(Repository.GetProcurement(id.Value));
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -142,22 +136,21 @@ namespace BidsForKids.Controllers
             ViewData["DonorDisplayField"] = field;
         }
 
-
         public ActionResult GetProcurements(string id)
         {
             var loadOptions = jqGridLoadOptions.GetLoadOptions(Request.QueryString);
 
             var result = new JsonResult { JsonRequestBehavior = JsonRequestBehavior.AllowGet };
 
-            // TODO: Should not have to fetch all of the rows here, need to refactor
-            var rows = repository.GetSerializableProcurements(loadOptions);
+            // FAIL: Should not have to fetch all of the rows here, need to refactor
+            var rows = Repository.GetSerializableProcurements(loadOptions);
 
             if (loadOptions.sortIndex == null)
                 rows = rows.OrderByDescending(x => x.CreatedOn).ToList();
 
             if (string.IsNullOrEmpty(id) == false)
             {
-                var procurementType = repository.GetProcurementTypeByName(id);
+                var procurementType = Repository.GetProcurementTypeByName(id);
                 rows = rows.Where(x => x.ProcurementType_ID == procurementType.ProcurementType_ID).ToList();
             }
 
@@ -178,12 +171,10 @@ namespace BidsForKids.Controllers
             return result;
         }
 
-
         public ActionResult Deleted()
         {
             return null;
         }
-
 
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Delete(int? id)
@@ -195,7 +186,7 @@ namespace BidsForKids.Controllers
                     throw new ArgumentException("id did not have a value", "id");
                 }
 
-                var lResult = repository.DeleteProcurement((int)id);
+                var lResult = Repository.DeleteProcurement((int)id);
 
                 var contentResult = new ContentResult {Content = lResult.ToString()};
 
@@ -212,9 +203,6 @@ namespace BidsForKids.Controllers
         }
 
 
-        //
-        // GET: /Procurement/Details/5
-
         public ActionResult Details(int? id)
         {
             if (id.HasValue == false)
@@ -222,19 +210,13 @@ namespace BidsForKids.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            return View(repository.GetProcurement((int)id));
+            return View(Repository.GetProcurement((int)id));
         }
-
-        //
-        // GET: /Procurement/Create
 
         public ActionResult Create()
         {
             throw new NotSupportedException("Direct creation of procurements without a type is not supported.");
         }
-
-        //
-        // GET: /Procurement/Create
 
         public ActionResult CreateByType(string id)
         {
@@ -247,7 +229,7 @@ namespace BidsForKids.Controllers
         {
             ViewData["Auction_ID"] = GetAuctionSelectList(null);
 
-            var procurementType = repository.GetProcurementTypeByName(createType);
+            var procurementType = Repository.GetProcurementTypeByName(createType);
 
             if (Request != null && string.IsNullOrEmpty(Request.QueryString["Donor_ID"]) == false)
                 ViewData["Donor_ID"] = GetDonorsSelectList(int.Parse(Request.QueryString["Donor_ID"].ToString()), procurementType.DonorType_ID);
@@ -291,6 +273,7 @@ namespace BidsForKids.Controllers
 
         private static List<SelectListItem> SetupItemNumberPrefixSelectListItems()
         {
+            // FAIL: Refactor this stuff out to the database
             var result = new List<SelectListItem>
                                   {
                                         new SelectListItem() {Text = "des", Value = "des"},
@@ -331,24 +314,20 @@ namespace BidsForKids.Controllers
             ViewData["ItemNumberPrefixes"] = SetupItemNumberPrefixSelectListItems();
         }
 
-
-
         private SelectList GetAuctionSelectList(int? selectedValue)
         {
-            return new SelectList(repository.GetAuctions().OrderByDescending(x => x.Year), "Auction_ID", "Year", selectedValue);
+            return new SelectList(Repository.GetAuctions().OrderByDescending(x => x.Year), "Auction_ID", "Year", selectedValue);
         }
-
-
 
         private SelectList GetDonorsSelectList(int? selectedValue, int? donorTypeID)
         {
-            var donors = repository.GetDonors();
+            var donors = Repository.GetDonors();
 
             if (donorTypeID != null && donorTypeID != 0)
             {
-                var donorType = repository.GetDonorTypeByID(donorTypeID.Value);
+                var donorType = Repository.GetDonorTypeByID(donorTypeID.Value);
 
-                // TODO: Refactor the logic to build a Business / Parent select list
+                // FAIL: Refactor the logic to build a Business / Parent select list
                 switch (donorType.DonorTypeDesc)
                 {
                     case "Business":
@@ -382,17 +361,15 @@ namespace BidsForKids.Controllers
             return new SelectList(donors.OrderBy(x => x.BusinessName), "Donor_ID", "BusinessName", selectedValue);
         }
 
-
-
         private SelectList GetCategoriesSelectList(int? selectedValue)
         {
-            var categories = repository.GetCategories();
+            var categories = Repository.GetCategories();
             return new SelectList(categories.OrderBy(x => x.CategoryName), "Category_ID", "CategoryName", selectedValue);
         }
 
         private SelectList GetProcurerSelectList(int? selectedValue)
         {
-            var lProcurers = repository.GetProcurers();
+            var lProcurers = Repository.GetProcurers();
 
             var procurerList = from P in lProcurers
                                 select new
@@ -406,15 +383,11 @@ namespace BidsForKids.Controllers
             return new SelectList(procurerList.OrderBy(x => x.LastName), "Procurer_ID", "FullName", selectedValue);
         }
 
-        //
-        // POST: /Procurement/Create
-
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Create(FormCollection collection)
         {
             return CreateNewProcurement(collection);
         }
-
 
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult CreateByType(FormCollection collection)
@@ -428,7 +401,7 @@ namespace BidsForKids.Controllers
 
             try
             {
-                var newProcurement = repository.GetNewProcurement();
+                var newProcurement = Repository.GetNewProcurement();
                 var newContactProcurement = new ContactProcurement();
                 newProcurement.ContactProcurement = newContactProcurement;
 
@@ -446,12 +419,12 @@ namespace BidsForKids.Controllers
 
                 if (collection["procurementType"] != null)
                 {
-                    var procurementType = repository.GetProcurementTypeByName(collection["procurementType"]);
+                    var procurementType = Repository.GetProcurementTypeByName(collection["procurementType"]);
                     newProcurement.ProcurementType_ID = procurementType.ProcurementType_ID;
                     actionToRedirectTo = collection["procurementType"];
                 }
 
-                repository.AddProcurement(newProcurement);
+                Repository.AddProcurement(newProcurement);
 
                 return RedirectToAction(actionToRedirectTo + "Index");
             }
@@ -463,16 +436,14 @@ namespace BidsForKids.Controllers
             }
         }
 
-
         public ActionResult Edit(int? id)
         {
-
             if (id.HasValue == false)
             {
                 return RedirectToAction("Index", "Home");
             }
 
-            var procurement = repository.GetProcurement((int)id);
+            var procurement = Repository.GetProcurement((int)id);
 
             SetupEditViewData(procurement.ContactProcurement);
 
@@ -504,7 +475,7 @@ namespace BidsForKids.Controllers
 
             try
             {
-                var procurement = repository.GetProcurement((int)id);
+                var procurement = Repository.GetProcurement((int)id);
 
                 SetupEditViewData(procurement.ContactProcurement);
 
@@ -514,7 +485,7 @@ namespace BidsForKids.Controllers
                 UpdateModel<ContactProcurement>(procurement.ContactProcurement,
                     ContactProcurementColumns());
 
-                if (repository.SaveProcurement(procurement) == false)
+                if (Repository.SaveProcurement(procurement) == false)
                 {
                     return this.JavaScript("alert('Error saving.');");
                     throw new ApplicationException("Unable to save procurement");
@@ -526,17 +497,13 @@ namespace BidsForKids.Controllers
             {
                 Elmah.ErrorSignal.FromCurrentContext().Raise(ex);
 
-                var procurement = repository.GetProcurement((int)id);
+                var procurement = Repository.GetProcurement((int)id);
 
                 SetupEditViewData(procurement.ContactProcurement);
 
                 return this.JavaScript("alert('Error saving.');");
-                //return View(lProcurement);
             }
         }
-
-        //
-        // POST: /Procurement/Edit/5
 
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Edit(int? id, FormCollection collection)
@@ -547,7 +514,7 @@ namespace BidsForKids.Controllers
             }
 
 
-            var procurement = repository.GetProcurement(id.Value);
+            var procurement = Repository.GetProcurement(id.Value);
 
             if (procurement.Procurement_ID != id)
             {
@@ -566,7 +533,7 @@ namespace BidsForKids.Controllers
 
             procurement.ItemNumber = collection["ItemNumberPrefix"] + " - " + collection["ItemNumberSuffix"];
 
-            if (repository.SaveProcurement(procurement) == false)
+            if (Repository.SaveProcurement(procurement) == false)
             {
                 throw new ApplicationException("Unable to save procurement");
             }
@@ -575,8 +542,6 @@ namespace BidsForKids.Controllers
 
             return RedirectToAction(actionToRedirectTo + "Index");
         }
-
-
         private void UpdateProcurementDonors(Procurement procurement, FormCollection collection)
         {
             var donors = GetDonorsFromFormCollection(collection, "DonorId");
@@ -589,7 +554,7 @@ namespace BidsForKids.Controllers
 
             newDonors.ForEach(id => procurement.ProcurementDonors.Add(new ProcurementDonor
                                                                           {
-                                                                              Donor       = repository.GetDonor(int.Parse(id)),
+                                                                              Donor       = Repository.GetDonor(int.Parse(id)),
                                                                               Procurement = procurement
                                                                           }));
 
@@ -614,7 +579,7 @@ namespace BidsForKids.Controllers
 
             donors.ForEach(id => procurement.ProcurementDonors.Add(new ProcurementDonor
                                                                         {
-                                                                            Donor = repository.GetDonor(int.Parse(id)),
+                                                                            Donor = Repository.GetDonor(int.Parse(id)),
                                                                             Procurement = procurement
                                                                         }));
         }
@@ -627,7 +592,7 @@ namespace BidsForKids.Controllers
             {
                 var result = new ContentResult
                                  {
-                                     Content = repository.ItemNumberExists(id, itemNumber)
+                                     Content = Repository.ItemNumberExists(id, itemNumber)
                                                    ? itemNumber + " already exists in the database"
                                                    : "false"
                                  };
@@ -648,7 +613,7 @@ namespace BidsForKids.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult GetLastItemNumber(int id, string itemNumberPrefix, int auctionId)
         {
-            var lastSimilar = repository.CheckForLastSimilarItemNumber(id, itemNumberPrefix, auctionId);
+            var lastSimilar = Repository.CheckForLastSimilarItemNumber(id, itemNumberPrefix, auctionId);
 
             var result = new ContentResult
                              {

@@ -48,21 +48,21 @@
                     <li><a href="#a">Procurements</a>
                         <ul>
                             <li>
-                                <%= Html.ActionLink("Business", "BusinessIndex", "Procurement")%>
+                                <%= Html.ActionLink("Business", "Business", "Procurement")%>
                                 <ul>
                                     <li>
                                         <%= Html.ActionLink("New", "CreateByType", "Procurement", new { id = "Business" }, null)%></li>
                                 </ul>
                             </li>
                             <li>
-                                <%= Html.ActionLink("Parent", "ParentIndex", "Procurement")%>
+                                <%= Html.ActionLink("Parent", "Parent", "Procurement")%>
                                 <ul>
                                     <li>
                                         <%= Html.ActionLink("New", "CreateByType", "Procurement", new { id = "Parent" }, null)%></li>
                                 </ul>
                             </li>
                             <li>
-                                <%= Html.ActionLink("Adventure", "AdventureIndex", "Procurement")%>
+                                <%= Html.ActionLink("Adventure", "Adventure", "Procurement")%>
                                 <ul>
                                     <li>
                                         <%= Html.ActionLink("New", "CreateByType", "Procurement", new { id = "Adventure" }, null)%></li>

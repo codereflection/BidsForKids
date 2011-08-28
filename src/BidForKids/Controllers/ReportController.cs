@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Mvc.Ajax;
 using System.Text;
 using BidsForKids.Data.Models;
 using BidsForKids.Data.Models.ReportModels;
-using System.Reflection;
 using BidsForKids.Data.Models.SerializableObjects;
 
 namespace BidsForKids.Controllers
@@ -15,7 +13,7 @@ namespace BidsForKids.Controllers
     [Authorize(Roles = "Administrator, Procurements")]
     public class ReportController : Controller
     {
-        private IProcurementRepository factory;
+        private readonly IProcurementRepository factory;
 
         public ReportController(IProcurementRepository factory)
         {
@@ -47,8 +45,7 @@ namespace BidsForKids.Controllers
                 reportHtml.AppendLine("<h3>" + collection["ReportTitle"] + "</h3>");
 
 
-                var columns = new List<string>();
-                columns = GetSelectedColumns(collection);
+                var columns = GetSelectedColumns(collection);
 
                 if (columns == null)
                 {
@@ -91,41 +88,40 @@ namespace BidsForKids.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult RunAuctionReport(FormCollection collection)
         {
-            int? Year = null;
+            int? year = null;
             if (!string.IsNullOrEmpty(collection["YearFilter"]))
-                Year = int.Parse(collection["YearFilter"]);
+                year = int.Parse(collection["YearFilter"]);
 
-            var Category = collection["CategoryNameFilter"];
-            var AuctionNumberStart = collection["AuctionNumberStartFilter"];
-            var AuctionNumberEnd = collection["AuctionNumberEndFilter"];
+            var category = collection["CategoryNameFilter"];
+            var auctionNumberStart = collection["AuctionNumberStartFilter"];
+            var auctionNumberEnd = collection["AuctionNumberEndFilter"];
 
-            var auctionItems = GetAuctionItems(Year);
+            var auctionItems = GetAuctionItems(year);
 
-            if (!string.IsNullOrEmpty(Category))
+            if (!string.IsNullOrEmpty(category))
             {
-                auctionItems = from P in auctionItems
-                               where P.Items.Any((x) => x.Category != null ? x.Category.Category_ID == int.Parse(Category) : false)
-                               select P;
+                auctionItems = from p in auctionItems
+                               where p.Items.Any(x => x.Category != null ? x.Category.Category_ID == int.Parse(category) : false)
+                               select p;
             }
 
-            if (!string.IsNullOrEmpty(AuctionNumberStart))
+            if (!string.IsNullOrEmpty(auctionNumberStart))
             {
-                auctionItems = from P in auctionItems
-                               where string.CompareOrdinal(P.AuctionNumber, AuctionNumberStart) >= 0
-                               select P;
+                auctionItems = from p in auctionItems
+                               where string.CompareOrdinal(p.AuctionNumber, auctionNumberStart) >= 0
+                               select p;
             }
 
-            if (!string.IsNullOrEmpty(AuctionNumberEnd))
+            if (!string.IsNullOrEmpty(auctionNumberEnd))
             {
-                auctionItems = from P in auctionItems
-                               where string.CompareOrdinal(P.AuctionNumber, AuctionNumberEnd) <= 0
-                               select P;
+                auctionItems = from p in auctionItems
+                               where string.CompareOrdinal(p.AuctionNumber, auctionNumberEnd) <= 0
+                               select p;
             }
 
-            if (collection["CatalogLayout"].Contains("true"))
-                return PartialView("AuctionItemReportDataCatalogLayout", auctionItems);
-            else
-                return PartialView("AuctionItemReportData", auctionItems);
+            return PartialView(collection["CatalogLayout"].Contains("true") 
+                ? "AuctionItemReportDataCatalogLayout" 
+                : "AuctionItemReportData", auctionItems);
         }
 
         private void SetupCreateReportViewData(string createByType)
@@ -137,6 +133,7 @@ namespace BidsForKids.Controllers
 
         private ProcurementReport GetReportData(FormCollection collection)
         {
+            if (collection == null) throw new ArgumentNullException("collection");
             var report = new ProcurementReport();
 
             var procurements = SerializableProcurement.ConvertProcurementListToSerializableProcurementList(factory.GetProcurements());
@@ -151,7 +148,7 @@ namespace BidsForKids.Controllers
             if (collection["AdventureType"].Contains("true"))
                 procurmentTypes.Add("Adventure");
 
-            // This is really fucking inefficient, and I don't like it one bit.
+            // OMFG, what the hell was I thinking? This is _really_ fucking inefficient, and I don't like it one bit. >8(
 
             foreach (var item in procurements.OrderBy((x) => x.ItemNumber).ToArray())
             {
@@ -182,7 +179,7 @@ namespace BidsForKids.Controllers
                                     continue;
                                 }
 
-                                object value = propInfo.GetValue(item, null);
+                                var value = propInfo.GetValue(item, null);
 
                                 if (value == null)
                                     procurements.Remove(item);
@@ -231,18 +228,20 @@ namespace BidsForKids.Controllers
 
         private static List<SelectListItem> GetReportTypeSelectList()
         {
-            var reportTypeOptions = new List<SelectListItem>();
-            reportTypeOptions.Add(new SelectListItem() { Text = "", Value = "", Selected = true });
-            reportTypeOptions.Add(new SelectListItem() { Text = "Business", Value = "Business" });
-            reportTypeOptions.Add(new SelectListItem() { Text = "Parent", Value = "Parent" });
+            var reportTypeOptions = new List<SelectListItem>
+                                        {
+                                            new SelectListItem() {Text = "", Value = "", Selected = true},
+                                            new SelectListItem() {Text = "Business", Value = "Business"},
+                                            new SelectListItem() {Text = "Parent", Value = "Parent"}
+                                        };
             return reportTypeOptions;
         }
 
-        private void BuildReportBody(StringBuilder reportHtml, IEnumerable<string> columns, ProcurementReport report, bool includeRowNumbers)
+        private static void BuildReportBody(StringBuilder reportHtml, IEnumerable<string> columns, ProcurementReport report, bool includeRowNumbers)
         {
             reportHtml.AppendLine("<tbody>");
 
-            int rowCounter = 0;
+            var rowCounter = 0;
             report.rows.ForEach(row =>
             {
                 rowCounter += 1;
@@ -285,12 +284,11 @@ namespace BidsForKids.Controllers
                     }
 
                     var propInfo = row.GetType().GetProperty(item);
-                    if (propInfo != null)
-                    {
-                        var value = propInfo.GetValue(row, null);
+                    if (propInfo == null) continue;
+                    
+                    var value = propInfo.GetValue(row, null);
 
-                        reportHtml.AppendLine(FormatHtmlTableCellValueByType(value));
-                    }
+                    reportHtml.AppendLine(FormatHtmlTableCellValueByType(value));
                 }
                 reportHtml.AppendLine("</tr>");
             });
@@ -326,7 +324,7 @@ namespace BidsForKids.Controllers
             }
         }
 
-        private static void BuildReportHeader(StringBuilder reportHtml, List<string> columns, bool includeRowNumbers)
+        private static void BuildReportHeader(StringBuilder reportHtml, IEnumerable<string> columns, bool includeRowNumbers)
         {
             reportHtml.AppendLine("<thead>");
             reportHtml.AppendLine("<tr>");
@@ -340,42 +338,28 @@ namespace BidsForKids.Controllers
             reportHtml.AppendLine("</thead>");
         }
 
-        private List<string> GetSelectedColumns(FormCollection collection)
+        private static List<string> GetSelectedColumns(FormCollection collection)
         {
+            if (collection == null) throw new ArgumentNullException("collection");
             var columnQuery = from i in collection.AllKeys.AsQueryable() where i.EndsWith("Column") == true select i;
 
             if (columnQuery == null || columnQuery.Count() == 0)
                 return null;
 
-            var result = new List<string>();
-
-            foreach (var item in columnQuery)
-            {
-                if (collection[item].Contains("true"))
-                    result.Add(item.Replace("Column", string.Empty));
-            }
-
-            return result;
+            return (from item in columnQuery
+                    where collection[item].Contains("true")
+                    select item.Replace("Column", string.Empty)).ToList();
         }
 
-        private Dictionary<string, string> GetFilteredColumns(FormCollection collection)
+        private static Dictionary<string, string> GetFilteredColumns(NameValueCollection collection)
         {
             var filterQuery = from i in collection.AllKeys.AsQueryable() where i.EndsWith("Filter") == true select i;
 
-            if (filterQuery == null || filterQuery.Count() == 0)
+            if (filterQuery.Count() == 0)
                 return null;
 
-            var result = new Dictionary<string, string>();
-
-            foreach (var item in filterQuery)
-            {
-                if (string.IsNullOrEmpty(collection[item]) == false)
-                {
-                    result.Add(item.Replace("Filter", string.Empty), collection[item]);
-                }
-            }
-
-            return result;
+            return filterQuery.Where(item => string.IsNullOrEmpty(collection[item]) == false)
+                .ToDictionary(item => item.Replace("Filter", string.Empty), item => collection[item]);
         }
 
         private SelectList GetCategoriesSelectList()
@@ -389,20 +373,15 @@ namespace BidsForKids.Controllers
             ViewData["CategoryList"] = GetCategoriesSelectList();
         }
 
-        private IEnumerable<AuctionItem> GetAuctionItems(int? Year)
+        private IEnumerable<AuctionItem> GetAuctionItems(int? year)
         {
-            var procurementItems = new List<Procurement>();
+            var procurementItems = year != null 
+                                        ? factory.GetProcurements(year.Value) 
+                                        : factory.GetProcurements();
 
-            if (Year != null)
-                procurementItems = factory.GetProcurements(Year.Value);
-            else
-            {
-                procurementItems = factory.GetProcurements();
-            }
-
-            return from P in procurementItems
-                   where P.AuctionNumber != null
-                   group P by P.AuctionNumber
+            return from p in procurementItems
+                   where p.AuctionNumber != null
+                   group p by p.AuctionNumber
                        into g
                        select new AuctionItem()
                                   {

@@ -11,17 +11,11 @@ namespace BidsForKids.Controllers
     public class AccountController : Controller
     {
 
-        // This constructor is used by the MVC framework to instantiate the controller using
-        // the default forms authentication and membership providers.
-
         public AccountController()
             : this(null, null)
         {
         }
 
-        // This constructor is not used by the MVC framework but is instead provided for ease
-        // of unit testing this type. See the comments at the end of this file for more
-        // information.
         public AccountController(IFormsAuthentication formsAuth, IMembershipService service)
         {
             FormsAuth = formsAuth ?? new FormsAuthenticationService();
@@ -92,8 +86,7 @@ namespace BidsForKids.Controllers
 
             if (ValidateRegistration(userName, email, password, confirmPassword))
             {
-                // Attempt to register the user
-                MembershipCreateStatus createStatus = MembershipService.CreateUser(userName, password, email);
+                var createStatus = MembershipService.CreateUser(userName, password, email);
 
                 if (createStatus == MembershipCreateStatus.Success)
                 {
@@ -106,7 +99,6 @@ namespace BidsForKids.Controllers
                 }
             }
 
-            // If we got this far, something failed, redisplay form
             return View();
         }
 
@@ -165,8 +157,6 @@ namespace BidsForKids.Controllers
                 throw new InvalidOperationException("Windows authentication is not supported.");
             }
         }
-
-        #region Validation Methods
 
         private bool ValidateChangePassword(string currentPassword, string newPassword, string confirmPassword)
         {
@@ -269,13 +259,7 @@ namespace BidsForKids.Controllers
                     return "An unknown error occurred. Please verify your entry and try again. If the problem persists, please Donor your system administrator.";
             }
         }
-        #endregion
     }
-
-    // The FormsAuthentication type is sealed and contains static members, so it is difficult to
-    // unit test code that calls its members. The interface and helper class below demonstrate
-    // how to create an abstract wrapper around such a type in order to make the AccountController
-    // code unit testable.
 
     public interface IFormsAuthentication
     {
@@ -306,7 +290,7 @@ namespace BidsForKids.Controllers
 
     public class AccountMembershipService : IMembershipService
     {
-        private MembershipProvider _provider;
+        private readonly MembershipProvider provider;
 
         public AccountMembershipService()
             : this(null)
@@ -315,32 +299,33 @@ namespace BidsForKids.Controllers
 
         public AccountMembershipService(MembershipProvider provider)
         {
-            _provider = provider ?? Membership.Provider;
+            this.provider = provider ?? Membership.Provider;
         }
 
         public int MinPasswordLength
         {
             get
             {
-                return _provider.MinRequiredPasswordLength;
+                return provider.MinRequiredPasswordLength;
             }
         }
 
         public bool ValidateUser(string userName, string password)
         {
-            return _provider.ValidateUser(userName, password);
+            return provider.ValidateUser(userName, password);
         }
 
         public MembershipCreateStatus CreateUser(string userName, string password, string email)
         {
             MembershipCreateStatus status;
-            _provider.CreateUser(userName, password, email, null, null, true, null, out status);
+            provider.CreateUser(userName, password, email, null, null, true, null, out status);
             return status;
         }
 
         public bool ChangePassword(string userName, string oldPassword, string newPassword)
         {
-            MembershipUser currentUser = _provider.GetUser(userName, true /* userIsOnline */);
+            const bool userIsOnline = true;
+            var currentUser = provider.GetUser(userName, userIsOnline);
             return currentUser.ChangePassword(oldPassword, newPassword);
         }
     }

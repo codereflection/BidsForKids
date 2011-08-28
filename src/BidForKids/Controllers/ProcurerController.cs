@@ -6,48 +6,36 @@ namespace BidsForKids.Controllers
     [Authorize(Roles = "Administrator, Procurements")]
     public class ProcurerController : Controller
     {
-        private IProcurementRepository factory;
+        private readonly IProcurementRepository factory;
 
         public ProcurerController(IProcurementRepository factory)
         {
             this.factory = factory;
         }
 
-        //
-        // GET: /Procurer/
-
         public ActionResult Index()
         {
             return View(factory.GetProcurers());
         }
-
-        //
-        // GET: /Procurer/Details/5
 
         public ActionResult Details(int id)
         {
             return View(factory.GetProcurer(id));
         }
 
-        //
-        // GET: /Procurer/Create
-
         public ActionResult Create()
         {
             return View();
         } 
-
-        //
-        // POST: /Procurer/Create
 
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Create(FormCollection collection)
         {
             try
             {
-                Procurer lNewProcurer = factory.GetNewProcurer();
+                var newProcurer = factory.GetNewProcurer();
 
-                UpdateModel(lNewProcurer, new[] {
+                UpdateModel(newProcurer, new[] {
                         "FirstName",
                         "LastName",
                         "Phone",
@@ -55,7 +43,7 @@ namespace BidsForKids.Controllers
                         "Description"
                 });
 
-                factory.AddProcurer(lNewProcurer);
+                factory.AddProcurer(newProcurer);
 
                 return RedirectToAction("Index");
             }
@@ -65,25 +53,19 @@ namespace BidsForKids.Controllers
             }
         }
 
-        //
-        // GET: /Procurer/Edit/5
- 
         public ActionResult Edit(int id)
         {
             return View(factory.GetProcurer(id));
         }
-
-        //
-        // POST: /Procurer/Edit/5
 
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Edit(int id, FormCollection collection)
         {
             try
             {
-                Procurer lProcurer = factory.GetProcurer(id);
+                var procurer = factory.GetProcurer(id);
 
-                UpdateModel(lProcurer, new[] {
+                UpdateModel(procurer, new[] {
                         "FirstName",
                         "LastName",
                         "Phone",
@@ -91,7 +73,7 @@ namespace BidsForKids.Controllers
                         "Description"
                 });
 
-                factory.SaveProcurer(lProcurer);
+                factory.SaveProcurer(procurer);
 
  
                 return RedirectToAction("Index");
