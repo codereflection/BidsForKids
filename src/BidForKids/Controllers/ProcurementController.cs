@@ -470,7 +470,6 @@ namespace BidsForKids.Controllers
             if (id.HasValue == false)
             {
                 return this.JavaScript("alert('Error saving. Please try again or refresh the page and try again.');");
-                throw new ArgumentException("Invalid Procurement ID was passed.");
             }
 
             try
@@ -479,16 +478,15 @@ namespace BidsForKids.Controllers
 
                 SetupEditViewData(procurement.ContactProcurement);
 
-                UpdateModel<Procurement>(procurement,
+                UpdateModel(procurement,
                     ProcurementColumns());
 
-                UpdateModel<ContactProcurement>(procurement.ContactProcurement,
+                UpdateModel(procurement.ContactProcurement,
                     ContactProcurementColumns());
 
                 if (Repository.SaveProcurement(procurement) == false)
                 {
                     return this.JavaScript("alert('Error saving.');");
-                    throw new ApplicationException("Unable to save procurement");
                 }
 
                 return this.JavaScript("alert('Saved.');");
@@ -540,7 +538,7 @@ namespace BidsForKids.Controllers
 
             var actionToRedirectTo = procurement.ProcurementType.ProcurementTypeDesc;
 
-            return RedirectToAction(actionToRedirectTo + "Index");
+            return RedirectToAction(actionToRedirectTo); 
         }
         private void UpdateProcurementDonors(Procurement procurement, FormCollection collection)
         {

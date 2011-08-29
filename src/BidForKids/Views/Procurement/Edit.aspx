@@ -103,7 +103,7 @@
                 return;
 
             $.ajax({
-                url: '<%= Url.Action("Delete") %>', // + id.toString(),  // "/Procurement/Delete/" + id;
+                url: '<%= Url.Action("Delete") %>',
                 data: { id: id.toString() },
                 type: 'POST',
                 dataType: 'text',
