@@ -445,6 +445,8 @@ namespace BidsForKids.Controllers
 
             var procurement = Repository.GetProcurement((int)id);
 
+            ViewData["RedirectToIndex"] = procurement.ProcurementType.ProcurementTypeDesc;
+
             SetupEditViewData(procurement.ContactProcurement);
 
             var result = Mapper.Map<Procurement, EditableProcurementViewModel>(procurement);

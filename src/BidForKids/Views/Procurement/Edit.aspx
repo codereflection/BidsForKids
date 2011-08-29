@@ -245,6 +245,6 @@
     </fieldset>
     <% } %>
     <div>
-        <%=Html.ActionLink("Back to List", "Index") %>
+        <%=Html.ActionLink("Back to List", ViewData["RedirectToIndex"].ToString()) %>
     </div>
 </asp:Content>
