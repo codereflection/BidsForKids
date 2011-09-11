@@ -85,7 +85,7 @@ namespace BidsForKids.Tests.Controllers
             {
                 var controller = SetupNewControllerWithMockContext<ProcurementController>(ProcurementFactory);
 
-                var result = controller.Edit((int?)0);
+                var result = controller.Edit(0);
 
                 var viewResult = Assert.IsType<ViewResult>(result);
                 Assert.Empty(viewResult.ViewName);

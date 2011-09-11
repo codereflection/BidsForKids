@@ -10,8 +10,8 @@ namespace BidsForKids.Tests.Controllers
         {
             var factory = MockRepository.GenerateStub<IProcurementRepository>();
             factory.Stub(x => x.GetProcurements()).Return(new List<Procurement>());
-            factory.Stub(x => x.GetProcurement(0)).IgnoreArguments().Return(new Procurement());
-            
+            factory.Stub(x => x.GetProcurement(0)).IgnoreArguments().Return(new Procurement { ProcurementType = new ProcurementType() });
+
             factory.Stub(x => x.GetAuctions()).Return(new List<Auction>());
 
             factory.Stub(x => x.GetDonors()).Return(new List<Donor>());
