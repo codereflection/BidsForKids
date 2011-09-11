@@ -89,7 +89,7 @@
       <HintPath>..\..\lib\NBuilder\FizzWare.NBuilder.dll</HintPath>
     </Reference>
     <Reference Include="Machine.Specifications">
-      <HintPath>..\..\lib\mspec\Machine.Specifications.dll</HintPath>
+      <HintPath>..\..\packages\Machine.Specifications.0.4.24.0\lib\Machine.Specifications.dll</HintPath>
     </Reference>
     <Reference Include="NSubstitute">
       <HintPath>..\..\lib\NSubstitute\NSubstitute.dll</HintPath>

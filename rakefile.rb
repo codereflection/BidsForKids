@@ -27,7 +27,7 @@ xunit :xunitTests do |xunit|
 end
 
 mspec :specifications do |mspec|
-	mspec.command = "lib/mspec/mspec.exe"
+	mspec.command = "packages/Machine.Specifications.0.4.24.0/tools/mspec.exe"
 	mspec.assemblies = "build/BidsForKids.Tests.dll"
 	mspec.html_output = "report/Specs"
 end
