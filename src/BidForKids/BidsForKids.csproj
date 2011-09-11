@@ -82,8 +82,9 @@
     <Reference Include="AutoMapper">
       <HintPath>..\..\packages\AutoMapper.1.1.0.118\lib\AutoMapper.dll</HintPath>
     </Reference>
-    <Reference Include="Elmah">
-      <HintPath>..\..\lib\Elmah\Elmah.dll</HintPath>
+    <Reference Include="Elmah, Version=1.1.11517.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\elmah.corelibrary.1.2\lib\Elmah.dll</HintPath>
     </Reference>
     <Reference Include="MvcMembership">
       <HintPath>..\..\lib\MvcMembership\MvcMembership.dll</HintPath>
