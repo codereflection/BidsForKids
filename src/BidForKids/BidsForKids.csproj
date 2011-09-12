@@ -89,9 +89,6 @@
     <Reference Include="MvcMembership">
       <HintPath>..\..\lib\MvcMembership\MvcMembership.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\lib\Json.net\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="PagedList, Version=1.1.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
       <HintPath>..\..\lib\PagedList\PagedList.dll</HintPath>
     </Reference>
@@ -102,7 +99,8 @@
       <HintPath>..\..\lib\Spark\Spark.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="StructureMap, Version=2.6.1.0, Culture=neutral, PublicKeyToken=e60ad81abae3c223, processorArchitecture=MSIL">
-      <HintPath>..\..\lib\StructureMap\StructureMap.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\structuremap.2.6.3\lib\StructureMap.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
