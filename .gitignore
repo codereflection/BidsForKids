@@ -6,6 +6,8 @@ build/
 [Bb]in/
 [Oo]bj/
 *.suo
+*.swp
+*~
 *.sln.cache
 _ReSharper.*/
 *.user
