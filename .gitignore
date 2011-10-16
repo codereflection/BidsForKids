@@ -1,23 +1,37 @@
-
-*resharper.user
+# Bin/Obj's
 [Dd]ebug/
 [Rr]elease/
-build/
 [Bb]in/
 [Oo]bj/
+
+
+# Resharper
+*resharper.user
+_ReSharper.*/
+
+
+# Temp files
 *.suo
 *.swp
 *~
+
+
+# VS user files
 *.sln.cache
-_ReSharper.*/
 *.user
+
+
+# Logs
 logs/
-UpgradeLog*
-_UpgradeReport_Files/
+
+
+# Build
+build/
 deploy/
 [Rr]eport/*
 *.Publish.xml
 publish/*
+
 
 #Make sure report dir is created
 ![Rr]eport/Specs/.gitignore
