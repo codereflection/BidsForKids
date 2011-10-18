@@ -1,3 +1,4 @@
+using System;
 using BidsForKids.Data.Models;
 using Rhino.Mocks;
 using System.Collections.Generic;
@@ -6,6 +7,8 @@ namespace BidsForKids.Tests.Controllers
 {
     public class ProcurementFactoryHelper
     {
+        public static Func<Donor> GetTestDonor = () => new Donor();
+
         public static IProcurementRepository GenerateMockProcurementFactory()
         {
             var factory = MockRepository.GenerateStub<IProcurementRepository>();
@@ -15,7 +18,7 @@ namespace BidsForKids.Tests.Controllers
             factory.Stub(x => x.GetAuctions()).Return(new List<Auction>());
 
             factory.Stub(x => x.GetDonors()).Return(new List<Donor>());
-            factory.Stub(x => x.GetDonor(0)).IgnoreArguments().Return(new Donor());
+            factory.Stub(x => x.GetDonor(0)).IgnoreArguments().Return(GetTestDonor.Invoke());
 
             factory.Stub(x => x.GetGeoLocations()).Return(new List<GeoLocation>());
             factory.Stub(x => x.GetGeoLocation(0)).IgnoreArguments().Return(new GeoLocation());

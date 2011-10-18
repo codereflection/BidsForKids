@@ -90,6 +90,7 @@
       <Column Name="MailedPacket" Type="System.Boolean" DbType="bit" CanBeNull="true" />
       <Column Name="Procurer_ID" Type="System.Int32" DbType="int" CanBeNull="true" />
       <Column Name="DonorType_ID" Type="System.Int32" DbType="int" CanBeNull="true" />
+      <Column Name="Closed" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Association Name="Donor_ContactProcurement" Member="ContactProcurements" ThisKey="Donor_ID" OtherKey="Donor_ID" Type="ContactProcurement" />
       <Association Name="Donor_ProcurementDonor" Member="ProcurementDonors" ThisKey="Donor_ID" OtherKey="Donor_ID" Type="ProcurementDonor" />
       <Association Name="GeoLocation_Donor" Member="GeoLocation" ThisKey="GeoLocation_ID" OtherKey="GeoLocation_ID" Type="GeoLocation" IsForeignKey="true" />

@@ -151,7 +151,7 @@ namespace BidsForKids.Data.Models
                 donors = dc.ExecuteQuery<Donor>(sql, loadOptions.searchParams.Values.ToArray());
             }
 
-            return donors.Select(SerializableDonor.ConvertDonorToSerializableProcurement).ToList();
+            return donors.Where(DonorIsNotClosed).Select(SerializableDonor.ConvertDonorToSerializableProcurement).ToList();
         }
 
 
@@ -374,9 +374,7 @@ namespace BidsForKids.Data.Models
         public bool SaveDonor(Donor donor)
         {
             if (donor == null)
-            {
-                throw new ArgumentNullException("Donor");
-            }
+                throw new ArgumentNullException("donor");
 
             var lOld = GetDonor(donor.Donor_ID);
 
@@ -385,6 +383,23 @@ namespace BidsForKids.Data.Models
             dc.SubmitChanges();
 
             // TODO: Compare object properties here
+            return true;
+        }
+
+        /// <summary>
+        /// Deletes the donor
+        /// </summary>
+        /// <param name="donor">Donor to delete</param>
+        /// <returns>True if deletion was successful</returns>
+        public bool DeleteDonor(Donor donor)
+        {
+            if (donor == null)
+                return false;
+
+            dc.Donors.DeleteOnSubmit(donor);
+
+            dc.SubmitChanges();
+
             return true;
         }
 
@@ -555,7 +570,12 @@ namespace BidsForKids.Data.Models
         /// <returns>A list of Donor objects</returns>
         public List<Donor> GetDonors()
         {
-            return dc.Donors.ToList();
+            return dc.Donors.Where(DonorIsNotClosed).ToList();
+        }
+
+        static bool DonorIsNotClosed(Donor x)
+        {
+            return x.Closed == null || x.Closed == false;
         }
 
 
@@ -572,7 +592,7 @@ namespace BidsForKids.Data.Models
                                     .Distinct()
                                     .ToList();
 
-            return dc.Donors.Where(x => donorsByYear.Contains(x.Donor_ID));
+            return dc.Donors.Where(DonorIsNotClosed).Where(x => donorsByYear.Contains(x.Donor_ID));
         }
 
 
@@ -631,14 +651,12 @@ namespace BidsForKids.Data.Models
         /// <returns>An instance of a Donor object</returns>
         public Donor GetDonor(int id)
         {
-            var contacts = from C in dc.Donors where C.Donor_ID == id select C;
+            var donor = dc.Donors.FirstOrDefault(x => x.Donor_ID == id);
 
-            if (contacts == null || contacts.Count() == 0)
-            {
+            if (donor == null)
                 throw new ApplicationException("Unable to locate Donor by ID " + id);
-            }
 
-            return contacts.First();
+            return donor;
         }
 
 

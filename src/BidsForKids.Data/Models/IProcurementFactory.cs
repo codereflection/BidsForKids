@@ -29,6 +29,7 @@ namespace BidsForKids.Data.Models
         Donor GetNewDonor();
         int AddDonor(Donor Donor);
         bool SaveDonor(Donor Donor);
+        bool DeleteDonor(Donor Donor);
 
         List<GeoLocation> GetGeoLocations();
         GeoLocation GetGeoLocation(int id);

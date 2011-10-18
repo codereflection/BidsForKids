@@ -25,6 +25,17 @@
         <tbody>
             <tr>
                 <td>
+                    v1.2.1.5
+                </td>
+                <td>
+                    Oct 19th, 2011
+                </td>
+                <td>
+                    Added capability to Close & Delete donors. Donors w/ associated procurements cannot be deleted, only Closed.<br />
+                </td>
+            </tr>
+            <tr>
+                <td>
                     v1.2.1.4
                 </td>
                 <td>

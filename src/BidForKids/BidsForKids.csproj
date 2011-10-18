@@ -158,6 +158,7 @@
     <Compile Include="ViewModels\EditableProcurementViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App_Offline.htm-save" />
     <Content Include="Areas\UserAdministration\Views\UserAdministration\Details.aspx" />
     <Content Include="Areas\UserAdministration\Views\UserAdministration\Index.aspx" />
     <Content Include="Areas\UserAdministration\Views\UserAdministration\Password.aspx" />

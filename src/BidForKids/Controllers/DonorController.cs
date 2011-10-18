@@ -13,10 +13,10 @@ namespace BidsForKids.Controllers
     {
         public DonorController()
         {
-            
+
         }
 
-        public DonorController(IProcurementRepository repository) 
+        public DonorController(IProcurementRepository repository)
         {
             this.Repository = repository;
         }
@@ -52,7 +52,7 @@ namespace BidsForKids.Controllers
             ViewData["GeoLocationJsonString"] = GetGeoLocationJSONString(); ;
 
             ViewData["ProcurerJsonString"] = GetProcurerJSONString();
-            
+
             return View(Repository.GetDonors());
         }
 
@@ -92,7 +92,7 @@ namespace BidsForKids.Controllers
 
         public ActionResult GeoList(int? id)
         {
-            if (id.HasValue == true  && id > 0)
+            if (id.HasValue == true && id > 0)
             {
                 var donors = Repository.GetDonors().Where(x => x.GeoLocation_ID == id).OrderBy(x => x.BusinessName);
 
@@ -206,10 +206,11 @@ namespace BidsForKids.Controllers
         {
             IEnumerable<Procurer> procurers = Repository.GetProcurers();
             var procurerQuery = from P in procurers
-                                 select new {
-                                     Procurer_ID = P.Procurer_ID,
-                                     FullName = P.FirstName + " " + P.LastName
-                                 };
+                                select new
+                                {
+                                    Procurer_ID = P.Procurer_ID,
+                                    FullName = P.FirstName + " " + P.LastName
+                                };
 
             return new SelectList(procurerQuery, "Procurer_ID", "FullName", selectedValue);
         }
@@ -313,5 +314,45 @@ namespace BidsForKids.Controllers
                 return View(Repository.GetDonor(id));
             }
         }
+
+        [HttpPost]
+        public ActionResult Close(int id)
+        {
+            var donor = Repository.GetDonor(id);
+
+            donor.Closed = true;
+
+            Repository.SaveDonor(donor);
+
+            return new JsonResult { Data = new CloseDonorViewModel { Successful = true } };
+        }
+
+        [HttpDelete]
+        public ActionResult Delete(int id)
+        {
+            var donor = Repository.GetDonor(id);
+
+            if (donor.ProcurementDonors.Count > 0)
+                return new JsonResult { Data = new DeleteDonorViewModel
+                                                   {
+                                                       Successful = false, 
+                                                       Message = "Cannot delete because the donor has associated procurements, use Close Donor instead"
+                                                   }};
+
+            Repository.DeleteDonor(donor);
+
+            return new JsonResult { Data = new DeleteDonorViewModel { Successful = true } };
+        }
+    }
+
+    public class DeleteDonorViewModel
+    {
+        public bool Successful { get; set; }
+        public string Message { get; set; }
+    }
+
+    public class CloseDonorViewModel
+    {
+        public bool Successful { get; set; }
     }
 }

@@ -5,11 +5,75 @@
     Edit Donor
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+    <script type="text/javascript">
+
+        var Donor = (function (id) {
+            var donorId = id;
+
+            closeDonor = function() {
+                $.ajax({
+                    url: '<%= Url.Action("Close") %>',
+                    data: { id: donorId },
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function (data, textStatus, XMLHttpRequest) {
+                        alert("Donor closed");
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert('Error: ' + textStatus);
+                    }
+                });
+            };
+
+            deleteDonor = function() {
+                 $.ajax({
+                    url: '<%= Url.Action("Delete", new { Id = Model.Donor_ID }) %>',
+                    data: { },
+                    type: 'DELETE',
+                    dataType: 'json',
+                    success: function (data, textStatus, XMLHttpRequest) {
+                        if (data.Successful == true)
+                        {
+                            alert("Donor deleted");
+                            window.location = '<%= Url.Action("Index") %>';
+                        }
+                        else
+                            alert(data.Message);
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert('Error: ' + textStatus);
+                    }
+                 });
+            };
+
+            return {
+                Close: function () {
+                    var answer = window.confirm("Are you certain that you want to close this donor?");
+                    if (answer)
+                        closeDonor();
+                },
+                Delete: function () {
+                    var answer = window.prompt("Are you certain that you want to delete this donor? This cannot be undone! Type 'yes' if you want to go ahead (you've been warned!)","no");
+                    if (answer == "yes")
+                        deleteDonor();
+                }
+            };
+        })(<%=Model.Donor_ID %>);
+
+        $(document).ready(function () {
+            $("#closeDonor").click(Donor.Close);
+            $("#deleteDonor").click(Donor.Delete);
+            if (<%= Model.ContactProcurements.Count %> > 0)
+                $("#deleteDonor").attr("disabled","disabled");
+        });
+    
+    </script>
     <h2>
         Edit Donor</h2>
     <%= Html.ValidationSummary("Edit was unsuccessful. Please correct the errors and try again.") %>
     <% using (Html.BeginForm())
        {%>
+    <%= Html.Hidden("Donor_ID") %>
     <fieldset>
         <legend>Fields</legend>
         <p>
@@ -138,7 +202,10 @@
             <%= Html.Encode(Model.ModifiedOn) %>
         </p>
         <p>
-            <input type="submit" value="Save" />
+            <input type="submit" value="Save" />&nbsp;
+            <div style="float: right;">
+                <a id="closeDonor" style="cursor: pointer;">Close Donor</a>&nbsp;|&nbsp;<a id="deleteDonor" style="cursor: pointer;">Delete
+                    Donor</a></div>
         </p>
     </fieldset>
     <% } %>
