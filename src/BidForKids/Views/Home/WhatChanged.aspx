@@ -32,6 +32,7 @@
                 </td>
                 <td>
                     Added capability to Close & Delete donors. Donors w/ associated procurements cannot be deleted, only Closed.<br />
+                    Fixed issue with getting sent back to the wrong page after creating a new procurement.<br />
                 </td>
             </tr>
             <tr>

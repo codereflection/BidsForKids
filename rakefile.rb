@@ -39,8 +39,8 @@ assemblyinfo :assemblyInfo do |asm|
 	asm.title = "Bids For Kids Auction Management System"
 	asm.company_name = "Gatewood Elementary PTA"
 	asm.product_name = "Bids For Kids Auction Management System"
-	asm.version = "1.2.1.4"
-	asm.file_version = "1.2.1.4"
+	asm.version = "1.2.1.5"
+	asm.file_version = "1.2.1.5"
 	asm.copyright = "Copyright (c)2010-2011 Gatewood Elementary PTA"
 end
 
