@@ -327,7 +327,7 @@ namespace BidsForKids.Controllers
             return new JsonResult { Data = new CloseDonorViewModel { Successful = true } };
         }
 
-        [HttpDelete]
+        [HttpPost]
         public ActionResult Delete(int id)
         {
             var donor = Repository.GetDonor(id);

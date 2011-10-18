@@ -29,7 +29,7 @@
                  $.ajax({
                     url: '<%= Url.Action("Delete", new { Id = Model.Donor_ID }) %>',
                     data: { },
-                    type: 'DELETE',
+                    type: 'POST',
                     dataType: 'json',
                     success: function (data, textStatus, XMLHttpRequest) {
                         if (data.Successful == true)
@@ -64,7 +64,9 @@
             $("#closeDonor").click(Donor.Close);
             $("#deleteDonor").click(Donor.Delete);
             if (<%= Model.ContactProcurements.Count %> > 0)
-                $("#deleteDonor").attr("disabled","disabled");
+            {
+               $("#deleteDonor").attr("disabled","disabled").attr("title", "Cannot delete this donor, one or more procurements are associated with it.");
+            }
         });
     
     </script>
