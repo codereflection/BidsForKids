@@ -426,7 +426,7 @@ namespace BidsForKids.Controllers
 
                 Repository.AddProcurement(newProcurement);
 
-                return RedirectToAction(actionToRedirectTo + "Index");
+                return RedirectToAction(actionToRedirectTo);
             }
             catch (Exception ex)
             {
