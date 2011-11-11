@@ -14,6 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		ProjectVersion.cs = ProjectVersion.cs
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BidsForKids.Database", "BidsForKids.Database\BidsForKids.Database.csproj", "{3482FFD4-810F-46BE-93B3-F70076BB23EB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		AutomatedDebug|Any CPU = AutomatedDebug|Any CPU
@@ -46,6 +48,14 @@ Global
 		{7BF4666B-8841-4B18-B3AD-457DF2F93E7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7BF4666B-8841-4B18-B3AD-457DF2F93E7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7BF4666B-8841-4B18-B3AD-457DF2F93E7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3482FFD4-810F-46BE-93B3-F70076BB23EB}.AutomatedDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3482FFD4-810F-46BE-93B3-F70076BB23EB}.AutomatedDebug|Any CPU.Build.0 = Debug|Any CPU
+		{3482FFD4-810F-46BE-93B3-F70076BB23EB}.AutomatedRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{3482FFD4-810F-46BE-93B3-F70076BB23EB}.AutomatedRelease|Any CPU.Build.0 = Release|Any CPU
+		{3482FFD4-810F-46BE-93B3-F70076BB23EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3482FFD4-810F-46BE-93B3-F70076BB23EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3482FFD4-810F-46BE-93B3-F70076BB23EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3482FFD4-810F-46BE-93B3-F70076BB23EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
