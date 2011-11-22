@@ -25,6 +25,17 @@
         <tbody>
             <tr>
                 <td>
+                    v1.2.1.6
+                </td>
+                <td>
+                    Nov 22nd, 2011
+                </td>
+                <td>
+                    Fixed issue false "item number already exists" error when checking for an existing item number during the entering or editing of a procurement.<br />
+                </td>
+            </tr>
+            <tr>
+                <td>
                     v1.2.1.5
                 </td>
                 <td>
