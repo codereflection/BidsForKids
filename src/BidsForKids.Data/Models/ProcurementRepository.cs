@@ -710,11 +710,12 @@ namespace BidsForKids.Data.Models
         }
 
 
-        public bool ItemNumberExists(int id, string itemNumber)
+        public bool ItemNumberExists(int id, string itemNumber, int auctionId)
         {
             var query = from P in dc.Procurements
                          where P.ItemNumber == itemNumber
                          && P.Procurement_ID != id
+                         && P.ContactProcurement.Auction_ID == auctionId
                          select P;
 
             return query.Count() != 0;

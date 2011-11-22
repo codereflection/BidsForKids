@@ -16,9 +16,10 @@
         checkItemNumber = function () {
             var itemValue = GetItemNumber();
             var itemId = $("#Procurement_ID").val();
+            var auctionId = $("#Auction_ID").val();
             $.ajax({
                 url: '<%= Url.Action("CheckItemNumber") %>',
-                data: { id: itemId, itemNumber: itemValue },
+                data: { id: itemId, itemNumber: itemValue, auctionId: auctionId },
                 type: 'POST',
                 dataType: 'text',
                 success: function (data, textStatus, XMLHttpRequest) {

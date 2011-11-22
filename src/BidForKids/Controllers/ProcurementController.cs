@@ -586,13 +586,13 @@ namespace BidsForKids.Controllers
 
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult CheckItemNumber(int id, string itemNumber)
+        public ActionResult CheckItemNumber(int id, string itemNumber, int auctionId)
         {
             try
             {
                 var result = new ContentResult
                                  {
-                                     Content = Repository.ItemNumberExists(id, itemNumber)
+                                     Content = Repository.ItemNumberExists(id, itemNumber, auctionId)
                                                    ? itemNumber + " already exists in the database"
                                                    : "false"
                                  };

@@ -50,7 +50,7 @@ namespace BidsForKids.Data.Models
 
         ProcurementType GetProcurementTypeByName(string procurementTypeDesc);
 
-        bool ItemNumberExists(int id, string itemNumber);
+        bool ItemNumberExists(int id, string itemNumber, int auctionId);
         string CheckForLastSimilarItemNumber(int id, string itemNumberPrefix, int auctionId);
     }
 
