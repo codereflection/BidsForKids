@@ -1,5 +1,4 @@
-﻿using System;
-using FluentMigrator;
+﻿using FluentMigrator;
 
 namespace BidsForKids.Database
 {
@@ -21,11 +20,70 @@ namespace BidsForKids.Database
             CreateProcurementDonorTable();
             CreateProcurementTypeTable();
             CreateProcurerTable();
+            CreateForeignKeys();
+        }
+
+        private void CreateForeignKeys()
+        {
+            Create.ForeignKey("FK_ContactProcurement_Auction")
+                .FromTable("ContactProcurement").ForeignColumn("Auction_ID")
+                .ToTable("Auction").PrimaryColumn("Auction_ID");
+            Create.ForeignKey("FK_ContactProcurement_Contact")
+                .FromTable("ContactProcurement").ForeignColumn("Donor_ID")
+                .ToTable("Donor").PrimaryColumn("Donor_ID");
+            Create.ForeignKey("FK_ContactProcurement_Procurement")
+                .FromTable("ContactProcurement").ForeignColumn("Procurement_ID")
+                .ToTable("Procurement").PrimaryColumn("Procurement_ID");
+            Create.ForeignKey("FK_ContactProcurement_Procurer")
+                .FromTable("ContactProcurement").ForeignColumn("Procurer_ID")
+                .ToTable("Procurer").PrimaryColumn("Procurer_ID");
+
+
+            Create.ForeignKey("FK_Donor_GeoLocation")
+                .FromTable("Donor").ForeignColumn("GeoLocation_ID")
+                .ToTable("GeoLocation").PrimaryColumn("GeoLocation_ID");
+            Create.ForeignKey("FK_Donor_Procurer")
+                .FromTable("Donor").ForeignColumn("Procurer_ID")
+                .ToTable("Procurer").PrimaryColumn("Procurer_ID");
+
+
+            Create.ForeignKey("FK_Procurement_Category")
+                .FromTable("Procurement").ForeignColumn("Category_ID")
+                .ToTable("Category").PrimaryColumn("Category_ID");
         }
 
         public override void Down()
         {
-            throw new NotImplementedException();
+            DeleteForeignKeys();
+            DeleteTables();
+        }
+
+        private void DeleteTables()
+        {
+            Delete.Table("Procurer");
+            Delete.Table("ProcurementType");
+            Delete.Table("ProcurementDonor");
+            Delete.Table("ProcurementHistory");
+            Delete.Table("Procurement");
+            Delete.Table("LocationCodeMap");
+            Delete.Table("GeoLocation");
+            Delete.Table("DonorType");
+            Delete.Table("Donor");
+            Delete.Table("Donates");
+            Delete.Table("ContactProcurement");
+            Delete.Table("Category");
+            Delete.Table("Auction");
+        }
+
+        private void DeleteForeignKeys()
+        {
+            Delete.ForeignKey("FK_Procurement_Category").OnTable("Procurement");
+            Delete.ForeignKey("FK_Donor_Procurer").OnTable("Donor");
+            Delete.ForeignKey("FK_Donor_GeoLocation").OnTable("Donor");
+            Delete.ForeignKey("FK_ContactProcurement_Procurer").OnTable("ContactProcurement");
+            Delete.ForeignKey("FK_ContactProcurement_Procurement").OnTable("ContactProcurement");
+            Delete.ForeignKey("FK_ContactProcurement_Contact").OnTable("ContactProcurement");
+            Delete.ForeignKey("FK_ContactProcurement_Auction").OnTable("ContactProcurement");
         }
 
         void CreateAuctionTable()
@@ -90,8 +148,8 @@ namespace BidsForKids.Database
                 .WithColumn("DonorType_ID").AsInt16().Nullable()
                 .WithColumn("Closed").AsBoolean().Nullable();
 
-            Execute.Sql("CREATE Trigger_Donor_Set_CreatedOn HERE");
-            Execute.Sql("CREATE Trigger_Donor_Set_ModifiedOn HERE");
+            //Execute.Sql("CREATE Trigger_Donor_Set_CreatedOn HERE");
+            //Execute.Sql("CREATE Trigger_Donor_Set_ModifiedOn HERE");
         }
 
         void CreateDonorTypeTable()
@@ -140,10 +198,10 @@ namespace BidsForKids.Database
                 .WithColumn("ProcurementType_ID").AsInt16().Nullable()
                 .WithColumn("Title").AsString(2000).Nullable();
 
-            Execute.Sql("CREATE Trigger_Procurement_DELETE");
-            Execute.Sql("CREATE Trigger_Procurement_UPDATE");
-            Execute.Sql("CREATE Trigger_Set_CreatedOn");
-            Execute.Sql("CREATE Trigger_Set_ModifiedOn");
+            //Execute.Sql("CREATE Trigger_Procurement_DELETE");
+            //Execute.Sql("CREATE Trigger_Procurement_UPDATE");
+            //Execute.Sql("CREATE Trigger_Set_CreatedOn");
+            //Execute.Sql("CREATE Trigger_Set_ModifiedOn");
         }
 
         void CreateProcurementHistoryTable()
