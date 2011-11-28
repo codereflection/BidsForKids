@@ -18,6 +18,16 @@ exec :solutionPackageRestore do |cmd|
     cmd.parameters = "install src/.nuget/packages.config -o src/packages"
 end
 
+task :migrateLocal => [:clean,:assemblyInfo,:build,:migrate_local]
+
+fluentmigrator :migrate_local do |fm|
+    fm.command = "src/packages/FluentMigrator.1.0.1.0/tools/Migrate.exe"
+    fm.connection = "Data Source=(local);Initial Catalog=BidForKids;Integrated Security=True"
+    fm.provider = "sqlserver2000"
+    fm.namespace = "BidsForKids.Database"
+    fm.target = "build/BidsForKids.Database.dll"
+end
+
 msbuild :build do |msb|
 	msb.properties :configuration => :AutomatedRelease
 	msb.solution = "src/BidsForKids.sln"
