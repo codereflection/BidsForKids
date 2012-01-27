@@ -5,6 +5,7 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <script type="text/javascript" src="../../Scripts/MicrosoftAjax.js"></script>
+    <script type="text/javascript" src="<%= Url.Content("~/Scripts/Procurement/CreateEdit.js") %>"></script>
     <script type="text/javascript">
         GetItemNumber = function () {
             if ($("#ItemNumberPrefix").val().length === 0)
@@ -60,28 +61,8 @@
             });
         }
 
-        ChangeViewDonorLink = function () {
-            $('#ViewDonor').attr('href', '<%= Url.Action("Edit", "Donor") %>' + '/' + $("#Donor_ID").val());
-        };
 
-        RemoveDonor = function () {
-            var id = $(this).attr("tag");
-            var liId = "#donor_" + id;
-            var numberOfDonors = $("#donors li[id^='donor_']").length;
 
-            if (numberOfDonors == 1)
-                $(liId + " #DonorId").val("");
-            else if (numberOfDonors > 1)
-                $(liId).remove();
-
-        }
-
-        AddDonor = function () {
-            var templateText = $("#donors li")[0];
-            var template = $(templateText).clone();
-            $("select", template).val("");
-            template.appendTo("#donorList");
-        }
 
         $(document).ready(function () {
             $("#ItemNumberSuffix").setMask({
@@ -91,11 +72,7 @@
             $("#ItemNumberPrefix").change(getLastItemNumber);
             $('#ItemNumberSuffix').blur(checkItemNumber).keyup(getLastItemNumber);
 
-            $('#Donor_ID').change(ChangeViewDonorLink);
-
-            $('#removeDonor').live('click', RemoveDonor);
-
-            $("#addDonor").click(AddDonor);
+            createEdit.donorEditAction = "<%= Url.Action("Edit", "Donor") %>";
         });
 
         function deleteRecord(id) {

@@ -175,6 +175,7 @@
     <Content Include="Scripts\datejs\date.js" />
     <Content Include="Scripts\jquery-1.4.3.min.js" />
     <Content Include="Scripts\jquery.meio.mask.min.js" />
+    <Content Include="Scripts\Procurement\CreateEdit.js" />
     <Content Include="Scripts\ReportGen.js" />
     <Content Include="Scripts\superfish\hoverIntent.js" />
     <Content Include="Scripts\superfish\jquery.bgiframe.min.js" />
