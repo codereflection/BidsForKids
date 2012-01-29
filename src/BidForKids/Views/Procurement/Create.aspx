@@ -1,4 +1,5 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<BidsForKids.Data.Models.Procurement>" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<BidsForKids.ViewModels.EditableProcurementViewModel>" %>
+<%@ Import Namespace="BidsForKids.ViewModels" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
     Create
@@ -10,6 +11,7 @@
         Create
         <%= ViewData["CreateType"] %>
         Procurement</h2>
+    <script type="text/javascript" src="<%= Url.Content("~/Scripts/Procurement/CreateEdit.js") %>"></script>
     <script type="text/javascript">
         GetItemNumber = function () {
             if ($("#ItemNumberPrefix").val().length === 0)
@@ -71,6 +73,8 @@
             });
             $("#ItemNumberPrefix").change(getLastItemNumber);
             $("#ItemNumberSuffix").blur(checkItemNumber).keyup(getLastItemNumber);
+
+            createEdit.donorEditAction = "<%= Url.Action("Edit", "Donor") %>";
         });
     </script>
     <%= Html.ValidationSummary("Create was unsuccessful. Please correct the errors and try again.") %>
@@ -83,13 +87,25 @@
                 Thank You Letter Sent</label>
             <%= Html.CheckBox("ThankYouLetterSent") %>
         </p>
-        <p>
-            <label for="Donor_ID">
-                Donor
+        <div>
+            <label for="donors">
+                Donors
             </label>
-            <%= Html.DropDownList("Donor_ID", "") %>&nbsp;<%= Html.ActionLink("new", "Create", ViewData["CreateNewController"].ToString(), 
-                                                              new { ReturnTo = ViewData["ReturnToUrl"] }, null)%>
-        </p>
+            <table cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <td id="donors">
+                        <ul id="donorList" style="list-style: none">
+                            <% Html.RenderPartial("ProcurementDonor", new ProcurementDonorViewModel()); %>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="#" id="addDonor">Add another</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
         <p>
             <label for="Auction_ID">
                 Year</label>

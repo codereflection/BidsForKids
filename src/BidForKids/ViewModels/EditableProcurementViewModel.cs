@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ComponentModel.DataAnnotations;
 using AutoMapper;
 using BidsForKids.Data.Models;
 
@@ -9,6 +10,8 @@ namespace BidsForKids.ViewModels
     public class ProcurementDetailsViewModel
     {
         public int Id { get; set; }
+        
+        [Required(ErrorMessage = "Procurement Description is required")]
         public string Description { get; set; }
         public string Donation { get; set; }
         public int Quantity { get; set; }

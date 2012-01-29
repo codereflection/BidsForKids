@@ -231,10 +231,8 @@ namespace BidsForKids.Controllers
 
             var procurementType = Repository.GetProcurementTypeByName(createType);
 
-            if (Request != null && string.IsNullOrEmpty(Request.QueryString["Donor_ID"]) == false)
-                ViewData["Donor_ID"] = GetDonorsSelectList(int.Parse(Request.QueryString["Donor_ID"]), procurementType.DonorType_ID);
-            else
-                ViewData["Donor_ID"] = GetDonorsSelectList(null, procurementType.DonorType_ID);
+            var donor = Repository.GetDonorTypeByName(createType);
+            ViewData["Donor-0"] = GetDonorsSelectList(null, donor.DonorType_ID);
 
             ViewData["Category_ID"] = GetCategoriesSelectList(null);
             ViewData["Procurer_ID"] = GetProcurerSelectList(null);
@@ -294,7 +292,6 @@ namespace BidsForKids.Controllers
         private void SetupEditViewData(ContactProcurement contactProcurement)
         {
             int? auctionId = null;
-            int? contactId = null;
             int? categoryId = null;
             int? procurerId = null;
 
@@ -304,8 +301,6 @@ namespace BidsForKids.Controllers
                 categoryId = contactProcurement.Procurement.Category_ID;
                 procurerId = contactProcurement.Procurer_ID;
             }
-            else
-                ViewData["Donors"] = GetDonorsSelectList(contactId, null);
 
             ViewData["Auction_ID"] = GetAuctionSelectList(auctionId);
             ViewData["Category_ID"] = GetCategoriesSelectList(categoryId);
@@ -398,6 +393,7 @@ namespace BidsForKids.Controllers
         private ActionResult CreateNewProcurement(FormCollection collection)
         {
             SetupCreateViewData(collection["ProcurementType"]);
+            var procurementType = collection["procurementType"];
 
             try
             {
@@ -415,24 +411,19 @@ namespace BidsForKids.Controllers
 
                 SetupProcurementDonors(newProcurement, collection);
 
-                var actionToRedirectTo = "";
-
                 if (collection["procurementType"] != null)
-                {
-                    var procurementType = Repository.GetProcurementTypeByName(collection["procurementType"]);
-                    newProcurement.ProcurementType_ID = procurementType.ProcurementType_ID;
-                    actionToRedirectTo = collection["procurementType"];
-                }
+                    newProcurement.ProcurementType_ID =
+                        Repository.GetProcurementTypeByName(collection["procurementType"]).ProcurementType_ID;
 
                 Repository.AddProcurement(newProcurement);
 
-                return RedirectToAction(actionToRedirectTo);
+                return RedirectToAction(procurementType);
             }
             catch (Exception ex)
             {
                 Elmah.ErrorSignal.FromCurrentContext().Raise(ex);
 
-                return View("CreateByType", new { id = collection["ProcurementType"] });
+                throw;
             }
         }
 
@@ -567,7 +558,7 @@ namespace BidsForKids.Controllers
 
         private void SetupProcurementDonors(Procurement procurement, FormCollection collection)
         {
-            var donors = GetDonorsFromFormCollection(collection, "Donor_ID");
+            var donors = GetDonorsFromFormCollection(collection, "DonorId");
 
             if (donors == null) return;
 
@@ -576,6 +567,9 @@ namespace BidsForKids.Controllers
                                                                             Donor = Repository.GetDonor(int.Parse(id)),
                                                                             Procurement = procurement
                                                                         }));
+            
+            // this is required until the ContactProcurement.Donor_ID column has been retired GH-15
+            procurement.ContactProcurement.Donor_ID = procurement.ProcurementDonors.First().Donor_ID;
         }
 
 
