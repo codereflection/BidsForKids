@@ -25,7 +25,7 @@ namespace BidsForKids.Controllers
 
         public ProcurementController(IProcurementRepository repository)
         {
-            this.Repository = repository;
+            Repository = repository;
             SetupMaps();
         }
 
@@ -158,7 +158,7 @@ namespace BidsForKids.Controllers
 
             rows = rows.Skip((loadOptions.page - 1) * loadOptions.rows).Take(loadOptions.rows).ToList();
 
-            var totalPages = (int)Math.Ceiling((decimal)totalRows / (decimal)loadOptions.rows);
+            var totalPages = (int)Math.Ceiling(totalRows / (decimal)loadOptions.rows);
 
             result.Data = new
                               {
@@ -232,7 +232,7 @@ namespace BidsForKids.Controllers
             var procurementType = Repository.GetProcurementTypeByName(createType);
 
             if (Request != null && string.IsNullOrEmpty(Request.QueryString["Donor_ID"]) == false)
-                ViewData["Donor_ID"] = GetDonorsSelectList(int.Parse(Request.QueryString["Donor_ID"].ToString()), procurementType.DonorType_ID);
+                ViewData["Donor_ID"] = GetDonorsSelectList(int.Parse(Request.QueryString["Donor_ID"]), procurementType.DonorType_ID);
             else
                 ViewData["Donor_ID"] = GetDonorsSelectList(null, procurementType.DonorType_ID);
 
@@ -260,34 +260,34 @@ namespace BidsForKids.Controllers
             }
         }
 
-        private static List<SelectListItem> GetCertificateSelectListItems()
+        static List<SelectListItem> GetCertificateSelectListItems()
         {
             var certOptions = new List<SelectListItem>
                                   {
-                                      new SelectListItem() {Text = "", Value = "", Selected = true},
-                                      new SelectListItem() {Text = "Create", Value = "Create"},
-                                      new SelectListItem() {Text = "Provided", Value = "Provided"}
+                                      new SelectListItem {Text = "", Value = "", Selected = true},
+                                      new SelectListItem {Text = "Create", Value = "Create"},
+                                      new SelectListItem {Text = "Provided", Value = "Provided"}
                                   };
             return certOptions;
         }
 
-        private static List<SelectListItem> SetupItemNumberPrefixSelectListItems()
+        static List<SelectListItem> SetupItemNumberPrefixSelectListItems()
         {
             // FAIL: Refactor this stuff out to the database
             var result = new List<SelectListItem>
-                                  {
-                                        new SelectListItem() {Text = "des", Value = "des"},
-                                        new SelectListItem() {Text = "din", Value = "din"},
-                                        new SelectListItem() {Text = "ent", Value = "ent"},
-                                        new SelectListItem() {Text = "fam", Value = "fam"},
-                                        new SelectListItem() {Text = "hbb", Value = "hbb"},
-                                        new SelectListItem() {Text = "hng", Value = "hng"},
-                                        new SelectListItem() {Text = "mis", Value = "mis"},
-                                        new SelectListItem() {Text = "prt", Value = "prt"},
-                                        new SelectListItem() {Text = "spr", Value = "spr"},
-                                        new SelectListItem() {Text = "srv", Value = "srv"},
-                                        new SelectListItem() {Text = "vac", Value = "vac"}
-                                  };
+                             {
+                                 new SelectListItem {Text = "des", Value = "des"},
+                                 new SelectListItem {Text = "din", Value = "din"},
+                                 new SelectListItem {Text = "ent", Value = "ent"},
+                                 new SelectListItem {Text = "fam", Value = "fam"},
+                                 new SelectListItem {Text = "hbb", Value = "hbb"},
+                                 new SelectListItem {Text = "hng", Value = "hng"},
+                                 new SelectListItem {Text = "mis", Value = "mis"},
+                                 new SelectListItem {Text = "prt", Value = "prt"},
+                                 new SelectListItem {Text = "spr", Value = "spr"},
+                                 new SelectListItem {Text = "srv", Value = "srv"},
+                                 new SelectListItem {Text = "vac", Value = "vac"}
+                             };
             return result;
         }
 
@@ -332,27 +332,27 @@ namespace BidsForKids.Controllers
                 {
                     case "Business":
                         {
-                            var businesses = from D in donors
-                                             where D.DonorType_ID == donorType.DonorType_ID
-                                             orderby D.BusinessName
+                            var businesses = from d in donors
+                                             where d.DonorType_ID == donorType.DonorType_ID
+                                             orderby d.BusinessName
                                              select new
                                                         {
-                                                            D.BusinessName, 
-                                                            D.Donor_ID
+                                                            d.BusinessName, 
+                                                            d.Donor_ID
                                                         };
                             return new SelectList(businesses, "Donor_ID", "BusinessName", selectedValue);
                         }
                     case "Parent":
                         {
-                            var parents = from D in donors
-                                          where D.DonorType_ID == donorType.DonorType_ID
-                                          orderby D.FirstName, D.LastName
+                            var parents = from d in donors
+                                          where d.DonorType_ID == donorType.DonorType_ID
+                                          orderby d.FirstName, d.LastName
                                           select new
                                                      {
-                                                         D.FirstName,
-                                                         D.LastName,
-                                                         D.Donor_ID,
-                                                         FullName = D.FirstName + " " + D.LastName
+                                                         d.FirstName,
+                                                         d.LastName,
+                                                         d.Donor_ID,
+                                                         FullName = d.FirstName + " " + d.LastName
                                                      };
                             return new SelectList(parents, "Donor_ID", "FullName", selectedValue);
                         }
@@ -371,13 +371,13 @@ namespace BidsForKids.Controllers
         {
             var lProcurers = Repository.GetProcurers();
 
-            var procurerList = from P in lProcurers
+            var procurerList = from p in lProcurers
                                 select new
                                 {
-                                    Procurer_ID = P.Procurer_ID,
-                                    FirstName = P.FirstName,
-                                    LastName = P.LastName,
-                                    FullName = P.FirstName + " " + P.LastName
+                                    p.Procurer_ID,
+                                    p.FirstName,
+                                    p.LastName,
+                                    FullName = p.FirstName + " " + p.LastName
                                 };
 
             return new SelectList(procurerList.OrderBy(x => x.LastName), "Procurer_ID", "FullName", selectedValue);
@@ -439,9 +439,7 @@ namespace BidsForKids.Controllers
         public ActionResult Edit(int? id)
         {
             if (id.HasValue == false)
-            {
                 return RedirectToAction("Index", "Home");
-            }
 
             var procurement = Repository.GetProcurement((int)id);
 
@@ -471,7 +469,7 @@ namespace BidsForKids.Controllers
         {
             if (id.HasValue == false)
             {
-                return this.JavaScript("alert('Error saving. Please try again or refresh the page and try again.');");
+                return JavaScript("alert('Error saving. Please try again or refresh the page and try again.');");
             }
 
             try
@@ -486,12 +484,8 @@ namespace BidsForKids.Controllers
                 UpdateModel(procurement.ContactProcurement,
                     ContactProcurementColumns());
 
-                if (Repository.SaveProcurement(procurement) == false)
-                {
-                    return this.JavaScript("alert('Error saving.');");
-                }
-
-                return this.JavaScript("alert('Saved.');");
+                return JavaScript(Repository.SaveProcurement(procurement) == false 
+                    ? "alert('Error saving.');" : "alert('Saved.');");
             }
             catch (Exception ex)
             {
@@ -501,7 +495,7 @@ namespace BidsForKids.Controllers
 
                 SetupEditViewData(procurement.ContactProcurement);
 
-                return this.JavaScript("alert('Error saving.');");
+                return JavaScript("alert('Error saving.');");
             }
         }
 
@@ -561,11 +555,11 @@ namespace BidsForKids.Controllers
             removedDonors.ForEach(donor => procurement.ProcurementDonors.Remove(donor));
         }
 
-        private List<string> GetDonorsFromFormCollection(FormCollection collection, string DonorSelectFieldId)
+        private static List<string> GetDonorsFromFormCollection(FormCollection collection, string donorSelectFieldId)
         {
-            return string.IsNullOrEmpty(collection[DonorSelectFieldId]) ? 
+            return string.IsNullOrEmpty(collection[donorSelectFieldId]) ? 
                                                                    null : 
-                                                                            collection[DonorSelectFieldId]
+                                                                            collection[donorSelectFieldId]
                                                                                 .Split(',')
                                                                                 .Where(x => !string.IsNullOrEmpty(x))
                                                                                 .ToList();
