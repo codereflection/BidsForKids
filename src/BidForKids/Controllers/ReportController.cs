@@ -255,19 +255,12 @@ namespace BidsForKids.Controllers
                     if (item == "Donor")
                     {
                         reportHtml.AppendLine("<td>");
-                        if (string.IsNullOrEmpty(row.BusinessName) == false)
-                            reportHtml.Append(row.BusinessName);
+
                         if (row.Donors != null && string.IsNullOrEmpty(row.Donors.Trim()) == false)
-                        {
-                            if (string.IsNullOrEmpty(row.BusinessName) == false)
-                                reportHtml.Append(": " + row.Donors);
-                            else
-                                reportHtml.Append(row.Donors);
-                        }
-                        if (string.IsNullOrEmpty(row.BusinessName) == true && string.IsNullOrEmpty(row.Donors) == true)
-                        {
+                            reportHtml.Append(row.Donors);
+                        
+                        if (string.IsNullOrEmpty(row.BusinessName) && string.IsNullOrEmpty(row.Donors))
                             reportHtml.AppendLine("&nbsp;");
-                        }
                         reportHtml.AppendLine("</td>");
                         continue;
                     }

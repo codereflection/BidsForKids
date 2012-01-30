@@ -75,14 +75,20 @@ namespace BidsForKids.Data.Models.SerializableObjects
 
         private static string GetDonors(Procurement procurement)
         {
-            var donor = procurement.ProcurementDonors.FirstOrDefault().Donor;
+            var donorList = procurement.ProcurementDonors.Select(GetDonorDisplayString()).Aggregate((working, next) => working + "; " + next);
 
-            var result = donor == null ? "" : donor.FirstName + " " + donor.LastName;
+            return donorList;
+        }
 
-            if (procurement.ProcurementDonors.Count > 1)
-                result += " ++";
-
-            return result;
+        static Func<ProcurementDonor, string> GetDonorDisplayString()
+        {
+            return x =>
+                   {
+                       if (x.Donor.DonorType.DonorTypeDesc == "Business")
+                            return x.Donor.BusinessName;
+                       
+                       return x.Donor.FirstName + " " + x.Donor.LastName;
+                   };
         }
 
         public static List<SerializableProcurement> ConvertProcurementListToSerializableProcurementList(List<Procurement> procurementList)
