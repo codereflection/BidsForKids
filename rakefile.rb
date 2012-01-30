@@ -39,9 +39,9 @@ assemblyinfo :assemblyInfo do |asm|
 	asm.title = "Bids For Kids Auction Management System"
 	asm.company_name = "Gatewood Elementary PTA"
 	asm.product_name = "Bids For Kids Auction Management System"
-	asm.version = "1.2.1.6"
-	asm.file_version = "1.2.1.6"
-	asm.copyright = "Copyright (c)2010-2011 Gatewood Elementary PTA"
+	asm.version = "1.2.1.7"
+	asm.file_version = "1.2.1.7"
+	asm.copyright = "Copyright (c)2010-2012 Elementary PTA"
 end
 
 msbuild :publish do |msb|

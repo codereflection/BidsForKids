@@ -25,6 +25,17 @@
         <tbody>
             <tr>
                 <td>
+                    v1.2.1.7
+                </td>
+                <td>
+                    Jan 29th, 2012
+                </td>
+                <td>
+                    Added ability to assign multiple donors when entering a new procurement<br />
+                </td>
+            </tr>
+            <tr>
+                <td>
                     v1.2.1.6
                 </td>
                 <td>
