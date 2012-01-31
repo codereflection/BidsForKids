@@ -28,10 +28,13 @@
                     v1.2.1.7
                 </td>
                 <td>
-                    Jan 29th, 2012
+                    Jan 31th, 2012
                 </td>
                 <td>
                     Added ability to assign multiple donors when entering a new procurement<br />
+                </td>
+                <td>
+                    The Description and Donation fields are now required when entering a new procurement<br />
                 </td>
             </tr>
             <tr>
