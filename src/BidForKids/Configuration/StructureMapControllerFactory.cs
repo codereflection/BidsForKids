@@ -10,6 +10,9 @@ namespace BidsForKids.Configuration
         {
             var controllerType = base.GetControllerType(context, controllerName);
 
+            if (controllerType == null)
+                return base.CreateController(context, controllerName);
+
             return ObjectFactory.GetInstance(controllerType) as IController;
         }
     }

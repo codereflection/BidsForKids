@@ -10,8 +10,9 @@ namespace BidsForKids.ViewModels
     public class ProcurementDetailsViewModel
     {
         public int Id { get; set; }
-        
-        [Required(ErrorMessage = "Procurement Description is required")]
+
+        [Required(ErrorMessage = "Description is required")]
+        [StringLength(2000, ErrorMessage = "Description cannot be over 2000 characters")]
         public string Description { get; set; }
         public string Donation { get; set; }
         public int Quantity { get; set; }

@@ -12,6 +12,8 @@
         <%= ViewData["CreateType"] %>
         Procurement</h2>
     <script type="text/javascript" src="<%= Url.Content("~/Scripts/Procurement/CreateEdit.js") %>"></script>
+    <script type="text/javascript" src="<%= Url.Content("~/Scripts/jquery.validate.min.js") %>"></script>
+    <script type="text/javascript" src="<%= Url.Content("~/Scripts/MicrosoftMvcJQueryValidation.js") %>"></script>
     <script type="text/javascript">
         GetItemNumber = function () {
             if ($("#ItemNumberPrefix").val().length === 0)
@@ -77,17 +79,17 @@
             createEdit.donorEditAction = "<%= Url.Action("Edit", "Donor") %>";
         });
     </script>
-    <%= Html.ValidationSummary("Create was unsuccessful. Please correct the errors and try again.") %>
+    <% Html.EnableClientValidation(); %>
     <% using (Html.BeginForm())
        {%>
     <fieldset>
         <legend>Fields</legend>
-        <p>
+        <div class="editor-field">
             <label for="ThankYouLetterSent">
                 Thank You Letter Sent</label>
             <%= Html.CheckBox("ThankYouLetterSent") %>
-        </p>
-        <div>
+        </div>
+        <div class="editor-field">
             <label for="donors">
                 Donors
             </label>
@@ -106,89 +108,80 @@
                 </tr>
             </table>
         </div>
-        <p>
+        <div class="editor-field">
             <label for="Auction_ID">
                 Year</label>
             <%= Html.DropDownList("Auction_ID")%>
-        </p>
-        <p>
+        </div>
+        <div class="editor-field">
             <label for="Procurer_ID">
                 Procurer
             </label>
             <%= Html.DropDownList("Procurer_ID", "")%>
-        </p>
-        <p>
+        </div>
+        <div class="editor-field">
             <label for="Category_ID">
                 Category
             </label>
             <%= Html.DropDownList("Category_ID", "")%>
-        </p>
-        <p>
+        </div>
+        <div class="editor-field">
             <label for="AuctionNumber">
                 Auction #:</label>
             <%= Html.TextBox("AuctionNumber", null, new { maxlength = 20 })%>
-            <%= Html.ValidationMessage("AuctionNumber", "*")%>
-        </p>
-        <p>
+        </div>
+        <div class="editor-field">
             <label for="ItemNumberSuffix">
                 Item #:</label>
             <%= Html.DropDownList("ItemNumberPrefix", (List<SelectListItem>)ViewData["ItemNumberPrefixes"], string.Empty)%>&nbsp;-&nbsp;
             <%= Html.TextBox("ItemNumberSuffix", null, new { maxlength = 20 })%>&nbsp;
             <span id="LastItemNumber"></span>
-            <%= Html.ValidationMessage("ItemNumberSuffix", "*")%>
-        </p>
-        <p>
+        </div>
+        <div class="editor-field">
             <label for="Donation">
                 Donation:</label>
             <%= Html.TextArea("Donation", null, 3, 50, null)%>
-            <%= Html.ValidationMessage("Donation", "*")%>
-        </p>
-        <p>
-            <label for="Description">
-                Description:</label>
-            <%= Html.TextArea("Description", null, 3, 50, null) %>
-            <%= Html.ValidationMessage("Description", "*") %>
-        </p>
-        <p>
+        </div>
+        <div class="editor-field">
+            <%= Html.LabelFor(model => model.Description) %>
+            <%= Html.TextAreaFor(model => model.Description, 3, 50, null) %>
+            <%= Html.ValidationMessageFor(model => model.Description) %>
+        </div>
+        <div class="editor-field">
             <label for="Title">
                 Title:</label>
             <%= Html.TextArea("Title", null, 3, 50, null)%>
-            <%= Html.ValidationMessage("Title", "*")%>
-        </p>
-        <p>
+        </div>
+        <div class="editor-field">
             <label for="Certificate">
                 Certificate
             </label>
             <%= Html.DropDownList("Certificate", (List<SelectListItem>)ViewData["CertificateOptions"])%>
-        </p>
-        <p>
+        </div>
+        <div class="editor-field">
             <label for="Quantity">
                 Quantity:</label>
             <%= Html.TextBox("Quantity", null, new { maxlength = 10 })%>
-            <%= Html.ValidationMessage("Quantity", "*") %>
-        </p>
-        <p>
+        </div>
+        <div class="editor-field">
             <label for="EstimatedValue">
                 Estimated Value:</label>
             <%= Html.TextBox("EstimatedValue", null, new { maxlength = 10 })%>
-            <%= Html.ValidationMessage("EstimatedValue", "*")%>
-        </p>
-        <p>
+        </div>
+        <div class="editor-field">
             <label for="SoldFor">
                 Sold For:</label>
             <%= Html.TextBox("SoldFor", null, new { maxlength = 10 })%>
-            <%= Html.ValidationMessage("SoldFor", "*")%>
-        </p>
-        <p>
+        </div>
+        <div class="editor-field">
             <label for="Notes">
                 Notes:</label>
             <%= Html.TextArea("Notes", "", 3, 50, null) %>
-            <%= Html.ValidationMessage("Notes", "*") %>
-        </p>
-        <p>
+        </div>
+        <div class="editor-field">
             <%= Html.Hidden("ProcurementType", ViewData["CreateType"]) %>
             <input type="submit" value="Create" />
-        </p>
+        </div>
     </fieldset>
     <% } %>
     <div>

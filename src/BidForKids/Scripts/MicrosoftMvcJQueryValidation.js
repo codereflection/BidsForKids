@@ -3,7 +3,7 @@
 
 // register custom jQuery methods
 
-jQuery.validator.addMethod("regex", function(value, element, params) {
+jQuery.validator.addMethod("regex", function (value, element, params) {
     if (this.optional(element)) {
         return true;
     }
@@ -39,7 +39,7 @@ function __MVC_CreateFieldToValidationMessageMapping(validationFields) {
 
     for (var i = 0; i < validationFields.length; i++) {
         var thisField = validationFields[i];
-        mapping[thisField.FieldName] = "#" + thisField.ValidatorId;
+        mapping[thisField.FieldName] = "#" + thisField.ValidationMessageId;
     }
 
     return mapping;
@@ -124,7 +124,7 @@ function __MVC_CreateValidationOptions(validationFields) {
     return rulesObj;
 }
 
-function __MVC_EnableClientValidation(validationContext, userState) {
+function __MVC_EnableClientValidation(validationContext) {
     // this represents the form containing elements to be validated
     var theForm = $("#" + validationContext.FormId);
 
@@ -134,29 +134,59 @@ function __MVC_EnableClientValidation(validationContext, userState) {
     var errorMessagesObj = __MVC_CreateErrorMessagesObject(fields);
 
     var options = {
+        invalidHandler: function (form, validator) {
+            var ul = $("#validationSummary ul");
+            if (ul.length > 0) {
+                $("#validationSummary").addClass("validation-summary-errors");
+                $("#validationSummary").removeClass("validation-summary-valid");
+                ul.html("");
+                for (var name in validator.errorList)
+                    ul.append("<li>" + validator.errorList[name].message + "</li>")
+            }
+        },
         errorClass: "input-validation-error",
         errorElement: "span",
-        errorPlacement: function(error, element) {
+        errorPlacement: function (error, element) {
             var messageSpan = fieldToMessageMappings[element.attr("name")];
             $(messageSpan).empty();
+            $(messageSpan).removeClass("field-validation-valid");
+            $(messageSpan).addClass("field-validation-error");
             error.removeClass("input-validation-error");
             error.attr("_for_validation_message", messageSpan);
             error.appendTo(messageSpan);
         },
         messages: errorMessagesObj,
         rules: rulesObj,
-        success: function(label) {
+        success: function (label) {
             var messageSpan = $(label.attr("_for_validation_message"));
             $(messageSpan).empty();
+            $(messageSpan).addClass("field-validation-valid");
+            $(messageSpan).removeClass("field-validation-error");
         }
     };
+
+    // register callbacks with our AJAX system
+    var formElement = document.getElementById(validationContext.FormId);
+    var registeredValidatorCallbacks = formElement.validationCallbacks;
+    if (!registeredValidatorCallbacks) {
+        registeredValidatorCallbacks = [];
+        formElement.validationCallbacks = registeredValidatorCallbacks;
+    }
+    registeredValidatorCallbacks.push(function () {
+        theForm.validate();
+        return theForm.valid();
+    });
 
     theForm.validate(options);
 }
 
-function EnableClientValidation(validationContext, userState) {
-    // need to wait for the document to signal that it is ready
-    $(document).ready(function() {
-        __MVC_EnableClientValidation(validationContext, userState);
-    });
-}
+// need to wait for the document to signal that it is ready
+$(document).ready(function () {
+    var allFormOptions = window.mvcClientValidationMetadata;
+    if (allFormOptions) {
+        while (allFormOptions.length > 0) {
+            var thisFormOptions = allFormOptions.pop();
+            __MVC_EnableClientValidation(thisFormOptions);
+        }
+    }
+});

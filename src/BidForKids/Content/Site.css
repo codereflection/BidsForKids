@@ -196,7 +196,7 @@ fieldset
 	font: 90%/1 sans-serif;
 }
 
-fieldset p
+fieldset p, .editor-field
 {
 	margin: 2px 12px 10px 10px;
 }
