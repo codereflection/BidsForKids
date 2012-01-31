@@ -138,9 +138,9 @@
             <span id="LastItemNumber"></span>
         </div>
         <div class="editor-field">
-            <label for="Donation">
-                Donation:</label>
-            <%= Html.TextArea("Donation", null, 3, 50, null)%>
+            <%= Html.LabelFor(model => model.Donation) %>
+            <%= Html.TextAreaFor(model => model.Donation, 3, 50, null) %>
+            <%= Html.ValidationMessageFor(model => model.Donation) %>
         </div>
         <div class="editor-field">
             <%= Html.LabelFor(model => model.Description) %>

@@ -14,6 +14,8 @@ namespace BidsForKids.ViewModels
         [Required(ErrorMessage = "Description is required")]
         [StringLength(2000, ErrorMessage = "Description cannot be over 2000 characters")]
         public string Description { get; set; }
+        [Required(ErrorMessage = "Donation is required")]
+        [StringLength(2000, ErrorMessage = "Donation cannot be over 2000 characters")]
         public string Donation { get; set; }
         public int Quantity { get; set; }
         public string AuctionNumber { get; set; }
