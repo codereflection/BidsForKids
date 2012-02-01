@@ -19,6 +19,8 @@
     <script src="<%= Url.Content("~/Scripts/superfish/superfish.js") %>" type="text/javascript"></script>
     <script src="<%= Url.Content("~/Scripts/jquery.meio.mask.min.js") %>" type="text/javascript"></script>
     <script src="<%= Url.Content("~/Scripts/jquery.validate.min.js") %>" type="text/javascript"></script>
+    <script src="<%= Url.Content("~/Scripts/jquery.cookie.js") %>" type="text/javascript"></script>
+    <script src="<%= Url.Content("~/Scripts/jquery.deserialize.js") %>" type="text/javascript"></script>
     <script type="text/javascript">
 
         $(document).ready(function () {

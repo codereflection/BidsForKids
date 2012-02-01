@@ -543,7 +543,7 @@ namespace BidsForKids.Controllers
         }
         private void UpdateProcurementDonors(Procurement procurement, FormCollection collection)
         {
-            var donors = FormCollectionExtensionMethods.GetDonorIdsFromFormCollection(collection, "DonorId");
+            var donors = collection.GetDonorIdsFromFormCollection("DonorId");
 
             if (donors == null) return;
 
