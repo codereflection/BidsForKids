@@ -17,8 +17,6 @@
     setupDonorIds = function (select) {
         // get the changed item
         var newId = $(select).val();
-        console.log("newId: = " + newId);
-        console.log(this);
 
         // change the li label
         $(select).parent().attr("id", "donor_" + newId);
@@ -39,6 +37,17 @@
         },
 
         addSelectedDonor: function (selectedDonor) {
+            var currentDonors = $('select[id^="DonorId_"]');
+            var foundBlank = false;
+            $.each(currentDonors, function (index, value) {
+                if ($(value).val() == "") {
+                    $(value).val(selectedDonor);
+                    foundBlank = true;
+                    return false;
+                }
+            });
+            if (foundBlank == true) return;
+
             var template = getDonorTemplate(selectedDonor);
             template.appendTo("#donorList");
         },
@@ -64,8 +73,6 @@
             if (formValues == null || formValues == undefined)
                 return;
 
-            console.log("Loading form values: " + formValues);
-
             var donors = formValues.split("&");
             var donorCount = 0;
             $.each(donors, function (index, value) {
@@ -81,12 +88,10 @@
 
         saveForm: function () {
             var formValues = $("form").serialize();
-            console.log("Saving form values: " + formValues);
             $.cookie("createProcurement", formValues, { expires: 1 });
         },
 
         clearSavedForm: function () {
-            console.log("Clearing create procurement cookie");
             $.cookie("createProcurement", null);
         }
     }
@@ -98,4 +103,5 @@ $(document).ready(function () {
     $('select[id^="DonorId_"]').live('change', createEdit.changeDonor);
     $('#createNewDonor').click(createEdit.saveForm);
     $('#createProcurement').click(createEdit.clearSavedForm);
+    $('#resetCreateProcurementForm').click(createEdit.clearSavedForm);
 });
