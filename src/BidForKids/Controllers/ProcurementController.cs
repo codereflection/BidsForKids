@@ -530,7 +530,12 @@ namespace BidsForKids.Controllers
         }
         private void UpdateProcurementDonors(Procurement procurement, FormCollection collection)
         {
-            var donors = GetDonorsFromFormCollection(collection, "DonorId");
+            var donorKeys = collection.AllKeys.Where(x => x.StartsWith("DonorId")).ToList();
+
+            var donors = new List<string>();
+            donorKeys.ForEach(x => donors.AddRange(collection[x].Split(',').Where(y => !string.IsNullOrEmpty(y))));
+                         
+                         //collection["DonorId"].Split(',').Where(x => !string.IsNullOrEmpty(x)).ToList());
 
             if (donors == null) return;
 
