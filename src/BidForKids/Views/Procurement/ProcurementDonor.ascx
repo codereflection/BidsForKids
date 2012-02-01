@@ -1,7 +1,7 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<BidsForKids.ViewModels.ProcurementDonorViewModel>" %>
 
 <li id="donor_<%= Model.Id %>">
-    <%= Html.DropDownList("DonorId", (IEnumerable<SelectListItem>)ViewData["Donor-" + Model.Id], string.Empty)%>
+    <%= Html.DropDownList("DonorId_1", (IEnumerable<SelectListItem>)ViewData["Donor-" + Model.Id], string.Empty)%>
     &nbsp;<%= Html.ActionLink("view", "Edit", "Donor", new
                                                                     {
                                                                         id = Model.Id

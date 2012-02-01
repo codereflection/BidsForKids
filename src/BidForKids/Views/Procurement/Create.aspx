@@ -77,6 +77,15 @@
             $("#ItemNumberSuffix").blur(checkItemNumber).keyup(getLastItemNumber);
 
             createEdit.donorEditAction = "<%= Url.Action("Edit", "Donor") %>";
+            createEdit.loadForm();
+
+            <% if (!string.IsNullOrEmpty(Request.QueryString["Donor_ID"])) 
+            { %>
+
+            createEdit.addSelectedDonor("<%= Request.QueryString["Donor_ID"] %>");
+            <% 
+            } %>
+
         });
     </script>
     <% Html.EnableClientValidation(); %>
@@ -104,6 +113,7 @@
                 <tr>
                     <td>
                         <a href="#" id="addDonor">Add another</a>
+                        <%= Html.ActionLink("Create New Donor", "Create", ViewData["CreateNewController"].ToString(), new { ReturnTo = ViewData["ReturnToUrl"] }, new { id = "createNewDonor" })%>
                     </td>
                 </tr>
             </table>
@@ -180,7 +190,7 @@
         </div>
         <div class="editor-field">
             <%= Html.Hidden("ProcurementType", ViewData["CreateType"]) %>
-            <input type="submit" value="Create" />
+            <input type="submit" value="Create" id="createProcurement" />
         </div>
     </fieldset>
     <% } %>

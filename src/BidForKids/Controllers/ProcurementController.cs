@@ -232,6 +232,7 @@ namespace BidsForKids.Controllers
             var procurementType = Repository.GetProcurementTypeByName(createType);
 
             var donor = Repository.GetDonorTypeByName(createType);
+            //var queryStrDonor = string.IsNullOrEmpty(Request.QueryString["Donor_ID"]) ? null : new int?(int.Parse(Request.QueryString["Donor_ID"]));
             ViewData["Donor-0"] = GetDonorsSelectList(null, donor.DonorType_ID);
 
             ViewData["Category_ID"] = GetCategoriesSelectList(null);
@@ -548,12 +549,15 @@ namespace BidsForKids.Controllers
 
         private static List<string> GetDonorsFromFormCollection(FormCollection collection, string donorSelectFieldId)
         {
-            return string.IsNullOrEmpty(collection[donorSelectFieldId]) ? 
-                                                                   null : 
-                                                                            collection[donorSelectFieldId]
-                                                                                .Split(',')
-                                                                                .Where(x => !string.IsNullOrEmpty(x))
-                                                                                .ToList();
+            var anyDonors = collection.AllKeys.Count(x => x.StartsWith(donorSelectFieldId));
+
+            if (anyDonors == 0)
+                return null;
+
+            var donorKeys = collection.AllKeys.Where(x => x.StartsWith(donorSelectFieldId));
+
+            var result = donorKeys.Select(x => collection[x]).ToList();
+            return result;
         }
 
         private void SetupProcurementDonors(Procurement procurement, FormCollection collection)
