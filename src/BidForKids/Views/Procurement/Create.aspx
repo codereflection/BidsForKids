@@ -191,7 +191,7 @@
         <div class="editor-field">
             <%= Html.Hidden("ProcurementType", ViewData["CreateType"]) %>
             <input type="submit" value="Create" id="createProcurement" />&nbsp;
-            <input type="reset" id="resetCreateProcurementForm" />
+            <input type="reset" id="resetCreateProcurementForm" style="float: right" />
         </div>
     </fieldset>
     <% } %>
