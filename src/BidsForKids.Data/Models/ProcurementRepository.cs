@@ -586,13 +586,14 @@ namespace BidsForKids.Data.Models
         /// <returns></returns>
         public IEnumerable<Donor> GetDonors(int donationYear)
         {
-            var donorsByYear = dc.Procurements
-                                    .Where(x => x.ContactProcurement.Auction.Year == donationYear)
-                                    .Select(x => x.ContactProcurement.Donor_ID)
-                                    .Distinct()
-                                    .ToList();
+            var byYear = new List<int>();
 
-            return dc.Donors.Where(DonorIsNotClosed).Where(x => donorsByYear.Contains(x.Donor_ID));
+            dc.Procurements
+                .Where(x => x.ContactProcurement.Auction.Year == donationYear)
+                .ToList()
+                .ForEach(x => byYear.AddRange(x.ProcurementDonors.Select(y => y.Donor_ID).ToList()));
+
+            return dc.Donors.Where(DonorIsNotClosed).Where(x => byYear.Contains(x.Donor_ID));
         }
 
 
