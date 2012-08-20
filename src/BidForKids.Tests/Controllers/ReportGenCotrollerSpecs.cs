@@ -100,8 +100,8 @@ namespace BidsForKids.Tests.Controllers
                 ParentType = false
             };
             donors = Builder<Donor>.CreateListOfSize(10)
-                .WhereTheFirst(5).Have(x => x.DonorType = Builder<DonorType>.CreateNew().With(y => y.DonorTypeDesc = "Business").Build())
-                .AndTheNext(5).Have(x => x.DonorType = Builder<DonorType>.CreateNew().With(y => y.DonorTypeDesc = "Parent").Build())
+                .TheFirst(5).With(x => x.DonorType = Builder<DonorType>.CreateNew().With(y => y.DonorTypeDesc = "Business").Build())
+                .TheNext(5).With(x => x.DonorType = Builder<DonorType>.CreateNew().With(y => y.DonorTypeDesc = "Parent").Build())
                 .Build();
             DonorReportViewModel.CreateDestinationMaps();
             repo.GetDonors(donationYear).Returns(donors);
@@ -110,7 +110,7 @@ namespace BidsForKids.Tests.Controllers
         Because of = () =>
         {
             result = controller.GenerateDonorReport(reportSetup);
-            content = (result as ContentResult).Content;
+            content = ((ContentResult) result).Content;
         };
 
         It should_have_the_donor_type_column = () =>
@@ -144,8 +144,8 @@ namespace BidsForKids.Tests.Controllers
                 ParentType = true
             };
             donors = Builder<Donor>.CreateListOfSize(10)
-                .WhereTheFirst(5).Have(x => x.DonorType = Builder<DonorType>.CreateNew().With(y => y.DonorTypeDesc = "Business").Build())
-                .AndTheNext(5).Have(x => x.DonorType = Builder<DonorType>.CreateNew().With(y => y.DonorTypeDesc = "Parent").Build())
+                .TheFirst(5).With(x => x.DonorType = Builder<DonorType>.CreateNew().With(y => y.DonorTypeDesc = "Business").Build())
+                .TheNext(5).With(x => x.DonorType = Builder<DonorType>.CreateNew().With(y => y.DonorTypeDesc = "Parent").Build())
                 .Build();
             DonorReportViewModel.CreateDestinationMaps();
             repo.GetDonors(donationYear).Returns(donors);
@@ -154,7 +154,7 @@ namespace BidsForKids.Tests.Controllers
         Because of = () =>
         {
             result = controller.GenerateDonorReport(reportSetup);
-            content = (result as ContentResult).Content;
+            content = ((ContentResult) result).Content;
         };
 
         It should_have_the_donor_type_column = () =>
@@ -188,8 +188,8 @@ namespace BidsForKids.Tests.Controllers
                 ParentType = true
             };
             donors = Builder<Donor>.CreateListOfSize(10)
-                .WhereTheFirst(5).Have(x => x.DonorType = Builder<DonorType>.CreateNew().With(y => y.DonorTypeDesc = "Business").Build())
-                .AndTheNext(5).Have(x => x.DonorType = Builder<DonorType>.CreateNew().With(y => y.DonorTypeDesc = "Parent").Build())
+                .TheFirst(5).With(x => x.DonorType = Builder<DonorType>.CreateNew().With(y => y.DonorTypeDesc = "Business").Build())
+                .TheNext(5).With(x => x.DonorType = Builder<DonorType>.CreateNew().With(y => y.DonorTypeDesc = "Parent").Build())
                 .Build();
             DonorReportViewModel.CreateDestinationMaps();
             repo.GetDonors(donationYear).Returns(donors);
@@ -198,7 +198,7 @@ namespace BidsForKids.Tests.Controllers
         Because of = () =>
         {
             result = controller.GenerateDonorReport(reportSetup);
-            content = (result as ContentResult).Content;
+            content = ((ContentResult) result).Content;
         };
 
         It should_not_get_donors_for_a_specific_donoration_year = () =>
@@ -233,8 +233,8 @@ namespace BidsForKids.Tests.Controllers
                 BusinessType = true,
             };
             donors = Builder<Donor>.CreateListOfSize(10)
-                .WhereTheFirst(5).Have(x => x.GeoLocation = Builder<GeoLocation>.CreateNew().With(y => y.GeoLocationName = goodLocation).Build())
-                .AndTheNext(5).Have(x => x.GeoLocation = Builder<GeoLocation>.CreateNew().With(y => y.GeoLocationName = nonMatchingLocation).Build())
+                .TheFirst(5).With(x => x.GeoLocation = Builder<GeoLocation>.CreateNew().With(y => y.GeoLocationName = goodLocation).Build())
+                .TheNext(5).With(x => x.GeoLocation = Builder<GeoLocation>.CreateNew().With(y => y.GeoLocationName = nonMatchingLocation).Build())
                 .Build();
             DonorReportViewModel.CreateDestinationMaps();
             repo.GetDonors().Returns(donors);
@@ -243,7 +243,7 @@ namespace BidsForKids.Tests.Controllers
         Because of = () =>
         {
             result = controller.GenerateDonorReport(reportSetup);
-            content = (result as ContentResult).Content;
+            content = ((ContentResult) result).Content;
         };
 
         It should_have_the_geo_location_column = () =>
@@ -282,8 +282,8 @@ namespace BidsForKids.Tests.Controllers
                 BusinessType = true,
             };
             donors = Builder<Donor>.CreateListOfSize(10)
-                .WhereTheFirst(5).Have(x => x.Procurer = Builder<Procurer>.CreateNew().With(y => y.FirstName = goodProcurer).Build())
-                .AndTheNext(5).Have(x => x.Procurer = Builder<Procurer>.CreateNew().With(y => y.FirstName = nonMatchingProcurer).Build())
+                .TheFirst(5).With(x => x.Procurer = Builder<Procurer>.CreateNew().With(y => y.FirstName = goodProcurer).Build())
+                .TheNext(5).With(x => x.Procurer = Builder<Procurer>.CreateNew().With(y => y.FirstName = nonMatchingProcurer).Build())
                 .Build();
             DonorReportViewModel.CreateDestinationMaps();
             repo.GetDonors().Returns(donors);
@@ -292,7 +292,7 @@ namespace BidsForKids.Tests.Controllers
         Because of = () =>
         {
             result = controller.GenerateDonorReport(reportSetup);
-            content = (result as ContentResult).Content;
+            content = ((ContentResult) result).Content;
         };
 
         It should_have_the_procurer_column = () =>
@@ -327,8 +327,8 @@ namespace BidsForKids.Tests.Controllers
                 BusinessType = true,
             };
             donors = Builder<Donor>.CreateListOfSize(10)
-                .WhereTheFirst(5).Have(x => x.Donates = 0)
-                .AndTheNext(5).Have(x => x.Donates = 1)
+                .TheFirst(5).With(x => x.Donates = 0)
+                .TheNext(5).With(x => x.Donates = 1)
                 .Build();
             DonorReportViewModel.CreateDestinationMaps();
             repo.GetDonors().Returns(donors);
@@ -337,7 +337,7 @@ namespace BidsForKids.Tests.Controllers
         Because of = () =>
         {
             result = controller.GenerateDonorReport(reportSetup);
-            content = (result as ContentResult).Content;
+            content = ((ContentResult) result).Content;
         };
 
         It should_have_the_donates_column = () =>

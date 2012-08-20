@@ -60,7 +60,7 @@ namespace BidsForKids.Tests.Controllers
         }
     }
 
-    [Ignore]
+    [Ignore("Not sure why I ignored this test so long ago.")]
     public class when_editing_a_procurement : with_a_procurement_controller
     {
         private static ActionResult result;
