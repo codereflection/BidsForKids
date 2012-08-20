@@ -119,6 +119,6 @@ namespace BidsForKids.Tests.ViewModelMappings
             result = Mapper.Map<Donor, DonorReportViewModel>(donor);
 
         It should_have_an_donor_type = () =>
-            result.DonorType.ShouldBeEmpty();
+            result.DonorType.ShouldBeNull();
     }
 }

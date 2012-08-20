@@ -88,8 +88,12 @@
     <Reference Include="FizzWare.NBuilder">
       <HintPath>..\..\packages\NBuilder.3.0.1\lib\FizzWare.NBuilder.dll</HintPath>
     </Reference>
-    <Reference Include="Machine.Specifications">
-      <HintPath>..\..\packages\Machine.Specifications.0.4.24.0\lib\Machine.Specifications.dll</HintPath>
+    <Reference Include="Machine.Specifications, Version=0.5.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Machine.Specifications.0.5.8\lib\net40\Machine.Specifications.dll</HintPath>
+    </Reference>
+    <Reference Include="Machine.Specifications.Clr4">
+      <HintPath>..\packages\Machine.Specifications.0.5.8\lib\net40\Machine.Specifications.Clr4.dll</HintPath>
     </Reference>
     <Reference Include="NSubstitute, Version=0.9.0.1, Culture=neutral, PublicKeyToken=92dd2e9066daa5ca, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -115,9 +119,9 @@
     <Reference Include="System.ComponentModel.DataAnnotations">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="xunit, Version=1.6.1.1521, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+    <Reference Include="xunit, Version=1.9.1.1600, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\xunit-1.6.1\xunit.dll</HintPath>
+      <HintPath>..\packages\xunit.1.9.1\lib\net20\xunit.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -179,6 +183,9 @@
       <Project>{7BF4666B-8841-4B18-B3AD-457DF2F93E7A}</Project>
       <Name>BidsForKids.Data</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
