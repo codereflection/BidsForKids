@@ -1,7 +1,7 @@
 using System;
 using BidsForKids.Data.Models;
-using Rhino.Mocks;
 using System.Collections.Generic;
+using NSubstitute;
 
 namespace BidsForKids.Tests.Controllers
 {
@@ -11,21 +11,21 @@ namespace BidsForKids.Tests.Controllers
 
         public static IProcurementRepository GenerateMockProcurementFactory()
         {
-            var factory = MockRepository.GenerateStub<IProcurementRepository>();
-            factory.Stub(x => x.GetProcurements()).Return(new List<Procurement>());
-            factory.Stub(x => x.GetProcurement(0)).IgnoreArguments().Return(new Procurement { ProcurementType = new ProcurementType() });
+            var factory = Substitute.For<IProcurementRepository>();
+            factory.GetProcurements().Returns(new List<Procurement>());
+            factory.GetProcurement(Arg.Any<int>()).Returns(new Procurement { ProcurementType = new ProcurementType() });
 
-            factory.Stub(x => x.GetAuctions()).Return(new List<Auction>());
+            factory.GetAuctions().Returns(new List<Auction>());
 
-            factory.Stub(x => x.GetDonors()).Return(new List<Donor>());
-            factory.Stub(x => x.GetDonor(0)).IgnoreArguments().Return(GetTestDonor.Invoke());
+            factory.GetDonors().Returns(new List<Donor>());
+            factory.GetDonor(Arg.Any<int>()).Returns(GetTestDonor.Invoke());
 
-            factory.Stub(x => x.GetGeoLocations()).Return(new List<GeoLocation>());
-            factory.Stub(x => x.GetGeoLocation(0)).IgnoreArguments().Return(new GeoLocation());
+            factory.GetGeoLocations().Returns(new List<GeoLocation>());
+            factory.GetGeoLocation(Arg.Any<int>()).Returns(new GeoLocation());
 
-            factory.Stub(x => x.GetCategories()).Return(new List<Category>());
+            factory.GetCategories().Returns(new List<Category>());
 
-            factory.Stub(x => x.GetProcurers()).Return(new List<Procurer>());
+            factory.GetProcurers().Returns(new List<Procurer>());
             return factory;
         }
     }

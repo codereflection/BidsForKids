@@ -1,10 +1,10 @@
 using System.Data.Linq;
 using System.Web.Mvc;
 using BidsForKids.Data.Models.SerializableObjects;
+using NSubstitute;
 using Xunit;
 using BidsForKids.Controllers;
 using BidsForKids.Data.Models;
-using Rhino.Mocks;
 using System.Collections.Generic;
 using System;
 
@@ -36,27 +36,6 @@ namespace BidsForKids.Tests.Controllers
                 Assert.Empty(viewResult.ViewName);
                 Assert.IsType<List<Donor>>(viewResult.ViewData.Model);
             }
-        }
-
-        public class Create : BidsForKidsControllerTestBase
-        {
-            [Fact]
-            public void ReturnsViewResultWithDefaultViewName()
-            {
-                var controller = SetupNewControllerWithMockContext<DonorController>(ProcurementFactory);
-
-                controller.ControllerContext.HttpContext
-                    .Request.Expect(x => x.QueryString["GeoLocation_ID"]).Return("");
-
-                var result = controller.Create();
-
-                controller.ControllerContext.HttpContext
-                    .VerifyAllExpectations();
-                var viewResult = Assert.IsType<ViewResult>(result);
-                Assert.IsType<SelectList>(viewResult.ViewData["GeoLocation_ID"]);
-                Assert.Empty(viewResult.ViewName);
-            }
-
         }
 
         public class Edit : BidsForKidsControllerTestBase
@@ -99,13 +78,13 @@ namespace BidsForKids.Tests.Controllers
             [Fact]
             public void it_should_get_the_donor()
             {
-                ProcurementFactory.AssertWasCalled(x => x.GetDonor(0));
+                ProcurementFactory.Received().GetDonor(0);
             }
 
             [Fact]
             public void it_should_save_the_donor_with_the_closed_flag_set_to_true()
             {
-                ProcurementFactory.AssertWasCalled(x => x.SaveDonor(Arg<Donor>.Matches(y => y.Closed == true)));
+                ProcurementFactory.Received().SaveDonor(Arg.Is<Donor>(y => y.Closed == true));
             }
 
             [Fact]
@@ -135,13 +114,13 @@ namespace BidsForKids.Tests.Controllers
             [Fact]
             public void it_should_get_the_donor()
             {
-                ProcurementFactory.AssertWasCalled(x => x.GetDonor(0));
+                ProcurementFactory.Received().GetDonor(0);
             }
 
             [Fact]
             public void it_should_delete_the_donor()
             {
-                ProcurementFactory.AssertWasCalled(x => x.DeleteDonor(Arg<Donor>.Matches(y => y.Donor_ID == 0)));
+                ProcurementFactory.Received().DeleteDonor(Arg.Is<Donor>(y => y.Donor_ID == 0));
             }
 
             [Fact]
@@ -184,13 +163,13 @@ namespace BidsForKids.Tests.Controllers
             [Fact]
             public void it_should_get_the_donor()
             {
-                ProcurementFactory.AssertWasCalled(x => x.GetDonor(0));
+                ProcurementFactory.Received().GetDonor(0);
             }
 
             [Fact]
             public void it_should_not_delete_the_donor()
             {
-                ProcurementFactory.AssertWasNotCalled(x => x.DeleteDonor(Arg<Donor>.Matches(y => y.Donor_ID == 1)));
+                ProcurementFactory.DidNotReceive().DeleteDonor(Arg.Is<Donor>(y => y.Donor_ID == 1));
             }
 
             [Fact]
@@ -258,11 +237,11 @@ namespace BidsForKids.Tests.Controllers
                 var controller =
                     SetupNewControllerWithMockContext<DonorController>(ProcurementFactory);
                 controller = SetupQueryStringParameters<DonorController>(controller, "_search=true&sidx=&sord=&page=&rows=");
-                ProcurementFactory.Stub(x => x.GetSerializableBusinesses(new jqGridLoadOptions())).IgnoreArguments().Return(new List<SerializableDonor>());
+                ProcurementFactory.GetSerializableBusinesses(Arg.Any<jqGridLoadOptions>()).Returns(new List<SerializableDonor>());
 
                 var result = controller.GetDonors();
 
-                controller.HttpContext.Request.VerifyAllExpectations();
+                ProcurementFactory.Received().GetSerializableBusinesses(Arg.Any<jqGridLoadOptions>());
                 var viewResult = Assert.IsType<JsonResult>(result);
                 Assert.True(viewResult.Data.ToString().Contains("records = 0"));
             }
@@ -275,13 +254,12 @@ namespace BidsForKids.Tests.Controllers
                 controller = SetupQueryStringParameters<DonorController>(controller, "_search=false&sidx=&sord=&page1=&rows=25");
 
 
-                var objToReturn = new List<SerializableDonor> { new SerializableDonor() };
-                ProcurementFactory.Expect(x => x.GetSerializableBusinesses(new jqGridLoadOptions())).IgnoreArguments().
-                    Return(objToReturn);
+                var donors = new List<SerializableDonor> { new SerializableDonor() };
+                ProcurementFactory.GetSerializableBusinesses(Arg.Any<jqGridLoadOptions>()).Returns(donors);
 
                 var result = controller.GetDonors();
 
-                controller.HttpContext.Request.VerifyAllExpectations();
+                ProcurementFactory.Received().GetSerializableBusinesses(Arg.Any<jqGridLoadOptions>());
                 var viewResult = Assert.IsType<JsonResult>(result);
                 Assert.True(viewResult.Data.ToString().Contains("records = 1"));
             }

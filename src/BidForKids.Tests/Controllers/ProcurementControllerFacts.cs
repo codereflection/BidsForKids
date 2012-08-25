@@ -1,9 +1,9 @@
 using System;
 using System.Web.Mvc;
+using NSubstitute;
 using Xunit;
 using BidsForKids.Controllers;
 using BidsForKids.Data.Models;
-using Rhino.Mocks;
 
 namespace BidsForKids.Tests.Controllers
 {
@@ -107,9 +107,9 @@ namespace BidsForKids.Tests.Controllers
             [Fact(Skip="Method too complicated, needs to be refactored")]
             public void ReturnsIndexViewAfterSave()
             {
-                var factory = MockRepository.GenerateMock<IProcurementRepository>();
+                var factory = Substitute.For<IProcurementRepository>();
                 
-                factory.Stub(x => x.GetProcurement(1)).IgnoreArguments().Return(new Procurement { Procurement_ID = 1 });
+                factory.GetProcurement(Arg.Any<int>()).Returns(new Procurement { Procurement_ID = 1 });
                 var controller = SetupNewControllerWithMockContext<ProcurementController>(factory);
 
                 var result = controller.Edit(1, new FormCollection());

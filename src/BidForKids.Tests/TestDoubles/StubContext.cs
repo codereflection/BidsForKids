@@ -1,6 +1,6 @@
 ﻿using System.Web;
-using Rhino.Mocks;
 using System.Collections.Specialized;
+using NSubstitute;
 
 namespace BidsForKids.Tests
 {
@@ -21,16 +21,16 @@ namespace BidsForKids.Tests
 
         public static HttpContextBase FakeHttpContext()
         {
-            var context = MockRepository.GenerateStub<HttpContextBase>();
-            var request = MockRepository.GenerateStub<HttpRequestBase>();
-            var response = MockRepository.GenerateStub<HttpResponseBase>();
-            var sessionState = MockRepository.GenerateStub<HttpSessionStateBase>();
-            var serverUtility = MockRepository.GenerateStub<HttpServerUtilityBase>();
-            request.Stub(x => x.QueryString).Return(new NameValueCollection());
-            context.Stub(x => x.Request).Return(request);
-            context.Stub(x => x.Response).Return(response);
-            context.Stub(x => x.Session).Return(sessionState);
-            context.Stub(x => x.Server).Return(serverUtility);
+            var context = Substitute.For<HttpContextBase>();
+            var request = Substitute.For<HttpRequestBase>();
+            var response = Substitute.For<HttpResponseBase>();
+            var sessionState = Substitute.For<HttpSessionStateBase>();
+            var serverUtility = Substitute.For<HttpServerUtilityBase>();
+            request.QueryString.Returns(new NameValueCollection());
+            context.Request.Returns(request);
+            context.Response.Returns(response);
+            context.Session.Returns(sessionState);
+            context.Server.Returns(serverUtility);
             return context;
         }
     }

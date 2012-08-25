@@ -85,11 +85,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutoMapper">
-      <HintPath>..\..\packages\AutoMapper.1.1.0.118\lib\AutoMapper.dll</HintPath>
+      <HintPath>..\packages\AutoMapper.2.1.267\lib\net40\AutoMapper.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Elmah, Version=1.1.11517.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\elmah.corelibrary.1.2\lib\Elmah.dll</HintPath>
+    <Reference Include="Elmah">
+      <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="MvcMembership">
       <HintPath>..\..\lib\MvcMembership\MvcMembership.dll</HintPath>
@@ -103,9 +104,8 @@
     <Reference Include="Spark.Web.Mvc">
       <HintPath>..\..\lib\Spark\Spark.Web.Mvc.dll</HintPath>
     </Reference>
-    <Reference Include="StructureMap, Version=2.6.1.0, Culture=neutral, PublicKeyToken=e60ad81abae3c223, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\structuremap.2.6.3\lib\StructureMap.dll</HintPath>
+    <Reference Include="StructureMap">
+      <HintPath>..\packages\structuremap.2.6.4.1\lib\net40\StructureMap.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -178,6 +178,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App_Offline.htm-save" />
+    <Content Include="App_Readme\Elmah.txt" />
     <Content Include="Areas\UserAdministration\Views\UserAdministration\Details.aspx" />
     <Content Include="Areas\UserAdministration\Views\UserAdministration\Index.aspx" />
     <Content Include="Areas\UserAdministration\Views\UserAdministration\Password.aspx" />
