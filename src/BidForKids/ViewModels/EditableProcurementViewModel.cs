@@ -91,7 +91,7 @@ namespace BidsForKids.ViewModels
             Donors = new List<ProcurementDonorViewModel>();
         }
 
-        public static IMappingExpression<Procurement, EditableProcurementViewModel> CreateDestinationMap()
+        public new static IMappingExpression<Procurement, EditableProcurementViewModel> CreateDestinationMap()
         {
             return Mapper.CreateMap<Procurement, EditableProcurementViewModel>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(p => p.Procurement_ID))

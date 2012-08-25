@@ -13,14 +13,14 @@ namespace BidsForKids.Configuration
         public BidsForKidsRegistry()
         {
             For<IProcurementRepository>().Use<ProcurementRepository>()
-                .WithCtorArg("connectionString").EqualTo(
-                    ConfigurationManager.ConnectionStrings["BidsForKidsConnectionString"].ConnectionString);
+                .Ctor<string>("connectionString")
+                .Is(ConfigurationManager.ConnectionStrings["BidsForKidsConnectionString"].ConnectionString);
 
             SelectConstructor(() => new DataContext("whatchoodoo"));
 
             ForConcreteType<DataContext>().Configure
-                .WithCtorArg("fileOrServerOrConnection")
-                .EqualTo(ConfigurationManager.ConnectionStrings["BidsForKidsConnectionString"].ConnectionString);
+                .Ctor<string>("fileOrServerOrConnection")
+                .Is(ConfigurationManager.ConnectionStrings["BidsForKidsConnectionString"].ConnectionString);
 
             For<IUnitOfWork>().HybridHttpOrThreadLocalScoped().Use<DatabaseUnitOfWork>();
 
