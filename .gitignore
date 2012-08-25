@@ -32,6 +32,9 @@ deploy/
 *.Publish.xml
 publish/*
 
+# NuGet Packages
+src/packages
+!src/packages/repositories.config
 
 #Make sure report dir is created
 ![Rr]eport/Specs/.gitignore
