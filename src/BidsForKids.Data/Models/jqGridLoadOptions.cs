@@ -23,10 +23,7 @@ namespace BidsForKids.Data.Models
 
             var loadOptions = new jqGridLoadOptions
                                   {
-                                      search =
-                                          string.IsNullOrEmpty(lParams["_search"])
-                                              ? false
-                                              : bool.Parse(lParams["_search"]),
+                                      search = !string.IsNullOrEmpty(lParams["_search"]) && bool.Parse(lParams["_search"]),
                                       sortIndex = string.IsNullOrEmpty(lParams["sidx"]) ? null : lParams["sidx"],
                                       sortOrder = string.IsNullOrEmpty(lParams["sord"]) ? null : lParams["sord"],
                                       page = string.IsNullOrEmpty(lParams["page"]) ? 0 : int.Parse(lParams["page"]),

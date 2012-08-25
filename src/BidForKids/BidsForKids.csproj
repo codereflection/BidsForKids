@@ -104,6 +104,9 @@
     <Reference Include="MvcMembership">
       <HintPath>..\packages\MvcMembership.3.7.0\lib\40\MvcMembership.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.8\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PagedList">
       <HintPath>..\packages\PagedList.1.15.0.0\lib\net40\PagedList.dll</HintPath>
     </Reference>
@@ -186,6 +189,7 @@
     <Compile Include="Controllers\DonorController.cs" />
     <Compile Include="Controllers\GeoLocationController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\JsonNetResult.cs" />
     <Compile Include="Controllers\ParentController.cs" />
     <Compile Include="Controllers\ProcurementController.cs" />
     <Compile Include="Controllers\ProcurerController.cs" />

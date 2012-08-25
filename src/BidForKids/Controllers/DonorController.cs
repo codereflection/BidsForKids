@@ -25,29 +25,22 @@ namespace BidsForKids.Controllers
             this.Repository = repository;
         }
 
-        public JsonResult GetDonors()
+        public JsonNetResult GetDonors()
         {
             var loadOptions = jqGridLoadOptions.GetLoadOptions(Request.QueryString);
 
-            var result = new JsonResult
-                              {
-                                  JsonRequestBehavior = JsonRequestBehavior.AllowGet
-                              };
+            var result = new JsonNetResult();
 
             var donorType = db.DonorType.FindByDonorTypeDesc("Business");
 
             Promise<int> count;
-
             List<dynamic> businesses = db.Donors
                                          .FindAll(db.Donors.DonorType_Id == donorType.DonorType_ID)
                                          .WithTotalCount(out count)
                                          .Skip((loadOptions.page - 1) * loadOptions.rows)
                                          .Take(loadOptions.rows)
+                                         .OrderBy(loadOptions.sortIndex != null ? ObjectReference.FromString(loadOptions.sortIndex) : ObjectReference.FromString("BusinessName"))
                                          .ToList();
-
-            //var businesses = Repository.GetSerializableBusinesses(loadOptions);
-
-            //businesses = businesses.Skip((loadOptions.page - 1) * loadOptions.rows).Take(loadOptions.rows).ToList();
 
             var pages = count == 0 ? 0 : (int)Math.Ceiling((decimal)count / (decimal)loadOptions.rows);
 
