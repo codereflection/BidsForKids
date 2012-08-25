@@ -4,8 +4,8 @@ using BidsForKids.Data.Models;
 using System.Web.Mvc;
 using BidsForKids.Controllers;
 using System.Web.Routing;
-using Rhino.Mocks;
 using System.Collections.Specialized;
+using NSubstitute;
 
 namespace BidsForKids.Tests.Controllers
 {
@@ -50,7 +50,7 @@ namespace BidsForKids.Tests.Controllers
                     parameters.Add(part[0], part[1]);
                 }
 
-                controller.ControllerContext.HttpContext.Request.Expect(x => x.QueryString).Return(parameters).Repeat.Any();
+                controller.ControllerContext.HttpContext.Request.QueryString.Returns(parameters);
                     
                 return (T)controller;
         }
