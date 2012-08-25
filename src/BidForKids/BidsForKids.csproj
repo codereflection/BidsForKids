@@ -194,13 +194,8 @@
   <ItemGroup>
     <None Include="App_Offline.htm-save" />
     <Content Include="App_Readme\Elmah.txt" />
-    <Content Include="Content\images\arrows-ffffff.png" />
-    <Content Include="Content\images\shadow.png" />
     <Content Include="Content\MvcMembership.css" />
     <Content Include="Content\PagedList.css" />
-    <Content Include="Content\superfish\superfish-navbar.css" />
-    <Content Include="Content\superfish\superfish-vertical.css" />
-    <Content Include="Content\superfish\superfish.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -266,10 +261,6 @@
     <Content Include="Scripts\PagedList\PagedList.Mvc.Template.html" />
     <Content Include="Scripts\Procurement\CreateEdit.js" />
     <Content Include="Scripts\ReportGen.js" />
-    <Content Include="Scripts\superfish\hoverIntent.js" />
-    <Content Include="Scripts\superfish\jquery.bgiframe.min.js" />
-    <Content Include="Scripts\superfish\superfish.js" />
-    <Content Include="Scripts\superfish\supersubs.js" />
     <Content Include="Views\Admin\BackupDatabase.aspx" />
     <Content Include="Views\Auction\Create.aspx" />
     <Content Include="Views\Auction\Details.aspx" />

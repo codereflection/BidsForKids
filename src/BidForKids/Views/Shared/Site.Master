@@ -13,25 +13,11 @@
     <link href="../../Content/cupertino/jquery-ui-1.7.2.custom.css" rel="stylesheet"
         type="text/css" />
     <link href="../../Content/ui.jqgrid.css" rel="stylesheet" type="text/css" />
-    <link href="../../Content/superfish/superfish.css" rel="stylesheet" type="text/css" />
     <script src="<%= Url.Content("~/Scripts/jquery-1.4.3.min.js") %>" type="text/javascript"></script>
-    <script src="<%= Url.Content("~/Scripts/superfish/hoverIntent.js") %>" type="text/javascript"></script>
-    <script src="<%= Url.Content("~/Scripts/superfish/superfish.js") %>" type="text/javascript"></script>
     <script src="<%= Url.Content("~/Scripts/jquery.meio.mask.min.js") %>" type="text/javascript"></script>
     <script src="<%= Url.Content("~/Scripts/jquery.validate.min.js") %>" type="text/javascript"></script>
     <script src="<%= Url.Content("~/Scripts/jquery.cookie.js") %>" type="text/javascript"></script>
     <script src="<%= Url.Content("~/Scripts/jquery.deserialize.js") %>" type="text/javascript"></script>
-    <script type="text/javascript">
-
-        $(document).ready(function () {
-            $("ul.sf-menu").superfish({
-                speed: 'fast',
-                animation: { opacity: 'show', height: 'show' },
-                dropShadows: true
-            });
-        });
-    
-    </script>
 </head>
 <body>
     <div class="page">
@@ -44,10 +30,10 @@
                 <% Html.RenderPartial("LogOnUserControl"); %>
             </div>
             <nav>
-                <ul class="sf-menu">
+                <ul class="nav">
                     <li>
                         <%= Html.ActionLink("Home", "Index", "Home")%></li>
-                    <li><a href="#a">Procurements</a>
+                    <li class="dropdown"><a href="#a">Procurements</a>
                         <ul>
                             <li>
                                 <%= Html.ActionLink("Business", "Business", "Procurement")%>
@@ -76,7 +62,7 @@
                     </li>
                     <li>
                         <%= Html.ActionLink("Geo Locations", "Index", "GeoLocation")%></li>
-                    <li><a href="#a">Reports</a>
+                    <li class="dropdown"><a href="#a">Reports</a>
                         <ul>
                             <%--                            <li>
                                 <%= Html.ActionLink("Donor", "CreateByType", "Report", new { id = "Donor" }, null)%></li>--%>
@@ -89,7 +75,7 @@
                         </ul>
                         <%--<%= Html.ActionLink("Reports", "Reports", "Home")%>--%>
                     </li>
-                    <li>
+                    <li class="dropdown">
                         <%= Html.ActionLink("Admin", "Menu", "Admin")%>
                         <ul>
                             <li>
