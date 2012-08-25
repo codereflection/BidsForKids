@@ -33,13 +33,32 @@ namespace BidsForKids.Controllers
 
             var donorType = db.DonorType.FindByDonorTypeDesc("Business");
 
+            //var typeExpression = new SimpleExpression(db.DonorType.DonorType_ID, donorType.DonorType_ID, SimpleExpressionType.Equal);
+            var table = new ObjectReference("Donors", null);
+            var typeExpression = new SimpleExpression(new ObjectReference("DonorType_ID", table), donorType.DonorType_ID, SimpleExpressionType.Equal);
+
+            var compiled = typeExpression;
+
+            if (loadOptions.search)
+                loadOptions.searchParams.ToList().ForEach(param =>
+                {
+                    compiled = compiled & new SimpleExpression(new ObjectReference(param.Key, table), new SimpleFunction("like", new[] { "%" + param.Value + "%" }), SimpleExpressionType.Function);
+                });
+
+            //var values = new Dictionary<string, object> {{"DonorType_ID", donorType.DonorType_ID}};
+
+            //if (loadOptions.search)
+            //    loadOptions.searchParams.ToList().ForEach(param => values.Add(param.Key, param.Value));
+
+            //var expression = Simple.Data.ExpressionHelper.CriteriaDictionaryToExpression("Donors", values);
+
             Promise<int> count;
             List<dynamic> businesses = db.Donors
-                                         .FindAll(db.Donors.DonorType_Id == donorType.DonorType_ID)
+                                         .FindAll(compiled)
                                          .WithTotalCount(out count)
                                          .Skip((loadOptions.page - 1) * loadOptions.rows)
                                          .Take(loadOptions.rows)
-                                         .OrderBy(loadOptions.sortIndex != null ? ObjectReference.FromString(loadOptions.sortIndex) : ObjectReference.FromString("BusinessName"))
+                                         .OrderBy(SortColumn(loadOptions), SortOrder(loadOptions))
                                          .ToList();
 
             var pages = count == 0 ? 0 : (int)Math.Ceiling((decimal)count / (decimal)loadOptions.rows);
@@ -47,6 +66,16 @@ namespace BidsForKids.Controllers
             result.Data = new { total = pages, page = loadOptions.page, records = count.Value.ToString(), rows = businesses };
 
             return result;
+        }
+
+        static OrderByDirection SortOrder(jqGridLoadOptions loadOptions)
+        {
+            return loadOptions.sortOrder == "asc" ? OrderByDirection.Ascending : OrderByDirection.Descending;
+        }
+
+        static ObjectReference SortColumn(jqGridLoadOptions loadOptions)
+        {
+            return loadOptions.sortIndex != null ? ObjectReference.FromString(loadOptions.sortIndex) : ObjectReference.FromString("BusinessName");
         }
 
 

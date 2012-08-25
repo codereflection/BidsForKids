@@ -313,6 +313,23 @@ namespace BidsForKids.Tests.Controllers
 
                 Assert.Equal("1", data.records);
             }
+
+            [Fact]
+            public void returns_json_list_of_donors_which_match_search_criteria()
+            {
+                var controller = SetupNewControllerWithMockContext<DonorController>();
+                controller = SetupQueryStringParameters<DonorController>(controller, "_search=true&BusinessName=Aidan&rows=20&page=1&sidx=&sord=asc");
+
+                var db = Database.Open();
+                db.DonorType.Insert(DonorType_ID: 1, DonorTypeDesc: "Business");
+                db.Donors.Insert(BusinessName: "Aidan's Halloween Shop", DonorType_ID: 1);
+
+                var result = controller.GetDonors();
+
+                dynamic data = result.Data;
+
+                Assert.Equal("1", data.records);
+            }
         }
     }
 }
