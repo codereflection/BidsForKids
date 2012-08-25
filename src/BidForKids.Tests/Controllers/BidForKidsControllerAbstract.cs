@@ -17,6 +17,17 @@ namespace BidsForKids.Tests.Controllers
             ProcurementFactory = ProcurementFactoryHelper.GenerateMockProcurementFactory();
         }
 
+        public static T SetupNewControllerWithMockContext<T>()
+            where T : BidsForKidsControllerBase, new()
+        {
+            var controller = new T();
+            controller.ControllerContext =
+                new ControllerContext(StubContext.FakeHttpContext(), new RouteData(), controller);
+            controller.Url = new UrlHelper(new RequestContext(controller.HttpContext, new RouteData()));
+
+            return controller;
+        }
+
         public static T SetupNewControllerWithMockContext<T>(IProcurementRepository factory)
             where T : BidsForKidsControllerBase, new()
         {

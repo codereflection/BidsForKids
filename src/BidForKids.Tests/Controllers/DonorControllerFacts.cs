@@ -2,6 +2,7 @@ using System.Data.Linq;
 using System.Web.Mvc;
 using BidsForKids.Data.Models.SerializableObjects;
 using NSubstitute;
+using Simple.Data;
 using Xunit;
 using BidsForKids.Controllers;
 using BidsForKids.Data.Models;
@@ -217,9 +218,42 @@ namespace BidsForKids.Tests.Controllers
             }
         }
 
-        public class GetDonors : BidsForKidsControllerTestBase
+
+        public class TestSimpleData
         {
             [Fact]
+            public void should_get_a_customer()
+            {
+                // Arrange
+                // Set up the InMemoryAdapter
+                var adapter = new InMemoryAdapter();
+                adapter.SetKeyColumn("Test", "Id");
+                Database.UseMockAdapter(adapter);
+
+                // Insert some test data
+                var db = Database.Open();
+                db.Test.Insert(Id: 1, Name: "Alice");
+
+                // Act
+                var record = db.Test.Get(1);
+
+                // Assert
+                Assert.NotNull(record);
+                Assert.Equal(1, record.Id);
+                Assert.Equal("Alice", record.Name);
+            }
+        }
+
+        public class GetDonors : BidsForKidsControllerTestBase
+        {
+            public GetDonors()
+            {
+                var inMemoryAdapter = new InMemoryAdapter();
+                Database.UseMockAdapter(inMemoryAdapter);
+                inMemoryAdapter.SetKeyColumn("DonorType", "DonorType_ID");
+            }
+
+            [Fact(Skip = "Converting to Simple.Data")]
             public void Throws_exception_when_QueryString_parameters_are_not_present()
             {
                 var controller =
@@ -230,8 +264,7 @@ namespace BidsForKids.Tests.Controllers
                 Assert.Throws<ApplicationException>(() => result = controller.GetDonors());
             }
 
-
-            [Fact]
+            [Fact(Skip = "Converting to Simple.Data")]
             public void Returns_an_empty_Json_object_array_of_Donors()
             {
                 var controller =
@@ -246,7 +279,7 @@ namespace BidsForKids.Tests.Controllers
                 Assert.True(viewResult.Data.ToString().Contains("records = 0"));
             }
 
-            [Fact]
+            [Fact(Skip = "Converting to Simple.Data")]
             public void Returns_a_json_object_with_one_record()
             {
                 var controller =
@@ -262,6 +295,23 @@ namespace BidsForKids.Tests.Controllers
                 ProcurementFactory.Received().GetSerializableBusinesses(Arg.Any<jqGridLoadOptions>());
                 var viewResult = Assert.IsType<JsonResult>(result);
                 Assert.True(viewResult.Data.ToString().Contains("records = 1"));
+            }
+
+            [Fact]
+            public void returns_json_list_of_donors_for_get_donors_action()
+            {
+                var controller = SetupNewControllerWithMockContext<DonorController>();
+                controller = SetupQueryStringParameters<DonorController>(controller, "_search=false&rows=20&page=1&sidx=&sord=asc");
+
+                var db = Database.Open();
+                db.DonorType.Insert(DonorType_ID: 1, DonorTypeDesc: "Business");
+                db.Donors.Insert(BusinessName: "Aidan's Halloween Shop", DonorType_ID: 1);
+
+                var result = controller.GetDonors();
+
+                dynamic data = result.Data;
+
+                Assert.Equal("1", data.records);
             }
         }
     }

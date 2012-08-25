@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Mvc;
 using BidsForKids.Data.Models;
 using BidsForKids.Data.Models.SerializableObjects;
+using Simple.Data;
 
 namespace BidsForKids.Controllers
 {
@@ -11,17 +12,20 @@ namespace BidsForKids.Controllers
     [Authorize(Roles = "Administrator, Procurements")]
     public class DonorController : BidsForKidsControllerBase
     {
+        dynamic db;
+
         public DonorController()
         {
-
+            db = Database.Open();
         }
 
         public DonorController(IProcurementRepository repository)
         {
+            db = Database.Open();
             this.Repository = repository;
         }
 
-        public ActionResult GetDonors()
+        public JsonResult GetDonors()
         {
             var loadOptions = jqGridLoadOptions.GetLoadOptions(Request.QueryString);
 
@@ -30,18 +34,24 @@ namespace BidsForKids.Controllers
                                   JsonRequestBehavior = JsonRequestBehavior.AllowGet
                               };
 
-            var businesses = Repository.GetSerializableBusinesses(loadOptions);
+            var donorType = db.DonorType.FindByDonorTypeDesc("Business");
 
-            if (businesses == null)
-                throw new ApplicationException("Unable to load Donors list");
+            Promise<int> count;
 
-            var rows = businesses.Count;
+            List<dynamic> businesses = db.Donors
+                                         .FindAll(db.Donors.DonorType_Id == donorType.DonorType_ID)
+                                         .WithTotalCount(out count)
+                                         .Skip((loadOptions.page - 1) * loadOptions.rows)
+                                         .Take(loadOptions.rows)
+                                         .ToList();
 
-            businesses = businesses.Skip((loadOptions.page - 1) * loadOptions.rows).Take(loadOptions.rows).ToList();
+            //var businesses = Repository.GetSerializableBusinesses(loadOptions);
 
-            var pages = rows == 0 ? 0 : (int)Math.Ceiling((decimal)rows / (decimal)loadOptions.rows);
+            //businesses = businesses.Skip((loadOptions.page - 1) * loadOptions.rows).Take(loadOptions.rows).ToList();
 
-            result.Data = new { total = pages, page = loadOptions.page, records = rows.ToString(), rows = businesses };
+            var pages = count == 0 ? 0 : (int)Math.Ceiling((decimal)count / (decimal)loadOptions.rows);
+
+            result.Data = new { total = pages, page = loadOptions.page, records = count.Value.ToString(), rows = businesses };
 
             return result;
         }
