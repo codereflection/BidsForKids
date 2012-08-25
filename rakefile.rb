@@ -21,13 +21,13 @@ end
 
 
 xunit :xunitTests do |xunit|
-	xunit.command = "lib/xunit-1.6.1/xunit.console.x86.exe"
+	xunit.command = "src/packages/xunit.runners.1.9.1/tools/xunit.console.clr4.x86.exe"
 	xunit.assembly = "build/BidsForKids.Tests.dll"
 	xunit.html_output = "report/Tests"
 end
 
 mspec :specifications do |mspec|
-	mspec.command = "packages/Machine.Specifications.0.4.24.0/tools/mspec.exe"
+	mspec.command = "src/packages/Machine.Specifications.0.5.8/tools/mspec-clr4.exe"
 	mspec.assemblies = "build/BidsForKids.Tests.dll"
 	mspec.html_output = "report/Specs"
 end

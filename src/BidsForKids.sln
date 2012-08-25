@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BidsForKids", "BidForKids\BidsForKids.csproj", "{46F2C317-EDD6-4238-95D4-E0BD658B10D2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BidsForKids.Tests", "BidForKids.Tests\BidsForKids.Tests.csproj", "{5F471AEA-DEDC-41B0-82C2-9EB36E39F18E}"
@@ -12,6 +12,11 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A3A8C507-BFA6-4AF4-B9ED-EC1C84C26FEE}"
 	ProjectSection(SolutionItems) = preProject
 		ProjectVersion.cs = ProjectVersion.cs
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{B3DB31A6-8BE7-4354-B37E-BB6F8A3672EB}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\packages.config = .nuget\packages.config
 	EndProjectSection
 EndProject
 Global
