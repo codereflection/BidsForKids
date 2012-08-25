@@ -2,7 +2,7 @@
 
 <%@ Import Namespace="System.Reflection" %>
 <%@ Import Namespace="BidsForKids" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -35,7 +35,7 @@
 </head>
 <body>
     <div class="page">
-        <div id="header">
+        <header>
             <div id="title">
                 <h1>
                     Gatewood Elementary "Bids For Kids" Auction Database</h1>
@@ -43,7 +43,7 @@
             <div id="logindisplay">
                 <% Html.RenderPartial("LogOnUserControl"); %>
             </div>
-            <div id="menucontainer">
+            <nav>
                 <ul class="sf-menu">
                     <li>
                         <%= Html.ActionLink("Home", "Index", "Home")%></li>
@@ -107,16 +107,16 @@
                     <li>
                         <%= Html.ActionLink("About", "About", "Home")%></li>
                 </ul>
-            </div>
-        </div>
-        <div id="main">
+            </nav>
+        </header>
+        <section id="main">
             <asp:ContentPlaceHolder ID="MainContent" runat="server" />
-            <div id="footer">
-                Version
-                <%= Assembly.GetAssembly(typeof(WebApplication)).GetName().Version.ToString() %>&nbsp;
-                <%= Html.ActionLink("What Changed", "WhatChanged", "Home") %>
-            </div>
-        </div>
+        </section>
+        <footer>
+            Version
+            <%= Assembly.GetAssembly(typeof(WebApplication)).GetName().Version.ToString() %>&nbsp;
+            <%= Html.ActionLink("What Changed", "WhatChanged", "Home") %>
+        </footer>
     </div>
 </body>
 </html>

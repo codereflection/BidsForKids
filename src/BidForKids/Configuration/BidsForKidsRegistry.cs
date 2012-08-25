@@ -1,8 +1,8 @@
 using System.Configuration;
 using System.Data.Linq;
+using BidsForKids.Areas.MvcMembership.Controllers;
 using BidsForKids.Controllers;
 using BidsForKids.Data.Repositories;
-using SampleWebsite.Areas.UserAdministration.Controllers;
 using StructureMap.Configuration.DSL;
 using BidsForKids.Data.Models;
 

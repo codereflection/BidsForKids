@@ -31,6 +31,7 @@ namespace BidsForKids
             RegisterRoutes(RouteTable.Routes);
             Bootstrapper.ConfigureStructureMap();
             ControllerBuilder.Current.SetControllerFactory(new StructureMapControllerFactory());
+            ViewEngines.Engines.Add(new RazorViewEngine());
         }
 
         protected void Application_BeginRequest(object sender, EventArgs e)
