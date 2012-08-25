@@ -16,8 +16,7 @@ namespace BidsForKids.Configuration
                 .Ctor<string>("connectionString")
                 .Is(ConfigurationManager.ConnectionStrings["BidsForKidsConnectionString"].ConnectionString);
 
-            SelectConstructor(() => new DataContext("whatchoodoo"));
-
+            SelectConstructor(() => new DataContext("Use this flippin' constructorz!"));
             ForConcreteType<DataContext>().Configure
                 .Ctor<string>("fileOrServerOrConnection")
                 .Is(ConfigurationManager.ConnectionStrings["BidsForKidsConnectionString"].ConnectionString);
