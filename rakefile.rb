@@ -6,13 +6,17 @@ require 'albacore'
 task :default => [:full]
 
 
-task :full => [:clean,:assemblyInfo,:build,:xunitTests,:specifications,:publish]
+task :full => [:clean,:solutionPackageRestore,:assemblyInfo,:build,:xunitTests,:specifications,:publish]
 
 task :clean do
 	FileUtils.rm_rf 'build'
 	FileUtils.rm_rf 'publish'
 end
 
+exec :solutionPackageRestore do |cmd|
+    cmd.command = "src/.nuget/nuget.exe"
+    cmd.parameters = "install src/.nuget/packages.config -o src/packages"
+end
 
 msbuild :build do |msb|
 	msb.properties :configuration => :AutomatedRelease
