@@ -1,6 +1,5 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
-
 [assembly: AssemblyTitle("Bids For Kids Auction Management System")]
 [assembly: AssemblyCompany("Gatewood Elementary PTA")]
 [assembly: AssemblyProduct("Bids For Kids Auction Management System")]
