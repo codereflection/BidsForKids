@@ -23,11 +23,14 @@ end
 desc 'Run migrations aginst SQL instance at (local)'
 task :migrateLocal => [:clean,:assemblyInfo,:build,:migrate_local]
 
+desc 'Rollback all migrations against SQL instance at (local)'
+task :rollbackAllLocalExpress => [:clean,:assemblyInfo,:build,:rollback_all_local]
+
 desc 'Run migrations against SQL Express instance at (local)\SQLExpress'
 task :migrateLocalExpress => [:clean,:assemblyInfo,:build,:migrate_local_express]
 
 desc 'Rollback all migrations against SQL Express instance at (local)\SQLExpress'
-task :rollbackAllLocalExpress => [:clean,:assemblyInfo,:build,:rollback_All_local_express]
+task :rollbackAllLocalExpress => [:clean,:assemblyInfo,:build,:rollback_all_local_express]
 
 fluentmigrator :migrate_local do |fm|
     fm.command = "src/packages/FluentMigrator.Tools.1.0.3.0/tools/AnyCpu/40/Migrate.exe"
@@ -35,6 +38,15 @@ fluentmigrator :migrate_local do |fm|
     fm.provider = "sqlserver2008"
     fm.namespace = "BidsForKids.Database"
     fm.target = "build/BidsForKids.Database.dll"
+end
+
+fluentmigrator :rollback_all_local do |fm|
+    fm.command = "src/packages/FluentMigrator.Tools.1.0.3.0/tools/AnyCpu/40/Migrate.exe"
+    fm.connection = "Data Source=(local);Initial Catalog=BidForKids;Integrated Security=True"
+    fm.provider = "sqlserver2008"
+    fm.namespace = "BidsForKids.Database"
+    fm.target = "build/BidsForKids.Database.dll"
+    fm.task = "rollback:all"
 end
 
 fluentmigrator :migrate_local_express do |fm|
@@ -45,7 +57,7 @@ fluentmigrator :migrate_local_express do |fm|
     fm.target = "build/BidsForKids.Database.dll"
 end
 
-fluentmigrator :rollback_All_local_express do |fm|
+fluentmigrator :rollback_all_local_express do |fm|
     fm.command = "src/packages/FluentMigrator.Tools.1.0.3.0/tools/AnyCpu/40/Migrate.exe"
     fm.connection = "Data Source=(local)\\SQLEXPRESS;Initial Catalog=BidForKids;Integrated Security=True"
     fm.provider = "sqlserver2008"
