@@ -15,10 +15,12 @@ task :clean do
 	FileUtils.rm_rf 'publish'
 end
 
+desc 'Restore solution Nuget packages'
 exec :solutionPackageRestore do |cmd|
     cmd.command = "src/.nuget/nuget.exe"
     cmd.parameters = "install src/.nuget/packages.config -o src/packages"
 end
+
 
 desc 'Run migrations aginst SQL instance at (local)'
 task :migrateLocal => [:clean,:assemblyInfo,:build,:migrate_local]
