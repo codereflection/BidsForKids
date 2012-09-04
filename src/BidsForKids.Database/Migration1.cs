@@ -5,6 +5,12 @@ namespace BidsForKids.Database
     [Migration(1)]
     public class Migration1 : Migration
     {
+        int BusinessTypeId = 1;
+        int ParentTypeId = 2;
+        const string BusinessType = "Business";
+        const string ParentType = "Parent";
+        const string AdventureType = "Adventure";
+
         public override void Up()
         {
             CreateAuctionTable();
@@ -179,6 +185,11 @@ GO";
             Create.Table("DonorType")
                 .WithColumn("DonorType_ID").AsInt32().PrimaryKey().Identity().NotNullable()
                 .WithColumn("DonorTypeDesc").AsAnsiString(50).NotNullable();
+
+            Execute.Sql("SET IDENTITY_INSERT DonorType ON");
+            Execute.Sql(string.Format("INSERT INTO DonorType (DonorType_ID, DonorTypeDesc) VALUES ({0},'{1}')", BusinessTypeId, BusinessType));
+            Execute.Sql(string.Format("INSERT INTO DonorType (DonorType_ID, DonorTypeDesc) VALUES ({0},'{1}')", ParentTypeId, ParentType));
+            Execute.Sql("SET IDENTITY_INSERT DonorType OFF");
         }
 
         void CreateGeoLocationTable()
@@ -411,6 +422,11 @@ GO";
                 .WithColumn("ProcurementType_ID").AsInt32().PrimaryKey().Identity().NotNullable()
                 .WithColumn("ProcurementTypeDesc").AsAnsiString(50).NotNullable()
                 .WithColumn("DonorType_ID").AsInt32().Nullable();
+
+            Insert.IntoTable("ProcurementType")
+                .Row(new { ProcurementTypeDesc = BusinessType, DonorType_ID = BusinessTypeId })
+                .Row(new { ProcurementTypeDesc = ParentType, DonorType_ID = ParentTypeId })
+                .Row(new { ProcurementTypeDesc = AdventureType, DonorType_ID = ParentTypeId });
         }
 
         void CreateProcurerTable()
