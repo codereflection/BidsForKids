@@ -26,7 +26,7 @@ desc 'Run migrations aginst SQL instance at (local)'
 task :migrateLocal => [:clean,:assemblyInfo,:build,:migrate_local]
 
 desc 'Rollback all migrations against SQL instance at (local)'
-task :rollbackAllLocalExpress => [:clean,:assemblyInfo,:build,:rollback_all_local]
+task :rollbackAllLocal => [:clean,:assemblyInfo,:build,:rollback_all_local]
 
 desc 'Run migrations against SQL Express instance at (local)\SQLExpress'
 task :migrateLocalExpress => [:clean,:assemblyInfo,:build,:migrate_local_express]
