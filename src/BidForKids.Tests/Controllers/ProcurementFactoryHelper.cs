@@ -18,7 +18,7 @@ namespace BidsForKids.Tests.Controllers
             factory.GetAuctions().Returns(new List<Auction>());
 
             factory.GetDonors().Returns(new List<Donor>());
-            factory.GetDonor(Arg.Any<int>()).Returns(GetTestDonor.Invoke());
+            factory.GetDonor(Arg.Any<int>()).Returns(x => GetTestDonor.Invoke());
 
             factory.GetGeoLocations().Returns(new List<GeoLocation>());
             factory.GetGeoLocation(Arg.Any<int>()).Returns(new GeoLocation());

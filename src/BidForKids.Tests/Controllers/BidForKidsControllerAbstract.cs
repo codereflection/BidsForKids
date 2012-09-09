@@ -6,14 +6,20 @@ using BidsForKids.Controllers;
 using System.Web.Routing;
 using System.Collections.Specialized;
 using NSubstitute;
+using Simple.Data;
 
 namespace BidsForKids.Tests.Controllers
 {
     public class BidsForKidsControllerTestBase
     {
         static public IProcurementRepository ProcurementFactory;
+        protected InMemoryAdapter InMemoryAdapter;
+
         public BidsForKidsControllerTestBase()
         {
+            InMemoryAdapter = new InMemoryAdapter();
+            Database.UseMockAdapter(InMemoryAdapter);
+
             ProcurementFactory = ProcurementFactoryHelper.GenerateMockProcurementFactory();
         }
 
