@@ -8,6 +8,8 @@ end
 require 'rake'
 require 'albacore'
 
+_bidsForKidsVersion = "1.2.1.7"
+
 desc 'Perform a full build'
 task :default => [:full]
 
@@ -100,8 +102,8 @@ assemblyinfo :assemblyInfo do |asm|
   asm.title = "Bids For Kids Auction Management System"
   asm.company_name = "Gatewood Elementary PTA"
   asm.product_name = "Bids For Kids Auction Management System"
-  asm.version = "1.2.1.7"
-  asm.file_version = "1.2.1.7"
+  asm.version = _bidsForKidsVersion
+  asm.file_bidsForKidsVersion = _bidsForKidsVersion
   asm.copyright = "Copyright (c)2010-2012 Elementary PTA"
 end
 
