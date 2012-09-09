@@ -1,18 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 using BidsForKids.Data.Models;
-using BidsForKids.Data.Models.SerializableObjects;
 using Simple.Data;
 
 namespace BidsForKids.Controllers
 {
-
     [Authorize(Roles = "Administrator, Procurements")]
     public class DonorController : BidsForKidsControllerBase
     {
-        dynamic db;
+        readonly dynamic db;
 
         public DonorController()
         {
@@ -22,7 +21,7 @@ namespace BidsForKids.Controllers
         public DonorController(IProcurementRepository repository)
         {
             db = Database.Open();
-            this.Repository = repository;
+            Repository = repository;
         }
 
         public JsonNetResult GetDonors()
@@ -63,7 +62,7 @@ namespace BidsForKids.Controllers
 
             var pages = count == 0 ? 0 : (int)Math.Ceiling((decimal)count / (decimal)loadOptions.rows);
 
-            result.Data = new { total = pages, page = loadOptions.page, records = count.Value.ToString(), rows = businesses };
+            result.Data = new { total = pages, loadOptions.page, records = count.Value.ToString(CultureInfo.InvariantCulture), rows = businesses };
 
             return result;
         }
@@ -81,7 +80,7 @@ namespace BidsForKids.Controllers
 
         public ActionResult Index()
         {
-            ViewData["GeoLocationJsonString"] = GetGeoLocationJSONString(); ;
+            ViewData["GeoLocationJsonString"] = GetGeoLocationJSONString();
 
             ViewData["ProcurerJsonString"] = GetProcurerJSONString();
 
@@ -117,31 +116,14 @@ namespace BidsForKids.Controllers
             return procurerString;
         }
 
-        public ActionResult GridIndex()
-        {
-            return View();
-        }
-
         public ActionResult GeoList(int? id)
         {
-            if (id.HasValue == true && id > 0)
-            {
-                var donors = Repository.GetDonors().Where(x => x.GeoLocation_ID == id).OrderBy(x => x.BusinessName);
-
-                return View(donors);
-            }
-            else if (id.HasValue == true && id == 0)
-            {
-                var donors = Repository.GetDonors().Where(x => x.GeoLocation_ID == null).OrderBy(x => x.BusinessName);
-
-                return View(donors);
-            }
-            else
-            {
-                var donors = Repository.GetDonors().OrderBy(x => x.BusinessName);
-
-                return View(donors);
-            }
+            if (id.HasValue && id > 0)
+                return View(Repository.GetDonors()
+                    .Where(x => x.GeoLocation_ID == (id > 0 ? id : null))
+                                      .OrderBy(x => x.BusinessName));
+            
+            return View(Repository.GetDonors().OrderBy(x => x.BusinessName));
         }
 
         public ActionResult Details(int id)
@@ -159,7 +141,7 @@ namespace BidsForKids.Controllers
         private void SetupCreateViewData()
         {
             if (string.IsNullOrEmpty(Request.QueryString["GeoLocation_ID"]) == false)
-                ViewData["GeoLocation_ID"] = GetGeoLocationsSelectList(int.Parse(Request.QueryString["GeoLocation_ID"].ToString()));
+                ViewData["GeoLocation_ID"] = GetGeoLocationsSelectList(int.Parse(Request.QueryString["GeoLocation_ID"]));
             else
                 ViewData["GeoLocation_ID"] = GetGeoLocationsSelectList(null);
 
@@ -184,7 +166,7 @@ namespace BidsForKids.Controllers
 
                 var newDonor = Repository.GetNewDonor();
 
-                UpdateModel<Donor>(newDonor, new[] {
+                UpdateModel(newDonor, new[] {
                     "Address",
                     "BusinessName",
                     "City",
@@ -228,20 +210,19 @@ namespace BidsForKids.Controllers
         private SelectList GetDonatesSelectList(int? selectedValue)
         {
             IEnumerable<DonatesReference> donatesRef = Repository.GetDonatesReferenceList();
-            if (donatesRef != null)
-                return new SelectList(donatesRef, "Donates_ID", "Description", selectedValue ?? 2); // TODO: Fix hard coded 2 value for unknown Donates value                
-            else
-                return new SelectList(new List<DonatesReference>(), "Donates_ID", "Description");
+            return donatesRef != null ? 
+                new SelectList(donatesRef, "Donates_ID", "Description", selectedValue ?? 2) : 
+                new SelectList(new List<DonatesReference>(), "Donates_ID", "Description");
         }
 
         private SelectList GetProcurerSelectList(int? selectedValue)
         {
             IEnumerable<Procurer> procurers = Repository.GetProcurers();
-            var procurerQuery = from P in procurers
+            var procurerQuery = from p in procurers
                                 select new
                                 {
-                                    Procurer_ID = P.Procurer_ID,
-                                    FullName = P.FirstName + " " + P.LastName
+                                    p.Procurer_ID,
+                                    FullName = p.FirstName + " " + p.LastName
                                 };
 
             return new SelectList(procurerQuery, "Procurer_ID", "FullName", selectedValue);
@@ -266,7 +247,7 @@ namespace BidsForKids.Controllers
 
                 SetupEditViewData(donor);
 
-                UpdateModel<Donor>(donor, new[] {
+                UpdateModel(donor, new[] {
                     "Address",
                     "BusinessName",
                     "City",
@@ -311,7 +292,7 @@ namespace BidsForKids.Controllers
 
                 SetupEditViewData(donor);
 
-                UpdateModel<Donor>(donor, new[] {
+                UpdateModel(donor, new[] {
                     "Address",
                     "BusinessName",
                     "City",
@@ -360,7 +341,7 @@ namespace BidsForKids.Controllers
         }
 
         [HttpPost]
-        public ActionResult Delete(int id)
+        public JsonResult Delete(int id)
         {
             var donor = Repository.GetDonor(id);
 
