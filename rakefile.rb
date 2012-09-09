@@ -103,7 +103,7 @@ assemblyinfo :assemblyInfo do |asm|
   asm.company_name = "Gatewood Elementary PTA"
   asm.product_name = "Bids For Kids Auction Management System"
   asm.version = _bidsForKidsVersion
-  asm.file_bidsForKidsVersion = _bidsForKidsVersion
+  asm.file_version = _bidsForKidsVersion
   asm.copyright = "Copyright (c)2010-2012 Elementary PTA"
 end
 
