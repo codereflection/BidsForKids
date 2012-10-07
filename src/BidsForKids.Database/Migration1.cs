@@ -121,8 +121,14 @@ namespace BidsForKids.Database
         void CreateDonatesTable()
         {
             Create.Table("Donates")
-                .WithColumn("Donates_ID").AsInt32().PrimaryKey().NotNullable()
+                .WithColumn("Donates_ID").AsInt32().PrimaryKey().Identity().NotNullable()
                 .WithColumn("Description").AsAnsiString(20).NotNullable();
+
+            Execute.Sql("SET IDENTITY_INSERT Donates ON");
+            Execute.Sql(string.Format("INSERT INTO Donates (Donates_ID, Description) VALUES ({0},'{1}')", 0, "No"));
+            Execute.Sql(string.Format("INSERT INTO Donates (Donates_ID, Description) VALUES ({0},'{1}')", 1, "Yes"));
+            Execute.Sql(string.Format("INSERT INTO Donates (Donates_ID, Description) VALUES ({0},'{1}')", 2, "Unknown"));
+            Execute.Sql("SET IDENTITY_INSERT Donates OFF");
         }
 
         void CreateDonorTable()
