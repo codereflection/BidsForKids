@@ -43,12 +43,12 @@ namespace BidsForKids.Controllers
         [HttpPost]
         public ActionResult Create(GeoLocationViewModel model)
         {
-            db.GeoLocations.Insert(
+            var geolocation = db.GeoLocations.Insert(
                 GeoLocationName: model.GeoLocationName,
                 Description: model.Description
             );
 
-            return RedirectToAction("Index");
+            return ControllerHelper.ReturnToOrRedirectToIndex(this, geolocation.GeoLocation_ID, "GeoLocation_ID");
         }
 
         [HttpGet]
