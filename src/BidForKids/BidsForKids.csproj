@@ -348,7 +348,6 @@
     <Content Include="Views\GeoLocation\Index.cshtml" />
     <Content Include="Views\GeoLocation\Details.cshtml" />
     <Content Include="Views\GeoLocation\Edit.cshtml" />
-    <Content Include="Views\GeoLocation\CreateIt.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\cupertino\images\ui-bg_diagonals-thick_90_eeeeee_40x40.png" />
