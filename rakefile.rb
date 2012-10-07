@@ -117,3 +117,26 @@ msbuild :publish do |msb|
   )
   msb.solution = "src/BidForKids/BidsForKids.csproj"
 end
+
+desc 'Create local BidForKids database'
+exec :createDatabaseLocal do |cmd|
+  cmd.command = "sqlcmd.exe"
+  cmd.parameters = "-S localhost -E -i .\\db\\createBidForKidsDatabase.sql"
+end
+
+desc 'Register ASP.NET authentication on local BidForKids database'
+task :registerASPNETAuthLocal => [:registerDatabaseWithASPNETAuthentication]
+
+exec :registerDatabaseWithASPNETAuthentication do |cmd|
+  cmd.command = "aspnet_regsql.exe"
+  cmd.parameters = "-S localhost -d BidForKids -A all -E"
+end
+
+desc 'UnRegister ASP.NET authentication on local BidForKids database'
+task :unregisterASPNETAuthLocal => [:unregisterDatabaseWithASPNETAuthentication]
+
+desc 'Remove ASP.NET authentication from local BidForKids database'
+exec :unregisterDatabaseWithASPNETAuthentication do |cmd|
+  cmd.command = "aspnet_regsql.exe"
+  cmd.parameters = "-S localhost -d BidForKids -R all -E"
+end
