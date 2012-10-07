@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 using BidsForKids.Data.Models;
+using BidsForKids.ViewModels;
 using Simple.Data;
 
 namespace BidsForKids.Controllers
@@ -122,7 +123,7 @@ namespace BidsForKids.Controllers
                 return View(Repository.GetDonors()
                     .Where(x => x.GeoLocation_ID == (id > 0 ? id : null))
                                       .OrderBy(x => x.BusinessName));
-            
+
             return View(Repository.GetDonors().OrderBy(x => x.BusinessName));
         }
 
@@ -145,8 +146,12 @@ namespace BidsForKids.Controllers
             else
                 ViewData["GeoLocation_ID"] = GetGeoLocationsSelectList(null);
 
+            if (string.IsNullOrEmpty(Request.QueryString["Procurer_ID"]) == false)
+                ViewData["Procurer_ID"] = GetProcurerSelectList(int.Parse(Request.QueryString["Procurer_ID"]));
+            else
+                ViewData["Procurer_ID"] = GetProcurerSelectList(null);
+
             ViewData["Donates"] = GetDonatesSelectList(null);
-            ViewData["Procurer_ID"] = GetProcurerSelectList(null);
         }
 
         private void SetupEditViewData(Donor donor)
@@ -157,43 +162,21 @@ namespace BidsForKids.Controllers
         }
 
 
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Create(FormCollection collection)
+        [HttpPost]
+        public ActionResult Create(DonorViewModel model)
         {
             try
             {
                 SetupCreateViewData();
 
-                var newDonor = Repository.GetNewDonor();
+                if (!ModelState.IsValid)
+                    return View();
 
-                UpdateModel(newDonor, new[] {
-                    "Address",
-                    "BusinessName",
-                    "City",
-                    "FirstName",
-                    "LastName",
-                    "Notes",
-                    "Phone1",
-                    "Phone1Desc",
-                    "Phone2",
-                    "Phone2Desc",
-                    "Phone3",
-                    "Phone3Desc",
-                    "State",
-                    "ZipCode",
-                    "GeoLocation_ID",
-                    "Donates",
-                    "Email",
-                    "Website",
-                    "MailedPacket",
-                    "Procurer_ID"
-                });
+                model.DonorType_ID = db.DonorTypes.FindByDonorTypeDesc("Business").DonorType_ID;
 
-                newDonor.DonorType_ID = Repository.GetDonorTypeByName("Business").DonorType_ID;
+                var donor = db.Donors.Insert(model);
 
-                var newDonorId = Repository.AddDonor(newDonor);
-
-                return ControllerHelper.ReturnToOrRedirectToIndex(this, newDonorId, "Donor_ID");
+                return ControllerHelper.ReturnToOrRedirectToIndex(this, donor.Donor_ID, "Donor_ID");
             }
             catch
             {
@@ -210,8 +193,8 @@ namespace BidsForKids.Controllers
         private SelectList GetDonatesSelectList(int? selectedValue)
         {
             IEnumerable<DonatesReference> donatesRef = Repository.GetDonatesReferenceList();
-            return donatesRef != null ? 
-                new SelectList(donatesRef, "Donates_ID", "Description", selectedValue ?? 2) : 
+            return donatesRef != null ?
+                new SelectList(donatesRef, "Donates_ID", "Description", selectedValue ?? 2) :
                 new SelectList(new List<DonatesReference>(), "Donates_ID", "Description");
         }
 
@@ -346,11 +329,14 @@ namespace BidsForKids.Controllers
             var donor = Repository.GetDonor(id);
 
             if (donor.ProcurementDonors.Count > 0)
-                return new JsonResult { Data = new DeleteDonorViewModel
-                                                   {
-                                                       Successful = false, 
-                                                       Message = "Cannot delete because the donor has associated procurements, use Close Donor instead"
-                                                   }};
+                return new JsonResult
+                {
+                    Data = new DeleteDonorViewModel
+                               {
+                                   Successful = false,
+                                   Message = "Cannot delete because the donor has associated procurements, use Close Donor instead"
+                               }
+                };
 
             Repository.DeleteDonor(donor);
 

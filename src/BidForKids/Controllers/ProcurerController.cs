@@ -28,7 +28,7 @@ namespace BidsForKids.Controllers
             return View();
         } 
 
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult Create(FormCollection collection)
         {
             try
@@ -43,9 +43,9 @@ namespace BidsForKids.Controllers
                         "Description"
                 });
 
-                factory.AddProcurer(newProcurer);
+                var id = factory.AddProcurer(newProcurer);
 
-                return RedirectToAction("Index");
+                return ControllerHelper.ReturnToOrRedirectToIndex(this, id, "Procurer_ID");
             }
             catch
             {
