@@ -1,25 +1,92 @@
-﻿<!DOCTYPE html>
+﻿@using System.Reflection
+@using BidsForKids
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <title>@ViewBag.Title</title>
     <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/cupertino/jquery-ui-1.7.2.custom.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/ui.jqgrid.css")" rel="stylesheet" type="text/css" />
     <script src="@Url.Content("~/Scripts/jquery-1.7.1.min.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/Scripts/modernizr-2.5.3.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.meio.mask.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.cookie.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.deserialize.js")" type="text/javascript"></script>
 </head>
 <body>
     <div class="page">
         <header>
             <div id="title">
-                <h1>My MVC Application</h1>
+                <h1>Gatewood Elementary "Bids For Kids" Auction Database</h1>
             </div>
             <div id="logindisplay">
                 @Html.Partial("_LogOnPartial")
             </div>
             <nav>
-                <ul id="menu">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
+                <ul class="nav">
+                    <li>
+                        @Html.ActionLink("Home", "Index", "Home")</li>
+                    <li class="dropdown"><a href="#a">Procurements</a>
+                        <ul>
+                            <li>
+                                @Html.ActionLink("Business", "Business", "Procurement")
+                                <ul>
+                                    <li>
+                                        @Html.ActionLink("New", "CreateByType", "Procurement", new { id = "Business" }, null)
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                @Html.ActionLink("Parent", "Parent", "Procurement")
+                                <ul>
+                                    <li>
+                                        @Html.ActionLink("New", "CreateByType", "Procurement", new { id = "Parent" }, null)
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                @Html.ActionLink("Adventure", "Adventure", "Procurement")
+                                <ul>
+                                    <li>
+                                        @Html.ActionLink("New", "CreateByType", "Procurement", new { id = "Adventure" }, null)
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        @Html.ActionLink("Geo Locations", "Index", "GeoLocation")</li>
+                    <li class="dropdown"><a href="#a">Reports</a>
+                        <ul>
+                            <li>
+                                @Html.ActionLink("Auction Items", "AuctionItem", "Report", new { id = "AuctionItem" }, null)
+                            </li>
+                            <li>
+                                @Html.ActionLink("Procurements", "CreateByType", "Report", new { id = "Procurement" }, null)
+                            </li>
+                            <li>
+                                @Html.ActionLink("Donors", "Donor", "ReportGen")</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        @Html.ActionLink("Admin", "Menu", "Admin")
+                        <ul>
+                            <li>
+                                @Html.ActionLink("Businesses", "Index", "Donor")</li>
+                            <li>
+                                @Html.ActionLink("Parents", "Index", "Parent")</li>
+                            <li>
+                                @Html.ActionLink("Procurers", "Index", "Procurer")</li>
+                            <li>
+                                @Html.ActionLink("Auctions", "Index", "Auction")</li>
+                            <li>
+                                @Html.ActionLink("Backup", "BackupDatabase", "Admin")</li>
+                        </ul>
+                    </li>
+                    <li>
+                        @Html.ActionLink("About", "About", "Home")</li>
                 </ul>
             </nav>
         </header>
@@ -27,6 +94,9 @@
             @RenderBody()
         </section>
         <footer>
+            Version
+            @Assembly.GetAssembly(typeof(WebApplication)).GetName().Version.ToString()&nbsp;
+            @Html.ActionLink("What Changed", "WhatChanged", "Home")
         </footer>
     </div>
 </body>
