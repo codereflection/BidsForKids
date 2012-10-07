@@ -1,85 +1,68 @@
-using System;
 using System.Web.Mvc;
 using BidsForKids.Data.Models;
+using BidsForKids.ViewModels;
+using Simple.Data;
 
 namespace BidsForKids.Controllers
 {
     [Authorize(Roles = "Administrator, Procurements")]
     public class GeoLocationController : Controller
     {
+        readonly dynamic db;
         private readonly IProcurementRepository factory;
+
+        public GeoLocationController()
+        {
+            db = Database.Open();
+        }
 
         public GeoLocationController(IProcurementRepository factory)
         {
+            db = Database.Open();
             this.factory = factory;
         }
 
         public ActionResult Index()
         {
-            return View(factory.GetGeoLocations());
+            var geoLocations = db.GeoLocations.All();
+            return View(geoLocations.ToList<GeoLocationViewModel>());
         }
 
+        [HttpGet]
         public ActionResult Details(int id)
         {
-            return View(factory.GetGeoLocation(id));
+            return View(db.GeoLocations.FindAllByGeoLocation_ID(id).SingleOrDefault<GeoLocationViewModel>());
         }
 
+        [HttpGet]
         public ActionResult Create()
         {
             return View();
         }
 
-
-        public ActionResult Create(FormCollection collection)
+        [HttpPost]
+        public ActionResult Create(GeoLocationViewModel model)
         {
-            try
-            {
-                var newGeoLocation = factory.GetNewGeoLocation();
+            db.GeoLocations.Insert(
+                GeoLocationName: model.GeoLocationName,
+                Description: model.Description
+            );
 
-                UpdateModel<GeoLocation>(newGeoLocation,
-                    new[] {
-                        "GeoLocationName",
-                        "Description"
-                    });
-
-                var id = factory.AddGeoLocation(newGeoLocation);
-
-                return ControllerHelper.ReturnToOrRedirectToIndex(this, id, "GeoLocation_ID");
-            }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction("Index");
         }
 
+        [HttpGet]
         public ActionResult Edit(int id)
         {
-            return View(factory.GetGeoLocation(id));
+            return View(db.GeoLocations.FindAllByGeoLocation_ID(id).SingleOrDefault<GeoLocationViewModel>());
         }
 
-        public ActionResult Edit(int id, FormCollection collection)
+        [HttpPost]
+        public ActionResult Edit(GeoLocationViewModel model)
         {
-            try
-            {
-                var geoLocation = factory.GetGeoLocation(id);
+            db.GeoLocations.Update(model);
 
-                UpdateModel<GeoLocation>(geoLocation, 
-                    new[] {
-                        "GeoLocationName",
-                        "Description"
-                    });
-
-                if (factory.SaveGeoLocation(geoLocation) == false)
-                {
-                    throw new ApplicationException("Unable to save Geo Location");
-                }
- 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction("Index");
         }
     }
 }

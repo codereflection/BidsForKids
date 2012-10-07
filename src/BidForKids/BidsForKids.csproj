@@ -100,6 +100,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
     </Reference>
+    <Reference Include="Glimpse.Core">
+      <HintPath>..\packages\Glimpse.0.87\lib\net40\Glimpse.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Glimpse.Mvc3">
+      <HintPath>..\packages\Glimpse.Mvc3.0.87\lib\net40\Glimpse.Mvc3.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="MvcMembership">
       <HintPath>..\packages\MvcMembership.3.7.0\lib\40\MvcMembership.dll</HintPath>
@@ -209,10 +215,13 @@
     <Compile Include="ViewModels\AuctionViewModel.cs" />
     <Compile Include="ViewModels\DonorReportViewModel.cs" />
     <Compile Include="ViewModels\EditableProcurementViewModel.cs" />
+    <Compile Include="ViewModels\GeoLocationViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App_Offline.htm-save" />
     <Content Include="App_Readme\Elmah.txt" />
+    <Content Include="App_Readme\glimpse.mvc3.readme.txt" />
+    <Content Include="App_Readme\glimpse.readme.txt" />
     <Content Include="Content\MvcMembership.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -336,6 +345,11 @@
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Views\GeoLocation\Create.cshtml" />
+    <Content Include="Views\GeoLocation\Index.cshtml" />
+    <Content Include="Views\GeoLocation\Details.cshtml" />
+    <Content Include="Views\GeoLocation\Edit.cshtml" />
+    <Content Include="Views\GeoLocation\CreateIt.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\cupertino\images\ui-bg_diagonals-thick_90_eeeeee_40x40.png" />
@@ -367,10 +381,6 @@
     <Content Include="Views\Donor\Edit.aspx" />
     <Content Include="Views\Donor\GeoList.aspx" />
     <Content Include="Views\Donor\Index.aspx" />
-    <Content Include="Views\GeoLocation\Create.aspx" />
-    <Content Include="Views\GeoLocation\Details.aspx" />
-    <Content Include="Views\GeoLocation\Edit.aspx" />
-    <Content Include="Views\GeoLocation\Index.aspx" />
     <Content Include="Views\Home\GeoLocationDonorList.ascx" />
     <Content Include="Views\Home\GeoLocationReports.aspx" />
     <Content Include="Views\Home\Reports.aspx" />

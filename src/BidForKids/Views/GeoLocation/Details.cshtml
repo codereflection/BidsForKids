@@ -1,0 +1,30 @@
+﻿@model BidsForKids.ViewModels.GeoLocationViewModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Geo Location</legend>
+
+    <div class="display-label">GeoLocation_ID</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.GeoLocation_ID)
+    </div>
+
+    <div class="display-label">GeoLocationName</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.GeoLocationName)
+    </div>
+
+    <div class="display-label">Description</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Description)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id=Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
