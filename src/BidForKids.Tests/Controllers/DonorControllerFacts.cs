@@ -1,6 +1,7 @@
 using System.Data.Linq;
 using System.Web.Mvc;
 using BidsForKids.Data.Models.SerializableObjects;
+using BidsForKids.ViewModels;
 using NSubstitute;
 using Simple.Data;
 using Xunit;

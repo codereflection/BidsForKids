@@ -1,5 +1,5 @@
 <%@ Page Title="Donors" Language="C#" MasterPageFile="~/Views/Shared/Site.Master"
-    Inherits="System.Web.Mvc.ViewPage<IEnumerable<BidsForKids.Data.Models.Donor>>" %>
+    Inherits="System.Web.Mvc.ViewPage<IEnumerable<BidsForKids.ViewModels.DonorViewModel>>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
     Donors

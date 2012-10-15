@@ -85,7 +85,7 @@ namespace BidsForKids.Controllers
 
             ViewData["ProcurerJsonString"] = GetProcurerJSONString();
 
-            return View(Repository.GetDonors());
+            return View(db.Donors.FindAllBy(Closed: false).ToList<DonorViewModel>());
         }
 
 
@@ -154,7 +154,7 @@ namespace BidsForKids.Controllers
             ViewData["Donates"] = GetDonatesSelectList(null);
         }
 
-        private void SetupEditViewData(Donor donor)
+        private void SetupEditViewData(DonorViewModel donor)
         {
             ViewData["GeoLocation_ID"] = GetGeoLocationsSelectList(donor.GeoLocation_ID);
             ViewData["Procurer_ID"] = GetProcurerSelectList(donor.Procurer_ID);
@@ -214,11 +214,19 @@ namespace BidsForKids.Controllers
 
         public ActionResult Edit(int id)
         {
-            var donor = Repository.GetDonor(id);
+            var donor = GetDonorById(id);
 
             SetupEditViewData(donor);
 
-            return View(Repository.GetDonor(id));
+            return View(donor);
+        }
+
+        dynamic GetDonorById(int id)
+        {
+            var donor = db.Donors.FindAllByDonor_ID(id).SingleOrDefault<DonorViewModel>();
+            donor.ContactProcurementViewModels =
+                db.ContactProcurements.FindAllByDonor_ID(id).ToList<ContactProcurementViewModel>();
+            return donor;
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
@@ -226,7 +234,7 @@ namespace BidsForKids.Controllers
         {
             try
             {
-                var donor = Repository.GetDonor(id);
+                var donor = db.Donors.FindAllByDonor_ID(id).SingleOrDefault<DonorViewModel>();
 
                 SetupEditViewData(donor);
 
@@ -266,48 +274,27 @@ namespace BidsForKids.Controllers
             }
         }
 
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Edit(int id, FormCollection collection)
+        [HttpPost]
+        public ActionResult Edit(DonorViewModel model)
         {
             try
             {
-                var donor = Repository.GetDonor(id);
+                var donor = db.Donors.Get(model.Donor_ID);
 
-                SetupEditViewData(donor);
+                model.CreatedOn = donor.CreatedOn;
+                model.DonorType_ID = donor.DonorType_ID;
+                model.ModifiedOn = DateTime.Now;
 
-                UpdateModel(donor, new[] {
-                    "Address",
-                    "BusinessName",
-                    "City",
-                    "FirstName",
-                    "LastName",
-                    "Notes",
-                    "Phone1",
-                    "Phone1Desc",
-                    "Phone2",
-                    "Phone2Desc",
-                    "Phone3",
-                    "Phone3Desc",
-                    "State",
-                    "ZipCode",
-                    "GeoLocation_ID",
-                    "Donates",
-                    "Email",
-                    "Website",
-                    "MailedPacket",
-                    "Procurer_ID"
-                });
+                SetupEditViewData(model);
 
-                if (Repository.SaveDonor(donor) == false)
-                {
-                    throw new ApplicationException("Unable to save changes to Business");
-                }
+                db.Donors.Update(model);
 
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception ex)
             {
-                return View(Repository.GetDonor(id));
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return View(model);
             }
         }
 
@@ -342,16 +329,5 @@ namespace BidsForKids.Controllers
 
             return new JsonResult { Data = new DeleteDonorViewModel { Successful = true } };
         }
-    }
-
-    public class DeleteDonorViewModel
-    {
-        public bool Successful { get; set; }
-        public string Message { get; set; }
-    }
-
-    public class CloseDonorViewModel
-    {
-        public bool Successful { get; set; }
     }
 }

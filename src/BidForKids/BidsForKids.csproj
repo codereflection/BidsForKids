@@ -213,6 +213,9 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\AuctionViewModel.cs" />
+    <Compile Include="ViewModels\CloseDonorViewModel.cs" />
+    <Compile Include="ViewModels\ContactProcurementViewModel.cs" />
+    <Compile Include="ViewModels\DeleteDonorViewModel.cs" />
     <Compile Include="ViewModels\DonorReportViewModel.cs" />
     <Compile Include="ViewModels\DonorViewModel.cs" />
     <Compile Include="ViewModels\EditableProcurementViewModel.cs" />
@@ -352,6 +355,7 @@
     <Content Include="Views\Donor\Create.cshtml">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="Views\Donor\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\cupertino\images\ui-bg_diagonals-thick_90_eeeeee_40x40.png" />
@@ -379,7 +383,6 @@
     <Content Include="Scripts\jquery-ui-1.7.2.custom.min.js" />
     <Content Include="Views\Admin\Menu.aspx" />
     <Content Include="Views\Donor\Details.aspx" />
-    <Content Include="Views\Donor\Edit.aspx" />
     <Content Include="Views\Donor\GeoList.aspx" />
     <Content Include="Views\Donor\Index.aspx" />
     <Content Include="Views\Home\GeoLocationDonorList.ascx" />
