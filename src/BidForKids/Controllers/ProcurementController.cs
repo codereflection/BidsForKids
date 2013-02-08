@@ -231,7 +231,7 @@ namespace BidsForKids.Controllers
 
             var procurementType = Repository.GetProcurementTypeByName(createType);
 
-            var donor = Repository.GetDonorTypeByName(createType);
+            var donor = Repository.GetDonorTypeByName(GetDonorTypeFromCreateType(createType));
             ViewData["Donor-0"] = GetDonorsSelectList(null, donor.DonorType_ID);
 
             ViewData["Category_ID"] = GetCategoriesSelectList(null);
@@ -256,6 +256,20 @@ namespace BidsForKids.Controllers
                 ViewData["ReturnToUrl"] = Server.UrlEncode(Url.Action("Create"));
                 ViewData["CreateNewController"] = "Donor";
             }
+        }
+
+        static string GetDonorTypeFromCreateType(string createType)
+        {
+            switch (createType.ToLower())
+            {
+                case "business":
+                    return "Business";
+                case "parent":
+                    return "Parent";
+                case "adventure":
+                    return "Parent";
+            }
+            throw new ApplicationException(string.Format("Unable to determine donor type from create type: {0}", createType));
         }
 
         static List<SelectListItem> GetCertificateSelectListItems()
