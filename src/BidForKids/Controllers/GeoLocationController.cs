@@ -29,14 +29,14 @@ namespace BidsForKids.Controllers
             return View();
         }
 
-
+        [HttpPost]
         public ActionResult Create(FormCollection collection)
         {
             try
             {
                 var newGeoLocation = factory.GetNewGeoLocation();
 
-                UpdateModel<GeoLocation>(newGeoLocation,
+                UpdateModel(newGeoLocation,
                     new[] {
                         "GeoLocationName",
                         "Description"
@@ -63,7 +63,7 @@ namespace BidsForKids.Controllers
             {
                 var geoLocation = factory.GetGeoLocation(id);
 
-                UpdateModel<GeoLocation>(geoLocation, 
+                UpdateModel(geoLocation, 
                     new[] {
                         "GeoLocationName",
                         "Description"
