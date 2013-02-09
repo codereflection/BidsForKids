@@ -70,14 +70,20 @@ namespace BidsForKids.Data.Models.SerializableObjects
 
         private static string GetBusinessName(Procurement procurement)
         {
-            return procurement.ProcurementDonors.FirstOrDefault().Donor.BusinessName;
+            var procurementDonor = procurement.ProcurementDonors.FirstOrDefault();
+            return procurementDonor != null ? procurementDonor.Donor.BusinessName : "";
         }
 
         private static string GetDonors(Procurement procurement)
         {
-            var donorList = procurement.ProcurementDonors.Select(GetDonorDisplayString()).Aggregate((working, next) => working + "; " + next);
-
-            return donorList;
+            if (procurement.ProcurementDonors.Count > 0)
+            {
+                var donorList =
+                    procurement.ProcurementDonors.Select(GetDonorDisplayString())
+                               .Aggregate((working, next) => working + "; " + next);
+                return donorList;
+            }
+            return "";
         }
 
         static Func<ProcurementDonor, string> GetDonorDisplayString()
