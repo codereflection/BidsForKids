@@ -25,6 +25,18 @@
         <tbody>
             <tr>
                 <td>
+                    v1.2.1.8
+                </td>
+                <td>
+                    Feb 10th, 2013
+                </td>
+                <td>
+                    Various bug fixes that occured while creating procurements<br />
+                    Added ability to create multiple new donors while adding a procurement without forgetting the previously entered values<br />
+                </td>
+            </tr>
+            <tr>
+                <td>
                     v1.2.1.7
                 </td>
                 <td>
