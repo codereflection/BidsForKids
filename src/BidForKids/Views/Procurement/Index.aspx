@@ -151,7 +151,6 @@
             procurementGrid.filterToolbar();
             procurementGrid.navGrid("#pager", { edit: false, add: false, del: false, search: false });
             $("#Auction_ID").change(function() {
-                debugger;
                 if (typeof procurementGrid != 'undefined' && $("#Auction_ID").val() != "") {
                     $("#gs_Year").val($("#Auction_ID").text());
                     procurementGrid.triggerToolbar();

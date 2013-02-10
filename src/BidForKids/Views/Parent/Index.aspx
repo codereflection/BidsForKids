@@ -55,7 +55,7 @@
                     }
                 },
                 loadError: function(xhr, status, error) {
-                    debugger;
+                    alert("Error during load: " + error);
                 },
                 multiselect: false,
                 onSelectRow: function(rowid, status) {
