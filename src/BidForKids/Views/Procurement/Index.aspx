@@ -84,10 +84,8 @@
  
  
         $(document).ready(function() {
-            var location = window.location;
             var procurementGrid = $("#procurementGrid").jqGrid({
-                datatype: 'json',
-                url: '<%= Url.Action("GetProcurements", new { id = ViewData["ProcurementType"] }) %>',
+                datatype: 'local',
                 jsonReader: {
                     root: "rows",
                     page: "page",
@@ -96,7 +94,6 @@
                     repeatitems: false,
                     id: "4"
                 },
-                //colNames: ['Actions', 'CatalogNumber', 'AuctionNumber', 'ItemNumber', 'Description', 'EstimatedValue', 'GeoLocation',  'Year', 'ID'],
                 colModel: [
                     { name: 'act', index: 'act', width: 20, sortable: false, search: false, label: ' ', align: 'center' },
                     { name: 'AuctionNumber', index: 'AuctionNumber', width: 32, label: 'Auc #', editable: true },
@@ -148,8 +145,12 @@
                 },
                 multiselect: false
             });
-            procurementGrid.filterToolbar();
             procurementGrid.navGrid("#pager", { edit: false, add: false, del: false, search: false });
+
+            procurementGrid.filterToolbar({ autosearch: true});
+            procurementGrid.setGridParam({ datatype: 'json', url: '<%= Url.Action("GetProcurements", new { id = ViewData["ProcurementType"] }) %>' });
+            procurementGrid[0].triggerToolbar();
+            
             $("#Auction_ID").change(function() {
                 if (typeof procurementGrid != 'undefined' && $("#Auction_ID").val() != "") {
                     $("#gs_Year").val($("#Auction_ID").text());
