@@ -96,7 +96,7 @@
         <div class="editor-field">
             <label for="ThankYouLetterSent">
                 Thank You Letter Sent</label>
-            <%= Html.CheckBox("ThankYouLetterSent") %>
+            <%= Html.CheckBox("ThankYouLetterSent", false) %>
         </div>
         <div class="editor-field">
             <label for="donors">
