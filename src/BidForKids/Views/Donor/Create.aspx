@@ -8,6 +8,14 @@
     <h2>
         Add new business</h2>
     <%= Html.ValidationSummary("Create was unsuccessful. Please correct the errors and try again.") %>
+    <%
+        if (ViewData.ContainsKey("Error"))
+        {
+    %>
+    <div class="error">Error creating donor:</div><div><%= ViewData["Error"] %></div>
+    <%            
+        }
+    %>
     <% using (Html.BeginForm())
        {%>
     <fieldset>

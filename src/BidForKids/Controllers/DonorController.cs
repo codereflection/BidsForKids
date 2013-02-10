@@ -181,8 +181,10 @@ namespace BidsForKids.Controllers
 
                 return ControllerHelper.ReturnToOrRedirectToIndex(this, newDonorId, "Donor_ID");
             }
-            catch
+            catch (Exception ex)
             {
+                ViewData["Error"] = ex.Message;
+                ViewData["ErrorDetails"] = ex.ToString();
                 return View();
             }
         }
