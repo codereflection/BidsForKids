@@ -411,25 +411,25 @@ namespace BidsForKids.Controllers
 
             try
             {
-                var newProcurement = Repository.GetNewProcurement();
-                var newContactProcurement = new ContactProcurement();
-                newProcurement.ContactProcurement = newContactProcurement;
+                var procurement = Repository.GetNewProcurement();
+                var contactProcurement = new ContactProcurement();
+                procurement.ContactProcurement = contactProcurement;
 
-                UpdateModel(newProcurement,
+                UpdateModel(procurement,
                     ProcurementColumns());
 
-                UpdateModel(newProcurement.ContactProcurement,
+                UpdateModel(procurement.ContactProcurement,
                     ContactProcurementColumns());
 
-                newProcurement.ItemNumber = collection["ItemNumberPrefix"] + " - " + collection["ItemNumberSuffix"];
+                procurement.ItemNumber = collection["ItemNumberPrefix"] + " - " + collection["ItemNumberSuffix"];
 
-                SetupProcurementDonors(newProcurement, collection);
+                SetupProcurementDonors(procurement, collection);
 
                 if (collection["procurementType"] != null)
-                    newProcurement.ProcurementType_ID =
+                    procurement.ProcurementType_ID =
                         Repository.GetProcurementTypeByName(collection["procurementType"]).ProcurementType_ID;
 
-                Repository.AddProcurement(newProcurement);
+                Repository.AddProcurement(procurement);
 
                 return RedirectToAction(procurementType);
             }
@@ -543,7 +543,7 @@ namespace BidsForKids.Controllers
         }
         private void UpdateProcurementDonors(Procurement procurement, FormCollection collection)
         {
-            var donors = GetDonorsFromFormCollection(collection, "DonorId");
+            var donors = FormCollectionExtensionMethods.GetDonorIdsFromFormCollection(collection, "DonorId");
 
             if (donors == null) return;
 
@@ -560,19 +560,9 @@ namespace BidsForKids.Controllers
             removedDonors.ForEach(donor => procurement.ProcurementDonors.Remove(donor));
         }
 
-        private static List<string> GetDonorsFromFormCollection(FormCollection collection, string donorSelectFieldId)
-        {
-            return string.IsNullOrEmpty(collection[donorSelectFieldId]) ? 
-                                                                   null : 
-                                                                            collection[donorSelectFieldId]
-                                                                                .Split(',')
-                                                                                .Where(x => !string.IsNullOrEmpty(x))
-                                                                                .ToList();
-        }
-
         private void SetupProcurementDonors(Procurement procurement, FormCollection collection)
         {
-            var donors = GetDonorsFromFormCollection(collection, "DonorId");
+            var donors = collection.GetDonorIdsFromFormCollection("DonorId");
 
             if (donors == null) return;
 
